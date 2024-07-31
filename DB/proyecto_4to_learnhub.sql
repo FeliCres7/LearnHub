@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-07-2024 a las 13:13:25
+-- Tiempo de generación: 31-07-2024 a las 17:21:22
 -- Versión del servidor: 5.7.17-log
 -- Versión de PHP: 5.6.30
 
@@ -40,6 +40,64 @@ CREATE TABLE `clases` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `dicta`
+--
+
+CREATE TABLE `dicta` (
+  `ID` int(11) NOT NULL,
+  `IDprofesores` int(11) NOT NULL,
+  `IDmateria` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `materia`
+--
+
+CREATE TABLE `materia` (
+  `ID` int(11) NOT NULL,
+  `IDprofesores` int(11) NOT NULL,
+  `nombremateria` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `material`
+--
+
+CREATE TABLE `material` (
+  `ID` int(11) NOT NULL,
+  `materia` varchar(100) NOT NULL,
+  `Profesor` varchar(50) NOT NULL,
+  `Fecha que la subio` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `profesor`
+--
+
+CREATE TABLE `profesor` (
+  `ID` int(11) NOT NULL,
+  `Nombre` varchar(30) NOT NULL,
+  `Apellido` varchar(30) NOT NULL,
+  `Fecha de nacimiento` date NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `Materias` varchar(50) NOT NULL,
+  `Telefono` varchar(20) NOT NULL,
+  `Valoracion` decimal(10,0) NOT NULL,
+  `Pais` varchar(30) NOT NULL,
+  `Idiomas` varchar(30) NOT NULL,
+  `Foto` text NOT NULL,
+  `Descripcion corta` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuario`
 --
 
@@ -70,6 +128,35 @@ ALTER TABLE `clases`
   ADD KEY `IDprofesor` (`IDprofesor`);
 
 --
+-- Indices de la tabla `dicta`
+--
+ALTER TABLE `dicta`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `IDprofesores` (`IDprofesores`),
+  ADD KEY `IDmateria` (`IDmateria`);
+
+--
+-- Indices de la tabla `materia`
+--
+ALTER TABLE `materia`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `material`
+--
+ALTER TABLE `material`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `materia` (`materia`),
+  ADD KEY `Profesor` (`Profesor`);
+
+--
+-- Indices de la tabla `profesor`
+--
+ALTER TABLE `profesor`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `Materias` (`Materias`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -77,6 +164,26 @@ ALTER TABLE `clases`
 -- AUTO_INCREMENT de la tabla `clases`
 --
 ALTER TABLE `clases`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `dicta`
+--
+ALTER TABLE `dicta`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `materia`
+--
+ALTER TABLE `materia`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `material`
+--
+ALTER TABLE `material`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `profesor`
+--
+ALTER TABLE `profesor`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
