@@ -1,3 +1,9 @@
+const express= require ('express');
+const mysql = require ('mysql');
+
+const app= express ()
+app.use(express.json ())
+
 // Obtengo todos los profesores
 app.get('/profesores', async (req, res) => {
   try {
@@ -28,6 +34,20 @@ app.post('/profesores', async (req, res) => {
   try {
     const [result] = await db.query('INSERT INTO profesor (Nombre, Apellido, Fecha_de_nacimiento, Email, Materias, Telefono, Valoracion, Pais, Idiomas, Foto, Descripcion_corta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [Nombre, Apellido, Fecha_de_nacimiento, Email, Materias, Telefono, Valoracion, Pais, Idiomas, Foto, Descripcion_corta]);
     res.status(201).json({ id: result.insertId });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Eliminar un profesor
+app.delete('/profesores/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await db.query('DELETE FROM profesor WHERE ID = ?', [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+    res.json({ message: 'Profesor eliminado' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
