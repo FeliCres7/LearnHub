@@ -13,34 +13,245 @@
     height: 100px;
     width: 100px;
 }
-.header
-{
+.header {
     position: fixed;
     display: flex;
-    align-items: center;
-    background-color:#DDD7E3;
-    justify-content: left;
-    height: 125px;
+    align-items: center; 
+    background-color: #DDD7E3;
+    height: 100px;
     width: 100%;
+    padding: 0 20px;
 
 }
-input[type="search"]{
+input[type="search"] {
     background-color: #BCADCA;
     border: none;
-    font-size: 24px;
+    font-size: 20px;
     border-radius: 5px;
     text-indent: 5px;
+    margin-left: 10px; 
 }
-.inicio
+
+.boton-inicio
 {
-    background-color: transparent;
-    border: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.boton-inicio a {
+    text-decoration: none; 
+    color: #AB81B2;
     margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
     
 }
-.perfilAlumno
+.boton-inicio button
 {
     background-color: transparent;
     border: none;
     margin-left: 10px;
+}
+.boton-inicio img {
+    transition: filter 0.3s;
+}
+.boton-inicio:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-inicio:hover a {
+    color: #000; 
+    text-decoration: underline;
+}
+.boton-perfil-alumno
+{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.boton-perfil-alumno a {
+    text-decoration: none; 
+    color: #AB81B2;
+    margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+    
+}
+.boton-perfil-alumno button
+{
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+.boton-perfil-alumno img {
+    transition: filter 0.3s;
+}
+.boton-perfil-alumno:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-perfil-alumno:hover a {
+    color: #000; 
+    text-decoration: underline;
+}
+.boton-mis-profesores
+{
+    display: flex;
+    align-items: center;
+    
+    flex-direction: column;
+}
+.boton-mis-profesores a {
+    text-decoration: none; 
+    color: #AB81B2;
+    margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+    
+}
+.boton-mis-profesores button
+{
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+.boton-mis-profesores img {
+    transition: filter 0.3s;
+}
+.boton-mis-profesores:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-mis-profesores:hover a {
+    color: #000; 
+    text-decoration: underline;
+}
+.boton-calendario
+{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.boton-calendario a {
+    text-decoration: none; 
+    color: #AB81B2;
+    margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+    
+}
+.boton-calendario button
+{
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+.boton-calendario img {
+    transition: filter 0.3s;
+}
+.boton-calendario:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-calendario:hover a {
+    color: #000; 
+    text-decoration: underline;
+}
+
+.boton-notificaciones
+{
+    display: flex;
+    align-items: center;
+    
+    flex-direction: column;
+}
+.boton-notificaciones a {
+    text-decoration: none; 
+    color: #AB81B2;
+    margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+    
+}
+.boton-notificaciones button
+{
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+.boton-notificaciones img {
+    transition: filter 0.3s;
+}
+.boton-notificaciones:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-notificaciones:hover a {
+    color: #000; 
+    text-decoration: underline;
+}
+
+.boton-configuracion
+{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.boton-configuracion a {
+    text-decoration: none; 
+    color: #AB81B2;
+    margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+    
+}
+.boton-configuracion button
+{
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+.boton-configuracion img {
+    transition: filter 0.3s;
+}
+.boton-configuracion:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-configuracion:hover a {
+    color: #000; 
+    text-decoration: underline;
+}
+
+.boton-mensajes
+{
+    display: flex;
+    align-items: center;
+    
+    flex-direction: column;
+}
+.boton-mensajes a {
+    text-decoration: none; 
+    color: #AB81B2;
+    margin-left: 10px;
+    font-size: 18px;
+    transition: color 0.3s;
+    
+}
+.boton-mensajes button
+{
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+}
+.boton-mensajes img {
+    transition: filter 0.3s;
+}
+.boton-mensajes:hover img {
+    filter: brightness(0.7); 
+}
+
+.boton-mensajes:hover a {
+    color: #000; 
+    text-decoration: underline;
 }
