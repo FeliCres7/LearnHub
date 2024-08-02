@@ -21,6 +21,7 @@
     height: 100px;
     width: 100%;
     padding: 0 20px;
+    z-index: 1000; 
 
 }
 input[type="search"] {
@@ -57,11 +58,13 @@ input[type="search"] {
 }
 .boton-inicio:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-inicio:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
 }
 .boton-perfil-alumno
 {
@@ -88,11 +91,13 @@ input[type="search"] {
 }
 .boton-perfil-alumno:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-perfil-alumno:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
 }
 .boton-mis-profesores
 {
@@ -120,11 +125,13 @@ input[type="search"] {
 }
 .boton-mis-profesores:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-mis-profesores:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
 }
 .boton-calendario
 {
@@ -151,11 +158,13 @@ input[type="search"] {
 }
 .boton-calendario:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-calendario:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
 }
 
 .boton-notificaciones
@@ -184,11 +193,13 @@ input[type="search"] {
 }
 .boton-notificaciones:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-notificaciones:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
 }
 
 .boton-configuracion
@@ -216,18 +227,19 @@ input[type="search"] {
 }
 .boton-configuracion:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-configuracion:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
 }
 
 .boton-mensajes
 {
     display: flex;
     align-items: center;
-    
     flex-direction: column;
 }
 .boton-mensajes a {
@@ -249,13 +261,65 @@ input[type="search"] {
 }
 .boton-mensajes:hover img {
     filter: brightness(0.7); 
+    cursor:pointer;
 }
 
 .boton-mensajes:hover a {
     color: #000; 
     text-decoration: underline;
+    cursor:pointer;
+}
+main {
+    margin-top: 100px; /* Espacio igual a la altura del header */
 }
 .PanelDerecho
 {
-    background-color: #BCADCA;
+    background-color: #DDD7E3;
+    padding-top: 110px;
+    height:1000px;
+    width: 250px;
+}
+.config
+{
+    font-weight: 600;
+    font-size: 24px;
+}
+.ajustes{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+   
+}
+.ajustes p{
+     font-weight: 500;
+    font-size: 18px;
+    margin-left: 15px;
+}
+.seguridad
+{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px;
+        font-weight: 500;
+        font-size: 18px;
+}
+.seguridad p{
+    font-weight: 500;
+   font-size: 18px;
+   margin-left: 15px;
+}
+.visualización{
+    display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 20px;
+        font-weight: 500;
+        font-size: 18px;
+}
+.visualización p{
+    font-weight: 500;
+   font-size: 18px;
+   margin-left: 15px;
 }
