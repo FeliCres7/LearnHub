@@ -5,7 +5,6 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    
 
 }
 
@@ -32,6 +31,7 @@ input[type="search"] {
     text-indent: 5px;
     margin-left: 15px; 
     margin-right: 50px;
+    
 }
 
 .boton-inicio
@@ -277,9 +277,9 @@ input[type="search"] {
     cursor:pointer;
 }
 main {
-    margin-top: 100px; /* Espacio igual a la altura del header */
+    margin-top: 100px; 
 }
-.PanelDerecho
+.PanelIzquierdo
 {
     background-color: #DDD7E3;
     padding-top: 110px;
@@ -329,4 +329,16 @@ main {
     font-weight: 500;
    font-size: 18px;
    margin-left: 15px;
+}
+.panel-configuracion {
+     
+    padding-top: 100px;
+    padding-left: 50px;
+    height: 100%;
+    width: calc(100% - 250px);
+    background-color: #eee;
+    position: absolute;
+    top: 0;
+    left: 250px;
+    font-weight: 600;
 }
