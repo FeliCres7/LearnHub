@@ -18,7 +18,7 @@
     display: flex;
     align-items: center; 
     background-color: #DDD7E3;
-    height: 100px;
+    height: 75px;
     width: 100%;
     padding: 0 20px;
     z-index: 1000; 
@@ -27,10 +27,11 @@
 input[type="search"] {
     background-color: #BCADCA;
     border: none;
-    font-size: 20px;
+    font-size: 24px;
     border-radius: 5px;
     text-indent: 5px;
-    margin-left: 10px; 
+    margin-left: 15px; 
+    margin-right: 50px;
 }
 
 .boton-inicio
@@ -38,12 +39,14 @@ input[type="search"] {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-left: 0px;
+    
 }
 .boton-inicio a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
     transition: color 0.3s;
     
 }
@@ -71,12 +74,13 @@ input[type="search"] {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-left: 30px;
 }
 .boton-perfil-alumno a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
     transition: color 0.3s;
     
 }
@@ -103,14 +107,14 @@ input[type="search"] {
 {
     display: flex;
     align-items: center;
-    
+    margin-left: 30px;
     flex-direction: column;
 }
 .boton-mis-profesores a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15;
     transition: color 0.3s;
     
 }
@@ -138,12 +142,13 @@ input[type="search"] {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-left: 30px;
 }
 .boton-calendario a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
     transition: color 0.3s;
     
 }
@@ -171,14 +176,14 @@ input[type="search"] {
 {
     display: flex;
     align-items: center;
-    
+    margin-left: 30px;
     flex-direction: column;
 }
 .boton-notificaciones a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
     transition: color 0.3s;
     
 }
@@ -205,14 +210,15 @@ input[type="search"] {
 .boton-configuracion
 {
     display: flex;
+    margin-left: 30px;
     align-items: center;
     flex-direction: column;
 }
 .boton-configuracion a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
     transition: color 0.3s;
     
 }
@@ -241,12 +247,13 @@ input[type="search"] {
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-left: 30px;
 }
 .boton-mensajes a {
     text-decoration: none; 
-    color: #AB81B2;
+    color: #7F5D85;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
     transition: color 0.3s;
     
 }
