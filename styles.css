@@ -17,10 +17,11 @@
     display: flex;
     align-items: center; 
     background-color: #DDD7E3;
-    height: 75px;
+    height: 80px;
     width: 100%;
     padding: 0 20px;
     z-index: 1000; 
+    padding-top: 5px;
 
 }
 input[type="search"] {
@@ -285,6 +286,8 @@ main {
     padding-top: 110px;
     height:1000px;
     width: 250px;
+    color: #41013E;
+    position: fixed;
 }
 .config
 {
@@ -302,6 +305,7 @@ main {
      font-weight: 500;
     font-size: 18px;
     margin-left: 15px;
+    color: #7F5D85;
 }
 .seguridad
 {
@@ -311,6 +315,8 @@ main {
         padding: 20px;
         font-weight: 500;
         font-size: 18px;
+        color: #7F5D85;
+
 }
 .seguridad p{
     font-weight: 500;
@@ -329,6 +335,8 @@ main {
     font-weight: 500;
    font-size: 18px;
    margin-left: 15px;
+   color: #7F5D85;
+
 }
 .panel-configuracion {
     
@@ -336,7 +344,6 @@ main {
     padding-left: 50px;
     height: 1000px;
     width: calc(100% - 250px);
-    background-color: #eee;
     position: absolute;
     top: 0;
     left: 250px;
@@ -345,6 +352,7 @@ main {
     align-items: center;
     flex-direction: column;
     font-size: 30px;
+    color: #41013E;
 }
 .ajustes-configuracion, .seguridad-configuracion, .visualizacion-configuracion {
     display: flex;
@@ -357,21 +365,39 @@ main {
     height: 60px;
     width: 500px;
     text-align: left;
-    font-weight: 700;
+    font-weight: 600;
+    text-decoration: #B18FB7;
     padding-left: 10px;
-    color: #B18FB7;
+    color: #7F5D85;
     background-color: #DDD7E3;
     border-width: 0.1px;
-    border-color: #B18FB7;
+    border-color: #7F5D85;
     font-size: 24px;
-    
+    border-right: none;
+    border-left: none;
+    transition: color 0.3s;
     
 }
 .top-button-config{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    border-top: none;
 }
 .bottom-button-config{
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    border-bottom: none;
+}
+.ajustes-configuracion button:hover, .seguridad-configuracion button:hover, .visualizacion-configuracion button:hover{
+    filter: brightness(1.2); 
+    cursor:pointer;
+}
+footer{
+    width: 100%;
+    align-items: center;
+    text-align: center;
+}
+footer img{
+    scale: 45%;
+
 }
