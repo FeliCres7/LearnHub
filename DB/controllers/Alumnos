@@ -1,6 +1,6 @@
 import {conn} from '../dbconfig.js'
 
-const getProf = async (_, res) =>{
+const getalumnos = async (_, res) =>{
     try {
         const [rows] = await db.query('SELECT * FROM alumnos');
         res.json(rows);
@@ -8,4 +8,19 @@ const getProf = async (_, res) =>{
         res.status(500).json({ error: err.message });
       }
     }
+    const getalumnos = async (req, res) => {
+        const { id } = req.params;
+       try {
+          const [rows] = await db.query('SELECT * FROM alumnos WHERE ID = ?', [id]);
+          if (rows.length === 0) {
+            return res.status(404).json({ error: 'alumno no encontrado' });
+          }
+          res.json(rows[0]);
+        } catch (err) {
+          res.status(500).json({ error: err.message });
+        }
+      };
     
+
+
+  

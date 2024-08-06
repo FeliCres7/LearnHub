@@ -2,6 +2,9 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+//servidor en el puerto 3000
+app.listen(3000, () => {
+  console.log("Learnhub listening on port 3000!");
 
 import profesores from "./JS/profesores";
 import clases from "./JS/clases";
@@ -149,6 +152,7 @@ app.get('/profesores', async (req, res) => {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
+
   //Update Profesor
   app.put('/profesores/:id', async (req, res) => {
     const { id } = req.params;
@@ -167,4 +171,4 @@ app.get('/profesores', async (req, res) => {
     }
   })}
   
-  )})
+  )})})
