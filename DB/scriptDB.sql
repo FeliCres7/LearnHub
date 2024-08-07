@@ -1,192 +1,198 @@
--- phpMyAdmin SQL Dump
--- version 4.6.6
--- https://www.phpmyadmin.net/
+-- ph... SQLINES DEMO ***
+-- ve... SQLINES DEMO ***
+-- SQLINES DEMO *** admin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 31-07-2024 a las 17:21:22
--- Versión del servidor: 5.7.17-log
--- Versión de PHP: 5.6.30
+-- Se... SQLINES DEMO ***
+-- SQLINES DEMO *** ión: 31-07-2024 a las 17:21:22
+-- SQLINES DEMO *** idor: 5.7.17-log
+-- SQLINES DEMO *** 5.6.30
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+/* SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO"; */
+time_zone := "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de datos: `proyecto 4to learnhub`
---
-
--- --------------------------------------------------------
+/* SQLINES DEMO *** ARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/* SQLINES DEMO *** ARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/* SQLINES DEMO *** LLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/* SQLINES DEMO *** tf8mb4 */;
 
 --
--- Estructura de tabla para la tabla `clases`
+-- SQLINES DEMO *** royecto 4to learnhub`
 --
 
-CREATE TABLE `clases` (
-  `ID` int(11) NOT NULL,
-  `IDmateria` int(11) NOT NULL,
-  `Horainicio` date NOT NULL,
-  `Horafin` date NOT NULL,
-  `IDalumno` int(11) NOT NULL,
-  `IDprofesor` int(11) NOT NULL,
-  `Idioma` varchar(30) NOT NULL,
-  `Link` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
+-- SQLINES DEMO *** ---------------------------------------
 
 --
--- Estructura de tabla para la tabla `dicta`
+-- SQLINES DEMO *** la para la tabla `clases`
 --
 
-CREATE TABLE `dicta` (
-  `ID` int(11) NOT NULL,
-  `IDprofesores` int(11) NOT NULL,
-  `IDmateria` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE clases (
+  ID int NOT NULL,
+  IDmateria int NOT NULL,
+  Horainicio date NOT NULL,
+  Horafin date NOT NULL,
+  IDalumno int NOT NULL,
+  IDprofesor int NOT NULL,
+  Idioma varchar(30) NOT NULL,
+  Link varchar(100) NOT NULL
+) ;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `materia`
---
-
-CREATE TABLE `materia` (
-  `ID` int(11) NOT NULL,
-  `IDprofesores` int(11) NOT NULL,
-  `nombremateria` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
+-- SQLINES DEMO *** ---------------------------------------
 
 --
--- Estructura de tabla para la tabla `material`
+-- SQLINES DEMO *** la para la tabla `dicta`
 --
 
-CREATE TABLE `material` (
-  `ID` int(11) NOT NULL,
-  `materia` varchar(100) NOT NULL,
-  `Profesor` varchar(50) NOT NULL,
-  `Fecha que la subio` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE dicta (
+  ID int NOT NULL,
+  IDprofesores int NOT NULL,
+  IDmateria int NOT NULL
+) ;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `profesor`
---
-
-CREATE TABLE `profesor` (
-  `ID` int(11) NOT NULL,
-  `Nombre` varchar(30) NOT NULL,
-  `Apellido` varchar(30) NOT NULL,
-  `Fecha de nacimiento` date NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `Materias` varchar(50) NOT NULL,
-  `Telefono` varchar(20) NOT NULL,
-  `Valoracion` decimal(10,0) NOT NULL,
-  `Pais` varchar(30) NOT NULL,
-  `Idiomas` varchar(30) NOT NULL,
-  `Foto` text NOT NULL,
-  `Descripcion corta` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
+-- SQLINES DEMO *** ---------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- SQLINES DEMO *** la para la tabla `materia`
 --
 
-CREATE TABLE `usuario` (
-  `ID` int(11) NOT NULL,
-  `Nombre` varchar(30) NOT NULL,
-  `Apellido` varchar(30) NOT NULL,
-  `Nombre de usuario` varchar(20) NOT NULL,
-  `Contraseña` varchar(500) NOT NULL,
-  `Fecha de nacimiento` date NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `Telefono` int(20) NOT NULL,
-  `Pais` varchar(15) NOT NULL,
-  `Idiomas` varchar(15) NOT NULL,
-  `Foto` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE materia (
+  ID int NOT NULL,
+  IDprofesores int NOT NULL,
+  nombremateria varchar(50) NOT NULL
+) ;
+
+-- SQLINES DEMO *** ---------------------------------------
 
 --
--- Índices para tablas volcadas
+-- SQLINES DEMO *** la para la tabla `material`
 --
 
---
--- Indices de la tabla `clases`
---
-ALTER TABLE `clases`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `IDalumno` (`IDalumno`),
-  ADD KEY `IDprofesor` (`IDprofesor`);
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE material (
+  ID int NOT NULL,
+  materia varchar(100) NOT NULL,
+  Profesor varchar(50) NOT NULL,
+  Fecha que la subio date NOT NULL
+) ;
+
+-- SQLINES DEMO *** ---------------------------------------
 
 --
--- Indices de la tabla `dicta`
+-- SQLINES DEMO *** la para la tabla `profesor`
 --
-ALTER TABLE `dicta`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `IDprofesores` (`IDprofesores`),
-  ADD KEY `IDmateria` (`IDmateria`);
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE profesor (
+  ID int NOT NULL,
+  Nombre varchar(30) NOT NULL,
+  Apellido varchar(30) NOT NULL,
+  Fecha de nacimiento date NOT NULL,
+  Email varchar(50) NOT NULL,
+  Materias varchar(50) NOT NULL,
+  Telefono varchar(20) NOT NULL,
+  Valoracion decimal(10,0) NOT NULL,
+  Pais varchar(30) NOT NULL,
+  Idiomas varchar(30) NOT NULL,
+  Foto text NOT NULL,
+  Descripcion corta varchar(200) NOT NULL
+) ;
+
+-- SQLINES DEMO *** ---------------------------------------
 
 --
--- Indices de la tabla `materia`
+-- SQLINES DEMO *** la para la tabla `usuario`
 --
-ALTER TABLE `materia`
-  ADD PRIMARY KEY (`ID`);
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE usuario (
+  ID int NOT NULL,
+  Nombre varchar(30) NOT NULL,
+  Apellido varchar(30) NOT NULL,
+  Nombre de usuario varchar(20) NOT NULL,
+  Contraseña varchar(500) NOT NULL,
+  Fecha de nacimiento date NOT NULL,
+  Email varchar(50) NOT NULL,
+  Telefono int NOT NULL,
+  Pais varchar(15) NOT NULL,
+  Idiomas varchar(15) NOT NULL,
+  Foto text NOT NULL
+) ;
 
 --
--- Indices de la tabla `material`
---
-ALTER TABLE `material`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `materia` (`materia`),
-  ADD KEY `Profesor` (`Profesor`);
-
---
--- Indices de la tabla `profesor`
---
-ALTER TABLE `profesor`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `Materias` (`Materias`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
+-- SQLINES DEMO *** las volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `clases`
+-- SQLINES DEMO *** la `clases`
 --
-ALTER TABLE `clases`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE clases
+  ADD PRIMARY KEY (ID),
+  ADD KEY IDalumno (IDalumno),
+  ADD KEY IDprofesor (IDprofesor);
+
 --
--- AUTO_INCREMENT de la tabla `dicta`
+-- SQLINES DEMO *** la `dicta`
 --
-ALTER TABLE `dicta`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE dicta
+  ADD PRIMARY KEY (ID),
+  ADD KEY IDprofesores (IDprofesores),
+  ADD KEY IDmateria (IDmateria);
+
 --
--- AUTO_INCREMENT de la tabla `materia`
+-- SQLINES DEMO *** la `materia`
 --
-ALTER TABLE `materia`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE materia
+  ADD PRIMARY KEY (ID);
+
 --
--- AUTO_INCREMENT de la tabla `material`
+-- SQLINES DEMO *** la `material`
 --
-ALTER TABLE `material`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE material
+  ADD PRIMARY KEY (ID),
+  ADD KEY materia (materia),
+  ADD KEY Profesor (Profesor);
+
 --
--- AUTO_INCREMENT de la tabla `profesor`
+-- SQLINES DEMO *** la `profesor`
 --
-ALTER TABLE `profesor`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ALTER TABLE profesor
+  ADD PRIMARY KEY (ID),
+  ADD KEY Materias (Materias);
+
+--
+-- SQLINES DEMO ***  las tablas volcadas
+--
+
+--
+-- SQLINES DEMO ***  la tabla `clases`
+--
+ALTER TABLE clases
+  MODIFY ID cast(11 as int) NOT NULL AUTO_INCREMENT;
+--
+-- SQLINES DEMO ***  la tabla `dicta`
+--
+ALTER TABLE dicta
+  MODIFY ID cast(11 as int) NOT NULL AUTO_INCREMENT;
+--
+-- SQLINES DEMO ***  la tabla `materia`
+--
+ALTER TABLE materia
+  MODIFY ID cast(11 as int) NOT NULL AUTO_INCREMENT;
+--
+-- SQLINES DEMO ***  la tabla `material`
+--
+ALTER TABLE material
+  MODIFY ID cast(11 as int) NOT NULL AUTO_INCREMENT;
+--
+-- SQLINES DEMO ***  la tabla `profesor`
+--
+ALTER TABLE profesor
+  MODIFY ID cast(11 as int) NOT NULL AUTO_INCREMENT;
+/* SQLINES DEMO *** ER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/* SQLINES DEMO *** ER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/* SQLINES DEMO *** ON_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 

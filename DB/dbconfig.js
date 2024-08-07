@@ -1,9 +1,15 @@
 import dotenv from 'dotenv/config'
-import mysql from 'mysql2/promise'
+import pg from "pg"; 
 
-export const conn = await mysql.createConnection({
+const { Client } = pg;
 
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME, })
+export const client = new Client({
+    user: "default",
+    host: "ep-plain-hill-a48wmywp-pooler.us-east-1.aws.neon.tech",
+    database: "verceldb",
+    password: "lkZJHo6fLO0t",
+    port: 5432,
+    ssl: true
+});
+
+client.connect(); 
