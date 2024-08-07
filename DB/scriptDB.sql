@@ -17,7 +17,7 @@ time_zone := "+00:00";
 /* SQLINES DEMO *** tf8mb4 */;
 
 --
--- SQLINES DEMO *** royecto 4to learnhub`
+-- SQLINES DEMO *** proyecto 4to learnhub`
 --
 
 -- SQLINES DEMO *** ---------------------------------------
