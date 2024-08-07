@@ -7,17 +7,22 @@
     box-sizing: border-box;
 
 }
-
+:root{
+    --rojo: #ED0000;
+}
+.div{
+    background-color: var(--rojo);
+}
 .logoarriba{
     height: 100px;
     width: 100px;
 }
-.header {
+header {
     position: fixed;
     display: flex;
     align-items: center; 
     background-color: #DDD7E3;
-    height: 80px;
+    height: 65px;
     width: 100%;
     padding: 0 20px;
     z-index: 1000; 
@@ -344,7 +349,7 @@ main {
     padding-left: 50px;
     height: 1000px;
     width: calc(100% - 250px);
-    position: absolute;
+    position: relative;
     top: 0;
     left: 250px;
     font-weight: 600;
@@ -367,7 +372,7 @@ main {
     text-align: left;
     font-weight: 600;
     text-decoration: #B18FB7;
-    padding-left: 10px;
+    padding-left: 20px;
     color: #7F5D85;
     background-color: #DDD7E3;
     border-width: 0.1px;
@@ -393,9 +398,14 @@ main {
     cursor:pointer;
 }
 footer{
-    width: 100%;
     align-items: center;
     text-align: center;
+    width: calc(100% - 250px);
+    position: relative;
+    bottom: 0;
+    left: 250px;
+    padding: 10px 0;
+    background-color: #DDD7E3;
 }
 footer img{
     scale: 45%;
