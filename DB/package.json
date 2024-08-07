@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "Index.js",
+  "type":"module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "start": "node Index.js",
+    "dev": "npx nodemon Index.js",
+    "test": "node tests/test.js"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {

@@ -1,5 +1,6 @@
 import {conn} from '../dbconfig.js'
 
+
 const getalumnos = async (_, res) =>{
     try {
         const [rows] = await db.query('SELECT * FROM alumnos');
@@ -20,7 +21,11 @@ const getalumnos = async (_, res) =>{
           res.status(500).json({ error: err.message });
         }
       };
-    
 
+const alumnos = {
+  getalumnos
+};
+
+export default alumnos;
 
   

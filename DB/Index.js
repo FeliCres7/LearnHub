@@ -1,4 +1,5 @@
 import express from "express";
+import alumnos from './controllers/Alumnos.js'
 const app = express();
 const port = 3000;
 
@@ -6,12 +7,7 @@ const port = 3000;
 app.listen(3000, () => {
   console.log("Learnhub listening on port 3000!");
 
-import profesores from "./JS/profesores";
-import clases from "./JS/clases";
-import alumnos from "./JS/alumnos";
-import dicta from "./JS/dicta";
-import materia from "./JS/materia";
-import material from "./JS/material";
+
 
 
 app.use(express.json());
@@ -26,13 +22,6 @@ app.get("/", (_, res) => {
 
 
 
-// Configuración de la conexión a la base de datos
-const dbConfig = {
-  host: 'localhost',      
-  user: 'root',            
-  password: 'rootroot',    
-  database: 'DB'    
-};
 
 // Creo una conexión a la base de datos
 const db = mysql.createPool(dbConfig);
@@ -171,4 +160,5 @@ app.get('/profesores', async (req, res) => {
     }
   })}
   
-  )})})
+)})})
+
