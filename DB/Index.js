@@ -1,5 +1,8 @@
 import express from "express";
-import alumnos from './controllers/Alumnos.js'
+import alumnos from './controllers/Alumnos.js';
+import profesores from './controllers/Profesores.js';
+import mysql from 'mysql2/promise' 
+import dbConfig from './dbconfig.js'
 const app = express();
 const port = 3000;
 
@@ -24,10 +27,10 @@ app.get("/", (_, res) => {
 
 
 // Creo una conexión a la base de datos
-const db = mysql.createPool(dbConfig);
+const db = mysql.createPool(dbConfig.createConection());
 
 //obtengo todos los alumnos
-app.get('/alumnos', async (req, res) => {
+app.get('/Alumnos', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM alumnos');
     res.json(rows);
@@ -38,7 +41,7 @@ app.get('/alumnos', async (req, res) => {
 
 
 // Obtener un alumno por ID
-app.get('/alumnos/:id', async (req, res) => {
+app.get('/Alumnos/:id', async (req, res) => {
     const { id } = req.params;
     try {
       const [rows] = await db.query('SELECT * FROM alumnos WHERE ID = ?', [id]);
@@ -52,7 +55,7 @@ app.get('/alumnos/:id', async (req, res) => {
   });
   
   // Crear un nuevo alumno
-  app.post('/alumnos', async (req, res) => {
+  app.post('/Alumnos', async (req, res) => {
     const { ID	,Nombre	,Apellido	,Fecha, de, nacimiento	,Email		,Telefono	,Valoracion,	Pais	,Idiomas	,Foto,  } = req.body;
     try {
         const [result] = await db.query('INSERT INTO alumno (ID, Nombre, Apellido, Fecha, de, nacimiento, Email, Telefono, Valoracion, Pais, Idiomas, Foto, )');
@@ -63,7 +66,7 @@ app.get('/alumnos/:id', async (req, res) => {
   });
   
   // Eliminar un alumno
-  app.delete('/alumnos/:id', async (req, res) => {
+  app.delete('/Alumnos/:id', async (req, res) => {
     const { id } = req.params;
     try {
       const [result] = await db.query('DELETE FROM alumno WHERE ID = ?', [id]);
@@ -76,7 +79,7 @@ app.get('/alumnos/:id', async (req, res) => {
     }
 
     // Update alumno
-    app.put('/alumnos/:id', async (req, res) => {
+    app.put('/Alumnos/:id', async (req, res) => {
       const { id } = req.params;
       const { Nombre, Apellido, Fecha_de_nacimiento, Email, Telefono, Valoracion, Pais, Idiomas, Foto } = req.body;
     
@@ -95,7 +98,7 @@ app.get('/alumnos/:id', async (req, res) => {
   
   
 // Obtengo todos los profesores
-app.get('/profesores', async (req, res) => {
+app.get('/´Profesores', async (req, res) => {
     try {
       const [rows] = await db.query('SELECT * FROM profesor');
       res.json(rows);
@@ -105,7 +108,7 @@ app.get('/profesores', async (req, res) => {
   });
   
   // Obtener un profesor por ID
-  app.get('/profesores/:id', async (req, res) => {
+  app.get('/Profesores/:id', async (req, res) => {
     const { id } = req.params;
     try {
       const [rows] = await db.query('SELECT * FROM profesor WHERE ID = ?', [id]);
