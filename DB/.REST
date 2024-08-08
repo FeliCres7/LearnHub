@@ -1,10 +1,12 @@
 // OBTENER ALUMNOS
 GET http://localhost:3000/alumnos HTTP/1.1
 
+###
 //OBTENER UN ALUMNO POR ID
 
 GET http://localhost:3000/alumnos/1 HTTP/1.1
 
+###
 // CREAR UN ALUMNO
 
 POST http://localhost:3000/alumnos HTTP/1.1
@@ -13,6 +15,7 @@ POST http://localhost:3000/alumnos HTTP/1.1
 "nombre": "Alumno 3"
 }
 
+###
 //Actualizar un alumnos
 
 PUT http://localhost:3000/alumnos/3 HTTP/1.1
@@ -21,18 +24,22 @@ PUT http://localhost:3000/alumnos/3 HTTP/1.1
 "nombre": "Alumno 2"
 }
 
+###
 //Eliminar un alumnos
 
 DELETE http://localhost:3000/alumnos/2 HTTP/1.1
 
+###
 //Obtener profesores
 
 GET http://localhost:3000/profesores HTTP/1.1
 
+###
 //Obtener un profesores por id
 
 GET http://localhost:3000/profesores/1 HTTP/1.1
 
+###
 //Crear un profesor
 
 POST http://localhost:3000/profesores HTTP/1.1
@@ -41,6 +48,7 @@ POST http://localhost:3000/profesores HTTP/1.1
 "nombre": "profesor 2", "alumno": 3
 }
 
+###
 //Actualizar un profesor
 
 PUT http://localhost:3000/profesores/2 HTTP/1.1
@@ -49,6 +57,7 @@ PUT http://localhost:3000/profesores/2 HTTP/1.1
 "nombre": "profesor 5", "alumno": 1
 }
 
+###
 //Eliminar un profesor
 
 DELETE http://localhost:3000/profesores/2 HTTP/1.1
