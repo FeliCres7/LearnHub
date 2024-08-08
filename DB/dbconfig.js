@@ -1,7 +1,9 @@
 import dotenv from 'dotenv/config'
-import pg from "pg"; 
+import pg from "pg";
 
 const { Client } = pg;
+
+
 
 export const client = new Client({
     user: "default",
@@ -12,4 +14,6 @@ export const client = new Client({
     ssl: true
 });
 
-client.connect(); 
+client.connect()
+    .then(() => console.log('Conectado a la base de datos'))
+    .catch(err => console.error('error de conexion ', err.stack));
