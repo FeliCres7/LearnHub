@@ -6,6 +6,7 @@ const getalumnos = async (_, res) => {
     const { rows } = await client.query('SELECT * FROM public."Alumnos"');
     res.json(rows);
   } catch (err) {
+    res.send("Alumnos obtenidos con exito")
     res.status(500).json({ error: err.message });
   }
 }
@@ -15,12 +16,12 @@ const getalumnosbyID = async (_, res) => {
   const { id } = req.params;
   try {
     const { rows } = await client.query('SELECT * FROM alumnos WHERE ID = ?', [id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'alumno no encontrado' });
+    if (rows.length === 1) {
+      res.send("Alumno obtenido con exito: ")
+      res.json(rows[0]);
     }
-    res.json(rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(404).json({ error: 'alumno no encontrado' });
   }
 };
 
@@ -37,12 +38,14 @@ const createAlumno = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 
+  
+  
+}
+
 const alumnos = {
   getalumnos,
   getalumnosbyID,
   createAlumno
-};
+}
 
 export default alumnos;
-
-}

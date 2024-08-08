@@ -28,8 +28,27 @@ app.listen(3000, () => {
   // app.delete('/Alumnos', alumnos.deleteAlumno);
 
   //Profesores
- 
+  //app.get('/profesores', profesores.getprofesores);
+  //app.get('/profesores/:id', profesores.getprofesores);
+  //app.get('/profesores', profesores.createprofesores);
+  // app.put('/profesores/id', profesores.updateprofesores);
+  // app.delete('/profesores', profesores.deleteprofesores);
 
+
+ //Clases
+  //app.get('/clases', clases.getclases);
+  //app.get('/clases/:id', clases.getclases);
+  //app.get('/clases', clases.createclases);
+  // app.put('/clases/id', clases.updateclases);
+  // app.delete('/clases', clases.deleteclases);
+
+
+   //Materia
+  //app.get('/Materia', materia.getmateria);
+  //app.get('/Materia/:id', materia.getmateria);
+  //app.get('/Materia', materia.createmateria);
+  // app.put('/Materia/id', materia.updatemateria);
+  // app.delete('/Materia', materia.deletemateria);
 
  
 

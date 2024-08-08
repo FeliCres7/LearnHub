@@ -2,7 +2,7 @@ import {client} from '../dbconfig.js'
 
 const getprof = async (_, res) =>{
     try {
-        const [rows] = await client.query('SELECT * FROM alumnos');
+        const [rows] = await client.query('SELECT * FROM public."profesores"');
         res.json(rows);
       } catch (err) {
         res.status(500).json({ error: err.message });
