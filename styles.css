@@ -9,19 +9,20 @@
 }
 :root{
     --rojo: #ED0000;
+
 }
 .div{
     background-color: var(--rojo);
 }
 .logoarriba{
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
 }
 header {
     position: fixed;
     display: flex;
     align-items: center; 
-    background-color: #DDD7E3;
+    background-color: #ffffff;
     height: 65px;
     width: 100%;
     padding: 0 20px;
@@ -30,13 +31,14 @@ header {
 
 }
 input[type="search"] {
-    background-color: #BCADCA;
+    background-color: #EDF3F8;
     border: none;
     font-size: 24px;
     border-radius: 5px;
     text-indent: 5px;
     margin-left: 15px; 
     margin-right: 50px;
+    color: #323232;
     
 }
 
@@ -45,274 +47,63 @@ input[type="search"] {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-left: 0px;
-    
 }
-.boton-inicio a {
-    text-decoration: none; 
-    color: #7F5D85;
-    margin-left: 10px;
-    font-size: 15px;
-    transition: color 0.3s;
-    
-}
-.boton-inicio button
-{
-    background-color: transparent;
-    border: none;
-    margin-left: 10px;
-}
-.boton-inicio img {
-    transition: filter 0.3s;
-}
-.boton-inicio:hover img {
-    filter: brightness(0.7); 
-    cursor:pointer;
-}
-
-.boton-inicio:hover a {
-    color: #000; 
-    text-decoration: underline;
-    cursor:pointer;
-}
-.boton-perfil-alumno
+.boton-perfil-alumno, .boton-mis-profesores,.boton-calendario,.boton-notificaciones,.boton-configuracion,.boton-mensajes
 {
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-left: 30px;
+    
 }
-.boton-perfil-alumno a {
+.boton-inicio a,.boton-perfil-alumno a, .boton-mis-profesores a,.boton-calendario a,.boton-notificaciones a,.boton-configuracion a,.boton-mensajes a{
     text-decoration: none; 
-    color: #7F5D85;
+    color: #1565C0;
     margin-left: 10px;
     font-size: 15px;
     transition: color 0.3s;
+    text-align: center;
     
 }
-.boton-perfil-alumno button
+.boton-inicio button,.boton-perfil-alumno button, .boton-mis-profesores button,.boton-calendario button,.boton-notificaciones button,.boton-configuracion button,.boton-mensajes button
 {
     background-color: transparent;
     border: none;
     margin-left: 10px;
 }
-.boton-perfil-alumno img {
+.boton-inicio img,.boton-perfil-alumno img, .boton-mis-profesores img,.boton-calendario img,.boton-notificaciones img,.boton-configuracion img,.boton-mensajes img{
     transition: filter 0.3s;
 }
-.boton-perfil-alumno:hover img {
+.boton-inicio:hover img,.boton-perfil-alumno:hover img, .boton-mis-profesores:hover img,.boton-calendario:hover img,.boton-notificaciones:hover img,.boton-configuracion:hover img,.boton-mensajes:hover img
+{
     filter: brightness(0.7); 
     cursor:pointer;
 }
 
-.boton-perfil-alumno:hover a {
-    color: #000; 
-    text-decoration: underline;
-    cursor:pointer;
-}
-.boton-mis-profesores
-{
-    display: flex;
-    align-items: center;
-    margin-left: 30px;
-    flex-direction: column;
-}
-.boton-mis-profesores a {
-    text-decoration: none; 
-    color: #7F5D85;
-    margin-left: 10px;
-    font-size: 15;
-    transition: color 0.3s;
-    
-}
-.boton-mis-profesores button
-{
-    background-color: transparent;
-    border: none;
-    margin-left: 10px;
-}
-.boton-mis-profesores img {
-    transition: filter 0.3s;
-}
-.boton-mis-profesores:hover img {
-    filter: brightness(0.7); 
-    cursor:pointer;
-}
-
-.boton-mis-profesores:hover a {
-    color: #000; 
-    text-decoration: underline;
-    cursor:pointer;
-}
-.boton-calendario
-{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-left: 30px;
-}
-.boton-calendario a {
-    text-decoration: none; 
-    color: #7F5D85;
-    margin-left: 10px;
-    font-size: 15px;
-    transition: color 0.3s;
-    
-}
-.boton-calendario button
-{
-    background-color: transparent;
-    border: none;
-    margin-left: 10px;
-}
-.boton-calendario img {
-    transition: filter 0.3s;
-}
-.boton-calendario:hover img {
-    filter: brightness(0.7); 
-    cursor:pointer;
-}
-
-.boton-calendario:hover a {
+.boton-inicio:hover a,.boton-perfil-alumno:hover a, .boton-mis-profesores:hover a,.boton-calendario:hover a,.boton-notificaciones:hover a,.boton-configuracion:hover a,.boton-mensajes:hover a {
     color: #000; 
     text-decoration: underline;
     cursor:pointer;
 }
 
-.boton-notificaciones
-{
-    display: flex;
-    align-items: center;
-    margin-left: 30px;
-    flex-direction: column;
-}
-.boton-notificaciones a {
-    text-decoration: none; 
-    color: #7F5D85;
-    margin-left: 10px;
-    font-size: 15px;
-    transition: color 0.3s;
-    
-}
-.boton-notificaciones button
-{
-    background-color: transparent;
-    border: none;
-    margin-left: 10px;
-}
-.boton-notificaciones img {
-    transition: filter 0.3s;
-}
-.boton-notificaciones:hover img {
-    filter: brightness(0.7); 
-    cursor:pointer;
-}
-
-.boton-notificaciones:hover a {
-    color: #000; 
-    text-decoration: underline;
-    cursor:pointer;
-}
-
-.boton-configuracion
-{
-    display: flex;
-    margin-left: 30px;
-    align-items: center;
-    flex-direction: column;
-}
-.boton-configuracion a {
-    text-decoration: none; 
-    color: #7F5D85;
-    margin-left: 10px;
-    font-size: 15px;
-    transition: color 0.3s;
-    
-}
-.boton-configuracion button
-{
-    background-color: transparent;
-    border: none;
-    margin-left: 10px;
-}
-.boton-configuracion img {
-    transition: filter 0.3s;
-}
-.boton-configuracion:hover img {
-    filter: brightness(0.7); 
-    cursor:pointer;
-}
-
-.boton-configuracion:hover a {
-    color: #000; 
-    text-decoration: underline;
-    cursor:pointer;
-}
-
-.boton-mensajes
-{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin-left: 30px;
-}
-.boton-mensajes a {
-    text-decoration: none; 
-    color: #7F5D85;
-    margin-left: 10px;
-    font-size: 15px;
-    transition: color 0.3s;
-    
-}
-.boton-mensajes button
-{
-    background-color: transparent;
-    border: none;
-    margin-left: 10px;
-}
-.boton-mensajes img {
-    transition: filter 0.3s;
-}
-.boton-mensajes:hover img {
-    filter: brightness(0.7); 
-    cursor:pointer;
-}
-
-.boton-mensajes:hover a {
-    color: #000; 
-    text-decoration: underline;
-    cursor:pointer;
-}
 main {
     margin-top: 100px; 
 }
 .PanelIzquierdo
 {
-    background-color: #DDD7E3;
+    background-color: #ffffff;
     padding-top: 110px;
     height:1000px;
-    width: 250px;
-    color: #41013E;
+    width: 230px;
+    color: #1565C0;
     position: fixed;
 }
 .config
 {
-    font-weight: 600;
-    font-size: 24px;
+    font-weight: 500;
+    font-size: 28px;
 }
-.ajustes{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 20px;
-   
-}
-.ajustes p{
-     font-weight: 500;
-    font-size: 18px;
-    margin-left: 15px;
-    color: #7F5D85;
-}
-.seguridad
+.seguridad, .visualización, .ajustes
 {
         display: flex;
         flex-direction: row;
@@ -320,35 +111,20 @@ main {
         padding: 20px;
         font-weight: 500;
         font-size: 18px;
-        color: #7F5D85;
+        color: #1565C0;
 
 }
-.seguridad p{
+.seguridad p, .visualización p, .ajustes p{
     font-weight: 500;
    font-size: 18px;
    margin-left: 15px;
-}
-.visualización{
-    display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 20px;
-        font-weight: 500;
-        font-size: 18px;
-}
-.visualización p{
-    font-weight: 500;
-   font-size: 18px;
-   margin-left: 15px;
-   color: #7F5D85;
-
 }
 .panel-configuracion {
-    
+    background-color: #E8E8E8;
     padding-top: 100px;
     padding-left: 50px;
     height: 1000px;
-    width: calc(100% - 250px);
+    width: calc(100% - 230px);
     position: relative;
     top: 0;
     left: 250px;
@@ -357,7 +133,12 @@ main {
     align-items: center;
     flex-direction: column;
     font-size: 30px;
-    color: #41013E;
+    color: #424242;
+    text-align: left;
+    
+}
+.panel-configuracion p{
+    width: 500px;
 }
 .ajustes-configuracion, .seguridad-configuracion, .visualizacion-configuracion {
     display: flex;
@@ -373,14 +154,15 @@ main {
     font-weight: 600;
     text-decoration: #B18FB7;
     padding-left: 20px;
-    color: #7F5D85;
-    background-color: #DDD7E3;
+    color: #424242;
+    background-color: #ffffff;
     border-width: 0.1px;
-    border-color: #7F5D85;
+    border-color: #e8e8e8;
     font-size: 24px;
     border-right: none;
     border-left: none;
     transition: color 0.3s;
+    box-shadow: 0 4px 6px #00000066;
     
 }
 .top-button-config{
@@ -405,7 +187,7 @@ footer{
     bottom: 0;
     left: 250px;
     padding: 10px 0;
-    background-color: #DDD7E3;
+    background-color: #ffffff;
 }
 footer img{
     scale: 45%;
