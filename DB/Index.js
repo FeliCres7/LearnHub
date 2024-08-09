@@ -1,7 +1,7 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
 import profesores from './controllers/Profesores.js';
-import {client} from './dbconfig.js'
+import {Client} from './dbconfig.js'
 const app = express();
 const port = 3000;
 
@@ -14,7 +14,7 @@ app.listen(3000, () => {
 
 
   app.get("/", (_, res) => {
-    res.send("Proyecto Learnhub is working!");
+    res.send("Proyecto Learnhub esta funcionando!");
   });
 
 
@@ -28,7 +28,7 @@ app.listen(3000, () => {
   // app.delete('/Alumnos', alumnos.deleteAlumno);
 
   //Profesores
-  //app.get('/profesores', profesores.getprofesores);
+  app.get('/profesores', profesores.getprofesores);
   //app.get('/profesores/:id', profesores.getprofesores);
   //app.get('/profesores', profesores.createprofesores);
   // app.put('/profesores/id', profesores.updateprofesores);

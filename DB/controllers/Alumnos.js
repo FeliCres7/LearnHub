@@ -1,5 +1,6 @@
 import { client } from '../dbconfig.js'
 
+
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
@@ -11,9 +12,9 @@ const getalumnos = async (_, res) => {
   }
 }
 
-// obtener un alumno 
+// Obtener un alumno 
 const getalumnosbyID = async (_, res) => {
-  const { id } = req.params;
+  const { id } = req.body.id;
   try {
     const { rows } = await client.query('SELECT * FROM alumnos WHERE ID = ?', [id]);
     if (rows.length === 1) {
