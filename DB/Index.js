@@ -36,10 +36,10 @@ app.listen(3000, () => {
 
 
  //Clases
-  //app.get('/clases', clases.getclases);
-  //app.get('/clases/:id', clases.getclases);
-  //app.get('/clases', clases.createclases);
-  // app.put('/clases/id', clases.updateclases);
+  app.get('/clases', clases.getclases);
+  app.get('/clases/:id', clases.getclases);
+  app.get('/clases', clases.createclases);
+  app.put('/clases/id', clases.updateClase);
   // app.delete('/clases', clases.deleteclases);
 
 
