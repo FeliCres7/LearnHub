@@ -23,8 +23,26 @@ const getprofbyID = async (_, res) => {
   }
 };
 
+const createprof = async (req, res) => {
+  const { ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas } = req.body;
+  try {
+    const result = await client.query(
+      'INSERT INTO alumnos (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 ) RETURNING *',
+      [ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas]
+    );
+    res.send("Profesor creado con exito")
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+  
+
 const profesores = {
   getprof, 
-  getprofbyID
+  getprofbyID,
+  createprof
 }
 export default profesores; 
+
+}

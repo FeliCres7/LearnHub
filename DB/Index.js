@@ -22,15 +22,15 @@ app.listen(3000, () => {
 
   //Alumnos
   app.get('/Alumnos', alumnos.getalumnos);
-  app.get('/Alumnos/:id', alumnos.getalumnos);
-  app.get('/Alumnos', alumnos.createAlumno)
-  // app.put('/Alumnos/id', alumnos.updateAlumno);
+  app.get('/Alumnos/:id', alumnos.getalumnobyID);
+  app.create('/Alumnos', alumnos.createAlumno)
+  app.put('/Alumnos/id', alumnos.updateAlumno);
   // app.delete('/Alumnos', alumnos.deleteAlumno);
 
   //Profesores
   app.get('/profesores', profesores.getprofesores);
-  //app.get('/profesores/:id', profesores.getprofesores);
-  //app.get('/profesores', profesores.createprofesores);
+  app.get('/profesores/:id', profesores.getprofesores);
+  app.get('/profesores', profesores.createprofesores);
   // app.put('/profesores/id', profesores.updateprofesores);
   // app.delete('/profesores', profesores.deleteprofesores);
 

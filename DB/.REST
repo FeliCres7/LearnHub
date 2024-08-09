@@ -13,8 +13,8 @@ POST http://localhost:3000/Alumnos HTTP/1.1
 Content-Type: application/json
 
 {
-"nombre": "Ezequiel"
-"Apellido": "Agradnik"
+"nombre": "Ezequiel",
+"Apellido": "Agradnik",
 "Email": "Ezequielagradnik@gmail.com"
 
 }
@@ -25,7 +25,7 @@ Content-Type: application/json
 PUT http://localhost:3000/alumnos/3 HTTP/1.1
 
 {
-"nombre": 
+"nombre": "Maximiliano"}
 }
 
 ###
@@ -51,16 +51,7 @@ Content-Type: application/json
 
 {
 "ID": ""
-"nombre:
-"apellido:
-"username:
-"clave:
-"fecha_de_nacimiento:
-"foto:
-"Email:
-"telefono:
-"pais:
-"idiomas:
+
  
 }
 
