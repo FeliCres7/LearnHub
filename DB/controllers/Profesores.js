@@ -36,13 +36,12 @@ const createprof = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 
-  
+}
 
 const profesores = {
   getprof, 
   getprofbyID,
   createprof
-}
-export default profesores; 
+};
 
-}
+export default profesores;
