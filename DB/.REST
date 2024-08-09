@@ -10,9 +10,13 @@ GET http://localhost:3000/Alumnos/1 HTTP/1.1
 // CREAR UN ALUMNO
 
 POST http://localhost:3000/Alumnos HTTP/1.1
+Content-Type: application/json
 
 {
-"nombre": "Alumno 3"
+"nombre": "Ezequiel",
+"Apellido": "Agradnik",
+"Email": "Ezequielagradnik@gmail.com"
+
 }
 
 ###
@@ -21,7 +25,7 @@ POST http://localhost:3000/Alumnos HTTP/1.1
 PUT http://localhost:3000/alumnos/3 HTTP/1.1
 
 {
-"nombre": "Alumno 2"
+"nombre": "Maximiliano"}
 }
 
 ###
@@ -43,9 +47,12 @@ GET http://localhost:3000/profesores/1 HTTP/1.1
 //Crear un profesor
 
 POST http://localhost:3000/profesores HTTP/1.1
+Content-Type: application/json
 
 {
-"nombre": "profesor 2", "alumno": 3
+"ID": ""
+
+ 
 }
 
 ###
