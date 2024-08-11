@@ -23,7 +23,7 @@ app.listen(3000, () => {
 
   //Alumnos
   app.get('/Alumnos', alumnos.getalumnos);
-  //app.get('/Alumnos/:id', alumnos.getalumnobyID);
+  app.get('/Alumnos/:id', alumnos.getalumnobyID);
   //app.create('/Alumnos', alumnos.createAlumno);
   //app.put('/Alumnos/id', alumnos.updateAlumno);
   // app.delete('/Alumnos', alumnos.deleteAlumno);

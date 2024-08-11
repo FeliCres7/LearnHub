@@ -14,9 +14,9 @@ const getalumnos = async (req, res) => {
 
 // Obtener un alumno por ID
 const getalumnobyID = async (req, res) => {
-  const { id } = req.body.id;
+  const { id } = req.params;
   try {
-    const { rows } = await client.query('SELECT * FROM alumnos WHERE ID = ?', [id]);
+    const { rows } = await client.query('SELECT * FROM alumnos WHERE ID = ?', {id});
     if (rows.length === 1) {
       res.send("Alumno obtenido con exito: ")
       res.json(rows[0]);
