@@ -1,7 +1,7 @@
 import {client} from '../dbconfig.js'
 
 
-const getprof = async (_, res) =>{
+const getprof = async (req, res) =>{
     try {
         const [rows] = await client.query('SELECT * FROM public."profesores"');
         res.json(rows);
@@ -10,7 +10,7 @@ const getprof = async (_, res) =>{
       }
 }
 
-const getprofbyID = async (_, res) => {
+const getprofbyID = async (req, res) => {
   const { id } = req.body.id;
   try {
     const { rows } = await client.query('SELECT * FROM profesores WHERE ID = ?', [id]);

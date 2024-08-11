@@ -1,7 +1,8 @@
-const { client } = require('../dbconfig.js');
+import {client} from '../dbconfig.js'
+
 
 // Obtener todas las clases
-const getClases = async (_, res) => {
+const getClases = async (req, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."Clases"');
     res.json(rows);

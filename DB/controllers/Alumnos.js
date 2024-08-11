@@ -1,7 +1,8 @@
-const { client } = require('../dbconfig.js');
+import {client} from '../dbconfig.js'
+
 
 //obtener todos los alumnos
-const getalumnos = async (_, res) => {
+const getalumnos = async (req, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."Alumnos"');
     res.json(rows);
@@ -30,9 +31,7 @@ const createAlumno = async (req, res) => {
   const { ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas } = req.body;
   try {
     const result = await client.query(
-      'INSERT INTO alumnos (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 ) RETURNING *',
-      [ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas]
-    );
+      "INSERT INTO alumnos (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 ) " , [valor1, valor2, valor3, valor4, valor5 , valor6 , valor7, valor8 , valor9, valor10 ,valor11]);
     res.send("Alumno creado con exito")
     res.status(201).json(result.rows[0]);
   } catch (err) {
