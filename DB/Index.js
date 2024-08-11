@@ -24,14 +24,14 @@ app.listen(3000, () => {
   //Alumnos
   app.get('/Alumnos', alumnos.getalumnos);
   app.get('/Alumnos/:id', alumnos.getalumnobyID);
-  //app.create('/Alumnos', alumnos.createAlumno);
+  app.post('/Alumnos', alumnos.createAlumno);
   //app.put('/Alumnos/id', alumnos.updateAlumno);
   // app.delete('/Alumnos', alumnos.deleteAlumno);
 
   //Profesores
   //app.get('/profesores', profesores.getprofesores);
   //app.get('/profesores/:id', profesores.getprofesores);
-  //app.get('/profesores', profesores.createprofesores);
+  //app.post('/profesores', profesores.createprofesores);
   // app.put('/profesores/id', profesores.updateprofesores);
   // app.delete('/profesores', profesores.deleteprofesores);
 
@@ -39,7 +39,7 @@ app.listen(3000, () => {
  //Clases
   //app.get('/clases', clases.getclases);
   //app.get('/clases/:id', clases.getclases);
- // app.get('/clases', clases.createclases);
+ // app.post('/clases', clases.createclases);
   //app.put('/clases/id', clases.updateClase);
   // app.delete('/clases', clases.deleteclases);
 
