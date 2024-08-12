@@ -1,7 +1,8 @@
-const { client } = require('../dbconfig.js');
+import {client} from '../dbconfig.js'
+
 
 //obtener todos los alumnos
-const getalumnos = async (_, res) => {
+const getalumnos = async (req, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."Alumnos"');
     res.json(rows);
@@ -13,33 +14,42 @@ const getalumnos = async (_, res) => {
 
 // Obtener un alumno por ID
 const getalumnobyID = async (req, res) => {
-  const { id } = req.body.id;
+  const { id } = req.params;
   try {
-    const { rows } = await client.query('SELECT * FROM alumnos WHERE ID = ?', [id]);
+    const query= 'SELECT * FROM alumnos WHERE ID = $1'; 
+    const { rows } = await client.query( query, [id]);
     if (rows.length === 1) {
-      res.send("Alumno obtenido con exito: ")
-      res.json(rows[0]);
+      res.json({ message: 'Alumno obtenido con éxito', alumno: rows[0] });
+    } else {
+      res.status(404).json({ error: 'Alumno no encontrado' });
     }
   } catch (err) {
-    res.status(404).json({ error: 'alumno no encontrado' });
+    res.status(500).json({ error: 'Error al obtener el alumno' });
   }
 };
 
 // Crear un alumno
 const createAlumno = async (req, res) => {
-  const { ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas } = req.body;
+  const {
+    ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas
+  } = req.body;
+
   try {
+
     const result = await client.query(
-      'INSERT INTO alumnos (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11 ) RETURNING *',
+      "INSERT INTO alumnos (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
       [ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas]
     );
-    res.send("Alumno creado con exito")
-    res.status(201).json(result.rows[0]);
+
+    res.status(201).json({
+      message: 'Alumno creado con éxito',
+      alumno: result.rows[0]  
+    });
   } catch (err) {
+    console.error('Error al crear el alumno:', err.message);
     res.status(500).json({ error: err.message });
   }
-}
-
+};
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
   const { id } = req.body.id; 
