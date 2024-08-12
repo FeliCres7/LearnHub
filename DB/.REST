@@ -15,7 +15,10 @@ Content-Type: application/json
 {
 "nombre": "Ezequiel",
 "Apellido": "Agradnik",
-"Email": "Ezequielagradnik@gmail.com"
+"Email": "Ezequielagradnik@gmail.com",
+"Nombre de usuario": "Eze2007",
+"Contraseña": "Elafterdelafter88",
+"fecha de nacimiento": ""
 
 
 }
