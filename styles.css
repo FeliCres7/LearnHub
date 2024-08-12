@@ -192,3 +192,32 @@ footer img{
     scale: 45%;
 
 }
+.lista-chats{
+    background-color: #999;
+    width: 250px;
+    height: 100%;
+    
+}
+.minichat{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    transition: color 1.7s;
+}
+.minichat:hover{
+    filter: brightness(1.7);
+}
+.minichat img{
+    height: 50px;
+    width: 50px;
+}
+.minichat p{
+    font-size: 16;
+    font-weight: 500;
+    padding-left: 15px;
+    color:#1565C0;
+}
