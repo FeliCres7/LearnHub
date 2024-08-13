@@ -2,7 +2,7 @@ import {client} from '../dbconfig.js'
 
 
 //obtener todos los alumnos
-const getalumnos = async (req, res) => {
+const getalumnos = async (_, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."Alumnos"');
     res.json(rows);
@@ -14,7 +14,7 @@ const getalumnos = async (req, res) => {
 
 // Obtener un alumno por ID
 const getalumnobyID = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params.id
   try {
     const query= 'SELECT * FROM alumnos WHERE ID = $1'; 
     const { rows } = await client.query( query, [id]);

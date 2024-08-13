@@ -1,17 +1,19 @@
 import {client} from '../dbconfig.js'
 
 
-const getprof = async (req, res) =>{
-    try {
-        const [rows] = await client.query('SELECT * FROM public."profesores"');
-        res.json(rows);
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
+const getprof = async (_, res) => {
+  try {
+    const { rows } = await client.query('SELECT * FROM public."profesores"');
+    res.json(rows);
+  } catch (err) {
+    res.send("profesores obtenidos con exito")
+    res.status(500).json({ error: err.message });
+  }
 }
 
+
 const getprofbyID = async (req, res) => {
-  const { id } = req.body.id;
+  const { id } = req.params.id;
   try {
     const { rows } = await client.query('SELECT * FROM profesores WHERE ID = ?', [id]);
     if (rows.length === 1) {
