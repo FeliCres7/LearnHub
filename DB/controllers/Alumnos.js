@@ -11,20 +11,26 @@ const getalumnos = async (_, res) => {
     res.status(500).json({ error: err.message });
   }
 }
-
-// Obtener un alumno por ID
+// OBTENER UN ALUMNO
 const getalumnobyID = async (req, res) => {
-  const { id } = req.params.id
+  // Accede directamente a req.params.id
+  const { id } = req.params;
+
   try {
-    const query= 'SELECT * FROM alumnos WHERE ID = $1'; 
-    const { rows } = await client.query( query, [id]);
+    // Asegúrate de que la consulta SQL esté bien escrita
+    const query = 'SELECT * FROM public."Alumnos" WHERE ID = $1';
+    const { rows } = await client.query(query, [id]);
+
+    // Verifica si se encontró el alumno
     if (rows.length === 1) {
-      res.json({ message: 'Alumno obtenido con éxito', alumno: rows[0] });
+      return res.json({ message: 'Alumno obtenido con éxito', alumno: rows[0] });
     } else {
-      res.status(404).json({ error: 'Alumno no encontrado' });
+      return res.status(404).json({ error: 'Alumno no encontrado' });
     }
   } catch (err) {
-    res.status(500).json({ error: 'Error al obtener el alumno' });
+    // el console.error para que me tire el error 500, dsp de resolverlo, borrarlo
+    console.error('Error al obtener el alumno:', err);
+    return res.status(500).json({ error: 'Error al obtener el alumno' });
   }
 };
 

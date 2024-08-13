@@ -6,6 +6,7 @@ GET http://localhost:3000/Alumnos HTTP/1.1
 
 GET http://localhost:3000/alumnos/1 HTTP/1.1
 
+
 ###
 // CREAR UN ALUMNO
 

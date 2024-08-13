@@ -85,7 +85,7 @@ CREATE TABLE material (
 --
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE TABLE profesor (
+CREATE TABLE profesores (
   ID int NOT NULL,
   Nombre varchar(30) NOT NULL,
   Apellido varchar(30) NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE profesor (
 --
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
-CREATE TABLE usuario (
+CREATE TABLE Alumnos (
   ID int NOT NULL,
   Nombre varchar(30) NOT NULL,
   Apellido varchar(30) NOT NULL,

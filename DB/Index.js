@@ -8,7 +8,7 @@ const port = 3000;
 
 client.connect()
 const res = await client.query("SELECT * FROM alumnos")
-client.end()
+const req,result = await client.query("SELECT * FROM alumnos WHERE ID =1")
 console.log(res.rows)
 
 //Servidor en el puerto 3000
@@ -38,7 +38,8 @@ app.get('/profesores', profesores.getprof);
 app.get('/profesores/:id', profesores.getprofbyID); 
 app.post('/profesores', profesores.createprof);
 //app.put('/profesores/id', profesores.updateprof);
-  // app.delete('/profesores', profesores.deleteprofesores);
+// app.delete('/profesores', profesores.deleteprof);
+// app.get('/profesores/:id/clases', profesores.getclasesbyprof)
 
 //Clases
 //app.get('/clases', clases.getclases);
