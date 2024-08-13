@@ -14,6 +14,3 @@ export const client = new Client({
     ssl: true
 });
 
-client.connect()
-    .then(() => console.log('Conectado a la base de datos'))
-    .catch(err => console.error('error de conexion ', err.stack));

@@ -111,7 +111,6 @@ CREATE TABLE usuario (
   ID int NOT NULL,
   Nombre varchar(30) NOT NULL,
   Apellido varchar(30) NOT NULL,
-  Nombre de usuario varchar(20) NOT NULL,
   Contraseña varchar(500) NOT NULL,
   Fecha de nacimiento date NOT NULL,
   Email varchar(50) NOT NULL,
