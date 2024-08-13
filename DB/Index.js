@@ -8,7 +8,6 @@ const port = 3000;
 
 client.connect()
 const res = await client.query("SELECT * FROM alumnos")
-const req,result = await client.query("SELECT * FROM alumnos WHERE ID =1")
 console.log(res.rows)
 
 //Servidor en el puerto 3000
