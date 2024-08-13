@@ -10,18 +10,29 @@
 
 </head>
 <body>
-    <header>
-        <img class="logoarriba" src="Images html/LogoLH.png" alt="Learn Hub">
+    <header class="header">
+        <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-        <div class="boton-inicio"><button class="inicio"><img src="Images html/logo inicio.png" alt=""></button><a href="">Inicio</a></div>
-        <div class="boton-perfil-alumno"><button><img src="Images html/logo perfil alumno.png" alt=""></button><a href="">Perfil</a></div>
-        <div class="boton-mis-profesores"><button><img src="Images html/logo mis profesores.png" alt=""></button><a href="">Mis profesores</a></div>
-        <div class="boton-calendario"><button><img src="Images html/logo calendario.png" alt=""></button><a href="">Calendario</a></div>
-        <div class="boton-notificaciones"><button><img src="Images html/logo notificaciones.png" alt=""></button><a href="">Notificaciones</a></div>
-        <div class="boton-configuracion" onclick="window.location.href='configuracion.html'"><button><img src="Images html/logo configuracion.png" alt=""></button><a href="configuracion.html">Configuración</a></div>
-        <div class="boton-mensajes"><button onclick="window.location.href='mensajes.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="mensajes.html">Mensajes</a></div>
+        <nav>
+            <ul>
+                <li class="boton-inicio"><button class="inicio"><img src="Images html/logo inicio.png"
+                            alt=""></button><a href="">Inicio</a></li>
+                <li class="boton-perfil-alumno"><button><img src="Images html/logo perfil alumno.png"
+                            alt=""></button><a href="">Perfil</a></li>
+                <li class="boton-mis-profesores"><button><img src="Images html/logo mis profesores.png"
+                            alt=""></button><a href="">Mis profesores</a></li>
+                <li class="boton-calendario"><button><img src="Images html/logo calendario.png" alt=""></button><a
+                        href="">Calendario</a></li>
+                <li class="boton-notificaciones"><button><img src="Images html/logo notificaciones.png"
+                            alt=""></button><a href="">Notificaciones</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
+                            src="Images html/logo configuracion.png" alt=""></button><a
+                        href="configuracion.html">Configuración</a></li>
+                <li class="boton-mensajes"><button onclick="window.location.href='mensajes.html'""><img src="Images html/logo mensajes.png" alt="msg"></button><a href="mensajes.html">Mensajes</a></li>
+            </ul>
+        </nav>
     </header>
-    <main>
+    <main class="mensajes">
         <aside class="lista-chats">
             <! --Con cada contacto se repite este div-->
             <div class="minichat" onclick="window.location.href='configuracion.html'">
@@ -41,8 +52,17 @@
                 <p class="usuario">*Usuario*</p>
             </div>
         </aside>
-        <article class="chat">
-
+        <section class="chat">
+        <section class="chatbody">
+            <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil officia, harum laudantium sint error, dolore, accusantium itaque corrupti velit veritatis modi quae debitis quasi voluptatem dolor amet. Veritatis, asperiores quaerat? Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae architecto voluptatum delectus. Magnam molestiae optio fugit corporis enim? A excepturi eius minus quaerat natus impedit autem, dicta velit totam molestias. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, totam, provident nulla rerum consequatur voluptatum molestiae facilis minus explicabo officia earum. Labore provident animi sequi tenetur cum ut? Esse, perferendis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias consequatur ut perspiciatis mollitia vero nobis repudiandae reiciendis aut et saepe cum id nesciunt totam, enim dolorem quam at consequuntur iure.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem sequi praesentium placeat accusantium repellat optio ab tempore, minima velit nulla quaerat atque, expedita non eos qui consectetur harum iste sapiente?</h1>
+        </section>
+        <section class="mensajebar">
+            <form action="POST">
+                <input type="text" placeholder="Escribe un mensaje...">
+                <input type="image" src="Images html/boton enviar.png" alt="Enviar">
+            </form>
+        </section>
+    </section>
         </article>
     </main>
 

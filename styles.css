@@ -42,7 +42,11 @@ input[type="search"] {
     color: #323232;
     
 }
-
+header ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
 .boton-inicio
 {
     display: flex;
@@ -88,7 +92,7 @@ input[type="search"] {
 }
 
 main {
-    margin-top: 100px; 
+    margin-top: 65px; 
 }
 .PanelIzquierdo
 {
@@ -122,6 +126,7 @@ main {
 .panel-configuracion {
     background-color: #E8E8E8;
     padding-left: 50px;
+    padding-top: 25px;
     height: 1000px;
     width: calc(100% - 230px);
     position: relative;
@@ -193,7 +198,7 @@ footer img{
 
 }
 .lista-chats{
-    background-color: #999;
+    background-color: #fff;
     width: 250px;
     height: 100%;
     
@@ -202,9 +207,8 @@ footer img{
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-left: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px;
+    text-align: center;
     cursor: pointer;
     transition: color 1.7s;
 }
@@ -220,4 +224,60 @@ footer img{
     font-weight: 500;
     padding-left: 15px;
     color:#1565C0;
+}
+.chat{
+    display: flex;
+    flex-direction: column;
+}
+.chatbody{
+    display: flex;
+}
+.mensajes{
+    display: flex;
+}
+.chatbody{
+    display: flex;
+    height: calc(100%-100px);
+    flex-grow: 1;
+    background-color: #dae8ff;
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 370px;
+}
+.mensajebar{
+    display: flex;
+    background-color: #024086;
+    align-items: center;
+    height: 100px;
+    flex-direction: row;
+    width:100%;
+    padding: 10px;
+
+}
+.mensajebar form{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
+.mensajebar form input[type="text"]{
+    background-color: #EDF3F8;
+    font-weight: 400;
+    height: 40px;
+    font-size: 20px;
+    flex-grow: 1;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    text-indent: 10px;
+    border: none;
+}
+.mensajebar form input[type="image"]{
+    background-color: #EDF3F8;
+    height: 40px;
+    width: 40px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.mensajebar form input[type="image"]:{
+    border: none;
 }
