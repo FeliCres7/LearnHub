@@ -16,6 +16,7 @@ app.listen(port, () => {
 })
 
 app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
 });
@@ -25,7 +26,7 @@ app.get("/", (req, res) => {
 //Alumnos
 
 app.get('/Alumnos', alumnos.getalumnos);
-app.get('/Alumnos/:id', alumnos.getalumnobyID);
+app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
 
 //app.put('/Alumnos/id', alumnos.updateAlumno);
@@ -34,7 +35,7 @@ app.post('/Alumnos', alumnos.createAlumno);
 //Profesores
 
 app.get('/profesores', profesores.getprof);
-app.get('/profesores/:id', profesores.getprofbyID); 
+app.get('/profesores/:ID', profesores.getprofbyID); 
 app.post('/profesores', profesores.createprof);
 //app.put('/profesores/id', profesores.updateprof);
 // app.delete('/profesores', profesores.deleteprof);

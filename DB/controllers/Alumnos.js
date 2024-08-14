@@ -4,7 +4,7 @@ import {client} from '../dbconfig.js'
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
-    const { rows } = await client.query('SELECT * FROM public."Alumnos"');
+    const { rows } = await client.query('SELECT * FROM Alumnos');
     res.json(rows);
   } catch (err) {
     res.send("Alumnos obtenidos con exito")
@@ -13,15 +13,12 @@ const getalumnos = async (_, res) => {
 }
 // OBTENER UN ALUMNO
 const getalumnobyID = async (req, res) => {
-  // Accede directamente a req.params.id
-  const { id } = req.params;
+  
+  const  ID  = req.params.ID;
 
   try {
-    // Asegúrate de que la consulta SQL esté bien escrita
-    const query = 'SELECT * FROM public."Alumnos" WHERE ID = $1';
-    const { rows } = await client.query(query, [id]);
-
-    // Verifica si se encontró el alumno
+    const query = 'SELECT * FROM public."alumnos" WHERE "ID" = $1';
+    const { rows } = await client.query(query, [ID]);
     if (rows.length === 1) {
       return res.json({ message: 'Alumno obtenido con éxito', alumno: rows[0] });
     } else {
