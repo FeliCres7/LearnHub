@@ -28,8 +28,7 @@ app.get("/", (req, res) => {
 app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
-
-//app.put('/Alumnos/id', alumnos.updateAlumno);
+app.put('/Alumnos/id', alumnos.updateAlumno);
 //app.delete('/Alumnos', alumnos.deleteAlumno);
 
 //Profesores

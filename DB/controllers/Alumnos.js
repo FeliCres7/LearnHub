@@ -33,19 +33,15 @@ const getalumnobyID = async (req, res) => {
 
 // Crear un alumno
 const createAlumno = async (req, res) => {
-  const {
-    ID, nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, foto
-  } = req.body;
-
-  try {
-
-    const result = await client.query(
-      "INSERT INTO alumnos (ID, nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, foto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
-      [ID, nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, foto]
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas} = req.body;
+try {
+ const result = await client.query(
+      "INSERT INTO alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+      [nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas]
     );
 
     res.status(201).json({
-      message: 'Alumno creado con éxito',
+      message: ('Alumno creado con éxito'),
       alumno: result.rows[0]  
     });
   } catch (err) {
@@ -56,12 +52,12 @@ const createAlumno = async (req, res) => {
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
   const { id } = req.body.id; 
-  const { nombre, apellido, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas } = req.body;
+  const { nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas } = req.body;
 
   try {
     const result = await client.query(
-      'UPDATE alumnos SET nombre = $1, apellido = $2, clave = $3, fecha_de_nacimiento = $4, foto = $5, Email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE ID = $10 RETURNING *',
-      [nombre, apellido,  clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, id]
+      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, Email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE ID = $10 RETURNING *',
+      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, id]
     );
 
     if (result.rows.length > 0) {
