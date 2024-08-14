@@ -34,14 +34,14 @@ const getalumnobyID = async (req, res) => {
 // Crear un alumno
 const createAlumno = async (req, res) => {
   const {
-    ID, nombre, apellido, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas
+    ID, nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, foto
   } = req.body;
 
   try {
 
     const result = await client.query(
-      "INSERT INTO alumnos (ID, nombre, apellido, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,) RETURNING *",
-      [ID, nombre, apellido, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas]
+      "INSERT INTO alumnos (ID, nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, foto) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *",
+      [ID, nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, foto]
     );
 
     res.status(201).json({
