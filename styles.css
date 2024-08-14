@@ -11,12 +11,10 @@
     --rojo: #ED0000;
 
 }
-.div{
-    background-color: var(--rojo);
-}
-.logoarriba{
-    height: 50px;
-    width: 50px;
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 header {
     position: fixed;
@@ -29,7 +27,12 @@ header {
     z-index: 1000; 
     padding-top: 5px;
     top:0;
+    flex-wrap: wrap;
 
+}
+.logoarriba{
+    max-height: 50px;
+    max-width: 50px;
 }
 input[type="search"] {
     background-color: #EDF3F8;
@@ -40,52 +43,49 @@ input[type="search"] {
     margin-left: 15px; 
     margin-right: 50px;
     color: #323232;
+    flex-grow: 1;
     
 }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+}
+
 header ul{
     list-style: none;
     display: flex;
     flex-direction: row;
 }
-.boton-inicio
-{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-.boton-perfil-alumno, .boton-mis-profesores,.boton-calendario,.boton-notificaciones,.boton-configuracion,.boton-mensajes
-{
+header ul li {
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-left: 30px;
-    
 }
-.boton-inicio a,.boton-perfil-alumno a, .boton-mis-profesores a,.boton-calendario a,.boton-notificaciones a,.boton-configuracion a,.boton-mensajes a{
+header ul li a {
     text-decoration: none; 
     color: #1565C0;
-    margin-left: 10px;
     font-size: 15px;
     transition: color 0.3s;
     text-align: center;
-    
 }
-.boton-inicio button,.boton-perfil-alumno button, .boton-mis-profesores button,.boton-calendario button,.boton-notificaciones button,.boton-configuracion button,.boton-mensajes button
-{
+header ul li button {
     background-color: transparent;
     border: none;
-    margin-left: 10px;
 }
-.boton-inicio img,.boton-perfil-alumno img, .boton-mis-profesores img,.boton-calendario img,.boton-notificaciones img,.boton-configuracion img,.boton-mensajes img{
+header ul li img {
     transition: filter 0.3s;
 }
-.boton-inicio:hover img,.boton-perfil-alumno:hover img, .boton-mis-profesores:hover img,.boton-calendario:hover img,.boton-notificaciones:hover img,.boton-configuracion:hover img,.boton-mensajes:hover img
+header ul li:hover img 
 {
     filter: brightness(0.7); 
     cursor:pointer;
 }
 
-.boton-inicio:hover a,.boton-perfil-alumno:hover a, .boton-mis-profesores:hover a,.boton-calendario:hover a,.boton-notificaciones:hover a,.boton-configuracion:hover a,.boton-mensajes:hover a {
+header ul li:hover a {
     color: #000; 
     text-decoration: underline;
     cursor:pointer;
@@ -93,74 +93,67 @@ header ul{
 
 main {
     margin-top: 65px; 
+    display: flex;
+    flex-grow: 1;
 }
 .PanelIzquierdo
 {
     background-color: #ffffff;
-    height:1000px;
-    width: 230px;
     color: #1565C0;
-    position: fixed;
+    max-width: 230px;
+    flex-shrink: 0;
+    
 }
-.config
-{
+.PanelIzquierdo p {
     font-weight: 500;
     font-size: 28px;
 }
-.seguridad, .visualización, .ajustes
-{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 20px;
-        font-weight: 500;
-        font-size: 18px;
-        color: #1565C0;
-
-}
-.seguridad p, .visualización p, .ajustes p{
-    font-weight: 500;
-   font-size: 18px;
-   margin-left: 15px;
-}
-.panel-configuracion {
-    background-color: #E8E8E8;
-    padding-left: 50px;
-    padding-top: 25px;
-    height: 1000px;
-    width: calc(100% - 230px);
-    position: relative;
-    top: 0;
-    left: 250px;
-    font-weight: 600;
+.PanelIzquierdo div {
     display: flex;
     align-items: center;
-    flex-direction: column;
+    padding: 20px;
+    font-weight: 500;
+    font-size: 18px;
+    color: #1565C0;
+}
+
+.PanelIzquierdo div p {
+    margin-left: 15px;
+    font-size: 18px;
+}
+
+.panel-configuracion {
+    background-color: #f5f5f5;
+    padding: 25px 50px;
+    flex-grow: 1; /* Hace que el panel de configuración se expanda */
+    font-weight: 600;
     font-size: 30px;
     color: #424242;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     
-}
-.panel-configuracion p{
-    width: 500px;
 }
 .ajustes-configuracion, .seguridad-configuracion, .visualizacion-configuracion {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 20px 0;
+    width: 100%;
+    max-width: 500px;
     border-radius: 50px;
 }
 .ajustes-configuracion button, .seguridad-configuracion button, .visualizacion-configuracion button{
     height: 60px;
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
     text-align: left;
     font-weight: 600;
-    text-decoration: #B18FB7;
     padding-left: 20px;
     color: #424242;
     background-color: #ffffff;
-    border-width: 0.1px;
+    border-width: 0.01px solid #e8e8e8;
     border-color: #e8e8e8;
     font-size: 24px;
     border-right: none;
@@ -186,10 +179,6 @@ main {
 footer{
     align-items: center;
     text-align: center;
-    width: calc(100% - 250px);
-    position: relative;
-    bottom: 0;
-    left: 250px;
     padding: 10px 0;
     background-color: #ffffff;
 }
@@ -278,6 +267,6 @@ footer img{
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
 }
-.mensajebar form input[type="image"]:{
+.mensajebar form input[type="image"]{
     border: none;
 }
