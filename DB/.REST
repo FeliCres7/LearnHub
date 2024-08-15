@@ -15,11 +15,11 @@ Content-Type: application/json
 
 {
     
-    "nombre": "ariel",
-    "apellido": "agradnik",
-    "contraseña": "arielagradnik",
-    "fecha_de_nacimiento": "199/10/17",
-    "Email": "agradnik@gmail.com",
+    "nombre": "dfgd",
+    "apellido": "waidgvdssman",
+    "contraseña": "soledadwdgsaisman",
+    "fecha_de_nacimiento": "1978/4/21",
+    "Email": "solewais@gmail.com",
     "telefono": "123",
     "pais": "argentina",
     "idiomas": "ingles",
@@ -28,19 +28,20 @@ Content-Type: application/json
 ###
 //Actualizar un alumnos
 
-PUT http://localhost:3000/alumnos/3 HTTP/1.1
+PUT http://localhost:3000/alumnos HTTP/1.1
 Content-Type: application/json
 
 {
     "nombre": "ezequiel",
     "apellido": "agradnik",
     "contraseña": "ezeagradnik",
-    "fecha_de_nacimiento": "2007/07/10",
+    "fecha_de_nacimiento": "1997/07/10",
     "foto": ".",
-    "Email": "agradnik@gmail.com",
+    "email": "agradnik@gmail.com",
     "telefono": "123",
     "pais": "argentina",
     "idiomas": "ingles",
+    "id":"6"
     
 }
 

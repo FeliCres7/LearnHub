@@ -53,10 +53,9 @@ try {
 const updateAlumno = async (req, res) => {
   const { id } = req.body.id; 
   const { nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas } = req.body;
-
   try {
     const result = await client.query(
-      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, Email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE ID = $10 RETURNING *',
+      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE ID = $10 RETURNING *',
       [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, id]
     );
 
@@ -69,6 +68,9 @@ const updateAlumno = async (req, res) => {
     res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
   }
 };
+
+//Eliminar alumno 
+
   
 
 

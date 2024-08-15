@@ -6,6 +6,7 @@ import {client} from './dbconfig.js'
 const app = express();
 const port = 3000;
 
+
 client.connect()
 const res = await client.query("SELECT * FROM alumnos")
 console.log(res.rows)
@@ -16,6 +17,7 @@ app.listen(port, () => {
 })
 
 app.use(express.json());
+
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
