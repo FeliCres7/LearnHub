@@ -74,8 +74,32 @@ const updateAlumno = async (req, res) => {
 };
 
 //Eliminar alumno 
+const deleteAlumno = async (req,res) => {
+const  ID  = req.params.ID;
 
-  
+try {
+const result = await client.query(
+'Update from alumnos WHERE "ID" = $1 RETURNING*',
+[ID]
+);
+
+if (result.rows.length > 0) {
+  res.status(200).json({
+    message: 'Alumno eliminado con éxito',
+    alumno: result.rows[0]
+  });
+
+}else{
+  res.status(404).json({ error: 'Alumno no encontrado' });
+}
+} catch (err) {
+
+console.error('Error al eliminar el alumno:', err.message);
+res.status(500).json({ error: 'Error al eliminar el alumno' });
+}
+
+
+
 
 
 const alumnos = {
@@ -83,6 +107,9 @@ const alumnos = {
   getalumnobyID,
   createAlumno,
   updateAlumno
+
 }
 
 export default alumnos;
+
+}
