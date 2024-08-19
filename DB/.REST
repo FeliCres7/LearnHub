@@ -32,7 +32,7 @@ PUT http://localhost:3000/Alumnos/ID HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "ezequiel",
+    "nombre": "felipe",
     "apellido": "agradnik",
     "contraseña": "ezeagradnik",
     "fecha_de_nacimiento": "1997/07/10",
@@ -48,12 +48,8 @@ Content-Type: application/json
 ###
 //Eliminar un alumnos
 
-DELETE http://localhost:3000/Alumnos/ID HTTP/1.1
-Content-Type: application/json
+DELETE http://localhost:3000/Alumnos/3 HTTP/1.1
 
-{
-"ID": "3"
-}
 
 ###
 //Obtener profesores

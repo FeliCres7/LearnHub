@@ -76,7 +76,7 @@ const updateAlumno = async (req, res) => {
 const deleteAlumno = async (req, res) => {
 const  ID  = req.params.ID;
 const result = await client.query
-('DELETE from alumnos WHERE "ID" = $1 RETURNING*',
+('DELETE from public."alumnos" WHERE "ID" = $1 RETURNING*',
 [ID])
 if (result.rows.length > 0) {
   res.status(200).send(`Alumno eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
