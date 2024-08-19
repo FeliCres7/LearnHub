@@ -4,7 +4,7 @@ GET http://localhost:3000/Alumnos HTTP/1.1
 ###
 //OBTENER UN ALUMNO POR ID
 
-GET http://localhost:3000/Alumnos/1 HTTP/1.1
+GET http://localhost:3000/Alumnos/7 HTTP/1.1
 
 
 ###
@@ -46,9 +46,9 @@ Content-Type: application/json
 }
 
 ###
-//Eliminar un alumnos
+//Eliminar un alumno
 
-DELETE http://localhost:3000/Alumnos/3 HTTP/1.1
+DELETE http://localhost:3000/Alumnos/1 HTTP/1.1
 
 
 ###
