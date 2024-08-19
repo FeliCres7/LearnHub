@@ -2,7 +2,7 @@ import express from "express";
 import alumnos from './controllers/Alumnos.js';
 import profesores from './controllers/Profesores.js';
 //import clases from './controllers/clases.js';
-import {client} from './dbconfig.js'
+import { client } from './dbconfig.js'
 const app = express();
 const port = 3000;
 
@@ -30,13 +30,13 @@ app.get("/", (req, res) => {
 app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
-app.put('/Alumnos/id', alumnos.updateAlumno);
+app.put('/Alumnos/ID', alumnos.updateAlumno);
 //app.delete('/Alumnos', alumnos.deleteAlumno);
 
 //Profesores
 
 app.get('/profesores', profesores.getprof);
-app.get('/profesores/:ID', profesores.getprofbyID); 
+app.get('/profesores/:ID', profesores.getprofbyID);
 app.post('/profesores', profesores.createprof);
 //app.put('/profesores/id', profesores.updateprof);
 // app.delete('/profesores', profesores.deleteprof);
