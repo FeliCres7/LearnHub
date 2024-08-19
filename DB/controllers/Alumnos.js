@@ -25,7 +25,6 @@ const getalumnobyID = async (req, res) => {
       return res.status(404).json({ error: 'Alumno no encontrado' });
     }
   } catch (err) {
-    // el console.error para que me tire el error 500, dsp de resolverlo, borrarlo
     console.error('Error al obtener el alumno:', err);
     return res.status(500).json({ error: 'Error al obtener el alumno' });
   }
@@ -51,12 +50,16 @@ try {
 };
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
-  const { id } = req.body.id; 
-  const { nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas } = req.body;
-  try {
+
+  console.log(req.body);
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID} = req.body;
+  console.log(nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID);
+  
+  
+  // try {
     const result = await client.query(
-      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE ID = $10 RETURNING *',
-      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, id]
+      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE "ID" = $10 RETURNING *',
+      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID]
     );
 
     if (result.rows.length > 0) {
@@ -64,21 +67,32 @@ const updateAlumno = async (req, res) => {
     } else {
       res.status(404).send('Alumno no encontrado');
     }
-  } catch (err) {
-    res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
-  }
+  // } catch (err) {
+  //   res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
+  // }
 };
 
 //Eliminar alumno 
-
-  
+const deleteAlumno = async (req, res) => {
+const  ID  = req.params.ID;
+const result = await client.query
+('DELETE from public."alumnos" WHERE "ID" = $1 RETURNING*',
+[ID])
+if (result.rows.length > 0) {
+  res.status(200).send(`Alumno eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
+} else {
+  res.status(404).send('Alumno no encontrado');
+}
+};
 
 
 const alumnos = {
   getalumnos,
   getalumnobyID,
   createAlumno,
-  updateAlumno
-}
+  updateAlumno,
+  deleteAlumno
+};
 
 export default alumnos;
+

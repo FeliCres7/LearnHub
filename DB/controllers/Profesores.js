@@ -1,15 +1,16 @@
 import {client} from '../dbconfig.js'
 
 
+// Obtener todos los profesores
 const getprof = async (_, res) => {
   try {
-    const { rows } = await client.query('SELECT * FROM public."profesores"');
+    const { rows } = await client.query('SELECT * FROM profesores');
     res.json(rows);
   } catch (err) {
-    res.send("profesores obtenidos con exito")
-    res.status(500).json({ error: err.message });
+    console.error('Error al obtener profesores:', err.message);
+    res.status(500).json({ error: 'Error al obtener profesores' });
   }
-}
+};
 
 
 const getprofbyID = async (req, res) => {
