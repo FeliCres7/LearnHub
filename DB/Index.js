@@ -1,14 +1,15 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
 import profesores from './controllers/Profesores.js';
-//import clases from './controllers/clases.js';
+import clases from './controllers/clases.js';
 import { client } from './dbconfig.js'
 const app = express();
 const port = 3000;
 
 
 client.connect()
-const res = await client.query("SELECT * FROM alumnos")
+const res = await client.query("SELECT * FROM alumnos") 
+await client.query("SELECT * FROM profesores")
 console.log(res.rows)
 
 //Servidor en el puerto 3000
@@ -43,7 +44,7 @@ app.post('/profesores', profesores.createprof);
 // app.get('/profesores/:id/clases', profesores.getclasesbyprof)
 
 //Clases
-//app.get('/clases', clases.getclases);
+app.get('/clases', clases.getclases);
 //app.get('/clases/:id', clases.getclases);
 //app.post('/clases', clases.createclases);
 //app.put('/clases/id', clases.updateClase);
