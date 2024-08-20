@@ -13,7 +13,7 @@ const getprof = async (_, res) => {
   }
 }
 
-
+//Obtener un profesor 
 const getprofbyID = async (req, res) => {
   const { id } = req.params.id;
   try {
@@ -27,6 +27,7 @@ const getprofbyID = async (req, res) => {
   }
 };
 
+//Crear un profesor
 const createprof = async (req, res) => {
   const { ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas } = req.body;
   try {

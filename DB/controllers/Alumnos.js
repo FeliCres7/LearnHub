@@ -14,9 +14,8 @@ const getalumnos = async (_, res) => {
 // OBTENER UN ALUMNO
 const getalumnobyID = async (req, res) => {
   
-  const  ID  = req.params.ID;
-
   try {
+    const  ID  = req.params.ID;
     const query = 'SELECT * FROM public."alumnos" WHERE "ID" = $1';
     const { rows } = await client.query(query, [ID]);
     if (rows.length === 1) {

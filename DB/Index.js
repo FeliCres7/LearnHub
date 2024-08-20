@@ -8,14 +8,10 @@ const port = 3000;
 
 
 client.connect()
-<<<<<<< HEAD
 const res = await client.query("SELECT * FROM alumnos")
-const res2 = await client.query("SELECT * FROM profesores")
-=======
-const res = await client.query("SELECT * FROM alumnos") 
-await client.query("SELECT * FROM profesores")
->>>>>>> 843a4bd6e4b58a150f0a77bb223dc68bfdef1efd
+
 console.log(res.rows)
+
 
 //Servidor en el puerto 3000
 app.listen(port, () => {
@@ -42,14 +38,14 @@ app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
 //Profesores
 
 app.get('/profesores', profesores.getprof);
-app.get('/profesores/:ID', profesores.getprofbyID);
+app.get('/profesores/ID', profesores.getprofbyID);
 app.post('/profesores', profesores.createprof);
 //app.put('/profesores/id', profesores.updateprof);
 // app.delete('/profesores', profesores.deleteprof);
 // app.get('/profesores/:id/clases', profesores.getclasesbyprof)
 
 //Clases
-app.get('/clases', clases.getclases);
+//app.get('/clases', clases.getclases);
 //app.get('/clases/:id', clases.getclases);
 //app.post('/clases', clases.createclases);
 //app.put('/clases/id', clases.updateClase);
