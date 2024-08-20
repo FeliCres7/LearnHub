@@ -13,11 +13,17 @@ const getalumnos = async (_, res) => {
 }
 // OBTENER UN ALUMNO
 const getalumnobyID = async (req, res) => {
-  
   try {
-    const  ID  = req.params.ID;
+    const ID = req.params.ID;
+
+    
+    if (!ID) {
+      return res.status(400).json({ error: 'ID es requerido' });
+    }
+
     const query = 'SELECT * FROM public."alumnos" WHERE "ID" = $1';
     const { rows } = await client.query(query, [ID]);
+
     if (rows.length === 1) {
       return res.json({ message: 'Alumno obtenido con éxito', alumno: rows[0] });
     } else {

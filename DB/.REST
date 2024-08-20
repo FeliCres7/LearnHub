@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     
-    "nombre": "manu",
+    "nombre": "manuel",
     "apellido": "colu",
     "contraseña": "coluperonista",
     "fecha_de_nacimiento": "1978/4/21",
@@ -69,18 +69,18 @@ Content-Type: application/json
 
 {
 
-ID, 
-nombre,
-apellido, 
-fecha_de_nacimiento, 
-email,
-materias, 
-telefono,
-valoracion,
-pais, 
-idiomas,
-foto,
-descripcion corta
+
+"nombre":"Maximiliano",
+"apellido":"Setton", 
+"fecha_de_nacimiento":"2007/7/19", 
+"email":"maxisetton@gmail.com",
+"materias":"matematica,fisica", 
+"telefono":"12345678",
+"valoracion":"7",
+"pais":"Argentina", 
+"idiomas":"español y hungaro",
+"foto": ".",
+"descripcion_corta":"Hola soy setto y me encanta enseñar"
  
 }
 

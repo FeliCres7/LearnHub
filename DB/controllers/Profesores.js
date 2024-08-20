@@ -15,7 +15,7 @@ const getprof = async (_, res) => {
 
 //Obtener un profesor 
 const getprofbyID = async (req, res) => {
-  const { id } = req.params.id;
+  const { ID } = req.params.ID;
   try {
     const { rows } = await client.query('SELECT * FROM profesores WHERE ID = ?', [id]);
     if (rows.length === 1) {
@@ -29,11 +29,11 @@ const getprofbyID = async (req, res) => {
 
 //Crear un profesor
 const createprof = async (req, res) => {
-  const { ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas } = req.body;
+  const {ID,nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta } = req.body;
   try {
     const result = await client.query(
-      'INSERT INTO alumnos (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 ) RETURNING *',
-      [ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, disponibilidadhoraria, telefono, pais, idiomas]
+      'INSERT INTO profesores (ID, nombre, apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 ) RETURNING *',
+      [ID, nombre, apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta ]
     );
     res.send("Profesor creado con exito")
     res.status(201).json(result.rows[0]);
