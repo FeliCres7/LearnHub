@@ -8,10 +8,10 @@ const getprof = async (_, res) => {
     res.json(rows);
     
   } catch (err) {
-    console.error('Error al obtener profesores:', err.message);
-    res.status(500).json({ error: 'Error al obtener profesores' });
+    res.send("profesores obtenidos con exito")
+    res.status(500).json({ error: err.message });
   }
-};
+}
 
 
 const getprofbyID = async (req, res) => {
