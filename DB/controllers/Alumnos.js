@@ -11,7 +11,7 @@ const getalumnos = async (_, res) => {
     res.status(500).json({ error: err.message });
   }
 }
-// OBTENER UN ALUMNO
+// OBTENER UN ALUMNO 
 const getalumnobyID = async (req, res) => {
   try {
     const ID = req.params.ID;

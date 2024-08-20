@@ -59,7 +59,7 @@ GET http://localhost:3000/profesores HTTP/1.1
 ###
 //Obtener un profesores por id
 
-GET http://localhost:3000/profesores/1 HTTP/1.1
+GET http://localhost:3000/Profesores/1 HTTP/1.1
 
 ###
 //Crear un profesor
