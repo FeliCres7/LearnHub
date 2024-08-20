@@ -6,6 +6,7 @@ const getprof = async (_, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM profesores');
     res.json(rows);
+    
   } catch (err) {
     console.error('Error al obtener profesores:', err.message);
     res.status(500).json({ error: 'Error al obtener profesores' });

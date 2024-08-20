@@ -4,7 +4,7 @@ GET http://localhost:3000/Alumnos HTTP/1.1
 ###
 //OBTENER UN ALUMNO POR ID
 
-GET http://localhost:3000/Alumnos/7 HTTP/1.1
+GET http://localhost:3000/Alumnos/5 HTTP/1.1
 
 
 ###

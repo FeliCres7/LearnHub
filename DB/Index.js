@@ -9,6 +9,7 @@ const port = 3000;
 
 client.connect()
 const res = await client.query("SELECT * FROM alumnos")
+const res2 = await client.query("SELECT * FROM profesores")
 console.log(res.rows)
 
 //Servidor en el puerto 3000
