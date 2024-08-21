@@ -51,28 +51,40 @@ const createprof = async (req, res) => {
 
 //Actualizar un profesor 
 
-const updateprof = async (req,res) => {
+const updateprof = async (req, res) => {
+  try {
+    // Imprimir los datos recibidos en el cuerpo de la solicitud
+    console.log(req.body);
+    const {
+      nombre, apellido, fecha_de_nacimiento, email, materias,
+      telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID
+    } = req.body;
+    console.log(nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID);
 
-console.log(req.body);
-const {nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID} = req.body;
-console.log( nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID);
+    // Ejecutar la consulta SQL para actualizar el registro del profesor
+    const result = await client.query(
+      `UPDATE public."profesores"
+       SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
+           materias = $5, telefono = $6, valoracion = $7, pais = $8,
+           idiomas = $9, foto = $10, descripcion_corta = $11
+       WHERE "ID" = $12
+       RETURNING *`,
+      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID]
+    );
 
-
-// try {
-  const result = await client.query(
-    'UPDATE profesores SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4, materias = $5, telefono = $6, valoracion = $7, pais = $8, idiomas = $9, foto =$10, descripcion_corta=$11 WHERE "ID" = $12 RETURNING *',
-    [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID]
-  );
-
-  if (result.rows.length > 0) {
-    res.status(200).send(`profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
-  } else {
-    res.status(404).send('profesor no encontrado');
+    // Verificar el resultado de la actualización
+    if (result.rows.length > 0) {
+      res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+    } else {
+      res.status(404).send('Profesor no encontrado');
+    }
+  } catch (err) {
+    // Manejar errores que puedan ocurrir durante la consulta
+    res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
   }
-// } catch (err) {
-//   res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
-// }
-}
+};
+
+
 
 // eliminar profesor
 const deleteprof = async (req,res) => {

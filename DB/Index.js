@@ -45,11 +45,11 @@ app.delete('/profesores/:ID', profesores.deleteprof);
 // app.get('/profesores/:id/clases', profesores.getclasesbyprof)
 
 //Clases
-//app.get('/clases', clases.getclases);
-//app.get('/clases/:id', clases.getclases);
-//app.post('/clases', clases.createclases);
-//app.put('/clases/id', clases.updateClase);
-//app.delete('/clases', clases.deleteclases);
+app.get('/Clases', clases.getClases);
+app.get('/Clases/:ID', clases.getClaseByID);
+app.post('/Clases', clases.createClase);
+//app.put('/Clases/id', clases.updateClase);
+//app.delete('/Clases', clases.deleteclases);
 
 //Materia
 //app.get('/Materia', materia.getmateria);
