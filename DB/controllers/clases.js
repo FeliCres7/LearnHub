@@ -2,10 +2,11 @@ import {client} from '../dbconfig.js'
 
 
 // Obtener todas las clases
-const getClases = async (req, res) => {
+const getClases = async (_, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."Clases"');
     res.json(rows);
+
   } catch (err) {
     res.send("Clases obtenidas con éxito");
     res.status(500).json({ error: err.message });
@@ -14,7 +15,7 @@ const getClases = async (req, res) => {
 
 // Obtener una clase por ID
 const getClaseByID = async (req, res) => {
-  const { id } = req.body;
+  const { ID } = req.body;
   try {
     const { rows } = await client.query('SELECT * FROM clases WHERE ID = $1', [id]);
     if (rows.length === 1) {
@@ -30,11 +31,11 @@ const getClaseByID = async (req, res) => {
 
 // Crear una clase
 const createClase = async (req, res) => {
-  const { ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas } = req.body;
+  const { ID, IDmateria, IDalumno, IDprofesor, horainicio, horafin, idiomas, Link  } = req.body;
   try {
     const result = await client.query(
-      'INSERT INTO clases (ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-      [ID, nombre, apellido, username, clave, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas]
+      'INSERT INTO clases (ID, IDmateria, IDalumno, IDprofesor, horainicio, horafin, idiomas, Link ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [ID, IDmateria, IDalumno, IDprofesor, horainicio, horafin, idiomas, Link ]
     );
     res.send("Clase creada con éxito");
     res.status(201).json(result.rows[0]);

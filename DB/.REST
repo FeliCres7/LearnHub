@@ -70,17 +70,17 @@ Content-Type: application/json
 {
 
 
-"nombre":"lucas",
-"apellido":"berto", 
+"nombre":"eric",
+"apellido":"gerzenstein", 
 "fecha_de_nacimiento":"2007/7/19", 
-"email":"lucasberr@gmail.com",
+"email":"ericelmasgoyygaydetodos@gmail.com",
 "materias":"base de datos", 
 "telefono":"5491133750973",
 "valoracion":"9",
 "pais":"Argentina", 
 "idiomas":"español y hungaro",
 "foto": ".",
-"descripcion_corta":"Hola soy ariel y me encanta enseñar"
+"descripcion_corta":"Hola soy eric y me encanta enseñar"
  
 }
 
@@ -88,22 +88,22 @@ Content-Type: application/json
 //Actualizar un profesor
 
 PUT http://localhost:3000/profesores/ID HTTP/1.1
-
+Content-Type: application/json
 
 {
 
 
-"nombre":"ariel",
-"apellido":"agradnik", 
+"nombre":"benjamin",
+"apellido":"fridman", 
 "fecha_de_nacimiento":"2007/7/19", 
-"email":"arielagr@gmail.com",
+"email":"ezeagr@gmail.com",
 "materias":"base de datos", 
 "telefono":"5491133750973",
 "valoracion":"9",
 "pais":"Argentina", 
 "idiomas":"español y hungaro",
 "foto": ".",
-"descripcion_corta":"Hola soy ariel y me encanta enseñar",
+"descripcion_corta":"Hola soy eze y me encanta enseñar",
  "ID": "3"
 }
 
@@ -131,7 +131,10 @@ POST http://localhost:3000/clases HTTP/1.1
 Content-Type: application/json
 
 {
-
+ "horainicio": "16:00", 
+ "horafin": "17:00", 
+ "idiomas": "español", 
+ "Link": "."
 
  
 }
