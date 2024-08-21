@@ -48,7 +48,7 @@ Content-Type: application/json
 ###
 //Eliminar un alumno
 
-DELETE http://localhost:3000/Alumnos/2 HTTP/1.1
+DELETE http://localhost:3000/Alumnos/6 HTTP/1.1
 
 
 ###
@@ -70,33 +70,47 @@ Content-Type: application/json
 {
 
 
-"nombre":"Maximiliano",
-"apellido":"Setton", 
+"nombre":"ariel",
+"apellido":"agradnik", 
 "fecha_de_nacimiento":"2007/7/19", 
-"email":"maxisetton@gmail.com",
-"materias":"matematica,fisica", 
-"telefono":"12345678",
-"valoracion":"7",
+"email":"arielagr@gmail.com",
+"materias":"base de datos", 
+"telefono":"5491133750973",
+"valoracion":"9",
 "pais":"Argentina", 
 "idiomas":"español y hungaro",
 "foto": ".",
-"descripcion_corta":"Hola soy setto y me encanta enseñar"
+"descripcion_corta":"Hola soy ariel y me encanta enseñar"
  
 }
 
 ###
 //Actualizar un profesor
 
-PUT http://localhost:3000/profesores/2 HTTP/1.1
+PUT http://localhost:3000/profesores/ID HTTP/1.1
+
 
 {
-"nombre": "profesor 5", "alumno": 1
+
+
+"nombre":"ariel",
+"apellido":"agradnik", 
+"fecha_de_nacimiento":"2007/7/19", 
+"email":"arielagr@gmail.com",
+"materias":"base de datos", 
+"telefono":"5491133750973",
+"valoracion":"9",
+"pais":"Argentina", 
+"idiomas":"español y hungaro",
+"foto": ".",
+"descripcion_corta":"Hola soy ariel y me encanta enseñar",
+ "ID": "1"
 }
 
 ###
 //Eliminar un profesor
 
-DELETE http://localhost:3000/profesores/2 HTTP/1.1
+DELETE http://localhost:3000/profesores/1 HTTP/1.1
 
 
 
