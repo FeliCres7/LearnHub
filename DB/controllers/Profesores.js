@@ -52,15 +52,16 @@ const createprof = async (req, res) => {
 //Actualizar un profesor 
 
 const updateprof = async (req,res) => {
+
 console.log(req.body);
-const {nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta, ID} = req.body;
-console.log(nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta, ID);
+const {nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID} = req.body;
+console.log( nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID);
 
 
 // try {
   const result = await client.query(
     'UPDATE profesores SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4, materias = $5, telefono = $6, valoracion = $7, pais = $8, idiomas = $9, foto =$10, descripcion_corta=$11 WHERE "ID" = $12 RETURNING *',
-    [nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta, ID]
+    [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID]
   );
 
   if (result.rows.length > 0) {
