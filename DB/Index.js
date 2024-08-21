@@ -40,8 +40,8 @@ app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID', profesores.getprofbyID);
 app.post('/profesores', profesores.createprof);
-app.put('/profesores/id', profesores.updateprof);
-app.delete('/profesores', profesores.deleteprof);
+app.put('/profesores/ID', profesores.updateprof);
+app.delete('/profesores/:ID', profesores.deleteprof);
 // app.get('/profesores/:id/clases', profesores.getclasesbyprof)
 
 //Clases

@@ -70,10 +70,10 @@ Content-Type: application/json
 {
 
 
-"nombre":"ariel",
-"apellido":"agradnik", 
+"nombre":"lucas",
+"apellido":"berto", 
 "fecha_de_nacimiento":"2007/7/19", 
-"email":"arielagr@gmail.com",
+"email":"lucasberr@gmail.com",
 "materias":"base de datos", 
 "telefono":"5491133750973",
 "valoracion":"9",
@@ -104,7 +104,7 @@ PUT http://localhost:3000/profesores/ID HTTP/1.1
 "idiomas":"español y hungaro",
 "foto": ".",
 "descripcion_corta":"Hola soy ariel y me encanta enseñar",
- "ID": "1"
+ "ID": "3"
 }
 
 ###
