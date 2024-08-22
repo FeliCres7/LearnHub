@@ -319,6 +319,7 @@ footer img{
 }
 .chatbody{
     display: flex;
+    flex-direction: column;
     height: calc(100%-100px);
     flex-grow: 1;
     background-color: #DAE8FF;
@@ -371,6 +372,19 @@ footer img{
     width: fit-content;
     padding: 5px;
     max-width: 250px;
-    right: 20px;
+    right: 10px;
+    border-radius: 10px;
 
+}
+.mensaje-recibido{
+    align-self:flex-end;
+    background-color: #1565C0;
+    border: none;
+    color: #ffffff;
+    height: fit-content;
+    width: fit-content;
+    padding: 5px;
+    max-width: 250px;
+    left: 10px;
+    border-radius: 10px;
 }
