@@ -100,9 +100,6 @@ const deleteprof = async (req,res) => {
   };
   
 
-
-
-
 const profesores = {
   getprof, 
   getprofbyID,
