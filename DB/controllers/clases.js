@@ -31,18 +31,22 @@ const getClaseByID = async (req, res) => {
 
 // Crear una clase
 const createClase = async (req, res) => {
-  const { ID, IDmateria, IDalumno, IDprofesor, horainicio, horafin, idiomas, Link  } = req.body;
+  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link  } = req.body;
   try {
     const result = await client.query(
-      'INSERT INTO clases (ID, IDmateria, IDalumno, IDprofesor, horainicio, horafin, idiomas, Link ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [ID, IDmateria, IDalumno, IDprofesor, horainicio, horafin, idiomas, Link ]
+      'INSERT INTO clases (IDmateria, IDprofesor, horainicio, horafin, idiomas, Link ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link ]
     );
-    res.send("Clase creada con éxito");
-    res.status(201).json(result.rows[0]);
+    res.status(201).json({
+      message: ('clase creada con éxito'),
+      profesor: result.rows[0]  
+    });
   } catch (err) {
+    console.error('Error al crear la clase:', err.message);
     res.status(500).json({ error: err.message });
   }
-}
+};
+
 
 // Actualizar una clase
 const updateClase = async (req, res) => {

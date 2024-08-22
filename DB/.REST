@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     
-    "nombre": "manuel",
+    "nombre": "ezequiel",
     "apellido": "colu",
     "contraseña": "coluperonista",
     "fecha_de_nacimiento": "1978/4/21",

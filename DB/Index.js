@@ -8,10 +8,6 @@ const port = 3000;
 
 
 client.connect()
-const res = await client.query("SELECT * FROM alumnos")
-
-console.log(res.rows)
-
 
 //Servidor en el puerto 3000
 app.listen(port, () => {

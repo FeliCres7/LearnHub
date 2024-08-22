@@ -56,9 +56,7 @@ try {
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
 
-  console.log(req.body);
   const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID} = req.body;
-  console.log(nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID);
   
   
   // try {
