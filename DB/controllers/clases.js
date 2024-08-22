@@ -31,16 +31,16 @@ const getClaseByID = async (req, res) => {
 
 // Crear una clase
 const createClase = async (req, res) => {
-  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link } = req.body;
+  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link } = req.body;
 
-  // Validación de entrada
+  
   if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
     const query = `
-      INSERT INTO clases (IDmateria, IDprofesor, horainicio, horafin, idiomas, Link)
+      INSERT INTO clases ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "Link")
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
@@ -54,11 +54,7 @@ const createClase = async (req, res) => {
       clase: result.rows[0]  
     });
   } catch (err) {
-    // Registro de error detallado
-    console.error('Error al crear la clase:', err);
-
-    // Respuesta de error
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).send(err)
   }
 };
 
