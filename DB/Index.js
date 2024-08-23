@@ -48,8 +48,8 @@ app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
 
 //Materia
-//app.get('/Materia', materia.getmateria);
-//app.get('/Materia/:id', materia.getmateria);
+app.get('/Materia', materia.getmateria);
+//app.get('/Materia/:ID', materia.getmateriaByID);
 //app.get('/Materia', materia.createmateria);
-// app.put('/Materia/id', materia.updatemateria);
-// app.delete('/Materia', materia.deletemateria);
+// app.put('/Materia/ID', materia.updatemateria);
+// app.delete('/Materia/:ID', materia.deletemateria);
