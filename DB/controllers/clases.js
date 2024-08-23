@@ -61,24 +61,30 @@ const createClase = async (req, res) => {
 
 // Actualizar una clase
 const updateClase = async (req, res) => {
-  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, link, ID} = req.body;
-  
-  
-  // try {
+  console.log(req.body)
+  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID } = req.body;
+
+  // Validar los datos aquí si es necesario
+  if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
+    return res.status(400).send('Faltan datos necesarios');
+  }
+
+  try {
     const result = await client.query(
-      'UPDATE public.clases SET IDmateria = $1, IDprofesor = $2, horainicio= $3, horafin=$4, idiomas=$5, Link=$6 WHERE "ID" = $7 RETURNING *',
-      [IDmateria, IDprofesor, m,ID]
+      'UPDATE public."clases" SET IDmateria = $1, IDprofesor = $2, horainicio = $3, horafin = $4, idiomas = $5, Link = $6 WHERE "ID" = $7 RETURNING *',
+      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID]
     );
 
     if (result.rows.length > 0) {
-      res.status(200).send(`clase actualizada con éxito: ${JSON.stringify(result.rows[0])}`);
+      res.status(200).send(`Clase actualizada con éxito: ${JSON.stringify(result.rows[0])}`);
     } else {
-      res.status(404).send('clase no encontrada');
+      res.status(404).send('Clase no encontrada');
     }
-  // } catch (err) {
-  //   res.status(500).send(`Error al actualizar la clase: ${err.message}`);
-  // }
+  } catch (err) {
+    res.status(500).send(`Error al actualizar la clase: ${err.message}`);
+  }
 };
+
 
 
 // Eliminar clase 
