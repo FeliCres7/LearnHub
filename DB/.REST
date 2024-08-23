@@ -142,10 +142,16 @@ Content-Type: application/json
 ###
 //Actualizar una clase
 
-PUT http://localhost:3000/clases/2 HTTP/1.1
+PUT http://localhost:3000/clases/ID HTTP/1.1
 Content-Type: application/json
 {
-
+"IDmateria": 1,
+"IDprofesor": 2,
+"horainicio": "16:00", 
+"horafin": "17:00", 
+"idiomas": "español", 
+"Link": ".",
+"ID": "5"
 }
 
 ###

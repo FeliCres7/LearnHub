@@ -61,22 +61,22 @@ const createClase = async (req, res) => {
 
 // Actualizar una clase
 const updateClase = async (req, res) => {
-  const {IDmateria, IDprofesor, materias,ID} = req.body;
+  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, link, ID} = req.body;
   
   
   // try {
     const result = await client.query(
-      'UPDATE alumnos SET IDmateria = $1, IDprofesor = $2, materias = $3 WHERE "ID" = $4 RETURNING *',
-      [IDmateria, IDprofesor, materias,ID]
+      'UPDATE public.clases SET IDmateria = $1, IDprofesor = $2, horainicio= $3, horafin=$4, idiomas=$5, Link=$6 WHERE "ID" = $7 RETURNING *',
+      [IDmateria, IDprofesor, m,ID]
     );
 
     if (result.rows.length > 0) {
-      res.status(200).send(`Alumno actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+      res.status(200).send(`clase actualizada con éxito: ${JSON.stringify(result.rows[0])}`);
     } else {
-      res.status(404).send('Alumno no encontrado');
+      res.status(404).send('clase no encontrada');
     }
   // } catch (err) {
-  //   res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
+  //   res.status(500).send(`Error al actualizar la clase: ${err.message}`);
   // }
 };
 

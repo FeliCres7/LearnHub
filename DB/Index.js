@@ -44,8 +44,8 @@ app.delete('/profesores/:ID', profesores.deleteprof);
 app.get('/clases', clases.getClases);
 app.get('/Clases/:ID', clases.getClaseByID);
 app.post('/Clases', clases.createClase);
-//app.put('/Clases/id', clases.updateClase);
-//app.delete('/Clases', clases.deleteclases);
+app.put('/Clases/ID', clases.updateClase);
+app.delete('/Clases/:ID', clases.deleteclase);
 
 //Materia
 //app.get('/Materia', materia.getmateria);
