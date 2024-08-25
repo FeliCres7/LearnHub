@@ -1,7 +1,7 @@
 import {client} from '../dbconfig.js'
 
 
-// Obtener todas las materia
+// Obtener todas los materiales
 const getmaterial = async (_, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."material"');
@@ -13,44 +13,44 @@ const getmaterial = async (_, res) => {
   }
 }
 
-// Obtener una materia por ID
+// Obtener un material por ID
 const getmaterialByID = async (req, res) => {
   const { ID } = req.body;
   try {
-    const { rows } = await client.query('SELECT * FROM public."materia" WHERE "ID" = $1', [ID]);
+    const { rows } = await client.query('SELECT * FROM public."material" WHERE "ID" = $1', [ID]);
     if (rows.length === 1) {
-      res.send("materia obtenida con éxito: ");
+      res.send("material obtenida con éxito: ");
       res.json(rows[0]);
     } else {
-      res.status(404).send("materia no encontrada");
+      res.status(404).send("material no encontrado");
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// Crear una materia
+// Crear un material
 const creatematerial = async (req, res) => {
-  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link } = req.body;
+const {IDprofesor, materia, Fecha} = req.body;
 
   
-  if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  if (!IDprofesor || !materia || !Fecha) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos'});
   }
 
   try {
     const query = `
-      INSERT INTO materia ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "Link")
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO public."material" ("IDprofesor", "materia", "Fecha")
+      VALUES ($1, $2, $3)
       RETURNING *
     `;
-    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link];
+    const values = [IDprofesor, materia, Fecha];
     
     const result = await client.query(query, values);
 
     // Respuesta exitosa
     res.status(201).json({
-      message: 'Clase creada con éxito',
+      message: 'material creado con éxito',
       clase: result.rows[0]  
     });
   } catch (err) {
@@ -59,29 +59,29 @@ const creatematerial = async (req, res) => {
 };
 
 
-// Actualizar una clase
+// Actualizar un Material
 const updatematerial = async (req, res) => {
   console.log(req.body)
-  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID } = req.body;
+  const { IDprofesor, materia, Fecha, ID } = req.body;
 
   // Validar los datos aquí si es necesario
-  if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
+  if (!ID ||!IDprofesor || !materia || !Fecha ) {
     return res.status(400).send('Faltan datos necesarios');
   }
 
   try {
     const result = await client.query(
-      'UPDATE public."clases" SET IDmateria = $1, IDprofesor = $2, horainicio = $3, horafin = $4, idiomas = $5, Link = $6 WHERE "ID" = $7 RETURNING *',
-      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID]
+      'UPDATE public."material" SET IDprofesor = $1, materia = $2, Fecha = $3, WHERE "ID" = $4 RETURNING *',
+      [IDprofesor, materia, Fecha, ID]
     );
 
     if (result.rows.length > 0) {
-      res.status(200).send(`Clase actualizada con éxito: ${JSON.stringify(result.rows[0])}`);
+      res.status(200).send(`Material actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
     } else {
-      res.status(404).send('Clase no encontrada');
+      res.status(404).send('Material no encontrado');
     }
   } catch (err) {
-    res.status(500).send(`Error al actualizar la clase: ${err.message}`);
+    res.status(500).send(`Error al actualizar el material: ${err.message}`);
   }
 };
 
@@ -102,7 +102,7 @@ if (result.rows.length > 0) {
 };
 
 
-const clases = {
+const material = {
   getmaterial,
   getmaterialByID,
   creatematerial,
@@ -110,4 +110,4 @@ const clases = {
   deletematerial
 }
 
-export default clases;
+export default material;

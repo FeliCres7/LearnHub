@@ -2,6 +2,8 @@ import express from "express";
 import alumnos from './controllers/Alumnos.js';
 import profesores from './controllers/Profesores.js';
 import clases from './controllers/clases.js';
+import material from './controllers/Material.js'
+import materia from './controllers/Materia.js'
 import { client } from './dbconfig.js'
 const app = express();
 const port = 3000;
@@ -48,8 +50,15 @@ app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
 
 //Materia
-app.get('/Materia', materia.getmateria);
+//app.get('/Materia', materia.getmateria);
 //app.get('/Materia/:ID', materia.getmateriaByID);
-//app.get('/Materia', materia.createmateria);
+//app.post('/Materia', materia.createmateria);
 // app.put('/Materia/ID', materia.updatemateria);
 // app.delete('/Materia/:ID', materia.deletemateria);
+
+//Material
+app.get('/Material', material.getmaterial);
+app.get('/Material/:ID', material.getmaterialByID);
+app.post('/Material', material.creatematerial);
+// app.put('/Material/ID', material.updatematerial);
+// app.delete('/Material/:ID', material.deletematerial);
