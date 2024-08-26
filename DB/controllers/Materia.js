@@ -2,20 +2,20 @@ import {client} from '../dbconfig.js'
 
 
 // Obtener todas las materia
-const getmaterial = async (_, res) => {
+const getmateria = async (_, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM public."material"');
     res.json(rows);
 
   } catch (err) {
-    res.send("materiales obtenidos con éxito");
+    res.send("materias obtenidas con éxito");
     res.status(500).json({ error: err.message });
   }
 }
 
 // Obtener una materia por ID
-const getmaterialByID = async (req, res) => {
-  const { ID } = req.body;
+const getmateriaByID = async (req, res) => {
+  const {ID} = req.body;
   try {
     const { rows } = await client.query('SELECT * FROM public."materia" WHERE "ID" = $1', [ID]);
     if (rows.length === 1) {
@@ -30,7 +30,7 @@ const getmaterialByID = async (req, res) => {
 };
 
 // Crear una materia
-const creatematerial = async (req, res) => {
+const createmateria = async (req, res) => {
   const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link } = req.body;
 
   
@@ -60,7 +60,7 @@ const creatematerial = async (req, res) => {
 
 
 // Actualizar una clase
-const updatematerial = async (req, res) => {
+const updatemateria = async (req, res) => {
   console.log(req.body)
   const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID } = req.body;
 
@@ -89,7 +89,7 @@ const updatematerial = async (req, res) => {
 
 // Eliminar materia 
 
-const deletematerial = async (req,res) => {
+const deletemateria = async (req,res) => {
 const ID= req.params.ID
 const result = await client.query
 ('DELETE FROM public."clases" WHERE "ID" = $1 RETURNING*',
@@ -102,12 +102,12 @@ if (result.rows.length > 0) {
 };
 
 
-const clases = {
-  getmaterial,
-  getmaterialByID,
-  creatematerial,
-  updatematerial,
-  deletematerial
+const materia = {
+  getmateria,
+  getmateriaByID,
+  createmateria,
+  updatemateria,
+  deletemateria
 }
 
-export default clases;
+export default materia;

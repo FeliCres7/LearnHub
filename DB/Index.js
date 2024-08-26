@@ -42,12 +42,14 @@ app.put('/profesores/ID', profesores.updateprof);
 app.delete('/profesores/:ID', profesores.deleteprof);
 // app.get('/profesores/:id/clases', profesores.getclasesbyprof)
 
+
 //Clases
 app.get('/clases', clases.getClases);
 app.get('/Clases/:ID', clases.getClaseByID);
 app.post('/Clases', clases.createClase);
 app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
+app.get('/Clases/:ID', clases.getvaloracionbyclases);
 
 //Materia
 //app.get('/Materia', materia.getmateria);

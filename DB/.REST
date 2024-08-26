@@ -160,7 +160,15 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/clases/2 HTTP/1.1
 
-                                                                      //MATERIAL
+
+
+###
+// Obtener todas las valoraciones 
+
+GET http://localhost:3000/valoracionbyclases HTTP/1.1
+
+
+                                          //MATERIAL
 
 ###
 //Obtener material

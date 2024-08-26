@@ -31,20 +31,20 @@ const getClaseByID = async (req, res) => {
 
 // Crear una clase
 const createClase = async (req, res) => {
-  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link } = req.body;
+  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion} = req.body;
 
   
-  if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
+  if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link || !valoracion) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
     const query = `
-      INSERT INTO clases ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "Link")
+      INSERT INTO clases ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "Link", "valoracion")
       VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
-    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link];
+    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion];
     
     const result = await client.query(query, values);
 
@@ -62,17 +62,17 @@ const createClase = async (req, res) => {
 // Actualizar una clase
 const updateClase = async (req, res) => {
   console.log(req.body)
-  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID } = req.body;
+  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, ID } = req.body;
 
   // Validar los datos aquí si es necesario
-  if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
+  if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link || !valoracion) {
     return res.status(400).send('Faltan datos necesarios');
   }
 
   try {
     const result = await client.query(
-      'UPDATE public."clases" SET IDmateria = $1, IDprofesor = $2, horainicio = $3, horafin = $4, idiomas = $5, Link = $6 WHERE "ID" = $7 RETURNING *',
-      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID]
+      'UPDATE public."clases" SET IDmateria = $1, IDprofesor = $2, horainicio = $3, horafin = $4, idiomas = $5, Link = $6, valoracion=$7 WHERE "ID" = $8 RETURNING *',
+      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, ID]
     );
 
     if (result.rows.length > 0) {
@@ -101,13 +101,39 @@ if (result.rows.length > 0) {
 }
 };
 
+// obtener valoracion de las clases
+const getvaloracionbyclases = async (req, res) => {
+  
+  const {ID} = req.params;
+
+  try {
+    // Consultar la tabla de valoraciones para obtener las valoraciones asociadas a la clase
+    const { rows } = await client.query(
+      'SELECT * FROM public."valoraciones" WHERE "ID" = $1',
+      [ID]
+    );
+
+    
+    if (rows.length > 0) {
+      res.status(200).json(rows); // Devolver las valoraciones en formato JSON
+    } else {
+      res.status(404).send('No se encontraron valoraciones para esta clase');
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message }); // Devolver el error en formato JSON
+  }
+};
+
+// Crear una valoracion 
+
 
 const clases = {
   getClases,
   getClaseByID,
   createClase,
   updateClase,
-  deleteclase
+  deleteclase,
+  getvaloracionbyclases
 }
 
 export default clases;
