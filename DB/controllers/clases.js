@@ -103,17 +103,14 @@ if (result.rows.length > 0) {
 
 // obtener valoracion de las clases
 const getvaloracionbyclases = async (req, res) => {
-  
-  const {ID} = req.params;
+const {ID} = req.params;
 
-  try {
+try {
     // Consultar la tabla de valoraciones para obtener las valoraciones asociadas a la clase
-    const { rows } = await client.query(
-      'SELECT * FROM public."valoraciones" WHERE "ID" = $1',
+    const {rows} = await client.query(
+      'SELECT * FROM public."clases" WHERE "ID" = $1', 
       [ID]
-    );
-
-    
+    ); 
     if (rows.length > 0) {
       res.status(200).json(rows); // Devolver las valoraciones en formato JSON
     } else {

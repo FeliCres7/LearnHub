@@ -49,7 +49,7 @@ app.get('/Clases/:ID', clases.getClaseByID);
 app.post('/Clases', clases.createClase);
 app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
-app.get('/Clases/:ID', clases.getvaloracionbyclases);
+app.get('/Clases/:ID/valoraciones', clases.getvaloracionbyclases);
 
 //Materia
 //app.get('/Materia', materia.getmateria);
