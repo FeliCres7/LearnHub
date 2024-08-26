@@ -1,24 +1,77 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-
-body{
-background-image: url('Images html/fondo\ inicio\ de\ Sesion.png');
-background-size: cover;
-margin: 0;
-padding: 0;
-background-repeat: no repeat;
-background-position:center center;
-height:100vh;
-font-family: "Encode Sans Semi Expanded", sans-serif;
+body {
+    background-image: url('Images html/fondo\ inicio\ de\ Sesion.png');
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    font-family: "Encode Sans Semi Expanded", sans-serif;
+    
 }
-.formulario{
-    display: flex;
+main
+{
+display: flex;
+flex-direction: column; /* Agrega esto para centrar el contenido verticalmente */
+justify-content: center;
     align-items: center;
-    flex-direction: column;
-    background-color: #FFF000;
-    width: fit-content;
 }
-.formulario p{
-    font-size: 15px;
+.logo {
+    position: absolute; /* Permite colocar la imagen en una posición fija */
+    
+    width: 100px; /* Ajusta el tamaño de la imagen según sea necesario */
+}
 
+.formulario {
+    height: 400px;
+    width: 400px;
+    border-radius: 30px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+}
+
+.formulario h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #001767;
+    text-align: left;
+    font-size: 36px;
+    margin-top: 0;
+}
+
+.formulario form {
+    display: flex;
+    flex-direction: column;
+}
+.usuario, .contraseña {
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    margin-bottom: 15px;
+}
+.usuario img, .contraseña img {
+    height: 36px; /* Ajusta según el tamaño deseado para las imágenes */
+    width: auto; /* Mantiene la proporción de la imagen */
+    margin-right: 0; /* Espacio entre la imagen y el campo de entrada */
+    background-color: #ccc;
+}
+.formulario input {
+    height: 36px; /* Igual que la altura de las imágenes */
+    padding: 0 10px; /* Espacio interno del input */
+    border: 4px solid #ccc;
+    border-radius: 4px;
+    font-size: 18px; /* Ajusta el tamaño del texto dentro del input */
+}
+
+.formulario .recordar {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.registrarse {
+    text-align: center;
+    margin-top: 20px;
 }
