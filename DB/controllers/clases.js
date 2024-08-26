@@ -103,25 +103,72 @@ if (result.rows.length > 0) {
 
 // obtener valoracion de las clases
 const getvaloracionbyclases = async (req, res) => {
-const {ID} = req.params;
+  const { ID } = req.params;
 
-try {
-    // Consultar la tabla de valoraciones para obtener las valoraciones asociadas a la clase
-    const {rows} = await client.query(
-      'SELECT * FROM public."clases" WHERE "ID" = $1', 
+  try {
+    const { rows } = await client.query(
+      'SELECT * FROM public."valoraciones" WHERE "IDclases" = $1',
       [ID]
-    ); 
+    );
+
     if (rows.length > 0) {
-      res.status(200).json(rows); // Devolver las valoraciones en formato JSON
+      res.status(200).json(rows);
     } else {
       res.status(404).send('No se encontraron valoraciones para esta clase');
     }
   } catch (err) {
-    res.status(500).json({ error: err.message }); // Devolver el error en formato JSON
+    res.status(500).json({ error: err.message });
   }
 };
 
-// Crear una valoracion 
+// Crear una valoración
+const createvaloracionbyclases = async (req, res) => {
+  const { IDclases, valoracion, fecha } = req.body;
+
+  if (!IDclases || !valoracion || !fecha) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO public."valoraciones" ("IDclases", "valoracion", "fecha")
+      VALUES ($1, $2, $3)
+      RETURNING *
+    `;
+    const values = [IDclases, valoracion, fecha];
+
+    const result = await client.query(query, values);
+    res.status(201).json({
+      message: 'Valoración creada con éxito',
+      valoracion: result.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+// Eliminar valoraciones por ID de clase
+const deletevaloracionbyclases = async(req,res) => {
+  const { IDclases } = req.params;
+
+  try {
+    const { rowCount } = await client.query(
+      'DELETE FROM public."valoraciones" WHERE "IDclases" = $1',
+      [IDclases]
+    );
+
+    if (rowCount > 0) {
+      res.status(200).send(`Valoraciones eliminadas con éxito para la clase con ID ${IDclases}`);
+    } else {
+      res.status(404).send('No se encontraron valoraciones para eliminar para esta clase');
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
 
 
 const clases = {
@@ -130,7 +177,9 @@ const clases = {
   createClase,
   updateClase,
   deleteclase,
-  getvaloracionbyclases
+  getvaloracionbyclases,
+  createvaloracionbyclases,
+  deletevaloracionbyclases
 }
 
 export default clases;
