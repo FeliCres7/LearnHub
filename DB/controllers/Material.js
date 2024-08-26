@@ -18,7 +18,7 @@ const getmaterialByID = async (req, res) => {
   const { ID } = req.body;
   try {
     const { rows } = await client.query('SELECT * FROM public."material" WHERE "ID" = $1', [ID]);
-    if (rows.length === 1) {
+    if (rows.length == 1) {
       res.send("material obtenida con éxito: ");
       res.json(rows[0]);
     } else {
@@ -62,7 +62,7 @@ const {IDprofesor, materia, Fecha} = req.body;
 // Actualizar un Material
 const updatematerial = async (req, res) => {
   console.log(req.body)
-  const { IDprofesor, materia, Fecha, ID } = req.body;
+  const { IDprofesor, materia, Fecha, ID} = req.body;
 
   // Validar los datos aquí si es necesario
   if (!ID ||!IDprofesor || !materia || !Fecha ) {
@@ -71,7 +71,7 @@ const updatematerial = async (req, res) => {
 
   try {
     const result = await client.query(
-      'UPDATE public."material" SET IDprofesor = $1, materia = $2, Fecha = $3, WHERE "ID" = $4 RETURNING *',
+      'UPDATE public."material" SET IDprofesor = $1, materia = $2, Fecha = $3 WHERE "ID" = $4 RETURNING *',
       [IDprofesor, materia, Fecha, ID]
     );
 
@@ -87,17 +87,17 @@ const updatematerial = async (req, res) => {
 
 
 
-// Eliminar materia 
+// Eliminar material
 
 const deletematerial = async (req,res) => {
 const ID= req.params.ID
 const result = await client.query
-('DELETE FROM public."clases" WHERE "ID" = $1 RETURNING*',
+('DELETE FROM public."material" WHERE "ID" = $1 RETURNING*',
 [ID])
 if (result.rows.length > 0) {
-  res.status(200).send(`Clase eliminada con éxito: ${JSON.stringify(result.rows[0])}`);
+  res.status(200).send(`Material eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
 } else {
-  res.status(404).send('Clase no encontrada');
+  res.status(404).send('material no encontrado');
 }
 };
 

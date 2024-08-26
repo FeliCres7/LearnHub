@@ -192,7 +192,7 @@ Content-Type: application/json
 
 {
 "IDprofesor": 6,
-"materia": "base de datos", 
+"materia": "base de datos y back end", 
 "Fecha": "2024/8/24" ,
 "ID":"4"
 }
@@ -200,7 +200,7 @@ Content-Type: application/json
 ###
 //Eliminar un material
 
-DELETE http://localhost:3000/clases/2 HTTP/1.1
+DELETE http://localhost:3000/material/2 HTTP/1.1
 
                                                                        //MATERIA
 ###

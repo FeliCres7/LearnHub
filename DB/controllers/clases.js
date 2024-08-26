@@ -18,7 +18,7 @@ const getClaseByID = async (req, res) => {
   const { ID } = req.body;
   try {
     const { rows } = await client.query('SELECT * FROM public."clases" WHERE "ID" = $1', [ID]);
-    if (rows.length === 1) {
+    if (rows.length == 1) {
       res.send("Clase obtenida con éxito: ");
       res.json(rows[0]);
     } else {

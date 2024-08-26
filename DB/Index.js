@@ -60,5 +60,5 @@ app.delete('/Clases/:ID', clases.deleteclase);
 app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
 app.post('/Material', material.creatematerial);
-// app.put('/Material/ID', material.updatematerial);
-// app.delete('/Material/:ID', material.deletematerial);
+app.put('/Material/ID', material.updatematerial);
+app.delete('/Material/:ID', material.deletematerial);
