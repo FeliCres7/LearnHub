@@ -8,14 +8,22 @@
     <title>Document</title>
     <link rel="stylesheet" href="styler.css">
 </head>
-<img src="Images html/LogoLH.png" alt="">
-
 <body>
+    <header>
+<img src="Images html/LogoLH.png" alt="">
+    </header>
+    <main>
     <div class="formulario">
         <h1>Iniciar sesión</h1>
         <form method="post">
-            <input type="text" required placeholder="Usuario o Email">
-            <input type="password" placeholder="Contraseña">
+            <div class="usuario">
+                <img src="Images html/icon perfil.png" alt="">
+                <input type="text" required placeholder="Usuario o Email">
+            </div>
+            <div class="contraseña">
+                <img src="Images html/icon perfil.png" alt="">
+                <input type="password" placeholder="Contraseña">
+            </div>
             <div class="recordar">¿Olvidó su contraseña?<div>
                     <input type="submit" value="iniciar">
         </form>
@@ -23,6 +31,8 @@
     <div class="registrarse">
         quiero hacer el <a href="a">registro</a>
     </div>
+
+</main>
 </body>
 
 </html>
