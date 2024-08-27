@@ -163,7 +163,7 @@ DELETE http://localhost:3000/clases/5 HTTP/1.1
                                         //VALORACION
 
 ###
-// Obtener todas las valoraciones 
+// Obtener todas las valoraciones para una clase seleccionada
 
 GET http://localhost:3000/Clases/1/valoracionesbyclases HTTP/1.1
 
@@ -174,16 +174,16 @@ POST http://localhost:3000/Clases/valoracionbyclases HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclases": 3,
+"IDclases": 1,
 "valoracion": 4,
 "fecha": "2024/8/25"
 }
 
-//Eliminar una valoracion 
 ###
+//Eliminar una valoracion 
 
-DELETE http://localhost:3000/valoracionbyclases/1 HTTP/1.1
-Content-Type: application/json
+DELETE http://localhost:3000/Clases/1/valoracionbyclases/3 HTTP/1.1
+
 
                                           //MATERIAL
 

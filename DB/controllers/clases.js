@@ -148,7 +148,7 @@ const createvaloracionbyclases = async (req, res) => {
 };
 
 
-// Eliminar valoraciones por ID de clase
+// Eliminar valoraciones por ID 
 const deletevaloracionbyclases = async(req,res) => {
   const { IDclases } = req.params;
 
