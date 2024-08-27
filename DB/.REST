@@ -1,3 +1,8 @@
+
+// LOG IN 
+
+
+###
 // OBTENER TODOS LOS ALUMNOS
 GET http://localhost:3000/Alumnos HTTP/1.1
 
@@ -182,7 +187,7 @@ Content-Type: application/json
 ###
 //Eliminar una valoracion 
 
-DELETE http://localhost:3000/Clases/1/valoracionbyclases/3 HTTP/1.1
+DELETE http://localhost:3000/Clases/3/valoracionbyclases/1 HTTP/1.1
 
 
                                           //MATERIAL

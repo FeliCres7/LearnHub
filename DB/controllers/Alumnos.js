@@ -88,6 +88,39 @@ if (result.rows.length > 0) {
 }
 };
 
+const getclasebyalumno = async (req, res) => {
+  try {
+    const ID = req.params.ID;
+
+    if (!ID) {
+      return res.status(400).json({ error: 'ID de alumno es requerido' });
+    }
+
+    // Primero, obtenemos las IDs de las clases asociadas al alumno
+    const queryIDclases = 'SELECT "IDclases" FROM "alumnos" WHERE "ID" = $1';
+    const { rows: clasesIDRows } = await client.query(queryClasesID, [alumnoID]);
+
+    if (clasesIDRows.length === 0) {
+      return res.status(404).json({ error: 'No se encontraron clases para el alumno' });
+    }
+
+    // Extraemos los IDs de las clases
+    const claseIDs = clasesIDRows.map(row => row.ID_clase);
+
+    // Luego, obtenemos los detalles de las clases usando los IDs
+    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::int[])';
+    const { rows: clases } = await client.query(queryClases, [claseIDs]);
+
+    res.json({
+      message: 'Clases obtenidas con éxito',
+      clases
+    });
+  } catch (err) {
+    console.error('Error al obtener las clases del alumno:', err);
+    res.status(500).json({ error: 'Error al obtener las clases del alumno' });
+  }
+};
+
 
 
 
@@ -96,7 +129,8 @@ const alumnos = {
   getalumnobyID,
   createAlumno,
   updateAlumno,
-  deleteAlumno
+  deleteAlumno,
+  getclasebyalumno
 };
 
 export default alumnos;
