@@ -1,0 +1,168 @@
+header {
+    position: fixed;
+    display: flex;
+    align-items: center; 
+    background-color: #ffffff;
+    height: 65px;
+    width: 100%;
+    padding: 0 20px;
+    z-index: 1000; 
+    padding-top: 5px;
+    top:0;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+.logoarriba{
+    max-height: 50px;
+    max-width: 50px;
+}
+input[type="search"] {
+    background-color: #EDF3F8;
+    border: none;
+    font-size: 24px;
+    border-radius: 5px;
+    text-indent: 5px;
+    margin-left: 15px; 
+    margin-right: 30px;
+    color: #323232;
+    flex-grow: 1;
+    
+}
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    input[type="search"] {
+        max-width: 80%; /* Para asegurar que ocupe todo el espacio disponible */
+        font-size: 20px; /* Reducción del tamaño de fuente */
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    header ul li {
+        margin-left: 10px; /* Reducir el margen para las pantallas pequeñas */
+    }
+}
+@media (max-width: 320px) {
+    header {
+        flex-direction: row;
+        padding: 10px;
+        justify-content: space-between; /* Asegura que el botón de menú esté visible */
+    }
+
+    .logoarriba, #menubutton {
+        max-width: 30px;
+        max-height: 30px;
+    }
+
+    input[type="search"] {
+        font-size: 18px;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+}
+
+header ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+header ul li {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 30px;
+}
+header ul li a {
+    text-decoration: none; 
+    color: #1565C0;
+    font-size: 15px;
+    transition: color 0.3s;
+    text-align: center;
+}
+header ul li button {
+    background-color: transparent;
+    border: none;
+}
+header ul li img {
+    transition: filter 0.3s;
+}
+header ul li:hover img 
+{
+    filter: brightness(0.7); 
+    cursor:pointer;
+}
+
+header ul li:hover a {
+    color: #000; 
+    text-decoration: underline;
+    cursor:pointer;
+}
+.menu {
+    background-color: #ffffff;
+    position: absolute;
+    top: 65px;
+    right: 0px;
+    display: none;
+    z-index: 1001;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu ul li {
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 10px 20px;
+    color: #1565C0;
+    text-decoration: none;
+    text-align: left; /* Alinea el texto a la izquierda */
+    width: 100%; /* Asegura que el enlace ocupe todo el ancho del menú */
+}
+
+.menu ul li:hover {
+    background-color: #f1f1f1;
+}
+
+#menubutton {
+    background: none;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+@media (max-width: 75rem) {
+    header nav.navbar {
+        display: none;
+    }
+    header #menubutton {
+        display:block;
+    }
+}
+
+/* Ajuste para pantalla grande */
+@media (min-width: 75rem) {
+    header nav.menu {
+        display: none;
+    }
+    header #menubutton{
+        display: none;
+    }
+}
