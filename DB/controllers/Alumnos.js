@@ -1,4 +1,13 @@
 import {client} from '../dbconfig.js'
+//import jwt from 'jsonwebtoken';
+
+//const JWT_secret = 'Learnhubtoken'
+
+//const loginalumno = async (req, res) => {
+//const {Email, contraseña,}
+
+
+//}
 
 
 //obtener todos los alumnos
@@ -37,11 +46,11 @@ const getalumnobyID = async (req, res) => {
 
 // Crear un alumno
 const createAlumno = async (req, res) => {
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases} = req.body;
 try {
  const result = await client.query(
-      "INSERT INTO alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-      [nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas]
+      "INSERT INTO alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+      [nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases]
     );
 
     res.status(201).json({
@@ -56,13 +65,13 @@ try {
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
 
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas,IDclases, ID} = req.body;
   
   
   // try {
     const result = await client.query(
-      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE "ID" = $10 RETURNING *',
-      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID]
+      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9, IDclases=$10 WHERE "ID" = $11 RETURNING *',
+      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, IDclases, ID]
     );
 
     if (result.rows.length > 0) {
@@ -108,7 +117,7 @@ const getclasebyalumno = async (req, res) => {
     const IDclases = IDclasesRows[0].IDclases; // Extraer el arreglo de IDs de clases
 
     // Consulta para obtener los detalles de las clases usando el arreglo de IDs
-    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::int[])';
+    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::integer[])';
     const { rows: clases } = await client.query(queryClases, [IDclases]);
 
     res.json({
@@ -122,9 +131,8 @@ const getclasebyalumno = async (req, res) => {
 };
 
 
-
 const alumnos = {
-  getloginalumnos,
+  //loginalumno,
   getalumnos,
   getalumnobyID,
   createAlumno,

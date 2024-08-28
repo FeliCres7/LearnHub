@@ -1,6 +1,6 @@
 
 // LOG IN 
-GET http://local
+
 
 ###
 // OBTENER TODOS LOS ALUMNOS
@@ -28,7 +28,8 @@ Content-Type: application/json
     "telefono": "12335324",
     "pais": "argentina",
     "idiomas": "ingles",
-    "foto": "."
+    "foto": ".",
+    "IDclases": "3"
 }
 ###
 //Actualizar un alumnos
@@ -53,12 +54,13 @@ Content-Type: application/json
 ###
 //Eliminar un alumno
 
-DELETE http://localhost:3000/Alumnos/4 HTTP/1.1
+DELETE http://localhost:3000/Alumnos/7 HTTP/1.1
 
 ###
 //Obtener las clases de un alumno
 
-GET http://localhost:3000/Alumnos/4/clasebyalumno/3 HTTP/1.1
+GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
+
 
                                                      //PROFESORES 
 ###

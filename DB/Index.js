@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 //Rutas express!
 
 //Alumnos
-app.get('/Alumnos',alumnos.getloginalumnos)
+//app.get('/Alumnos',alumnos.loginalumno)
 app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
