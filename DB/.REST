@@ -55,6 +55,11 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/Alumnos/6 HTTP/1.1
 
+###
+//Obtener las clases de un alumno
+
+GET http://localhost:3000/Alumnos/1/clasebyalumno/2 HTTP/1.1
+
                                                                     //PROFESORES 
 ###
 //Obtener profesores

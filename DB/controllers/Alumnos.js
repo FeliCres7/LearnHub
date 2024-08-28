@@ -95,21 +95,15 @@ const getclasebyalumno = async (req, res) => {
     if (!ID) {
       return res.status(400).json({ error: 'ID de alumno es requerido' });
     }
+    const IDclases = 'SELECT "IDclases" FROM "alumnos" WHERE "ID" = $1';
+    const { rows: IDclasesRows } = await client.query(IDclases, [ID]);
 
-    // Primero, obtenemos las IDs de las clases asociadas al alumno
-    const queryIDclases = 'SELECT "IDclases" FROM "alumnos" WHERE "ID" = $1';
-    const { rows: clasesIDRows } = await client.query(queryClasesID, [alumnoID]);
-
-    if (clasesIDRows.length === 0) {
+    if (IDclasesRows.length === 0) {
       return res.status(404).json({ error: 'No se encontraron clases para el alumno' });
     }
 
-    // Extraemos los IDs de las clases
-    const claseIDs = clasesIDRows.map(row => row.ID_clase);
-
-    // Luego, obtenemos los detalles de las clases usando los IDs
-    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::int[])';
-    const { rows: clases } = await client.query(queryClases, [claseIDs]);
+    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::int[])'; // para verificar si coincide el valor 
+    const { rows: clases } = await client.query(queryClases, [IDclases]);
 
     res.json({
       message: 'Clases obtenidas con éxito',
