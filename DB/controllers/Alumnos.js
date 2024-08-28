@@ -88,6 +88,7 @@ if (result.rows.length > 0) {
 }
 };
 
+//obtener las clases de un alumno
 const getclasebyalumno = async (req, res) => {
   try {
     const ID = req.params.ID;
@@ -95,14 +96,19 @@ const getclasebyalumno = async (req, res) => {
     if (!ID) {
       return res.status(400).json({ error: 'ID de alumno es requerido' });
     }
-    const IDclases = 'SELECT "IDclases" FROM "alumnos" WHERE "ID" = $1';
-    const { rows: IDclasesRows } = await client.query(IDclases, [ID]);
+
+    // Consulta para obtener el arreglo de IDclases desde la tabla "alumnos"
+    const queryIDclases = 'SELECT "IDclases" FROM "alumnos" WHERE "ID" = $1';
+    const { rows: IDclasesRows } = await client.query(queryIDclases, [ID]);
 
     if (IDclasesRows.length === 0) {
       return res.status(404).json({ error: 'No se encontraron clases para el alumno' });
     }
 
-    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::int[])'; // para verificar si coincide el valor 
+    const IDclases = IDclasesRows[0].IDclases; // Extraer el arreglo de IDs de clases
+
+    // Consulta para obtener los detalles de las clases usando el arreglo de IDs
+    const queryClases = 'SELECT * FROM "Clases" WHERE "ID" = ANY($1::int[])';
     const { rows: clases } = await client.query(queryClases, [IDclases]);
 
     res.json({
@@ -114,7 +120,6 @@ const getclasebyalumno = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener las clases del alumno' });
   }
 };
-
 
 
 

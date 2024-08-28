@@ -32,7 +32,7 @@ app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
 app.put('/Alumnos/ID', alumnos.updateAlumno);
 app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
-app.get('/Alumnos/:ID/clasebyalumno/IDclases',alumnos.getclasebyalumno);
+app.get('/Alumnos/:ID/clasebyalumno/:IDclases',alumnos.getclasebyalumno);
 
 //Profesores
 
