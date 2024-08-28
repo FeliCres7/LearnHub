@@ -1,6 +1,6 @@
 
 // LOG IN 
-
+GET http://local
 
 ###
 // OBTENER TODOS LOS ALUMNOS
@@ -9,7 +9,7 @@ GET http://localhost:3000/Alumnos HTTP/1.1
 ###
 //OBTENER UN ALUMNO POR ID
 
-GET http://localhost:3000/Alumnos/5 HTTP/1.1
+GET http://localhost:3000/Alumnos/4 HTTP/1.1
 
 
 ###
@@ -46,14 +46,14 @@ Content-Type: application/json
     "telefono": "123",
     "pais": "argentina",
     "idiomas": "ingles",
-    "ID":"2"
+    "ID":"4"
     
 }
 
 ###
 //Eliminar un alumno
 
-DELETE http://localhost:3000/Alumnos/6 HTTP/1.1
+DELETE http://localhost:3000/Alumnos/4 HTTP/1.1
 
 ###
 //Obtener las clases de un alumno

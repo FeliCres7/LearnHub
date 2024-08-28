@@ -124,6 +124,7 @@ const getclasebyalumno = async (req, res) => {
 
 
 const alumnos = {
+  getloginalumnos,
   getalumnos,
   getalumnobyID,
   createAlumno,
