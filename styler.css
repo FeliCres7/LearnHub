@@ -34,17 +34,20 @@ header div{
     display: flex;
     flex-direction: row;
     color:#001767;
-    padding-top: 25px;
+    padding-top:10px;
+    padding-right: 5px;
+    align-items: center;
+    height: fit-content;
+
 }
  header button{
      background-color:#ffffff;
      color: #001767;
-     border-color: #001767;
+     border:1px solid #001767;
      border-radius: 54px;
-     height: fit-content;
+     padding: 5px 10px;
      font-size: 16px;
      font-weight: 700;
-     border: #001767;
  }
  header p{
      margin: 0px;
@@ -145,4 +148,7 @@ main {
     text-align: center;
     margin-top: 20px;
 }
-
+.formulario a{
+text-decoration: none;
+color: #1565C0;
+}
