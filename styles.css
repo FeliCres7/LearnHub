@@ -222,19 +222,67 @@ footer img{
     border-radius: 10px;
 }
 
-.main-mis-profesores{
+.main-misprofesores{
     background-color: #dae8ff;
     margin-top: 65px;
     min-height: 75vh;
-}
-
-.main-mis-profesores 
-
-.mis-profesores{
     display: flex;
+    justify-content: space-between;
+}
+.aside-misprofesores{
+    height: max-content;
+    width: 200px;
+    margin-left: 20px;
+}
+.header-filtrar-profesores{
+    margin-top: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px #00000066;
+    color: #5b6174;
+    font-size: 28px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    justify-content: stretch;
+    padding: 10px;
+    width: 100%;
+}
+.filtrar-profesores{
+    margin-top: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px #00000066;
+    color: #5b6174;
+    font-size: 28px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+}
+.filtrar-profesores ul{
+    font-size: 18px;
+    font-weight: 400;
+}
+.lista-misprofesores{
     justify-content: center;
 }
-
+.filtrar-profesores div{
+    display: flex;
+    flex-direction: row;
+}
+.filtrar-profesores input{
+    border: none;
+    background-color: #EDF3F8;
+    color: #979CAD;
+    border-radius: 10px;
+}
+.filtrar-profesores p{
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
 .profesor-misprofesores{
     align-self: center;
     background-color: #fff;
@@ -247,6 +295,8 @@ footer img{
     padding: 10px;
     color: #5b6174;
     margin: auto; 
+    margin-top: 30px;
+    
 
 }
 .name-profesor{
