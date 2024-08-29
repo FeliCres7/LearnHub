@@ -123,19 +123,19 @@ const getvaloracionbyclases = async (req, res) => {
 
 // Crear una valoración
 const createvaloracionbyclases = async (req, res) => {
-  const { IDclases, valoracion, fecha } = req.body;
+  const { IDclases, valoracion, fecha, idalumnos } = req.body;
 
-  if (!IDclases || !valoracion || !fecha) {
+  if (!IDclases || !valoracion || !fecha || !idalumnos) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
     const query = `
-      INSERT INTO public."valoraciones" ("IDclases", "valoracion", "fecha")
-      VALUES ($1, $2, $3)
+      INSERT INTO public."valoraciones" ("IDclases", "valoracion", "fecha", "idalumnos")
+      VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
-    const values = [IDclases, valoracion, fecha];
+    const values = [IDclases, valoracion, fecha, idalumnos];
 
     const result = await client.query(query, values);
     res.status(201).json({

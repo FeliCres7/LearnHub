@@ -101,6 +101,7 @@ if (result.rows.length > 0) {
 const getclasebyalumno = async (req, res) => {
   try {
     const ID = req.params.ID;
+    const valoracion = req.params.valoracion
 
     if (!ID) {
       return res.status(400).json({ error: 'ID de alumno es requerido' });
@@ -117,9 +118,16 @@ const getclasebyalumno = async (req, res) => {
     const idclases = idclasesRows[0].idclases; // Extraer el arreglo de IDs de clases
 
     // Consulta para obtener los detalles de las clases usando el arreglo de IDs
-    const queryclases = 'SELECT * FROM "clases" WHERE "ID" = ANY($1::integer[])';
+    const queryclases = 'SELECT * FROM "clases" WHERE "ID" = $1';
     const { rows: clases } = await client.query(queryclases, [idclases]);
 
+    // Consulta para obtener las valoraciones de la clase
+    const queryvaloracion = 'SELECT * FROM "valoraciones" WHERE "IDclases"=$1';
+    const { rows: valoraciones } = await client.query(queryvaloracion, [idclases]);
+
+if (valoraciones.length === 0) {
+    return res.status(404).json({ error: 'No se encontraron valoraciones de la clase' });
+}
     res.json({
       message: 'Clases obtenidas con éxito',
       clases
