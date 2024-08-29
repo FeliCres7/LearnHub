@@ -7,9 +7,9 @@ const { Client } = pg;
 
 export const client = new Client({
     user: "default",
-    host: "ep-plain-hill-a48wmywp-pooler.us-east-1.aws.neon.tech",
+    host: "ep-late-dream-a47fp0wv-pooler.us-east-1.aws.neon.tech",
     database: "verceldb",
-    password: "lkZJHo6fLO0t",
+    password: "ha1HAPemuLj2" ,
     port: 5432,
     ssl: true
 });
