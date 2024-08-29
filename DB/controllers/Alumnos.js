@@ -46,7 +46,7 @@ const getalumnobyID = async (req, res) => {
 
 // Crear un alumno
 const createAlumno = async (req, res) => {
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases} = req.body;
 try {
  const result = await client.query(
       "INSERT INTO alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
@@ -65,13 +65,13 @@ try {
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
 
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas,IDclases, ID} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases, ID} = req.body;
   
   
   // try {
     const result = await client.query(
-      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9, IDclases=$10 WHERE "ID" = $11 RETURNING *',
-      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, IDclases, ID]
+      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, Email = $6, telefono = $7, pais = $8, idiomas = $9, IDclases=$10 WHERE "ID" = $11 RETURNING *',
+      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases, ID]
     );
 
     if (result.rows.length > 0) {

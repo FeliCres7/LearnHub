@@ -29,7 +29,7 @@ Content-Type: application/json
     "pais": "argentina",
     "idiomas": "ingles",
     "foto": ".",
-    "IDclases": "3"
+    "IDclases": 3
 }
 ###
 //Actualizar un alumnos
