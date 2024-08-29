@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 body {
-    background-image: url('Images html/fondo\ inicio\ de\ Sesion.png');
+    background-image: url('Images html/fondo inicio de Sesion.png');
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -9,61 +9,131 @@ body {
     background-position: center center;
     height: 100vh;
     font-family: "Encode Sans Semi Expanded", sans-serif;
-    
-}
-main
-{
-display: flex;
-flex-direction: column; /* Agrega esto para centrar el contenido verticalmente */
-justify-content: center;
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
-.logo {
-    position: absolute; /* Permite colocar la imagen en una posición fija */
+
+header {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    top: 0px;
+}
+
+header img {
+    width: 100px; /* Ajusta según sea necesario */
+    padding-top:20px;
+    padding-left: 20;
     
-    width: 100px; /* Ajusta el tamaño de la imagen según sea necesario */
+
+}
+header div{
+    display: flex;
+    flex-direction: row;
+    color:#001767;
+    padding-top: 25px;
+}
+ header button{
+     background-color:#ffffff;
+     color: #001767;
+     border-color: #001767;
+     border-radius: 54px;
+     height: fit-content;
+     font-size: 16px;
+     font-weight: 700;
+     border: #001767;
+ }
+ header p{
+     margin: 0px;
+ }
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 .formulario {
-    height: 400px;
-    width: 400px;
+    width: 350px;
     border-radius: 30px;
-    background-color: white;
-    padding: 20px;
+    background-color: #ffffff;
+    padding: 30px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 30px;
 }
 
 .formulario h1 {
-    text-align: center;
-    margin-bottom: 20px;
     color: #001767;
+    margin-bottom: 20px;
     text-align: left;
-    font-size: 36px;
-    margin-top: 0;
+    width: 100%;
+
 }
 
 .formulario form {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
+
 .usuario, .contraseña {
     display: flex;
-    align-items: center; /* Centra verticalmente el contenido */
+    align-items: center;
     margin-bottom: 15px;
-}
-.usuario img, .contraseña img {
-    height: 36px; /* Ajusta según el tamaño deseado para las imágenes */
-    width: auto; /* Mantiene la proporción de la imagen */
-    margin-right: 0; /* Espacio entre la imagen y el campo de entrada */
     background-color: #ccc;
 }
+.espacio{
+    margin-bottom: 20px;
+}
+
+.usuario img {
+    height: 30px;
+    width: auto;
+    background-color: #ccc;
+    margin-right: 0px; /* Espacio entre la imagen y el input */
+    
+    
+
+}
+
+.contraseña img{
+    height: 30px;
+    width: auto;
+    background-color: #ccc;
+    margin-right: 0px; /* Espacio entre la imagen y el input */
+}
+
+
 .formulario input {
-    height: 36px; /* Igual que la altura de las imágenes */
-    padding: 0 10px; /* Espacio interno del input */
-    border: 4px solid #ccc;
+    height: 36px;
+    padding: 0 10px;
+    border: 2px solid #ccc;
+    font-size: 18px;
+    color:black;
+    border-radius: 4px; /* Bordes redondeados en los inputs */
+    flex: 1; /* Permite que el input se expanda para llenar el espacio disponible */
+}
+
+.formulario input[type="submit"] {
+    background-color: #1565C0;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    font-size: 18px;
     border-radius: 4px;
-    font-size: 18px; /* Ajusta el tamaño del texto dentro del input */
+    margin-top: 20px;
+}
+
+.formulario input[type="submit"]:hover {
+    background-color: #1565C0;
 }
 
 .formulario .recordar {
@@ -75,3 +145,4 @@ justify-content: center;
     text-align: center;
     margin-top: 20px;
 }
+
