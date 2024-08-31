@@ -46,15 +46,20 @@ const getalumnobyID = async (req, res) => {
 
 // Crear un alumno
 const createAlumno = async (req, res) => {
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases } = req.body;
+
+  // Verificación de campos requeridos
+  if (!nombre || !apellido || !contraseña || !fecha_de_nacimiento || !foto|| !Email || !telefono || !pais || !idiomas || !IDclases) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
 try {
- const result = await client.query(
-      "INSERT INTO alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+    const result = await client.query(
+      'INSERT INTO public.alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *',
       [nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases]
     );
 
     res.status(201).json({
-      message: ('Alumno creado con éxito'),
+      message: 'Alumno creado con éxito',
       alumno: result.rows[0]  
     });
   } catch (err) {
@@ -62,6 +67,7 @@ try {
     res.status(500).json({ error: err.message });
   }
 };
+
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
 
