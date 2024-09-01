@@ -31,20 +31,20 @@ const getClaseByID = async (req, res) => {
 
 // Crear una clase
 const createClase = async (req, res) => {
-  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, idalumnos} = req.body;
+  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos} = req.body;
 
   
-  if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link || !valoracion, idalumnos) {
+  if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !link || !valoracion || !IDalumnos) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
     const query = `
-      INSERT INTO clases ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "Link", "valoracion", "idalumnos")
+      INSERT INTO clases ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "link", "valoracion", "IDalumnos")
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *
     `;
-    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion];
+    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos];
     
     const result = await client.query(query, values);
 
@@ -62,17 +62,17 @@ const createClase = async (req, res) => {
 // Actualizar una clase
 const updateClase = async (req, res) => {
   console.log(req.body)
-  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, idalumnos, ID } = req.body;
+  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, IDalumnos, ID } = req.body;
 
   // Validar los datos aquí si es necesario
-  if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link || !valoracion || !idalumnos) {
+  if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link || !valoracion || !IDalumnos) {
     return res.status(400).send('Faltan datos necesarios');
   }
 
   try {
     const result = await client.query(
-      'UPDATE public."clases" SET IDmateria = $1, IDprofesor = $2, horainicio = $3, horafin = $4, idiomas = $5, Link = $6, valoracion=$7, idalumnos=$8 WHERE "ID" = $9 RETURNING *',
-      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, idalumnos, ID]
+      'UPDATE public."clases" SET IDmateria = $1, IDprofesor = $2, horainicio = $3, horafin = $4, idiomas = $5, Link = $6, valoracion=$7, IDalumnos=$8 WHERE "ID" = $9 RETURNING *',
+      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, valoracion, IDalumnos, ID]
     );
 
     if (result.rows.length > 0) {

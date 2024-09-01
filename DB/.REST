@@ -151,7 +151,9 @@ Content-Type: application/json
 "horainicio": "16:00", 
 "horafin": "17:00", 
 "idiomas": "español", 
-"Link": "."
+"link": ".",
+"valoracion": 5,
+"IDalumnos": 1
 }
 
 ###
