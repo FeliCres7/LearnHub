@@ -153,7 +153,7 @@ Content-Type: application/json
 "idiomas": "español", 
 "link": ".",
 "valoracion": 5,
-"IDalumnos": 1
+"IDalumnos": 6
 }
 
 ###
@@ -168,33 +168,35 @@ Content-Type: application/json
 "horainicio":"16:00", 
 "horafin":"18:00", 
 "idiomas":"español", 
-"Link":"http.//example.com",
-"ID":"6"
+"link":"http.//example.com",
+"valoracion":7,
+"ID":"17",
+"IDalumnos": "6"
 }
 
 ###
 //Eliminar una clase
 
-DELETE http://localhost:3000/clases/5 HTTP/1.1
+DELETE http://localhost:3000/clases/16 HTTP/1.1
 
                                   //VALORACION
 
 ###
 // Obtener todas las valoraciones para una clase seleccionada
 
-GET http://localhost:3000/Clases/3/valoracionesbyclases HTTP/1.1
+GET http://localhost:3000/Clases/17/valoracionesbyclases HTTP/1.1
 
 ###
 //Crear una valoracion 
 
-POST http://localhost:3000/Clases/valoracionbyclases HTTP/1.1
+POST http://localhost:3000/clases/valoracionbyclases HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclases": 3,
+"IDclases": 17,
 "valoracion": 5,
 "fecha": "2024/8/25",
-"idalumnos": 21
+"idalumnos": 6
 }
 
 ###
