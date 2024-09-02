@@ -71,7 +71,7 @@ const updatematerial = async (req, res) => {
 
   try {
     const result = await client.query(
-      'UPDATE public."material" SET IDprofesor = $1,  IDalumno=$2, materia = $3, "Fecha" = $4 WHERE "ID" = $5 RETURNING *',
+      'UPDATE public."material" SET "IDprofesor" = $1,  "IDalumno"=$2, materia = $3, "Fecha" = $4 WHERE "ID" = $5 RETURNING *',
       [IDprofesor, IDalumno, materia, Fecha, ID]
     );
 
