@@ -19,11 +19,11 @@ POST http://localhost:3000/Alumnos HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "ezequiel",
-    "apellido": "colu",
-    "contraseña": "coluperonista",
+    "nombre": "felipe",
+    "apellido": "jaz",
+    "contraseña": "felijaz",
     "fecha_de_nacimiento": "1978/4/21",
-    "email": "colu@gmail.com",
+    "email": "felizjazhijo@gmail.com",
     "telefono": "12335324",
     "pais": "argentina",
     "idiomas": "ingles",
@@ -202,10 +202,10 @@ Content-Type: application/json
 ###
 //Eliminar una valoracion 
 
-DELETE http://localhost:3000/Clases/valoracionbyclases/15 HTTP/1.1
+DELETE http://localhost:3000/Clases/valoracionbyclases/17 HTTP/1.1
 
 
-                                          //MATERIAL
+                                 //MATERIAL
 
 ###
 //Obtener material
@@ -224,9 +224,10 @@ POST http://localhost:3000/material HTTP/1.1
 Content-Type: application/json
 
 {
-"IDprofesor": 6,
+"IDprofesor": 2,
 "materia": "ingles", 
-"Fecha": "2024/8/24" 
+"Fecha": "2024/8/24",
+"IDalumno": 7
 }
 
 ###
@@ -236,10 +237,11 @@ PUT http://localhost:3000/material/ID HTTP/1.1
 Content-Type: application/json
 
 {
-"IDprofesor": 6,
+"IDprofesor": 2,
 "materia": "base de datos y back end", 
 "Fecha": "2024/8/24" ,
-"ID":"4"
+"IDalumno": 7,
+"ID":1
 }
 
 ###
