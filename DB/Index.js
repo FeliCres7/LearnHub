@@ -25,6 +25,8 @@ app.get("/", (req, res) => {
 
 //Rutas express!
 
+// Hash
+
 //Alumnos
 //app.get('/Alumnos',alumnos.loginalumno)
 app.get('/Alumnos', alumnos.getalumnos);
