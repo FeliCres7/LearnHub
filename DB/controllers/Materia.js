@@ -4,7 +4,7 @@ import {client} from '../dbconfig.js'
 // Obtener todas las materia
 const getmateria = async (_, res) => {
   try {
-    const { rows } = await client.query('SELECT * FROM public."material"');
+    const { rows } = await client.query('SELECT * FROM public."materia"');
     res.json(rows);
 
   } catch (err) {
@@ -31,20 +31,20 @@ const getmateriaByID = async (req, res) => {
 
 // Crear una materia
 const createmateria = async (req, res) => {
-  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, Link } = req.body;
+  const {IDprofesor, materia} = req.body;
 
   
-  if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !Link) {
+  if (!IDprofesor|| !materia) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
     const query = `
-      INSERT INTO materia ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "Link")
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO materia ("IDprofesor", "materia")
+      VALUES ($1, $2)
       RETURNING *
     `;
-    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link];
+    const values = [IDprofesor, materia];
     
     const result = await client.query(query, values);
 

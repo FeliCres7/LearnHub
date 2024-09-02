@@ -1,6 +1,12 @@
 
 // LOG IN 
+POST http://localhost:3000/Alumnos/login HTTP/1.1
+Content-Type: application/json
 
+{
+    "usuario":"felizjazhijo@gmail.com",
+    "contraseña":"felijaz"
+}
 
 ###
 // OBTENER TODOS LOS ALUMNOS
