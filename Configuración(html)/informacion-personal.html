@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>Configuración</title>
+        <link rel="stylesheet" href="../header.css">
+        <link rel="stylesheet" href="../styles.css">
+        <link rel="stylesheet" href="configuracion.css">
+        <link rel="icon" href="../Images html/logo pestaña.png" type="image/png">
+
+
+    </head>
+
+    <body>
+        <header class="header">
+            <img class="logoarriba" src="../Images html/LOGOLH.png" alt="Learn Hub">
+            <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+            <nav class="navbar">
+                <ul>
+                    <li class="boton-inicio"><button class="inicio"><img src="../Images html/logo inicio.png"
+                                alt=""></button><a href="">Inicio</a></li>
+                    <li class="boton-perfil-alumno"><button><img src="../Images html/logo perfil alumno.png"
+                                alt=""></button><a href="">Perfil</a></li>
+                    <li class="boton-mis-profesores"><button><img src="../Images html/logo mis profesores.png"
+                                alt=""></button><a href="">Mis profesores</a></li>
+                    <li class="boton-calendario"><button><img src="../Images html/logo calendario.png"
+                                alt=""></button><a href="">Calendario</a></li>
+                    <li class="boton-notificaciones"><button><img src="../Images html/logo notificaciones.png"
+                                alt=""></button><a href="">Notificaciones</a></li>
+                    <li class="boton-configuracion"><button onclick="window.location.href='../configuracion.html'"><img
+                                src="../Images html/logo configuracion.png" alt=""></button><a
+                            href="../configuracion.html">Configuración</a></li>
+                    <li class="boton-mensajes"><button onclick="window.location.href='../mensajes.html'"><img
+                                src="../Images html/logo mensajes.png" alt="msg"></button><a
+                            href="../mensajes.html">Mensajes</a></li>
+                </ul>
+            </nav>
+            <button id="menubutton"><img src="../Images html/menubutton.png" alt="MENU"></button>
+            <nav class="menu" id="menu">
+                <ul>
+                    <li><a href="">Inicio</a></li>
+                    <li><a href="">Perfil</a></li>
+                    <li><a href="">Mis profesores</a></li>
+                    <li><a href="">Calendario</a></li>
+                    <li><a href="">Notificaciones</a></li>
+                    <li><a href="configuracion.html">Configuración</a></li>
+                    <li><a href="mensajes.html">Mensajes</a></li>
+                </ul>
+            </nav>
+        </header>
+        <script src="script.js"></script>
+        <main>
+            <aside class="PanelIzquierdo">
+                <p class="config">Configuración</p>
+                <div class="ajustes">
+                    <img src="../Images html/logo ajustes usuario.png" alt="">
+                    <p>Ajustes de usuario</p>
+                </div>
+                <div class="seguridad">
+                    <img src="../Images html/logo seguridad cuenta azul.png" alt="">
+                    <p>Información personal</p>
+
+                </div>
+                <div class="visualización">
+                    <img src="../Images html/logo visualizacion.png" alt="">
+                    <p>Visualización</p>
+
+                </div>
+            </aside>
+            <article class="panel-configuracion">
+                <div class="info-perfil-div">
+                    <h1>Información personal</h1>
+                    <div class="datos-perfil">
+                        <input type="text">
+                        <input type="datetime" >
+                        <input type="text">
+                        <input type="tel">
+                    </div>
+                </div>
+            </article>
+        </main>
+        <footer><img src="../Images html/LogoLH.png" alt=""></footer>
+
+    </body>
+
+    </html>

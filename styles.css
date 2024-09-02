@@ -265,6 +265,10 @@ footer img{
 .filtrar-profesores ul{
     font-size: 18px;
     font-weight: 400;
+    list-style: none;
+}
+.filtrar-profesores li:hover{
+color: #000000;
 }
 .lista-misprofesores{
     justify-content: center;
@@ -296,8 +300,6 @@ footer img{
     color: #5b6174;
     margin: auto; 
     margin-top: 30px;
-    
-
 }
 .name-profesor{
     font-size: 28px;
@@ -307,7 +309,9 @@ footer img{
 .content-profesor{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }
+
 .datacontainer{
     display: flex;
     flex-direction: row;
@@ -320,8 +324,22 @@ footer img{
     flex-direction: column;
 
 }
+.datos-profesor div{
+    margin-bottom: 15px;
+}
 .botones-profesor{
     display: flex;
     flex-direction: column;
+}
+.botones-profesor button{
+    border: 1px solid #424242;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    padding: 7px 5px;
+    font-weight: 600;
+    background-color: #ffffff;
+}
+.botones-profesor button:hover{
+    filter: brightness(0.8);
 }
 
