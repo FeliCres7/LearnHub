@@ -196,13 +196,13 @@ Content-Type: application/json
 "IDclases": 17,
 "valoracion": 5,
 "fecha": "2024/8/25",
-"idalumnos": 6
+"IDalumnos": 6
 }
 
 ###
 //Eliminar una valoracion 
 
-DELETE http://localhost:3000/Clases/3/valoracionbyclases/1 HTTP/1.1
+DELETE http://localhost:3000/Clases/valoracionbyclases/15 HTTP/1.1
 
 
                                           //MATERIAL

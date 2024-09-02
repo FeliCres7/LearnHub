@@ -154,7 +154,7 @@ const deletevaloracionbyclases = async(req,res) => {
 
   try {
     const { rowCount } = await client.query(
-      'DELETE FROM public."valoraciones" WHERE "IDclases" = $1',
+      'DELETE FROM public.valoraciones WHERE "IDclases" = $1',
       [IDclases]
     );
 
@@ -165,7 +165,7 @@ const deletevaloracionbyclases = async(req,res) => {
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
-  }
+  } 
 };
 
 
