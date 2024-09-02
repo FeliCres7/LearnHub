@@ -25,7 +25,9 @@ app.get("/", (req, res) => {
 
 //Rutas express!
 
-// Hash
+// LOG IN 
+app.post('/Alumnos/login',alumnos.login);
+
 
 //Alumnos
 //app.get('/Alumnos',alumnos.loginalumno)

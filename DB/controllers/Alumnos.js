@@ -1,4 +1,5 @@
 import {client} from '../dbconfig.js'
+import bcrypt from "bcryptjs"
 //import jwt from 'jsonwebtoken';
 
 //const JWT_secret = 'Learnhubtoken'
@@ -10,6 +11,33 @@ import {client} from '../dbconfig.js'
 //}
 
 
+//LOG IN 
+const login = async (req,res) => {
+const {usuario, contraseña} = req.body
+
+try{
+  const checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario])
+
+  if(!checkUser){
+    res.status(404).send("Not found")
+  }
+
+  else{
+    const isValidated = await bcrypt.compare(contraseña, checkUser.contraseña)
+    if(isValidated){
+      res.status(200).send("Logged in!")
+    }
+    else{
+      res.status(200).send("Wrong password")
+    }
+  }
+
+}
+catch(error){
+  res.status(500).send("error", error)
+}
+
+}
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
@@ -53,9 +81,11 @@ const createAlumno = async (req, res) => {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 try {
+    const salt = await bcrypt.genSalt(10)
+    const hashedContraseña = await bcrypt.hash(contraseña, salt)
     const result = await client.query(
       'INSERT INTO public.alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas]
+      [nombre, apellido, hashedContraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas]
     );
 
     res.status(201).json({
@@ -147,7 +177,7 @@ if (valoraciones.length === 0) {
 
 
 const alumnos = {
-  //loginalumno,
+  login,
   getalumnos,
   getalumnobyID,
   createAlumno,
