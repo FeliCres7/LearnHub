@@ -342,4 +342,26 @@ color: #000000;
 .botones-profesor button:hover{
     filter: brightness(0.8);
 }
-
+.estrellas:not(:checked)>input{
+    appearance: none;
+}
+.estrellas:not(:checked)>label{
+    float: right;
+    cursor:pointer;
+    font-size: 30px;
+    color: #000000;
+}
+.estrellas:not(:checked)>label::before{
+    content: '★';
+}
+.estrellas>input:checked+label:hover,
+.estrellas>input:checked+label:hover ~label,
+.estrellas>input:checked~label:hover,
+.estrellas>input:checked~label:hover ~label,
+.estrellas>label:hover~input:checked~label{
+    color: #e58e09;
+}
+.estrellas:not(:checked)>label:hover,
+.estrellas:not(:checked)>label:hover~label{
+    color: #ff9e0b;
+}
