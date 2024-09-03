@@ -7,6 +7,7 @@ import materia from './controllers/Materia.js'
 import { client } from './dbconfig.js'
 const app = express();
 const port = 3000;
+//const jwt = require('jsonwebtoken');
 
 
 client.connect()
@@ -16,6 +17,7 @@ app.listen(port, () => {
   console.log(`Learnhub listening on port ${port}!`);
 })
 
+//Middleware
 app.use(express.json());
 
 

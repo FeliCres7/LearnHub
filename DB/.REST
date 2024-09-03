@@ -25,8 +25,8 @@ POST http://localhost:3000/Alumnos HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "felipe",
-    "apellido": "jaz",
+    "nombre": "benja",
+    "apellido": "fridman",
     "contraseña": "felijaz",
     "fecha_de_nacimiento": "1978/4/21",
     "email": "felizjazhijo@gmail.com",

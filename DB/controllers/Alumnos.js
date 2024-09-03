@@ -4,40 +4,33 @@ import bcrypt from "bcryptjs"
 
 //const JWT_secret = 'Learnhubtoken'
 
-//const loginalumno = async (req, res) => {
-//const {Email, contraseña,}
 
 
 //}
 
 
 //LOG IN 
-const login = async (req,res) => {
-const {usuario, contraseña} = req.body
+const login = async (req, res) => {
+  const { usuario, contraseña } = req.body;
 
-try{
-  const checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario])
+  try {
+    const checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
 
-  if(!checkUser){
-    res.status(404).send("Not found")
-  }
-
-  else{
-    const isValidated = await bcrypt.compare(contraseña, checkUser.contraseña)
-    if(isValidated){
-      res.status(200).send("Logged in!")
+    if (!checkUser.rows.length) { // Cambié checkUser a checkUser.rows.length
+      return res.status(404).send("Not found");
+    } else {
+      const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña); // Cambié checkUser.contraseña a checkUser.rows[0].contraseña
+      if (isValidated) {
+        return res.status(200).send("Logged in!");
+      } else {
+        return res.status(200).send("Wrong password");
+      }
     }
-    else{
-      res.status(200).send("Wrong password")
-    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message }); // Enviando el error como un objeto JSON
   }
+};
 
-}
-catch(error){
-  res.status(500).send("error", error)
-}
-
-}
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
