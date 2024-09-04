@@ -56,9 +56,11 @@ const getprofbyID = async (req, res) => {
 const createprof = async (req, res) => {
   const {nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta,contraseña} = req.body;
   try {
+    const salt = await bcrypt.genSalt(10)
+    const hashedContraseña = await bcrypt.hash(contraseña,salt)
     const result = await client.query(
       'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta,contraseña ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *',
-      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña]
+      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, hashedContraseña]
     );
     res.status(201).json({
       message: ('Profesor creado con éxito'),
