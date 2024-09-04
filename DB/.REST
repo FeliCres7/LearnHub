@@ -1,11 +1,11 @@
 
-// LOG IN 
+// LOG IN ALUMNOS
 POST http://localhost:3000/Alumnos/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "usuario":"felizjazhijo@gmail.com",
-    "contraseña":"felijaz"
+    "usuario":"hola@gmail.com",
+    "contraseña":"jgjghj"
 }
 
 ###
@@ -27,9 +27,9 @@ Content-Type: application/json
 {
     "nombre": "benja",
     "apellido": "fridman",
-    "contraseña": "felijaz",
+    "contraseña": "jgjghj",
     "fecha_de_nacimiento": "1978/4/21",
-    "email": "felizjazhijo@gmail.com",
+    "email": "hola@gmail.com",
     "telefono": "12335324",
     "pais": "argentina",
     "idiomas": "ingles",
@@ -67,6 +67,18 @@ GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 
 
                                              //PROFESORES 
+
+                                            
+### 
+// LOG IN PROFESORES
+POST http://localhost:3000/profesores/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "usuario":"hola@gmail.com",
+    "contraseña":"jgjghj"
+}
+
 ###
 //Obtener profesores
 
@@ -88,6 +100,7 @@ Content-Type: application/json
 
 "nombre":"eric",
 "apellido":"gerzenstein", 
+"contraseña": "eric2007",
 "fecha_de_nacimiento":"2007/7/19", 
 "Email":"ericeltodos@gmail.com",
 "materias":"base de datos", 
@@ -111,6 +124,7 @@ Content-Type: application/json
 
 "nombre":"benjamin",
 "apellido":"fridman", 
+"contraseña": "benja2008",
 "fecha_de_nacimiento":"2007/7/19", 
 "email":"ezeagr@gmail.com",
 "materias":"base de datos", 

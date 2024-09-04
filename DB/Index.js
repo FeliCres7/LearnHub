@@ -29,10 +29,10 @@ app.get("/", (req, res) => {
 
 // LOG IN 
 app.post('/Alumnos/login',alumnos.login);
+app.post('/profesores/login',profesores.loginprof);
 
 
 //Alumnos
-//app.get('/Alumnos',alumnos.loginalumno)
 app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
@@ -41,7 +41,6 @@ app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
 //app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
 
 //Profesores
-
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID', profesores.getprofbyID);
 app.post('/profesores', profesores.createprof);

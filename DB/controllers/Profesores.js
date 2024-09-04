@@ -1,6 +1,27 @@
 import {client} from '../dbconfig.js'
+import bcrypt from "bcryptjs"
 
+//LOG IN
+const loginprof = async (req, res) => {
+  const { usuario, contraseña } = req.body;
 
+  try {
+    const checkUser = await client.query('SELECT * FROM public.profesores WHERE "email" = $1', [usuario]);
+
+    if (!checkUser.rows.length) { // Cambié checkUser a checkUser.rows.length
+      return res.status(404).send("Not found");
+    } else {
+      const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña); // Cambié checkUser.contraseña a checkUser.rows[0].contraseña
+      if (isValidated) {
+        return res.status(200).send("Logged in!");
+      } else {
+        return res.status(200).send("Wrong password");
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message }); // Enviando el error como un objeto JSON
+  }
+};
 // Obtener todos los profesores
 const getprof = async (_, res) => {
   try {
@@ -33,11 +54,11 @@ const getprofbyID = async (req, res) => {
 
 //Crear un profesor
 const createprof = async (req, res) => {
-  const {nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta} = req.body;
+  const {nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta,contraseña} = req.body;
   try {
     const result = await client.query(
-      'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *',
-      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta]
+      'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta,contraseña ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *',
+      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña]
     );
     res.status(201).json({
       message: ('Profesor creado con éxito'),
@@ -57,19 +78,19 @@ const updateprof = async (req, res) => {
     console.log(req.body);
     const {
       nombre, apellido, fecha_de_nacimiento, email, materias,
-      telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID
+      telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, ID
     } = req.body;
-    console.log(nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID);
+    console.log(nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, ID);
 
     // Ejecutar la consulta SQL para actualizar el registro del profesor
     const result = await client.query(
       `UPDATE public."profesores"
        SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
            materias = $5, telefono = $6, valoracion = $7, pais = $8,
-           idiomas = $9, foto = $10, descripcion_corta = $11
-       WHERE "ID" = $12
+           idiomas = $9, foto = $10, descripcion_corta = $11, contraseña = $12
+       WHERE "ID" = $13
        RETURNING *`,
-      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, ID]
+      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, ID]
     );
 
     // Verificar el resultado de la actualización
@@ -101,6 +122,7 @@ const deleteprof = async (req,res) => {
   
 
 const profesores = {
+  loginprof,
   getprof, 
   getprofbyID,
   createprof,
