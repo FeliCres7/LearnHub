@@ -1,9 +1,9 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
-//import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 //const JWT_secret = 'Learnhubtoken'
-
+const secret = process.env.JWT_SECRET
 
 
 //}
@@ -21,6 +21,10 @@ const login = async (req, res) => {
     } else {
       const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña); // Cambié checkUser.contraseña a checkUser.rows[0].contraseña
       if (isValidated) {
+         // Generar JWT
+         const token = jwt.sign({ id: checkUser.rows[0].ID },
+         secret, { expiresIn: '1h' });
+
         return res.status(200).send("Logged in!");
       } else {
         return res.status(200).send("Wrong password");
