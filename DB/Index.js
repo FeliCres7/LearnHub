@@ -39,7 +39,7 @@ app.post('/Alumnos', alumnos.createAlumno);
 app.put('/Alumnos/ID', alumnos.updateAlumno);
 app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
 //app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
-app.get('/Alumnos/:ID',alumnos.getperfilalumno)
+app.get('/Alumnos/:ID/perfilalumno',alumnos.getperfilalumno)
 
 //Profesores
 app.get('/profesores', profesores.getprof);
@@ -48,7 +48,7 @@ app.post('/profesores', profesores.createprof);
 app.put('/profesores/ID', profesores.updateprof);
 app.delete('/profesores/:ID', profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
-//app.get('/profesores/:ID',profesores.getperfilprof)
+app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
 
 
 //Clases

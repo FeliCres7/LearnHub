@@ -68,7 +68,7 @@ GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 
 //Obtener perfil del alumno
 ###
- GET http://localhost:3000/Alumnos/15 HTTP/1.1
+ GET http://localhost:3000/Alumnos/15/perfilalumno HTTP/1.1
 
                                              //PROFESORES 
 
@@ -150,6 +150,10 @@ DELETE http://localhost:3000/profesores/1 HTTP/1.1
 //Obtener las clases de un profesor
 
 GET http://localhost:3000/profesores/3/clasebyprof/4 HTTP/1.1
+
+//Obtener perfil del profesor
+###
+ GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1
 
                                                                        //CLASES
 

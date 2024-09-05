@@ -122,6 +122,30 @@ const deleteprof = async (req,res) => {
   }
   };
   
+  const getperfilprof = async (req, res) => {
+    try {
+      const ID = req.params.ID;
+  
+      if (!ID) {
+        return res.status(400).json({ error: 'ID es requerido' });
+      }
+  
+      const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion FROM public.profesores WHERE "ID" = $1';
+      const { rows } = await client.query(query, [ID]);
+  
+      if (rows.length === 1) {
+        return res.json({
+          message: 'Perfil de profesores obtenido con éxito',
+          perfil: rows[0]
+        });
+      } else {
+        return res.status(404).json({ error: 'Profesor no encontrado' });
+      }
+    } catch (err) {
+      console.error('Error al obtener el perfil del profesor:', err);
+      return res.status(500).json({ error: 'Error al obtener el perfil' });
+    }
+  };
 
 const profesores = {
   loginprof,
@@ -130,7 +154,7 @@ const profesores = {
   createprof,
   updateprof,
   deleteprof,
- //getperfilprof
+ getperfilprof
 
 };
 
