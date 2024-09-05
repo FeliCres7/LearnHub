@@ -35,6 +35,11 @@ const login = async (req, res) => {
   }
 };
 
+const verificacion = async (req,res) => {
+
+
+  
+}
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
@@ -201,6 +206,7 @@ const getperfilalumno = async (req, res) => {
 
 const alumnos = {
   login,
+  verificacion,
   getalumnos,
   getalumnobyID,
   createAlumno,

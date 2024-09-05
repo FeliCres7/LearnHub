@@ -22,6 +22,12 @@ const loginprof = async (req, res) => {
     return res.status(500).json({ error: error.message }); // Enviando el error como un objeto JSON
   }
 };
+
+const verificacionprof = async (req,res) => {
+
+
+  
+}
 // Obtener todos los profesores
 const getprof = async (_, res) => {
   try {
@@ -149,12 +155,13 @@ const deleteprof = async (req,res) => {
 
 const profesores = {
   loginprof,
+  verificacionprof,
   getprof, 
   getprofbyID,
   createprof,
   updateprof,
   deleteprof,
- getperfilprof
+ getperfilprof,
 
 };
 

@@ -31,6 +31,9 @@ app.get("/", (req, res) => {
 app.post('/Alumnos/login',alumnos.login);
 app.post('/profesores/login',profesores.loginprof);
 
+//VERIFICACION 
+app.post('/Alumnos/verificacion', alumnos.verificacion);
+app.post('/profesores/verificacionprof', profesores.verificacionprof);
 
 //Alumnos
 app.get('/Alumnos', alumnos.getalumnos);
