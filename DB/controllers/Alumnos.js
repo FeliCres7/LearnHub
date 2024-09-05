@@ -172,6 +172,32 @@ if (valoraciones.length === 0) {
 };
 */
 
+const getperfilalumno = async (req, res) => {
+  try {
+    const ID = req.params.ID;
+
+    if (!ID) {
+      return res.status(400).json({ error: 'ID es requerido' });
+    }
+
+    const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais FROM public.alumnos WHERE "ID" = $1';
+    const { rows } = await client.query(query, [ID]);
+
+    if (rows.length === 1) {
+      return res.json({
+        message: 'Perfil de alumno obtenido con éxito',
+        perfil: rows[0]
+      });
+    } else {
+      return res.status(404).json({ error: 'Alumno no encontrado' });
+    }
+  } catch (err) {
+    console.error('Error al obtener el perfil del alumno:', err);
+    return res.status(500).json({ error: 'Error al obtener el perfil del alumno' });
+  }
+};
+
+
 
 const alumnos = {
   login,
@@ -179,8 +205,9 @@ const alumnos = {
   getalumnobyID,
   createAlumno,
   updateAlumno,
-  deleteAlumno
- // getclasebyalumno
+  deleteAlumno,
+ // getclasebyalumno,
+  getperfilalumno
 };
 
 export default alumnos;

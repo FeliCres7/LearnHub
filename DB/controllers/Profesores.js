@@ -129,7 +129,9 @@ const profesores = {
   getprofbyID,
   createprof,
   updateprof,
-  deleteprof
+  deleteprof,
+ //getperfilprof
+
 };
 
 export default profesores;

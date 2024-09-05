@@ -66,6 +66,9 @@ DELETE http://localhost:3000/Alumnos/5 HTTP/1.1
 
 GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 
+//Obtener perfil del alumno
+###
+ GET http://localhost:3000/Alumnos/15 HTTP/1.1
 
                                              //PROFESORES 
 
