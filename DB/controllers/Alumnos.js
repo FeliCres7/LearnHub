@@ -16,7 +16,7 @@ const login = async (req, res) => {
   try {
     const checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
 
-    if (!checkUser.rows.length) { // Cambié checkUser a checkUser.rows.length
+    if (!checkUser.rows.length) { 
       return res.status(404).send("Not found");
     } else {
       const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña); // Cambié checkUser.contraseña a checkUser.rows[0].contraseña
@@ -35,11 +35,34 @@ const login = async (req, res) => {
   }
 };
 
+//Verification alumno
 const verificacion = async (req,res) => {
+const {ID} = req.params;
+const {fecha_de_nacimiento,telefono,pais,foto} = req.body
 
-
-  
+if (!ID || !fecha_de_nacimiento || !telefono || !pais || !foto) {
+  return res.status(400).json({ error: 'Todos los campos son requeridos' });
 }
+
+try { 
+const query = await client.query('SELECT fecha_de_nacimiento, telefono, pais, foto FROM public.alumnos WHERE "ID" = $1; ')
+const { rows } = await client.query(query, [ID]);
+
+
+if (rows.length === 1) {
+  return res.json({
+    message: 'Verificacion del alumno obtenido con éxito',
+    perfil: rows[0]
+  });
+} else {
+  return res.status(404).json({ error: 'Alumno ya registrado' });
+}
+} catch (err) {
+console.error('Error al obtener la verificacion del alumno:', err);
+return res.status(500).json({ error: 'Error al obtener la verificacion del alumno' });
+}
+};
+
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
