@@ -23,11 +23,41 @@ const loginprof = async (req, res) => {
   }
 };
 
-const verificacionprof = async (req,res) => {
+//verificacion profesor
+const verificacionprof = async (req, res) => {
+  const { fecha_de_nacimiento, telefono, pais, foto } = req.body;
 
 
-  
-}
+  if (!fecha_de_nacimiento || !telefono || !pais || !foto) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+   
+    const { rows } = await client.query(
+      `SELECT fecha_de_nacimiento, telefono, pais, foto 
+       FROM public.profesores 
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4`,
+      [fecha_de_nacimiento, telefono, pais, foto]
+    );
+
+    
+    if (rows.length > 0) {
+      return res.status(409).json({ error: 'El profesor ya está registrado' });
+    } else {
+      return res.json({
+        message: 'Profesor registrado con exito'
+      });
+    }
+  } catch (err) {
+    console.error('Error al verificar el profesor:', err);
+    return res.status(500).json({ error: 'Error al verificar el profesor' });
+  }
+};
+
+
+
+
 // Obtener todos los profesores
 const getprof = async (_, res) => {
   try {

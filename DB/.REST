@@ -101,10 +101,10 @@ POST http://localhost:3000/profesores/verificacionprof HTTP/1.1
 Content-Type: application/json
 
 {
-    "fecha_de_nacimiento":"",
-    "telefono":"",
-    "pais": "",
-    "foto": ""
+    "fecha_de_nacimiento":"2006/6/4",
+    "telefono":"54524323",
+    "pais": "Argentina",
+    "foto": "."
 }
 
 ###
