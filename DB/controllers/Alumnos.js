@@ -35,32 +35,34 @@ const login = async (req, res) => {
   }
 };
 
-//Verification alumno
-const verificacion = async (req,res) => {
-const {ID} = req.params;
-const {fecha_de_nacimiento,telefono,pais,foto} = req.body
+//Verificacion alumno
+const verificacion = async (req, res) => {
+  const { fecha_de_nacimiento, telefono, pais, foto } = req.body;
 
-if (!ID || !fecha_de_nacimiento || !telefono || !pais || !foto) {
-  return res.status(400).json({ error: 'Todos los campos son requeridos' });
-}
+  
+  if (!fecha_de_nacimiento || !telefono || !pais || !foto) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
 
-try { 
-const query = await client.query('SELECT fecha_de_nacimiento, telefono, pais, foto FROM public.alumnos WHERE "ID" = $1; ')
-const { rows } = await client.query(query, [ID]);
+  try {
+    const { rows } = await client.query(
+      `SELECT fecha_de_nacimiento, telefono, pais, foto 
+       FROM public.alumnos 
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4`,
+      [fecha_de_nacimiento, telefono, pais, foto]
+    );
 
-
-if (rows.length === 1) {
-  return res.json({
-    message: 'Verificacion del alumno obtenido con éxito',
-    perfil: rows[0]
-  });
-} else {
-  return res.status(404).json({ error: 'Alumno ya registrado' });
-}
-} catch (err) {
-console.error('Error al obtener la verificacion del alumno:', err);
-return res.status(500).json({ error: 'Error al obtener la verificacion del alumno' });
-}
+    if (rows.length > 0) {
+      return res.status(409).json({ error: 'El alumno ya está registrado' });
+    } else {
+      return res.json({
+        message: 'Alumno registrado con exito'
+      });
+    }
+  } catch (err) {
+    console.error('Error al verificar el alumno:', err);
+    return res.status(500).json({ error: 'Error al verificar el alumno' });
+  }
 };
 
 //obtener todos los alumnos
