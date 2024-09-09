@@ -1,14 +1,69 @@
 import {client} from '../dbconfig.js'
-//import jwt from 'jsonwebtoken';
+import bcrypt from "bcryptjs"
+import jwt from 'jsonwebtoken';
 
 //const JWT_secret = 'Learnhubtoken'
-
-//const loginalumno = async (req, res) => {
-//const {Email, contraseña,}
+const secret = process.env.JWT_SECRET
 
 
 //}
 
+
+//LOG IN 
+const login = async (req, res) => {
+  const { usuario, contraseña } = req.body;
+
+  try {
+    const checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
+
+    if (!checkUser.rows.length) { 
+      return res.status(404).send("Not found");
+    } else {
+      const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña); // Cambié checkUser.contraseña a checkUser.rows[0].contraseña
+      if (isValidated) {
+         // Generar JWT
+         const token = jwt.sign({ id: checkUser.rows[0].ID },
+         secret, { expiresIn: '1h' });
+
+        return res.status(200).send("Logged in!");
+      } else {
+        return res.status(200).send("Wrong password");
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message }); // Enviando el error como un objeto JSON
+  }
+};
+
+//Verificacion alumno
+const verificacion = async (req, res) => {
+  const { fecha_de_nacimiento, telefono, pais, foto } = req.body;
+
+  
+  if (!fecha_de_nacimiento || !telefono || !pais || !foto) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+    const { rows } = await client.query(
+      `SELECT fecha_de_nacimiento, telefono, pais, foto 
+       FROM public.alumnos 
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4`,
+      [fecha_de_nacimiento, telefono, pais, foto]
+    );
+
+    if (rows.length > 0) {
+      return res.status(409).json({ error: 'El alumno ya está registrado' });
+    } else {
+      return res.json({
+        message: 'Alumno registrado con exito'
+      });
+    }
+  } catch (err) {
+    console.error('Error al verificar el alumno:', err);
+    return res.status(500).json({ error: 'Error al verificar el alumno' });
+  }
+};
 
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
@@ -46,15 +101,22 @@ const getalumnobyID = async (req, res) => {
 
 // Crear un alumno
 const createAlumno = async (req, res) => {
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas } = req.body;
+
+  // Verificación de campos requeridos
+  if (!nombre || !apellido || !contraseña || !fecha_de_nacimiento || !foto|| !email || !telefono || !pais || !idiomas) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
 try {
- const result = await client.query(
-      "INSERT INTO alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas,IDclases) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
-      [nombre, apellido, contraseña, fecha_de_nacimiento, foto, Email, telefono, pais, idiomas, IDclases]
+    const salt = await bcrypt.genSalt(10)
+    const hashedContraseña = await bcrypt.hash(contraseña, salt)
+    const result = await client.query(
+      'INSERT INTO public.alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [nombre, apellido, hashedContraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas]
     );
 
     res.status(201).json({
-      message: ('Alumno creado con éxito'),
+      message: 'Alumno creado con éxito',
       alumno: result.rows[0]  
     });
   } catch (err) {
@@ -62,16 +124,17 @@ try {
     res.status(500).json({ error: err.message });
   }
 };
+
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
 
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas,IDclases, ID} = req.body;
+  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID} = req.body;
   
   
-  // try {
+  try {
     const result = await client.query(
-      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9, IDclases=$10 WHERE "ID" = $11 RETURNING *',
-      [nombre, apellido,  contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, IDclases, ID]
+      'UPDATE alumnos SET nombre = $1, apellido = $2, contraseña = $3, fecha_de_nacimiento = $4, foto = $5, email = $6, telefono = $7, pais = $8, idiomas = $9 WHERE "ID" = $10 RETURNING *',
+      [nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas, ID]
     );
 
     if (result.rows.length > 0) {
@@ -79,9 +142,9 @@ const updateAlumno = async (req, res) => {
     } else {
       res.status(404).send('Alumno no encontrado');
     }
-  // } catch (err) {
-  //   res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
-  // }
+   } catch (err) {
+     res.status(500).send(`Error al actualizar el alumno: ${err.message}`);
+   }
 };
 
 //Eliminar alumno 
@@ -98,7 +161,7 @@ if (result.rows.length > 0) {
 };
 
 //obtener las clases de un alumno
-const getclasebyalumno = async (req, res) => {
+/* const getclasebyalumno = async (req, res) => {
   try {
     const ID = req.params.ID;
     const valoracion = req.params.valoracion
@@ -123,7 +186,7 @@ const getclasebyalumno = async (req, res) => {
 
     // Consulta para obtener las valoraciones de la clase
     const queryvaloracion = 'SELECT * FROM "valoraciones" WHERE "IDclases"=$1';
-    const { rows: valoraciones } = await client.query(queryvaloracion, [idclases]);
+    const { rows: valoracion } = await client.query(queryvaloracion, [idclases]);
 
 if (valoraciones.length === 0) {
     return res.status(404).json({ error: 'No se encontraron valoraciones de la clase' });
@@ -137,16 +200,45 @@ if (valoraciones.length === 0) {
     res.status(500).json({ error: 'Error al obtener las clases del alumno' });
   }
 };
+*/
+
+const getperfilalumno = async (req, res) => {
+  try {
+    const ID = req.params.ID;
+
+    if (!ID) {
+      return res.status(400).json({ error: 'ID es requerido' });
+    }
+
+    const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais FROM public.alumnos WHERE "ID" = $1';
+    const { rows } = await client.query(query, [ID]);
+
+    if (rows.length === 1) {
+      return res.json({
+        message: 'Perfil de alumno obtenido con éxito',
+        perfil: rows[0]
+      });
+    } else {
+      return res.status(404).json({ error: 'Alumno no encontrado' });
+    }
+  } catch (err) {
+    console.error('Error al obtener el perfil del alumno:', err);
+    return res.status(500).json({ error: 'Error al obtener el perfil del alumno' });
+  }
+};
+
 
 
 const alumnos = {
-  //loginalumno,
+  login,
+  verificacion,
   getalumnos,
   getalumnobyID,
   createAlumno,
   updateAlumno,
   deleteAlumno,
-  getclasebyalumno
+ // getclasebyalumno,
+  getperfilalumno
 };
 
 export default alumnos;

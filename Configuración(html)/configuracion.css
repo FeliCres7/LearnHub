@@ -1,0 +1,62 @@
+.info-perfil-div{
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px #00000066;
+    width: 80%;
+    font-size: 18px;
+}
+.info-perfil-div h1{
+    padding-bottom: 30px;
+}
+.foto-perfil{
+display: flex;
+align-items: center;
+margin-bottom: 20px;
+}
+.foto-perfil *{
+    padding-right: 20px;
+}
+.info-perfil-div button{
+    border: 1px solid #424242;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-weight: 500;
+    background-color: #ffffff;
+}
+
+.disponibilidad{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    justify-content: center;
+    margin-top: 20px;
+}
+.disponibilidad button{
+    width: 60%;
+    padding: 5px 5px;
+    font-size: 22px;
+}
+.confirmar{
+    display: flex;
+    justify-content: flex-end;
+    
+}
+.confirmar button{
+    padding: 10px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+}
+.datos-perfil p{
+    font-size: 14px;
+    padding-bottom: 5px;
+}
+.datos-perfil input{
+    background-color: #EDF3F8;
+    border: none;
+    box-shadow: 0 2px 3px #00000066;
+    border-radius: 5px;
+    font-size: 18px;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+}
