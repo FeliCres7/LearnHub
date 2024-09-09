@@ -245,7 +245,7 @@ POST http://localhost:3000/clases/valoracionbyclases HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclases": 17,
+"IDclases": 15,
 "valoracion": 5,
 "fecha": "2024/8/25",
 "IDalumnos": 6

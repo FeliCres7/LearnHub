@@ -6,8 +6,6 @@ import jwt from 'jsonwebtoken';
 const secret = process.env.JWT_SECRET
 
 
-//}
-
 
 //LOG IN 
 const login = async (req, res) => {
