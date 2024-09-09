@@ -137,7 +137,8 @@ Content-Type: application/json
 "pais":"Argentina", 
 "idiomas":"español y hungaro",
 "foto": ".",
-"descripcion_corta":"Hola soy eric y me encanta enseñar"
+"descripcion_corta":"Hola soy eric y me encanta enseñar",
+"disponibilidad_horaria":"14:00"
  
 }
 
@@ -162,13 +163,14 @@ Content-Type: application/json
 "idiomas":"español y hungaro",
 "foto": ".",
 "descripcion_corta":"Hola soy eze y me encanta enseñar",
+"disponibilidad_horaria":"14:00",
  "ID": "1"
 }
 
 ###
 //Eliminar un profesor
 
-DELETE http://localhost:3000/profesores/1 HTTP/1.1
+DELETE http://localhost:3000/profesores/13 HTTP/1.1
 
 ###
 //Obtener las clases de un profesor
@@ -245,7 +247,7 @@ POST http://localhost:3000/clases/valoracionbyclases HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclases": 17,
+"IDclases": 15,
 "valoracion": 5,
 "fecha": "2024/8/25",
 "IDalumnos": 6

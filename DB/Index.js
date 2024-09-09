@@ -5,6 +5,7 @@ import clases from './controllers/clases.js';
 import material from './controllers/Material.js'
 import materia from './controllers/Materia.js'
 import { client } from './dbconfig.js'
+import cors from "cors"
 const app = express();
 const port = 3000;
 //const jwt = require('jsonwebtoken');
@@ -19,7 +20,7 @@ app.listen(port, () => {
 
 //Middleware
 app.use(express.json());
-
+app.use(cors())
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
