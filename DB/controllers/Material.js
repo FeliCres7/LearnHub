@@ -51,7 +51,7 @@ const {IDprofesor, IDalumno, materia, Fecha} = req.body;
     // Respuesta exitosa
     res.status(201).json({
       message: 'material creado con éxito',
-      clase: result.rows[0]  
+      material: result.rows[0]  
     });
   } catch (err) {
     res.status(500).send(err)

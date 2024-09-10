@@ -83,3 +83,7 @@ app.get('/Material/:ID', material.getmaterialByID);
 app.post('/Material', material.creatematerial);
 app.put('/Material/ID', material.updatematerial);
 app.delete('/Material/:ID', material.deletematerial);
+
+//reservaciones
+app.get('/reservaciones', reservaciones.getreservarclase);
+app.post('/reservaciones', reservaciones.createreservarclase);
