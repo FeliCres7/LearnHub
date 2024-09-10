@@ -230,6 +230,7 @@ footer img{
 .main-misprofesores{
     background-color: #dae8ff;
     margin-top: 65px;
+    padding-bottom: 20px;
     min-height: 75vh;
     display: flex;
     justify-content: space-between;
