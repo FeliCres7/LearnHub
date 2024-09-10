@@ -40,18 +40,17 @@ header div{
     height: fit-content;
 
 }
- header button{
-     background-color:#ffffff;
-     color: #001767;
-     border:1px solid #001767;
-     border-radius: 54px;
-     padding: 5px 10px;
-     font-size: 16px;
-     font-weight: 700;
- }
- header p{
-     margin: 0px;
- }
+header button{
+    background-color:#ffffff;
+    color: #001767;
+    border:1px solid #001767;
+    border-radius: 54px;
+    font-size: 16px;
+    font-weight: 700;
+}
+header p{
+    margin: 0px;
+}
 main {
     display: flex;
     justify-content: center;
@@ -152,3 +151,4 @@ main {
 text-decoration: none;
 color: #1565C0;
 }
+

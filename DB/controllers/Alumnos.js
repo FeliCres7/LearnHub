@@ -68,7 +68,6 @@ const getalumnos = async (_, res) => {
   try {
     const { rows } = await client.query('SELECT * FROM Alumnos');
     res.json(rows);
-    res.send("Alumnos obtenidos con exito")
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

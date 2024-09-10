@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+    background-image: url('/Images html/Presentacion.png');
+    font-family: "Encode Sans Semi Expanded", sans-serif;
+    color: #001767;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+}
+
+div {
+    background-image: url('/Images html/Virtual-meeting-person.png');
+    background-size: contain; /* O 'cover', según cómo quieras que se ajuste */
+    background-repeat: no-repeat;
+    background-position: center;
+    
+}
+main{
+    display: flex;
+    flex-direction:row;
+}
+aside{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+aside img{
+width: 80%;
+height: auto;
+}
+aside div{
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+}
+aside p{
+    margin: 10px;
+    padding: 10px;
+    width: ;
+    border: 1px solid #001767;
+    border-radius: 30px;
+
+}
+.textaside{
+    display: flex;
+    flex-direction: column;
+}
+
+header button{
+    background-color:#ffffff;
+    color: #001767;
+    border: 2px solid #001767;
+    border-radius: 54px;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 10px;
+}
+.registrarse{
+    border: none;
+}
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+header div{
+    display: flex;
+    flex-direction: row;
+    color:#001767;
+    padding-top:10px;
+    padding-right: 5px;
+    align-items: center;
+    height: fit-content;
+    width: fit-content;
+}
+body h2{
+    margin-bottom: 20px;
+    font-size: 50px;
+}
+body h3{
+    margin-top: 15px;
+    font-size: 30px;
+    font-weight: 500;
+    font-size: 40px;
+}
+.contenedor-botones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+    gap: 10px; /* Espacio entre los botones */
+    justify-items: center; /* Centra los botones horizontalmente */
+    margin-top: 20px;
+    
+  }
+  
+  button {
+    background-color: #e0eafc; /* Color de fondo similar */
+    border: #001767;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px; /* Bordes redondeados */
+    cursor: pointer;
+    color:#001767;
+    border: 2px solid #001767;
+    width: 100%;
+    width: 150px;
+
+  }
+  
+  button:hover {
+    background-color: #cdd9f0; /* Cambia el color al pasar el ratón */
+  }
+  

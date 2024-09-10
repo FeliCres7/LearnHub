@@ -4,6 +4,7 @@ import profesores from './controllers/Profesores.js';
 import clases from './controllers/clases.js';
 import material from './controllers/Material.js'
 import materia from './controllers/Materia.js'
+import reservaciones from "./controllers/reservaciones.js";
 import { client } from './dbconfig.js'
 import cors from "cors"
 const app = express();
@@ -20,7 +21,9 @@ app.listen(port, () => {
 
 //Middleware
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+  origin: "http://127.0.0.1:5500"
+}));
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
