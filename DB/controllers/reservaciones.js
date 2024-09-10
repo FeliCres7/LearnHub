@@ -12,8 +12,6 @@ try {
 
 
 
-
-
 const reservaciones = {
    getreservarclase,
   
