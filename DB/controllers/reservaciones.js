@@ -14,7 +14,7 @@ try {
 
 const reservaciones = {
    getreservarclase,
-  
+   //createreservarclase,
   };
   
   export default reservaciones;
