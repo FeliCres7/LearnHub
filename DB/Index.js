@@ -22,7 +22,8 @@ app.listen(port, () => {
 //Middleware
 app.use(express.json());
 app.use(cors({
-  origin: "http://127.0.0.1:5500"
+  origin: "*", // origen permitido
+  methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
 }));
 
 app.get("/", (req, res) => {
