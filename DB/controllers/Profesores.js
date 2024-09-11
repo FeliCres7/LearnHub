@@ -183,6 +183,16 @@ const deleteprof = async (req,res) => {
     }
   };
 
+  const getprofbymaterias = async (req,res) => {
+  const materias = req.query
+  
+  //const query = 'SELECT 
+
+
+
+
+  }
+
 const profesores = {
   loginprof,
   verificacionprof,
@@ -192,6 +202,7 @@ const profesores = {
   updateprof,
   deleteprof,
  getperfilprof,
+ getprofbymaterias,
 
 };
 
