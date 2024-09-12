@@ -59,9 +59,8 @@ const createmateria = async (req, res) => {
 };
 
 
-// Actualizar una clase
+// Actualizar una materia
 const updatemateria = async (req, res) => {
-  console.log(req.body)
   const { nombre_materia, ID } = req.body;
 
   // Validar los datos aquí si es necesario
@@ -71,7 +70,7 @@ const updatemateria = async (req, res) => {
 
   try {
     const result = await client.query(
-      'UPDATE public.materias SET "nombre_materia" = $1 WHERE "ID= $2 RETURNING *',
+      'UPDATE public.materias SET nombre_materia = $1 WHERE "ID"= $2 RETURNING *',
       [ID, nombre_materia]
     );
 

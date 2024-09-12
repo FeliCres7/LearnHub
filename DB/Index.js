@@ -7,8 +7,9 @@ import materia from './controllers/Materia.js'
 import reservaciones from "./controllers/reservaciones.js";
 import { client } from './dbconfig.js'
 import cors from "cors"
-const path = require('path');
-const multer = require('multer');
+import path from "path";
+import multer from "multer";
+import fs from "fs"
 const app = express();
 const port = 3000;
 //const jwt = require('jsonwebtoken');
@@ -28,23 +29,25 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
 }));
 
-// Configuración para almacenar las imágenes
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); 
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); 
-  }
+// fotos en la bdd
+const upload = multer({dest:'uploads/'})
+
+app.post ('/images/single',upload.single('imagenperfil'),(req,res)=> {
+console.log(req.file);
+saveImage(req.file);
+res.send('foto subida');
 });
 
-const upload = multer({ storage });
+app.post ('/images/multi', upload.array('photos',10), (req,res)=> {
+req.files.map(saveImage);
+res.send('fotos subidas');
 
-// Hacer disponible `upload` para las rutas
-app.use((req, res, next) => {
-  req.upload = upload;
-  next();
-});
+})
+function saveImage(file){
+  const newpath=`./uploads/${file.originalname}`;
+  fs.renameSync(file.path,newpath)
+  return newpath;
+}
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");

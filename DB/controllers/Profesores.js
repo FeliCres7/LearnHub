@@ -1,6 +1,6 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
-const router = express.Router();
+
 
 //LOG IN
 const loginprof = async (req, res) => {
@@ -118,8 +118,7 @@ const updateprof = async (req, res) => {
       nombre, apellido, fecha_de_nacimiento, email,
       telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID
     } = req.body;
-    console.log(nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID);
-
+    
     // Ejecutar la consulta SQL para actualizar el registro del profesor
     const result = await client.query(
       `UPDATE public."profesores"
@@ -183,17 +182,6 @@ const deleteprof = async (req,res) => {
     }
   };
 
-  // Ruta para subir foto de profesor
-router.post('/upload', (req, res) => {
-  const upload = req.upload.single('foto'); // Usamos el middleware de multer configurado en index.js
-
-  upload(req, res, async (err) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  })
-
-})
 
 //obtener las materias de los profesores
   const getdicta = async (_,res) => {

@@ -344,7 +344,7 @@ Content-Type: application/json
 
 {
 "nombre_materia": "ingles",
-"ID": "1"
+"ID": 1
 }
 
 ###
