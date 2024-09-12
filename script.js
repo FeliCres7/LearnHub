@@ -10,7 +10,9 @@ document.getElementById('menubutton').addEventListener('click', function() {
 });
 
 const btn = document.getElementById("btnCheck")
-const mainCards = document.getElementsByClassName("lista-misprofesores")
+const mainCards = document.getElementById("lista-misprofesores")
+console.log(mainCards);
+
 
 function CreateProfCard (prof) {
     return `
@@ -24,11 +26,11 @@ function CreateProfCard (prof) {
             </div>
             <div class="datacontainer">
                 <p class="bold">Días:</p>
-                <p> Lunes </p>
+                <p>Echu pone dias</p>
             </div>
             <div class="datacontainer">
                 <p class="bold">Horarios:</p>
-                <p> 13:30-14:30</p>
+                <p>${prof.disponibilidad_horaria}</p>
             </div>
         </div>
         <div class="botones-profesor">
