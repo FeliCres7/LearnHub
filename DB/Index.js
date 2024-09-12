@@ -7,6 +7,8 @@ import materia from './controllers/Materia.js'
 import reservaciones from "./controllers/reservaciones.js";
 import { client } from './dbconfig.js'
 import cors from "cors"
+const path = require('path');
+const multer = require('multer');
 const app = express();
 const port = 3000;
 //const jwt = require('jsonwebtoken');
@@ -25,6 +27,24 @@ app.use(cors({
   origin: "*", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
 }));
+
+// Configuración para almacenar las imágenes
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); 
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); 
+  }
+});
+
+const upload = multer({ storage });
+
+// Hacer disponible `upload` para las rutas
+app.use((req, res, next) => {
+  req.upload = upload;
+  next();
+});
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");

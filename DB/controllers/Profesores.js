@@ -1,5 +1,6 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
+const router = express.Router();
 
 //LOG IN
 const loginprof = async (req, res) => {
@@ -182,6 +183,18 @@ const deleteprof = async (req,res) => {
     }
   };
 
+  // Ruta para subir foto de profesor
+router.post('/upload', (req, res) => {
+  const upload = req.upload.single('foto'); // Usamos el middleware de multer configurado en index.js
+
+  upload(req, res, async (err) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  })
+
+})
+
 //obtener las materias de los profesores
   const getdicta = async (_,res) => {
 try{
@@ -240,8 +253,10 @@ const profesores = {
  getperfilprof,
  getprofbymaterias,
  getdicta,
- createdicta
+ createdicta,
+
 
 };
 
 export default profesores;
+  
