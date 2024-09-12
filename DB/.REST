@@ -131,7 +131,6 @@ Content-Type: application/json
 "contraseña": "eric2007",
 "fecha_de_nacimiento":"2007/7/19", 
 "email":"ericeltodo@gmail.com",
-"materias":"base de datos", 
 "telefono":"5491133750973",
 "valoracion":"9",
 "pais":"Argentina", 
@@ -156,7 +155,6 @@ Content-Type: application/json
 "contraseña": "benja2008",
 "fecha_de_nacimiento":"2007/7/19", 
 "email":"ezeagr@gmail.com",
-"materias":"base de datos", 
 "telefono":"5491133750973",
 "valoracion":"9",
 "pais":"Argentina", 
@@ -321,7 +319,7 @@ POST http://localhost:3000/materia HTTP/1.1
 Content-Type: application/json
 
 {
-"nombre_materia": ""
+"nombre_materia": "español e ingles"
 }
 
 ###
@@ -331,7 +329,8 @@ PUT http://localhost:3000/materia/ID HTTP/1.1
 Content-Type: application/json
 
 {
-"nombre_materia": "ingles"
+"nombre_materia": "ingles",
+"ID": "1"
 }
 
 ###

@@ -90,13 +90,13 @@ const getprofbyID = async (req, res) => {
 
 //Crear un profesor
 const createprof = async (req, res) => {
-  const {nombre,apellido,fecha_de_nacimiento,email,materias,telefono,valoracion,pais,idiomas,foto,descripcion_corta,contraseña, disponibilidad_horaria} = req.body;
+  const {nombre,apellido,fecha_de_nacimiento,email,telefono,valoracion,pais,idiomas,foto,descripcion_corta,contraseña, disponibilidad_horaria,dias} = req.body;
   try {
     const salt = await bcrypt.genSalt(10)
     const hashedContraseña = await bcrypt.hash(contraseña,salt)
     const result = await client.query(
-      'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta,contraseña, disponibilidad_horaria ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *',
-      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, hashedContraseña, disponibilidad_horaria]
+      'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta,contraseña, disponibilidad_horaria, dias ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *',
+      [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, hashedContraseña, disponibilidad_horaria, dias]
     );
     res.status(201).json({
       message: ('Profesor creado con éxito'),
@@ -112,23 +112,22 @@ const createprof = async (req, res) => {
 
 const updateprof = async (req, res) => {
   try {
-    // Imprimir los datos recibidos en el cuerpo de la solicitud
     console.log(req.body);
     const {
-      nombre, apellido, fecha_de_nacimiento, email, materias,
-      telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, ID
+      nombre, apellido, fecha_de_nacimiento, email,
+      telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID
     } = req.body;
-    console.log(nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, ID);
+    console.log(nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID);
 
     // Ejecutar la consulta SQL para actualizar el registro del profesor
     const result = await client.query(
       `UPDATE public."profesores"
        SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
-           materias = $5, telefono = $6, valoracion = $7, pais = $8,
-           idiomas = $9, foto = $10, descripcion_corta = $11, contraseña = $12, disponibilidad_horaria = $13
-       WHERE "ID" = $14
+            telefono = $5, valoracion = $6, pais = $7,
+           idiomas = $8, foto = $9, descripcion_corta = $10, contraseña = $11, disponibilidad_horaria = $12
+       , dias=$13 WHERE "ID" = $14
        RETURNING *`,
-      [nombre, apellido, fecha_de_nacimiento, email, materias, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, ID]
+      [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID]
     );
 
     // Verificar el resultado de la actualización
@@ -183,6 +182,20 @@ const deleteprof = async (req,res) => {
     }
   };
 
+//crear crud de dicta, hacer que profesores dicten materias
+  const getdicta = async (req,res) => {
+
+
+
+  }
+ 
+
+  const createdicta = async (req,res) => {
+
+
+
+  }
+  
   const getprofbymaterias = async (req,res) => {
   const materias = req.query
   
@@ -203,6 +216,8 @@ const profesores = {
   deleteprof,
  getperfilprof,
  getprofbymaterias,
+ getdicta,
+ createdicta
 
 };
 

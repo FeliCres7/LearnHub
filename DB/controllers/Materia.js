@@ -72,7 +72,7 @@ const updatemateria = async (req, res) => {
   try {
     const result = await client.query(
       'UPDATE public.materias SET "nombre_materia" = $1 WHERE "ID= $2 RETURNING *',
-      [IDmateria, IDprofesor, horainicio, horafin, idiomas, Link, ID]
+      [ID, nombre_materia]
     );
 
     if (result.rows.length > 0) {

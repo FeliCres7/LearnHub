@@ -74,7 +74,7 @@ app.delete('/Clases/valoracionbyclases/:IDclases', clases.deletevaloracionbyclas
 app.get('/Materia', materia.getmateria);
 app.get('/Materia/:ID', materia.getmateriaByID);
 app.post('/Materia', materia.createmateria);
- app.put('/Materia/ID', materia.updatemateria);
+app.put('/Materia/ID', materia.updatemateria);
 app.delete('/Materia/:ID', materia.deletemateria);
 
 //Material
