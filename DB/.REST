@@ -177,7 +177,21 @@ GET http://localhost:3000/profesores/3/clasebyprof/4 HTTP/1.1
 
 //Obtener perfil del profesor
 ###
- GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1
+GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1
+
+
+// obtener materias de los profesores
+### 
+GET http://localhost:3000/profesores/dicta HTTP/1.1
+
+// obtener materias de los profesores
+### 
+POST http://localhost:3000/profesores/dicta/1 HTTP/1.1
+Content-Type: application/json
+
+{
+"idmateria":1
+}
 
                                                                        //CLASES
 

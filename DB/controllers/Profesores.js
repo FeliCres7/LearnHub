@@ -182,20 +182,43 @@ const deleteprof = async (req,res) => {
     }
   };
 
-//crear crud de dicta, hacer que profesores dicten materias
-  const getdicta = async (req,res) => {
-
-
-
-  }
+//obtener las materias de los profesores
+  const getdicta = async (_,res) => {
+try{
+const {rows} = await client.query('SELECT * FROM public.dicta');
+res.json (rows);
+} catch (err){
+res.send("materias obtenidas con exito");
+res.status(500).json ({ error: err.message });
+  }  
+}  
  
+//crear las materias de los profesores
+  const createdicta = async (req,res) => { 
+  const {idmateria} = req.body;
+ 
+  if (!idmateria) {
+  return res.status(400).json ({ error: 'Todos los campos son requeridos'});
+}
+try{
+const query= `INSERT INTO public."dicta" ("idmateria") VALUES ($1) RETURNING *`;
 
-  const createdicta = async (req,res) => {
+const values = [idmateria]
+const result = await client.query(query,values);
+ res.status(201).json({
+  message: 'materia creada con éxito',
+  dicta: result.rows[0]  
+});
+} catch (err) {
+res.status(500).send(err)
+}
+};
 
 
 
-  }
-  
+
+
+
   const getprofbymaterias = async (req,res) => {
   const materias = req.query
   

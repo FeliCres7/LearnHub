@@ -57,7 +57,8 @@ app.put('/profesores/ID', profesores.updateprof);
 app.delete('/profesores/:ID', profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
 app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
-
+app.get('/profesores/dicta', profesores.getdicta);
+app.post('/profesores/dicta/:ID', profesores.createdicta);
 
 //Clases
 app.get('/clases', clases.getClases);

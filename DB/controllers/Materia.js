@@ -51,7 +51,7 @@ const createmateria = async (req, res) => {
     // Respuesta exitosa
     res.status(201).json({
       message: 'materia creada con éxito',
-      clase: result.rows[0]  
+      materia: result.rows[0]  
     });
   } catch (err) {
     res.status(500).send(err)
