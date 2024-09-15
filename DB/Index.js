@@ -10,9 +10,11 @@ import cors from "cors"
 import path from "path";
 import multer from "multer";
 import fs from "fs"
+import jwt from "jsonwebtoken"
+import cookieparser from 'cookie-parser'
 const app = express();
 const port = 3000;
-//const jwt = require('jsonwebtoken');
+
 
 
 client.connect()
@@ -22,13 +24,21 @@ app.listen(port, () => {
   console.log(`Learnhub listening on port ${port}!`);
 })
 
+
 //Middleware
 app.use(express.json());
+app.use(cookieparser());
 app.use(cors({
   origin: "*", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
 }));
 
+// hacer logout ( no significa delete !)
+app.post ('logout',(req,res) => {
+  res 
+  .clearCookie('access_token')
+  .json({message:'logout succesful'})
+})
 // fotos en la bdd
 const upload = multer({dest:'uploads/'})
 

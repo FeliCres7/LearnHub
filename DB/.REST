@@ -21,6 +21,14 @@ Content-Type: application/json
 }
 
 
+POST http://localhost:3000/token HTTP/1.1
+
+###
+GET http://localhost:3000/public HTTP/1.1
+
+###
+GET http://localhost:3000/private HTTP/1.1
+
 ###
 // OBTENER TODOS LOS ALUMNOS
 GET http://localhost:3000/Alumnos HTTP/1.1
