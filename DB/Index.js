@@ -10,7 +10,6 @@ import cors from "cors"
 import path from "path";
 import multer from "multer";
 import fs from "fs"
-import jwt from "jsonwebtoken"
 import cookieparser from 'cookie-parser'
 const app = express();
 const port = 3000;
@@ -57,7 +56,7 @@ function saveImage(file){
   const newpath=`./uploads/${file.originalname}`;
   fs.renameSync(file.path,newpath)
   return newpath;
-}
+} 
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");

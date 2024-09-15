@@ -2,6 +2,10 @@ import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken'
 
+//const JWT_secret = 'Learnhubtoken'
+const secret = process.env.JWT_SECRET
+
+
 //LOG IN
 const loginprof = async (req, res) => {
   const { usuario, contraseña } = req.body;
