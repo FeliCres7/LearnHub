@@ -38,8 +38,6 @@ const login = async (req, res) => {
 
     // Establecer cookie con el token
     res.cookie('access_token', token, {
-      httpOnly: true, // Accesible solo en el servidor
-      sameSite: 'strict', // Solo accesible en el mismo dominio
       maxAge: 1000 * 60 * 60 // Expira en 1 hora
     });
 

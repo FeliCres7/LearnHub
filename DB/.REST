@@ -21,8 +21,6 @@ Content-Type: application/json
 }
 
 
-POST http://localhost:3000/token HTTP/1.1
-
 ###
 GET http://localhost:3000/public HTTP/1.1
 
