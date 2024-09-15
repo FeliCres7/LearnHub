@@ -24,8 +24,5 @@
   },
   "devDependencies": {
     "@types/multer": "^1.4.12"
-  },
-  "eslintConfig": {
-    "extends": "standard"
   }
 }
