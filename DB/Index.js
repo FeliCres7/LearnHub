@@ -29,7 +29,8 @@ app.use(express.json());
 app.use(cookieparser());
 app.use(cors({
   origin: "*", // origen permitido
-  methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'], // metodos permitidos 
+ allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // hacer logout ( no significa delete !)
