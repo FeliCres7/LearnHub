@@ -317,7 +317,15 @@ color: #000000;
     flex-direction: row;
     justify-content: space-between;
 }
-
+.h1misprof{
+    background-color: #ffffff;
+    align-self: center;
+    background-color: #fff;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px #00000066;
+    padding: 10px 5px;
+    text-align: center;
+}
 .datacontainer{
     display: flex;
     flex-direction: row;
