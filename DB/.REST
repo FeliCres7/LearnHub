@@ -9,6 +9,19 @@ Content-Type: application/json
 }
 
 ###
+//REGISTRARSE 
+
+POST http://localhost:3000/auth/register HTTP/1.1
+
+Content-Type: application/json
+{
+    "nombre":"nicolas",
+    "apellido":"agradnik",
+    "email":"nicoagradnik@gmail.com",
+    "contraseña":"nico2012"
+}
+
+###
 // VERIFICACION ALUMNOS
 POST http://localhost:3000/Alumnos/verificacion HTTP/1.1
 Content-Type: application/json
@@ -258,7 +271,7 @@ POST http://localhost:3000/clases/valoracionbyclases HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclases": 15,
+"IDclases": 21,
 "valoracion": 5,
 "fecha": "2024/8/25",
 "IDalumnos": 6
@@ -267,7 +280,8 @@ Content-Type: application/json
 ###
 //Eliminar una valoracion 
 
-DELETE http://localhost:3000/Clases/valoracionbyclases/17 HTTP/1.1
+DELETE http://localhost:3000/Clases/valoracionbyclases/21/11 HTTP/1.1
+
 
 
                                  //MATERIAL

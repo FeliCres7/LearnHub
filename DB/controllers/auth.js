@@ -6,10 +6,10 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Función para registrar un nuevo usuario (alumno o profesor)
 const register = async (req, res) => {
-  const { nombre, apellido, email, contraseña, confirmarContraseña, tipoUsuario } = req.body;
+  const { nombre, apellido, email, contraseña} = req.body;
 
   // Validaciones de campos requeridos
-  if (!nombre || !apellido || !email || !contraseña || !confirmarContraseña || !tipoUsuario) {
+  if (!nombre || !apellido || !email || !contraseña) {
     return res.status(400).json({ error: 'Todos los campos son requeridos.' });
   }
 
@@ -50,7 +50,8 @@ const register = async (req, res) => {
   }
 };
 
-const registro = {
+const auth = {
+  
     register
 }
-export default registro;
+export default auth;

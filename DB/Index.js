@@ -10,6 +10,7 @@ import cors from "cors"
 import path from "path";
 import multer from "multer";
 import fs from "fs"
+import auth from "./controllers/auth.js";
 const app = express();
 const port = 3000;
 
@@ -53,6 +54,9 @@ app.get("/", (req, res) => {
 app.post('/Alumnos/login',alumnos.login);
 app.post('/profesores/login',profesores.loginprof);
 
+//registrarse
+app.post('/auth/register', auth.register)
+
 //VERIFICACION 
 app.post('/Alumnos/verificacion', alumnos.verificacion);
 app.post('/profesores/verificacionprof', profesores.verificacionprof);
@@ -85,7 +89,7 @@ app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
 app.get('/Clases/:ID/valoracionesbyclases', clases.getvaloracionbyclases);
 app.post('/Clases/valoracionbyclases', clases.createvaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases', clases.deletevaloracionbyclases);
+app.delete('/Clases/valoracionbyclases/:IDclases/:ID', clases.deletevaloracionbyclases);
 
 
 //Materia
