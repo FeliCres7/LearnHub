@@ -21,11 +21,6 @@ Content-Type: application/json
 }
 
 
-###
-GET http://localhost:3000/public HTTP/1.1
-
-###
-GET http://localhost:3000/private HTTP/1.1
 
 ###
 // OBTENER TODOS LOS ALUMNOS
@@ -70,14 +65,14 @@ Content-Type: application/json
     "telefono": "123",
     "pais": "argentina",
     "idiomas": "ingles",
-    "ID":"5"
+    "ID":"6"
     
 }
 
 ###
 //Eliminar un alumno
 
-DELETE http://localhost:3000/Alumnos/5 HTTP/1.1
+DELETE http://localhost:3000/Alumnos/15 HTTP/1.1
 
 ###
 //Obtener las clases de un alumno
@@ -86,7 +81,7 @@ GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 
 //Obtener perfil del alumno
 ###
- GET http://localhost:3000/Alumnos/15/perfilalumno HTTP/1.1
+ GET http://localhost:3000/Alumnos/7/perfilalumno HTTP/1.1
 
                                              //PROFESORES 
 
@@ -121,7 +116,7 @@ GET http://localhost:3000/profesores HTTP/1.1
 ###
 //Obtener un profesores por id
 
-GET http://localhost:3000/Profesores/1 HTTP/1.1
+GET http://localhost:3000/Profesores/2 HTTP/1.1
 
 ###
 //Crear un profesor
@@ -130,8 +125,6 @@ POST http://localhost:3000/profesores HTTP/1.1
 Content-Type: application/json
 
 {
-
-
 "nombre":"eric",
 "apellido":"gerzenstein", 
 "contraseña": "eric2007",
@@ -143,8 +136,8 @@ Content-Type: application/json
 "idiomas":"español y hungaro",
 "foto": ".",
 "descripcion_corta":"Hola soy eric y me encanta enseñar",
-"disponibilidad_horaria":"14:00"
- 
+"disponibilidad_horaria":"14:00",
+"dias": "martes"
 }
 
 ###
@@ -168,13 +161,13 @@ Content-Type: application/json
 "foto": ".",
 "descripcion_corta":"Hola soy eze y me encanta enseñar",
 "disponibilidad_horaria":"14:00",
- "ID": "1"
+ "ID": "6"
 }
 
 ###
 //Eliminar un profesor
 
-DELETE http://localhost:3000/profesores/13 HTTP/1.1
+DELETE http://localhost:3000/profesores/6 HTTP/1.1
 
 ###
 //Obtener las clases de un profesor
@@ -209,7 +202,7 @@ GET http://localhost:3000/clases HTTP/1.1
 ###
 //Obtener una clase por id
 
-GET http://localhost:3000/clases/19 HTTP/1.1
+GET http://localhost:3000/clases/20 HTTP/1.1
 
 ###
 //Crear una clase
@@ -249,7 +242,7 @@ Content-Type: application/json
 ###
 //Eliminar una clase
 
-DELETE http://localhost:3000/clases/16 HTTP/1.1
+DELETE http://localhost:3000/clases/20 HTTP/1.1
 
                                   //VALORACION
 
@@ -319,11 +312,11 @@ Content-Type: application/json
 ###
 //Eliminar un material
 
-DELETE http://localhost:3000/material/2 HTTP/1.1
+DELETE http://localhost:3000/material/1 HTTP/1.1
 
                                                                        //MATERIA
 ###
-//Obtener material
+//Obtener materia
 
 GET http://localhost:3000/materia HTTP/1.1
 
