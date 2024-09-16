@@ -10,15 +10,15 @@ Content-Type: application/json
 
 ###
 //REGISTRARSE 
-
-POST http://localhost:3000/auth/register HTTP/1.1
-
+POST http://localhost:3000/auth/register HTTP/1.1 
 Content-Type: application/json
+
 {
     "nombre":"nicolas",
     "apellido":"agradnik",
     "email":"nicoagradnik@gmail.com",
-    "contraseña":"nico2012"
+    "contraseña":"nico2012",
+    "tipoUsuario":"alumno"
 }
 
 ###
