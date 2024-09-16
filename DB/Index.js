@@ -10,10 +10,8 @@ import cors from "cors"
 import path from "path";
 import multer from "multer";
 import fs from "fs"
-import cookieparser from 'cookie-parser'
 const app = express();
 const port = 3000;
-
 
 
 client.connect()
@@ -23,22 +21,13 @@ app.listen(port, () => {
   console.log(`Learnhub listening on port ${port}!`);
 })
 
-
 //Middleware
 app.use(express.json());
-app.use(cookieparser());
 app.use(cors({
   origin: "*", // origen permitido
-  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'], // metodos permitidos 
- allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
 }));
 
-// hacer logout ( no significa delete !)
-app.post ('logout',(req,res) => {
-  res 
-  .clearCookie('access_token')
-  .json({message:'logout succesful'})
-})
 // fotos en la bdd
 const upload = multer({dest:'uploads/'})
 
@@ -48,16 +37,11 @@ saveImage(req.file);
 res.send('foto subida');
 });
 
-app.post ('/images/multi', upload.array('photos',10), (req,res)=> {
-req.files.map(saveImage);
-res.send('fotos subidas');
-
-})
 function saveImage(file){
   const newpath=`./uploads/${file.originalname}`;
   fs.renameSync(file.path,newpath)
   return newpath;
-} 
+}
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
