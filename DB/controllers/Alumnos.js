@@ -51,7 +51,6 @@ const login = async (req, res) => {
 };
 
 
-//registrarse 
 
 //Verificacion alumno
 const verificacion = async (req, res) => {
