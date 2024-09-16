@@ -13,11 +13,6 @@ const register = async (req, res) => {
     return res.status(400).json({ error: 'Todos los campos son requeridos.' });
   }
 
-  // Verificar que las contraseñas coincidan
-  if (contraseña !== confirmarContraseña) {
-    return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
-  }
-
   try {
     // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
@@ -28,9 +23,11 @@ const register = async (req, res) => {
     if (tipoUsuario === 'alumno') {
       query = 'INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *';
       table = 'alumnos';
+      const query2 = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *"
     } else if (tipoUsuario === 'profesor') {
       query = 'INSERT INTO public.profesores (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *';
       table = 'profesores';
+      const query2 = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *"
     } else {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
     }
