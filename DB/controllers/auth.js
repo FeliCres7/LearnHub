@@ -21,11 +21,9 @@ const register = async (req, res) => {
     // Dependiendo del tipo de usuario, insertar en la tabla correspondiente
     let query, table;
     if (tipoUsuario === 'alumno') {
-      query = 'INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *';
       table = 'alumnos';
       const query2 = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *"
     } else if (tipoUsuario === 'profesor') {
-      query = 'INSERT INTO public.profesores (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *';
       table = 'profesores';
       const query2 = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *"
     } else {
