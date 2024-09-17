@@ -180,7 +180,7 @@ Content-Type: application/json
 ###
 //Eliminar un profesor
 
-DELETE http://localhost:3000/profesores/6 HTTP/1.1
+DELETE http://localhost:3000/profesores/19 HTTP/1.1
 
 ###
 //Obtener las clases de un profesor

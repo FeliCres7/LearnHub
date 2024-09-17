@@ -61,14 +61,7 @@ app.post('/auth/register', auth.register)
 app.post('/Alumnos/verificacion', alumnos.verificacion);
 app.post('/profesores/verificacionprof', profesores.verificacionprof);
 
-//Alumnos
-app.get('/Alumnos', alumnos.getalumnos);
-app.get('/Alumnos/:ID', alumnos.getalumnobyID);
-app.post('/Alumnos', alumnos.createAlumno);
-app.put('/Alumnos/ID', alumnos.updateAlumno);
-app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
-//app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
-app.get('/Alumnos/:ID/perfilalumno',alumnos.getperfilalumno)
+
 
 //Profesores
 app.get('/profesores', profesores.getprof);
