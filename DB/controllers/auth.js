@@ -45,9 +45,38 @@ const register = async (req, res) => {
   }
 };
 
+const registerphoto= async (req, res) => {
+  try {
+      // Asegurarse de que se subió un archivo
+      if (!req.file) {
+          return res.status(400).send('Error: No se subió ningún archivo.');
+      }
+
+      // Obtener la ruta del archivo subido
+      const imageFile = req.file.path;
+
+      // Verificar la extensión del archivo
+      const extension = imageFile.split('.').pop().toLowerCase(); // Aseguramos que sea minúscula
+      const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
+
+      if (!extensionesPermitidas.includes(extension)) {
+          console.error('Extensión de archivo no permitida');
+          return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PDF, PNG, JPEG, y JPG');
+      };
+      res.status(200).send('Usuario registrado con éxito.');
+
+    } catch (error) {
+        console.error('Error al registrar usuario:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+}
 
 const auth = {
   
-    register
+    register,
+    registerphoto
+
 }
 export default auth;
+
+

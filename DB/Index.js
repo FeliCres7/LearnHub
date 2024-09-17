@@ -29,20 +29,37 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'] // metodos permitidos 
 }));
 
-// fotos en la bdd
-const upload = multer({dest:'uploads/'})
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = __dirname(__filename);
 
-app.post ('/images/single',upload.single('imagenperfil'),(req,res)=> {
-console.log(req.file);
-saveImage(req.file);
-res.send('foto subida');
+// Poner la ubicación de la carpeta de Uploads correspondiente, en este caso se ubica dentro del SRC
+const uploadDir = join(__dirname, "../uploads");
+
+// Se define donde se va a ubicar el archivo que vamos a subir y el nombre
+// El nombre asignado será la fecha de subida junto con el nombre original del archivo
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
 });
 
-function saveImage(file){
-  const newpath=`./uploads/${file.originalname}`;
-  fs.renameSync(file.path,newpath)
-  return newpath;
-}
+// Filtro para que solo se suban archivos con extensiones PDF, JPEG, PNG y JPG
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('Invalid file type. Only PDF, PNG, JPEG, and JPG files are allowed.'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+});
 
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
@@ -73,16 +90,6 @@ app.delete('/profesores/:ID', profesores.deleteprof);
 app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
 app.get('/profesores/dicta', profesores.getdicta);
 app.post('/profesores/dicta/:ID', profesores.createdicta);
-
-//Clases
-app.get('/clases', clases.getClases);
-app.get('/Clases/:ID', clases.getClaseByID);
-app.post('/Clases', clases.createClase);
-app.put('/Clases/ID', clases.updateClase);
-app.delete('/Clases/:ID', clases.deleteclase);
-app.get('/Clases/:ID/valoracionesbyclases', clases.getvaloracionbyclases);
-app.post('/Clases/valoracionbyclases', clases.createvaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases/:ID', clases.deletevaloracionbyclases);
 
 
 //Materia
