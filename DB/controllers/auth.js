@@ -1,6 +1,7 @@
 import { client } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import cloudinary from '../upload.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -13,6 +14,26 @@ const register = async (req, res) => {
   }
 
   try {
+    // Validar si se subió una imagen
+    if (!req.file) {
+      return res.status(400).send('Error: No se subió ningún archivo.');
+    }
+
+    // Obtener la ruta del archivo subido y verificar la extensión
+    const imageFile = req.file.path;
+    const extension = imageFile.split('.').pop().toLowerCase();
+    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
+
+    if (!extensionesPermitidas.includes(extension)) {
+      return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PDF, PNG, JPEG, y JPG');
+    }
+
+    // Subir la imagen a Cloudinary
+    const resultImage = await cloudinary.uploader.upload(imageFile, {
+      folder: 'analisis',
+    });
+    const imageUrl = resultImage.secure_url;
+
     // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedContraseña = await bcrypt.hash(contraseña, salt);
@@ -20,14 +41,14 @@ const register = async (req, res) => {
     // Dependiendo del tipo de usuario, insertar en la tabla correspondiente
     let query;
     if (tipoUsuario === 'alumno') {
-      query = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *";
+      query = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña, foto) VALUES ($1, $2, $3, $4, $5) RETURNING *";
     } else if (tipoUsuario === 'profesor') {
-      query = "INSERT INTO public.profesores (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *";
+      query = "INSERT INTO public.profesores (nombre, apellido, email, contraseña, foto) VALUES ($1, $2, $3, $4, $5) RETURNING *";
     } else {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
     }
 
-    const result = await client.query(query, [nombre, apellido, email, hashedContraseña]);
+    const result = await client.query(query, [nombre, apellido, email, hashedContraseña, imageUrl]);
 
     // Generar un token JWT
     const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, JWT_SECRET, {
@@ -38,6 +59,7 @@ const register = async (req, res) => {
       message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
       user: result.rows[0],
       token,
+      imageUrl,
     });
   } catch (err) {
     console.error('Error al registrar:', err.message);
@@ -45,36 +67,10 @@ const register = async (req, res) => {
   }
 };
 
-const registerphoto= async (req, res) => {
-  try {
-      // Asegurarse de que se subió un archivo
-      if (!req.file) {
-          return res.status(400).send('Error: No se subió ningún archivo.');
-      }
-
-      // Obtener la ruta del archivo subido
-      const imageFile = req.file.path;
-
-      // Verificar la extensión del archivo
-      const extension = imageFile.split('.').pop().toLowerCase(); // Aseguramos que sea minúscula
-      const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
-
-      if (!extensionesPermitidas.includes(extension)) {
-          console.error('Extensión de archivo no permitida');
-          return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PDF, PNG, JPEG, y JPG');
-      };
-      res.status(200).send('Usuario registrado con éxito.');
-
-    } catch (error) {
-        console.error('Error al registrar usuario:', error);
-        res.status(500).send('Error interno del servidor');
-    }
-}
 
 const auth = {
   
-    register,
-    registerphoto
+    register
 
 }
 export default auth;

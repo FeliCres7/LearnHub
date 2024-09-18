@@ -11,6 +11,9 @@ import path from "path";
 import multer from "multer";
 import fs from "fs"
 import auth from "./controllers/auth.js";
+import { fileURLToPath } from "url";
+import {dirname,join} from 'path'
+import cloudinary from "cloudinary";
 const app = express();
 const port = 3000;
 
@@ -30,7 +33,7 @@ app.use(cors({
 }));
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = __dirname(__filename);
+const __dirname = dirname(__filename);
 
 // Poner la ubicación de la carpeta de Uploads correspondiente, en este caso se ubica dentro del SRC
 const uploadDir = join(__dirname, "../uploads");
@@ -65,7 +68,7 @@ app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
 });
 
-//Rutas express!
+
 
 // LOG IN 
 app.post('/Alumnos/login',alumnos.login);
