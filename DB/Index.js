@@ -71,41 +71,6 @@ app.get("/", (req, res) => {
 app.post('/Alumnos/login',alumnos.login);
 app.post('/profesores/login',profesores.loginprof);
 
-//registrarse
-app.post('/auth/register', auth.register)
-
-//VERIFICACION 
-app.post('/Alumnos/verificacion', alumnos.verificacion);
-app.post('/profesores/verificacionprof', profesores.verificacionprof);
 
 
 
-//Profesores
-app.get('/profesores', profesores.getprof);
-app.get('/profesores/:ID', profesores.getprofbyID);
-app.post('/profesores', profesores.createprof);
-app.put('/profesores/ID', profesores.updateprof);
-app.delete('/profesores/:ID', profesores.deleteprof);
-// app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
-app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
-app.get('/profesores/dicta', profesores.getdicta);
-app.post('/profesores/dicta/:ID', profesores.createdicta);
-
-
-//Materia
-app.get('/Materia', materia.getmateria);
-app.get('/Materia/:ID', materia.getmateriaByID);
-app.post('/Materia', materia.createmateria);
-app.put('/Materia/ID', materia.updatemateria);
-app.delete('/Materia/:ID', materia.deletemateria);
-
-//Material
-app.get('/Material', material.getmaterial);
-app.get('/Material/:ID', material.getmaterialByID);
-app.post('/Material', material.creatematerial);
-app.put('/Material/ID', material.updatematerial);
-app.delete('/Material/:ID', material.deletematerial);
-
-//reservaciones
-app.get('/reservaciones', reservaciones.getreservarclase);
-app.post('/reservaciones', reservaciones.createreservarclase);
