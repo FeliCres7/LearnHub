@@ -414,3 +414,10 @@ margin-bottom: 15px;
     bottom: 0;
     margin: 0   ;
 }
+.botondescargar{
+    background: none;
+    border: 2px solid #424242;
+    border-radius: 10px;
+    flex-direction: row;
+    
+}
