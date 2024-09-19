@@ -1,15 +1,10 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
 import profesores from './controllers/Profesores.js';
-import clases from './controllers/clases.js';
-import material from './controllers/Material.js'
-import materia from './controllers/Materia.js'
-import reservaciones from "./controllers/reservaciones.js";
+import fs from 'fs'
 import { client } from './dbconfig.js'
 import cors from "cors"
-import path from "path";
 import multer from "multer";
-import fs from "fs"
 import auth from "./controllers/auth.js";
 import { fileURLToPath } from "url";
 import {dirname,join} from 'path'

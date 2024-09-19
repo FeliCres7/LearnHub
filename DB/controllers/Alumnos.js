@@ -1,7 +1,8 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken';
-//const JWT_secret = 'Learnhubtoken'
+
+
 const secret = process.env.JWT_SECRET
 
 
