@@ -1,8 +1,7 @@
 import express from 'express'
-import router from 'express';
-import alumnos from './controllers/Alumnos.js';
+import alumnos from '../controllers/Alumnos.js';
 
-
+const router = express.Router();
 
 //Alumnos
 router.get('/Alumnos', alumnos.getalumnos);

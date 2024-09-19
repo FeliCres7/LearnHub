@@ -1,7 +1,7 @@
 import express from 'express'
-import profesores from './controllers/profesores.js'
-import router from './materia.routers.js';
+import profesores from '../controllers/profesores.js'
 
+const router = express.Router();
 
 //Profesores
 router.get('/profesores', profesores.getprof);

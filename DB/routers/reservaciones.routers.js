@@ -1,6 +1,7 @@
 import express from 'express'
-import reservaciones from './controllers/reservaciones.js'
-import router from './materia.routers.js';
+import reservaciones from '../controllers/reservaciones.js'
+
+const router = express.Router();
 
 //reservaciones
 router.get('/reservaciones', reservaciones.getreservarclase);

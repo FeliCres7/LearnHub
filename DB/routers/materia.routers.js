@@ -1,6 +1,8 @@
 import express from 'express'
-import materia from './controllers/materia.js'
+import materia from '../controllers/materia.js'
 
+
+const router = express.Router();
 
 router.get('/Materia', materia.getmateria);
 router.get('/Materia/:ID', materia.getmateriaByID);

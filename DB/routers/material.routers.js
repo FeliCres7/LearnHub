@@ -1,7 +1,7 @@
 import express from 'express'
-import material from'./controllers/mateerial.js'
-import router from './materia.routers.js';
+import material from'../controllers/material.js'
 
+const router = express.Router();
 
 router.get('/Material', material.getmaterial);
 router.get('/Material/:ID', material.getmaterialByID);

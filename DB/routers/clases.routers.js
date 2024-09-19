@@ -1,7 +1,7 @@
 import express from 'express'
-import router from 'express'
-import clases from './controllers/clases.js';
+import clases from '../controllers/clases.js';
 
+const router = express.Router();
 
 router.get('/clases', clases.getClases);
 router.get('/Clases/:ID', clases.getClaseByID);
