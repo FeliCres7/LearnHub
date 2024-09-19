@@ -2,7 +2,6 @@ import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken';
 
-
 const secret = process.env.JWT_SECRET
 
 

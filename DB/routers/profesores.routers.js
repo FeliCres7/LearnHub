@@ -1,5 +1,7 @@
 import express from 'express'
 import profesores from './controllers/profesores.js'
+import router from './materia.routers.js';
+
 
 //Profesores
 router.get('/profesores', profesores.getprof);
@@ -11,3 +13,5 @@ router.delete('/profesores/:ID', profesores.deleteprof);
 router.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
 router.get('/profesores/dicta', profesores.getdicta);
 router.post('/profesores/dicta/:ID', profesores.createdicta);
+
+export default router;

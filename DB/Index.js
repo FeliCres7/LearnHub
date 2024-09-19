@@ -1,11 +1,15 @@
 import express from "express";
-import alumnos from './controllers/Alumnos.js';
-import profesores from './controllers/Profesores.js';
+import alumnos from "./routers/alumnos.routers.js";
+import auth from "./routers/auth.routers.js";
+import clases from "./routers/clases.routers.js";
+import materia from "./routers/materia.routers.js";
+import material from "./routers/material.routers.js";
+import profesores from "./routers/profesores.routers.js";
+import reservaciones from "./routers/reservaciones.routers.js";
 import fs from 'fs'
 import { client } from './dbconfig.js'
 import cors from "cors"
 import multer from "multer";
-import auth from "./controllers/auth.js";
 import { fileURLToPath } from "url";
 import {dirname,join} from 'path'
 import cloudinary from "cloudinary";
@@ -62,6 +66,16 @@ const upload = multer({
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub esta funcionando!");
 });
+
+
+
+app.use("/alumnos", alumnos)
+app.use("/auth", auth);
+app.use("/clases", clases);
+app.use("/materia", materia);
+app.use("/materia", material)
+app.use("/profesores", profesores);
+app.use("/reservaciones", reservaciones);
 
 
 
