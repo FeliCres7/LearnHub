@@ -101,6 +101,7 @@ app.post('/auth/login',auth.login);
 //registrarse
 app.post('/auth/register', upload.single('foto'), auth.register)
 
+
 //VERIFICACION 
 app.post('/Alumnos/verificacion', alumnos.verificacion);
 app.post('/profesores/verificacionprof', profesores.verificacionprof);

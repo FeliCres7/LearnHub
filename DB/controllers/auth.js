@@ -59,6 +59,7 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
   const { nombre, apellido, email, contraseña, tipoUsuario } = req.body;
+  console.log(req.body);
 
   // Validaciones de campos requeridos
   if (!nombre || !apellido || !email || !contraseña || !tipoUsuario) {
