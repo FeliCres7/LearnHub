@@ -1,11 +1,11 @@
 import express from "express";
-import alumnos from "./routers/alumnos.routers.js";
-import auth from "./routers/auth.routers.js";
-import clases from "./routers/clases.routers.js";
-import materia from "./routers/materia.routers.js";
-import material from "./routers/material.routers.js";  
-import profesores from "./routers/profesores.routers.js";
-import reservaciones from "./routers/reservaciones.routers.js";
+import alumnos from './controllers/Alumnos.js';
+import auth from './controllers/auth.js'
+import profesores from './controllers/Profesores.js';
+import clases from './controllers/clases.js';
+import material from './controllers/Material.js'
+import materia from './controllers/Materia.js'
+import reservaciones from "./controllers/reservaciones.js";
 import fs from 'fs';
 import { client } from './dbconfig.js';
 import cors from "cors";
@@ -62,18 +62,6 @@ app.get("/", (req, res) => {
   res.send("Proyecto Learnhub está funcionando!");
 });
 
-// Rutas de la API
-app.use("/alumnos", alumnos);
-app.use("/auth", auth);
-app.use("/clases", clases);
-app.use("/materia", materia);
-app.use("/material", material);  // Ruta de material corregida
-app.use("/profesores", profesores);
-app.use("/reservaciones", reservaciones);
-
-// Rutas de login
-app.post('/Alumnos/login', alumnos.login);
-app.post('/profesores/login', profesores.loginprof);
 
 // Manejo de archivos
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -97,3 +85,65 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Learnhub escuchando en el puerto ${port}!`);
 });
+
+
+//Rutas express!
+
+// LOG IN 
+app.post('/Alumnos/login',alumnos.login);
+app.post('/profesores/login',profesores.loginprof);
+
+//registrarse
+app.post('/auth/register', auth.register)
+//VERIFICACION 
+app.post('/Alumnos/verificacion', alumnos.verificacion);
+app.post('/profesores/verificacionprof', profesores.verificacionprof);
+
+//Alumnos
+app.get('/Alumnos', alumnos.getalumnos);
+app.get('/Alumnos/:ID', alumnos.getalumnobyID);
+app.post('/Alumnos', alumnos.createAlumno);
+app.put('/Alumnos/ID', alumnos.updateAlumno);
+app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
+//app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
+app.get('/Alumnos/:ID/perfilalumno',alumnos.getperfilalumno)
+
+//Profesores
+app.get('/profesores', profesores.getprof);
+app.get('/profesores/:ID', profesores.getprofbyID);
+app.post('/profesores', profesores.createprof);
+app.put('/profesores/ID', profesores.updateprof);
+app.delete('/profesores/:ID', profesores.deleteprof);
+// app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
+app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
+app.get('/profesores/dicta', profesores.getdicta);
+app.post('/profesores/dicta/:ID', profesores.createdicta);
+
+//Clases
+app.get('/clases', clases.getClases);
+app.get('/Clases/:ID', clases.getClaseByID);
+app.post('/Clases', clases.createClase);
+app.put('/Clases/ID', clases.updateClase);
+app.delete('/Clases/:ID', clases.deleteclase);
+app.get('/Clases/:ID/valoracionesbyclases', clases.getvaloracionbyclases);
+app.post('/Clases/valoracionbyclases', clases.createvaloracionbyclases);
+app.delete('/Clases/valoracionbyclases/:IDclases', clases.deletevaloracionbyclases);
+app.delete('/Clases/valoracionbyclases/:IDclases/:ID', clases.deletevaloracionbyclases);
+
+
+//Materia
+app.get('/Materia', materia.getmateria);
+app.get('/Materia/:ID', materia.getmateriaByID);
+app.post('/Materia', materia.createmateria);
+app.put('/Materia/ID', materia.updatemateria);
+app.delete('/Materia/:ID', materia.deletemateria);
+
+//Material
+app.get('/Material', material.getmaterial);
+app.get('/Material/:ID', material.getmaterialByID);
+app.post('/Material', material.creatematerial);
+app.put('/Material/ID', material.updatematerial);
+app.delete('/Material/:ID', material.deletematerial);
+
+//reservaciones
+app.get('/reservaciones', reservaciones.getreservarclase);
