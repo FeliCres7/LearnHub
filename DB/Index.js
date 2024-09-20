@@ -20,6 +20,7 @@ const port = 3000;
 // Conectar a la base de datos
 client.connect();
 
+
 // Middleware para JSON y CORS
 app.use(express.json());
 app.use(cors({
@@ -31,6 +32,11 @@ app.use(cors({
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const uploadDir = join(__dirname, "../uploads");
+
+// Asegurarse de que la carpeta existe, si no, crearla
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Configuración de almacenamiento de multer
 const storage = multer.diskStorage({
@@ -93,7 +99,7 @@ app.listen(port, () => {
 app.post('/auth/login',auth.login);
 
 //registrarse
-app.post('/auth/register', auth.register)
+app.post('/auth/register', upload.single('foto'), auth.register)
 
 //VERIFICACION 
 app.post('/Alumnos/verificacion', alumnos.verificacion);
