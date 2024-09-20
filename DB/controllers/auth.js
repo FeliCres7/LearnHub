@@ -58,11 +58,11 @@ const login = async (req, res) => {
 
 
 const register = async (req, res) => {
-  const { nombre, apellido, email, contraseña, tipoUsuario } = req.body;
+  const { nombre, apellido, email, contrasenia, tipoUsuario } = req.body;
   console.log(req.body);
 
   // Validaciones de campos requeridos
-  if (!nombre || !apellido || !email || !contraseña || !tipoUsuario) {
+  if (!nombre || !apellido || !email || !contrasenia || !tipoUsuario) {
     return res.status(400).json({ error: 'Todos los campos son requeridos.' });
   }
 
@@ -89,7 +89,7 @@ const register = async (req, res) => {
 
     // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
-    const hashedContraseña = await bcrypt.hash(contraseña, salt);
+    const hashedContraseña = await bcrypt.hash(contrasenia, salt);
 
     // Dependiendo del tipo de usuario, insertar en la tabla correspondiente
     let query;
