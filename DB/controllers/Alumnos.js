@@ -5,52 +5,6 @@ import jwt from 'jsonwebtoken';
 const secret = process.env.JWT_SECRET
 
 
-
-//LOG IN O INICIO DE SESION
-const login = async (req, res) => {
-  const { usuario, contraseña } = req.body;
-
-  // Validación: la contraseña debe tener más de 3 caracteres
-  if (!contraseña || contraseña.length <= 3) {
-    return res.status(400).send("La contraseña debe tener más de 3 caracteres.");
-  }
-
-  try {
-    const checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
-
-    if (!checkUser.rows.length) { 
-      return res.status(404).send("Usuario no encontrado.");
-    }
-
-    // Comparar contraseñas
-    const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña);
-    if (!isValidated) {
-      return res.status(401).send("Contraseña incorrecta.");
-    }
-
-    // Generar JWT
-    const token = jwt.sign(
-      { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    // Establecer cookie con el token
-    res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 60 // Expira en 1 hora
-    });
-
-    // Enviar respuesta con el usuario y token
-    return res.status(200).json({ usuario: checkUser.rows[0].nombre, token });
-
-  } catch (error) {
-    console.error('Error en login:', error.message);
-    return res.status(500).send("Error del servidor.");
-  }
-};
-
-
-
 //Verificacion alumno
 const verificacion = async (req, res) => {
   const { fecha_de_nacimiento, telefono, pais, foto } = req.body;
@@ -245,7 +199,7 @@ const getperfilalumno = async (req, res) => {
 
 
 const alumnos = {
-  login,
+
   verificacion,
   getalumnos,
   getalumnobyID,

@@ -90,11 +90,11 @@ app.listen(port, () => {
 //Rutas express!
 
 // LOG IN 
-app.post('/Alumnos/login',alumnos.login);
-app.post('/profesores/login',profesores.loginprof);
+app.post('/auth/login',auth.login);
 
 //registrarse
 app.post('/auth/register', auth.register)
+
 //VERIFICACION 
 app.post('/Alumnos/verificacion', alumnos.verificacion);
 app.post('/profesores/verificacionprof', profesores.verificacionprof);
