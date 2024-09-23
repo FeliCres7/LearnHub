@@ -92,7 +92,6 @@ app.listen(port, () => {
   console.log(`Learnhub escuchando en el puerto ${port}!`);
 });
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 //Rutas express!
 
