@@ -12,7 +12,6 @@ import cors from "cors";
 import multer from "multer";
 import { fileURLToPath } from "url";
 import { dirname, join } from 'path';
-import cloudinary from "cloudinary";
 
 const app = express();
 const port = 3000;

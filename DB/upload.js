@@ -4,8 +4,7 @@ cloudinary.config({
     cloud_name: "dirlzvaqd",
     api_key: "319517129175242",
     api_secret: "sXjtSugdTQSjIeREGvTcSLWPtHI",
-    secure: true,
-  rejectUnauthorized: false 
+    secure: true
   });
   
   export default cloudinary;
