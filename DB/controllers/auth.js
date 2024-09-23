@@ -111,11 +111,10 @@ const register = async (req, res) => {
     return res.status(201).json({
       message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
       user: result.rows[0],
-      token,
-      imageUrl,
+      token
     });
   } catch (err) {
-    console.error('Error al registrar:', err.message);
+    console.error('Error al registrar:', err);
     return res.status(500).json({ error: 'Error interno del servidor.' });
   }
 };
