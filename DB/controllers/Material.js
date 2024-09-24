@@ -31,20 +31,20 @@ const getmaterialByID = async (req, res) => {
 
 // Crear un material
 const creatematerial = async (req, res) => {
-const {IDprofesor, IDalumno, materia, Fecha} = req.body;
+const {IDprofesor, IDalumno, materia, Fecha, infoguia, archivo} = req.body;
 
   
-  if (!IDprofesor || !IDalumno || !materia || !Fecha) {
+  if (!IDprofesor || !IDalumno || !materia || !Fecha || !infoguia || !archivo) {
     return res.status(400).json({ error: 'Todos los campos son requeridos'});
   }
 
   try {
     const query = `
-      INSERT INTO public."material" ("IDprofesor", "IDalumno", "materia", "Fecha")
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO public."material" ("IDprofesor", "IDalumno", "materia", "Fecha", "infoguia", "archivo")
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
-    const values = [IDprofesor, IDalumno, materia, Fecha];
+    const values = [IDprofesor, IDalumno, materia, Fecha, infoguia, archivo];
     
     const result = await client.query(query, values);
 
@@ -62,7 +62,7 @@ const {IDprofesor, IDalumno, materia, Fecha} = req.body;
 // Actualizar un Material
 const updatematerial = async (req, res) => {
   console.log(req.body)
-  const { IDprofesor, IDalumno, materia, Fecha, ID} = req.body;
+  const { IDprofesor, IDalumno, materia, Fecha, infoguia, archivo, ID} = req.body;
 
   // Validar los datos aquí si es necesario
   if (!ID ||!IDprofesor || !IDalumno ||!materia || !Fecha ) {
@@ -71,8 +71,8 @@ const updatematerial = async (req, res) => {
 
   try {
     const result = await client.query(
-      'UPDATE public."material" SET "IDprofesor" = $1,  "IDalumno"=$2, materia = $3, "Fecha" = $4 WHERE "ID" = $5 RETURNING *',
-      [IDprofesor, IDalumno, materia, Fecha, ID]
+      'UPDATE public."material" SET "IDprofesor" = $1,  "IDalumno"=$2, materia = $3, "Fecha" = $4, "infoguia"= $5, "archivo"=$6 WHERE "ID" = $7 RETURNING *',
+      [IDprofesor, IDalumno, materia, Fecha, infoguia, archivo, ID]
     );
 
     if (result.rows.length > 0) {

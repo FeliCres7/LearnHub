@@ -296,7 +296,9 @@ Content-Type: application/json
 "IDprofesor": 2,
 "materia": "ingles", 
 "Fecha": "2024/8/24",
-"IDalumno": 7
+"IDalumno": 7,
+"infoguia":"hola soy eric y esto es un material de info",
+"archivo":"."
 }
 
 ###
@@ -310,7 +312,9 @@ Content-Type: application/json
 "materia": "base de datos y back end", 
 "Fecha": "2024/8/24" ,
 "IDalumno": 7,
-"ID":1
+"archivo": ".",
+"infoguia": "hola soy eric y esto es un material de tic",
+"ID":5
 }
 
 ###
