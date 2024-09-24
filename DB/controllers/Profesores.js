@@ -213,6 +213,29 @@ res.status(500).send(err)
 
   }
 
+  const getprofbynombre = async (_,res) => {
+    try {
+      const { nombre } = req.params;
+  
+      if (!nombre) {
+        return res.status(400).json({ error: 'El nombre es requerido' });
+      }
+  
+      const query = 'SELECT * FROM public."profesores" WHERE LOWER("nombre") = LOWER($1)'; // lo que hace lower es buscar sin importar mayusculas o minusculas
+      const { rows } = await client.query(query, [nombre]);
+  
+      if (rows.length > 0) {
+        return res.json({ message: 'Profesor(es) obtenido(s) con éxito', profesores: rows });
+      } else {
+        return res.status(404).json({ error: 'Profesor no encontrado' });
+      }
+    } catch (err) {
+      console.error('Error al obtener el profesor por nombre:', err);
+      return res.status(500).json({ error: 'Error al obtener el profesor' });
+    }
+  };
+
+
 const profesores = {
   verificacionprof,
   getprof, 
@@ -221,6 +244,7 @@ const profesores = {
   updateprof,
   deleteprof,
  getperfilprof,
+ getprofbynombre,
  getprofbymaterias,
  getdicta,
  createdicta,
