@@ -117,6 +117,7 @@ app.get('/Alumnos/:ID/perfilalumno',alumnos.getperfilalumno)
 //Profesores
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID', profesores.getprofbyID);
+app.get('/profesores/nombre',profesores.getprofbynombre);
 app.post('/profesores', profesores.createprof);
 app.put('/profesores/ID', profesores.updateprof);
 app.delete('/profesores/:ID', profesores.deleteprof);
