@@ -235,6 +235,28 @@ res.status(500).send(err)
     }
   };
 
+// Obtener profesores por disponibilidad horaria
+const getprofbydisponibilidadhoraria = async (req, res) => {
+  const { disponibilidad_horaria } = req.query; // Suponiendo que la disponibilidad se pasa como un parámetro de consulta
+
+  if (!disponibilidad_horaria) {
+      return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
+  }
+
+  try {
+      const query = 'SELECT * FROM public."profesores" WHERE "disponibilidad_horaria" = $1';
+      const { rows } = await client.query(query, [disponibilidad_horaria]);
+
+      if (rows.length > 0) {
+          return res.json({ message: 'Profesores obtenidos con éxito', profesores: rows });
+      } else {
+          return res.status(404).json({ error: 'No se encontraron profesores con esa disponibilidad horaria' });
+      }
+  } catch (err) {
+      console.error('Error al obtener profesores por disponibilidad horaria:', err);
+      return res.status(500).json({ error: 'Error al obtener los profesores' });
+  }
+};
 
 const profesores = {
   verificacionprof,
@@ -246,6 +268,7 @@ const profesores = {
  getperfilprof,
  getprofbynombre,
  getprofbymaterias,
+ getprofbydisponibilidadhoraria,
  getdicta,
  createdicta,
 
