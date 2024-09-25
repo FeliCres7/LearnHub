@@ -77,10 +77,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
   } else if (error) {
     return res.status(400).send(error.message);
   }
-  next();
 });
 
-// Middleware de manejo de errores
+// Middleware de manejo de errores, para que tire mas info 
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('¡Algo salió mal!');
