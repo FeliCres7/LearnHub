@@ -72,25 +72,7 @@ const getprofbyID = async (req, res) => {
   }
 };
 
-//Crear un profesor
-const createprof = async (req, res) => {
-  const {nombre,apellido,fecha_de_nacimiento,email,telefono,valoracion,pais,idiomas,foto,descripcion_corta,contraseña, disponibilidad_horaria,dias} = req.body;
-  try {
-    const salt = await bcrypt.genSalt(10)
-    const hashedContraseña = await bcrypt.hash(contraseña,salt)
-    const result = await client.query(
-      'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta,contraseña, disponibilidad_horaria, dias ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *',
-      [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, hashedContraseña, disponibilidad_horaria, dias]
-    );
-    res.status(201).json({
-      message: ('Profesor creado con éxito'),
-      profesor: result.rows[0]  
-    });
-  } catch (err) {
-    console.error('Error al crear el profesor:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-};
+
 
 //Actualizar un profesor 
 
@@ -262,7 +244,6 @@ const profesores = {
   verificacionprof,
   getprof, 
   getprofbyID,
-  createprof,
   updateprof,
   deleteprof,
  getperfilprof,
