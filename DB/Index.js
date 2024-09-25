@@ -12,6 +12,7 @@ import cors from "cors";
 import multer from "multer";
 import { fileURLToPath } from "url";
 import { dirname, join } from 'path';
+import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
 
 const app = express();
 const port = 3000;
@@ -94,7 +95,7 @@ app.listen(port, () => {
 //Rutas express!
 
 // LOG IN 
-app.post('/auth/login',auth.login);
+app.post('/auth/login', verifyToken, auth.login);
 
 //registrarse
 app.post('/auth/register', upload.single('foto'), auth.register)
@@ -108,21 +109,22 @@ app.post('/profesores/verificacionprof', profesores.verificacionprof);
 app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.post('/Alumnos', alumnos.createAlumno);
-app.put('/Alumnos/ID', alumnos.updateAlumno);
-app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
+app.put('/Alumnos/ID', verifyToken, alumnos.updateAlumno);
+app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 //app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
-app.get('/Alumnos/:ID/perfilalumno',alumnos.getperfilalumno)
+app.get('/Alumnos/:ID/perfilalumno', verifyToken, alumnos.getperfilalumno)
 
 //Profesores
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID', profesores.getprofbyID);
 app.get('/profesores/nombre',profesores.getprofbynombre);
 app.post('/profesores', profesores.createprof);
-app.put('/profesores/ID', profesores.updateprof);
-app.delete('/profesores/:ID', profesores.deleteprof);
+app.put('/profesores/ID', verifyToken, profesores.updateprof);
+app.delete('/profesores/:ID', verifyToken, profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
-app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
-app.get('/profesores/dicta', profesores.getdicta);
+app.get('/profesores/:ID/perfilprof', verifyToken, profesores.getperfilprof)
+app.get('/profesores/ID/Dispobibilidad_horaria', verifyToken, profesores.getprofbydisponibilidadhoraria); // ver con vigi
+app.get('/profesores/dicta', profesores.getdicta)
 app.post('/profesores/dicta/:ID', profesores.createdicta);
 
 //Clases

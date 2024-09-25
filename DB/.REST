@@ -190,6 +190,9 @@ GET http://localhost:3000/profesores/3/clasebyprof/4 HTTP/1.1
 ###
 GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1
 
+//
+###
+GET http://localhost:3000/profesores/
 
 // obtener materias de los profesores
 ### 
