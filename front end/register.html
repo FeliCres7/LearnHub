@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - Learn Hub</title>
+    <link rel="stylesheet" href="styler.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<header class="headerlogin">
+    <img src="Images html/LogoLH.png" alt="Logo">
+    <div> 
+        <button> Todavia no tenes cuenta?</button>
+        <button> Registrarse</button>
+    </div>
+</header>
+<body>
+    <div class="container">
+        <div class="logo">
+        </div>
+        <div class="form-container">
+            <h2>Registrarse</h2>
+            <form action="#">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Nombre Completo" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" placeholder="Dirección de email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Contraseña" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Confirmar contraseña" required>
+                </div>
+
+                <div class="radio-group">
+                    <input type="radio" id="alumno" name="role" value="alumno" required>
+                    <label for="alumno">Alumno</label>
+                    <input type="radio" id="profesor" name="role" value="profesor" required>
+                    <label for="profesor">Profesor</label>
+                </div>
+
+                <button type="submit" class="btn">Registrarse</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
