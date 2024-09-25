@@ -68,32 +68,6 @@ const getalumnobyID = async (req, res) => {
   }
 };
 
-// Crear un alumno
-const createAlumno = async (req, res) => {
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas } = req.body;
-
-  // Verificación de campos requeridos
-  if (!nombre || !apellido || !contraseña || !fecha_de_nacimiento || !foto|| !email || !telefono || !pais || !idiomas) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
-  }
-try {
-    const salt = await bcrypt.genSalt(10)
-    const hashedContraseña = await bcrypt.hash(contraseña, salt)
-    const result = await client.query(
-      'INSERT INTO public.alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [nombre, apellido, hashedContraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas]
-    );
-
-    res.status(201).json({
-      message: 'Alumno creado con éxito',
-      alumno: result.rows[0]  
-    });
-  } catch (err) {
-    console.error('Error al crear el alumno:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-};
-
   // Actualizar un alumno
 const updateAlumno = async (req, res) => {
 
@@ -203,7 +177,6 @@ const alumnos = {
   verificacion,
   getalumnos,
   getalumnobyID,
-  createAlumno,
   updateAlumno,
   deleteAlumno,
  // getclasebyalumno,
