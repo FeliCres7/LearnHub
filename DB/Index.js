@@ -134,9 +134,9 @@ app.post('/Clases', clases.createClase);
 app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
 app.get('/Clases/:ID/valoracionesbyclases', clases.getvaloracionbyclases);
-app.post('/Clases/valoracionbyclases', clases.createvaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases', clases.deletevaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases/:ID', clases.deletevaloracionbyclases);
+app.post('/Clases/valoracionbyclases', verifyToken, clases.createvaloracionbyclases);
+app.delete('/Clases/valoracionbyclases/:IDclases',  verifyToken, verifyAdmin, clases.deletevaloracionbyclases); // dsp fijarse cual es la q esta bien
+app.delete('/Clases/valoracionbyclases/:IDclases/:ID', verifyToken, verifyAdmin, clases.deletevaloracionbyclases);
 
 
 //Materia
@@ -149,8 +149,8 @@ app.delete('/Materia/:ID', materia.deletemateria);
 //Material
 app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
-app.post('/Material', material.creatematerial);
-app.put('/Material/ID', material.updatematerial);
+app.post('/Material',verifyToken, verifyAdmin, material.creatematerial);
+app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', material.deletematerial);
 
 //reservaciones
