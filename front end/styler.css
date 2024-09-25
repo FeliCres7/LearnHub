@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Expanded:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+
 body {
     background-image: url('Images html/fondo inicio de Sesion.png');
     background-size: cover;
@@ -14,7 +15,8 @@ body {
     align-items: center;
 }
 
-header {
+
+.headerlogin {
     position: absolute;
     display: flex;
     flex-direction: row;
@@ -23,14 +25,16 @@ header {
     top: 0px;
 }
 
-header img {
+
+.headerlogin img {
     width: 100px; /* Ajusta según sea necesario */
     padding-top:20px;
     padding-left: 20;
-    
+   
+
 
 }
-header div{
+.headerlogin div{
     display: flex;
     flex-direction: row;
     color:#001767;
@@ -39,8 +43,9 @@ header div{
     align-items: center;
     height: fit-content;
 
+
 }
-header button{
+.headerlogin button{
     background-color:#ffffff;
     color: #001767;
     border:1px solid #001767;
@@ -48,7 +53,7 @@ header button{
     font-size: 16px;
     font-weight: 700;
 }
-header p{
+.headerlogin p{
     margin: 0px;
 }
 main {
@@ -58,6 +63,7 @@ main {
     width: 100%;
     height: 100%;
 }
+
 
 .formulario {
     width: 350px;
@@ -71,19 +77,23 @@ main {
     padding-bottom: 30px;
 }
 
+
 .formulario h1 {
     color: #001767;
     margin-bottom: 20px;
     text-align: left;
     width: 100%;
 
+
 }
+
 
 .formulario form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
+
 
 .usuario, .contraseña {
     display: flex;
@@ -95,15 +105,18 @@ main {
     margin-bottom: 20px;
 }
 
+
 .usuario img {
     height: 30px;
     width: auto;
     background-color: #ccc;
     margin-right: 0px; /* Espacio entre la imagen y el input */
-    
-    
+   
+   
+
 
 }
+
 
 .contraseña img{
     height: 30px;
@@ -111,6 +124,8 @@ main {
     background-color: #ccc;
     margin-right: 0px; /* Espacio entre la imagen y el input */
 }
+
+
 
 
 .formulario input {
@@ -123,6 +138,7 @@ main {
     flex: 1; /* Permite que el input se expanda para llenar el espacio disponible */
 }
 
+
 .formulario input[type="submit"] {
     background-color: #1565C0;
     color: white;
@@ -134,14 +150,17 @@ main {
     margin-top: 20px;
 }
 
+
 .formulario input[type="submit"]:hover {
     background-color: #1565C0;
 }
+
 
 .formulario .recordar {
     margin: 10px 0;
     text-align: center;
 }
+
 
 .registrarse {
     text-align: center;
@@ -151,4 +170,137 @@ main {
 text-decoration: none;
 color: #1565C0;
 }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+body {
+    background-color: #e9f0fb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    text-align: left;
+}
+
+
+.container {
+    text-align: center;
+}
+
+
+.logo img {
+    width: 120px;
+    margin-bottom: 20px;
+}
+
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 380px;
+}
+
+
+h2 {
+    margin-bottom: 20px;
+    color: #002d72;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+
+.input-group i {
+    color: #aaa;
+    font-size: 18px;
+    margin-right: 10px; /* espacio entre el icono y el input */
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+    border-radius: 5px;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #002d72;
+    outline: 2px solid #002d72; /* resaltado al enfocar */
+}
+
+
+.radio-group {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.radio-group input {
+    margin-right: 10px;
+}
+
+
+.radio-group label {
+    margin-right: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+
+.btn {
+    background-color: #002d72;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+
+.btn:hover {
+    background-color: #001f54;
+}
+
+
+p {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+
+p a {
+    color: #002d72;
+    text-decoration: none;
+}
+
+
+p a:hover {
+    text-decoration: underline;
+}
+
+.fondobasico{
+    background-color: #dae8ff;
+}
+
 
