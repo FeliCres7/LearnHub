@@ -1,6 +1,7 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken';
+import cloudinary from '../upload.js';
 
 const secret = process.env.JWT_SECRET
 
