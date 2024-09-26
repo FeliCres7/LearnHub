@@ -117,115 +117,6 @@ footer img{
     scale: 45%;
 
 }
-.lista-chats{
-    background-color: #fff;
-    width: 20vw;
-    height: 100%;
-    
-}
-.minichat{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: color 1.7s;
-}
-.minichat:hover{
-    filter: brightness(1.7);
-}
-.minichat img{
-    height: 50px;
-    width: 50px;
-}
-.minichat p{
-    font-size: 16;
-    font-weight: 500;
-    padding-left: 15px;
-    color:#1565C0;
-}
-.chat{
-    display: flex;
-    flex-direction: column;
-}
-.chatbody{
-    display: flex;
-}
-.mensajes{
-    display: flex;
-}
-.chatbody{
-    display: flex;
-    flex-direction: column;
-    height: calc(100%-100px);
-    flex-grow: 1;
-    background-color: #DAE8FF;
-    overflow: scroll;
-    overflow-x: hidden;
-    width: 85vw;
-}
-.mensajebar{
-    display: flex;
-    background-color: #024086;
-    align-items: center;
-    height: 100px;
-    flex-direction: row;
-    width:100%;
-    padding: 10px;
-
-}
-.mensajebar form{
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    width: 100%;
-}
-.mensajebar form input[type="text"]{
-    background-color: #EDF3F8;
-    font-weight: 400;
-    height: 40px;
-    font-size: 20px;
-    flex-grow: 1;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    text-indent: 10px;
-    border: none;
-}
-.mensajebar form input[type="image"]{
-    background-color: #EDF3F8;
-    height: 40px;
-    width: 40px;
-    border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;
-}
-.mensajebar form input[type="image"]{
-    border: none;
-}
-.mensaje-enviado{
-    background-color:#024086;
-    border: none;
-    color: #ffffff;
-    height: fit-content;
-    width: fit-content;
-    padding: 5px;
-    max-width: 250px;
-    right: 10px;
-    border-radius: 10px;
-
-}
-.mensaje-recibido{
-    align-self:flex-end;
-    background-color: #1565C0;
-    border: none;
-    color: #ffffff;
-    height: fit-content;
-    width: fit-content;
-    padding: 5px;
-    max-width: 250px;
-    left: 10px;
-    border-radius: 10px;
-}
 
 .main-misprofesores{
     background-color: #dae8ff;
@@ -344,6 +235,7 @@ color: #000000;
 .botones-profesor{
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 .botones-profesor button{
     border: 1px solid #424242;
