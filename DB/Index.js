@@ -98,11 +98,11 @@ app.listen(port, () => {
 app.post('/auth/login', auth.login);
 
 //registrarse
-app.post('/auth/register', upload.single('foto'), auth.register)
+app.post('/auth/register', auth.register)
 
 
 //VERIFICACION 
-app.post('/Alumnos/verificacion', alumnos.verificacion);
+app.post('/Alumnos/verificacionalumno',  upload.single('foto'), alumnos.verificacionAlumno);
 app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), profesores.verificacionprof);
 
 //Alumnos
