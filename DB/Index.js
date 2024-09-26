@@ -114,8 +114,8 @@ app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 app.get('/Alumnos/:ID/perfilalumno', verifyToken, alumnos.getperfilalumno)
 
 //Profesores
-app.get('/profesores', verifyToken, profesores.getprof);
-app.get('/profesores/:ID', verifyToken, profesores.getprofbyID);
+app.get('/profesores', profesores.getprof);
+app.get('/profesores/:ID',profesores.getprofbyID);
 app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
 app.put('/profesores/ID', verifyToken, profesores.updateprof);
 app.delete('/profesores/:ID', verifyToken, profesores.deleteprof);
