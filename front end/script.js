@@ -46,15 +46,21 @@ function CreateProfCard (prof) {
 }
 
 
-btn.addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    const mainCards = document.getElementById("lista-misprofesores");
+    if (!mainCards) {
+        console.error("El elemento con id 'lista-misprofesores' no se encontró.");
+        return;
+    }
+    
     fetch("https://learn-hub-eta.vercel.app/profesores")
-    .then(res => res.json())
-    .then((data) => {
-        console.log(data)
-        mainCards.innerHTML = ""
-        data.forEach((profesor) => {
-            const item = CreateProfCard(profesor)
-            mainCards.innerHTML += item
-        })
-    })
-}) 
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data);
+            mainCards.innerHTML = "";
+            data.forEach((profesor) => {
+                const item = CreateProfCard(profesor);
+                mainCards.innerHTML += item;
+            });
+        });
+});
