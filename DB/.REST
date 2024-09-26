@@ -14,12 +14,12 @@ POST http://localhost:3000/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre":"nicolas",
+    "nombre":"benjamin",
     "apellido":"agradnik",
     "email":"nicoagradnik@gmail.com",
     "foto": ".",
     "contraseña":"nico2012",
-    "tipoUsuario":"alumno"
+    "tipoUsuario":"profesor"
 }
 
 ###
@@ -113,7 +113,7 @@ GET http://localhost:3000/Profesores/2 HTTP/1.1
 ###
 // Obtener un profesor por nombre
 
-GET http://localhost:3000/profesores/nombre/eric HTTP/1.1
+GET http://localhost:3000/profesores/nombre/benjamin HTTP/1.1
 
 
 

@@ -2,104 +2,72 @@ import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken';
 import cloudinary from '../upload.js';
+import multer from 'multer'
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET
 
-//DESPUES MAÑANA SACAR TODO LO QUE SIRVA DE LAS FOTOS PARA USARLO EN VERIFICACION ALUMNO Y PROFESORES
-/*const register = async (req, res) => {
-  const { nombre, apellido, email, contrasenia, tipoUsuario } = req.body;
-  console.log(req.body);
-
-  // Validaciones de campos requeridos
-  if (!nombre || !apellido || !email || !contrasenia || !tipoUsuario) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos.' });
-  }
-
-  try {
-    // Validar si se subió una imagen
-    if (!req.file) {
-      return res.status(400).send('Error: No se subió ningún archivo.');
-    }
-
-    // Obtener la ruta del archivo subido y verificar la extensión
-    const imageFile = req.file.path;
-    const extension = imageFile.split('.').pop().toLowerCase();
-    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
-
-    if (!extensionesPermitidas.includes(extension)) {
-      return res.status(400).send('Error: Extensión de archivo no permitida. Extensiones admitidas: PDF, PNG, JPEG, y JPG');
-    }
-
-    // Subir la imagen a Cloudinary
-    const resultImage = await cloudinary.uploader.upload(imageFile, {
-      folder: 'analisis',
-    });
-    const imageUrl = resultImage.secure_url;
-
-    // Encriptar la contraseña
-    const salt = await bcrypt.genSalt(10);
-    const hashedContraseña = await bcrypt.hash(contrasenia, salt);
-
-    // Dependiendo del tipo de usuario, insertar en la tabla correspondiente
-    let query;
-    if (tipoUsuario === 'alumno') {
-      query = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña, foto) VALUES ($1, $2, $3, $4, $5) RETURNING *";
-    } else if (tipoUsuario === 'profesor') {
-      query = "INSERT INTO public.profesores (nombre, apellido, email, contraseña, foto) VALUES ($1, $2, $3, $4, $5) RETURNING *";
-    } else {
-      return res.status(400).json({ error: 'Tipo de usuario inválido.' });
-    }
-
-    const result = await client.query(query, [nombre, apellido, email, hashedContraseña, imageUrl]);
-
-    // Generar un token JWT
-    const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, JWT_SECRET, {
-      expiresIn: '1h',
-    });
-
-    return res.status(201).json({
-      message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
-      user: result.rows[0],
-      token
-    });
-  } catch (err) {
-    console.error('Error al registrar:', err);
-    return res.status(500).json({ error: 'Error interno del servidor.' });
-  }
-};*/
 
 //verificacion profesor
 const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, materia, certificadoestudio, foto } = req.body;
+  const { fecha_de_nacimiento, telefono, pais, materia } = req.body;
 
-
-  if (!fecha_de_nacimiento || !telefono || !pais || !foto || !materia || !certificadoestudio) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  // Validar que todos los campos estén presentes, incluidos los archivos
+  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
   }
 
   try {
-   
+    // Obtener los archivos subidos
+    const fotoFile = req.files.foto[0];  
+    const certificadoFile = req.files.certificadoestudio[0];
+
+    // Verificar la extensión de los archivos
+    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
+    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+    const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
+
+    if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
+      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
+    }
+
+    // Subir la foto a Cloudinary
+    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
+      folder: 'profesores/fotos',
+    });
+    const fotoUrl = resultFoto.secure_url;
+
+    // Subir el certificado a Cloudinary
+    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
+      folder: 'profesores/certificados',
+      resource_type: 'raw',  // Especificar que es un archivo PDF, no una imagen
+    });
+    const certificadoUrl = resultCertificado.secure_url;
+
+    // Comprobar si ya existe un profesor con la misma información
     const { rows } = await client.query(
       `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
        FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio=$6`,
-      [fecha_de_nacimiento, telefono, pais, materia, certificadoestudio, foto]
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6`,
+      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl]
     );
 
-    
     if (rows.length > 0) {
       return res.status(409).json({ error: 'El profesor ya está registrado' });
-    } else {
-      return res.json({
-        message: 'Profesor registrado con exito'
-      });
     }
+
+    return res.json({
+      message: 'Profesor registrado con éxito',
+      foto: fotoUrl,
+      certificado: certificadoUrl
+    });
+
   } catch (err) {
     console.error('Error al verificar el profesor:', err);
     return res.status(500).json({ error: 'Error al verificar el profesor' });
   }
 };
+
 
 
 

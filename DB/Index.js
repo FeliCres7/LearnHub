@@ -103,7 +103,7 @@ app.post('/auth/register', upload.single('foto'), auth.register)
 
 //VERIFICACION 
 app.post('/Alumnos/verificacion', alumnos.verificacion);
-app.post('/profesores/verificacionprof', profesores.verificacionprof);
+app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), profesores.verificacionprof);
 
 //Alumnos
 app.get('/Alumnos', alumnos.getalumnos);
