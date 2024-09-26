@@ -4,8 +4,8 @@ POST http://localhost:3000/Auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "usuario":"hola@gmail.com",
-    "contraseña":"jgjghj"
+    "usuario":"nicoagradnik@gmail.com",
+    "contraseña":"nico2012"
 }
 
 ###
@@ -17,7 +17,7 @@ Content-Type: application/json
     "nombre":"nicolas",
     "apellido":"agradnik",
     "email":"nicoagradnik@gmail.com",
-    "foto": "https://res.cloudinary.com/dirlzvaqd/image/upload/v1727090774/analisis/cw9tczdkin0oitoaywus.pdf",
+    "foto": ".",
     "contraseña":"nico2012",
     "tipoUsuario":"alumno"
 }
@@ -46,27 +46,12 @@ GET http://localhost:3000/Alumnos HTTP/1.1
 GET http://localhost:3000/Alumnos/6 HTTP/1.1
 
 
-###
-// CREAR UN ALUMNO
 
-POST http://localhost:3000/Alumnos HTTP/1.1
-Content-Type: application/json
-
-{
-    "nombre": "benja",
-    "apellido": "fridman",
-    "contraseña": "jgjghj",
-    "fecha_de_nacimiento": "1978/4/21",
-    "email": "hola@gmail.com",
-    "telefono": "12335324",
-    "pais": "argentina",
-    "idiomas": "ingles",
-    "foto": "."
-}
 ###
 //Actualizar un alumno
 
 PUT http://localhost:3000/Alumnos/ID HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyNzMxNTA1NywiZXhwIjoxNzI3MzE4NjU3fQ.z_kk3-E94hk7Nodj9mzT-BmKSA9ZLgyBpb6R_N1772k
 Content-Type: application/json
 
 {
@@ -110,6 +95,8 @@ Content-Type: application/json
     "fecha_de_nacimiento":"2006/6/4",
     "telefono":"54524323",
     "pais": "Argentina",
+    "materia": "ingles",
+    "certificadoestudio": ".",
     "foto": "."
 }
 
@@ -127,28 +114,8 @@ GET http://localhost:3000/Profesores/2 HTTP/1.1
 // Obtener un profesor por nombre
 
 GET http://localhost:3000/profesores/nombre/eric HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsInVzZXJuYW1lIjoiYmVuamEiLCJpYXQiOjE3MjcyODQxODgsImV4cCI6MTcyNzI4Nzc4OH0._WVh86nbcP30WKJBcNugO2ixSaqM8j6Tg5VWr557P1s
-###
-//Crear un profesor
 
-POST http://localhost:3000/profesores HTTP/1.1
-Content-Type: application/json
 
-{
-"nombre":"eric",
-"apellido":"gerzenstein", 
-"contraseña": "eric2007",
-"fecha_de_nacimiento":"2007/7/19", 
-"email":"ericeltodo@gmail.com",
-"telefono":"5491133750973",
-"valoracion":"9",
-"pais":"Argentina", 
-"idiomas":"español y hungaro",
-"foto": ".",
-"descripcion_corta":"Hola soy eric y me encanta enseñar",
-"disponibilidad_horaria":"14:00",
-"dias": "martes"
-}
 
 ###
 //Actualizar un profesor
