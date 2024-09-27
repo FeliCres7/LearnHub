@@ -147,7 +147,7 @@ app.delete('/Materia/:ID', materia.deletemateria);
 //Material
 app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
-app.post('/Material',verifyToken, verifyAdmin, material.creatematerial);
+app.post('/Material',verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', material.deletematerial);
 
