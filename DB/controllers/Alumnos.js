@@ -1,39 +1,56 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
 import jwt from 'jsonwebtoken';
+import cloudinary from '../upload.js';
 
 const secret = process.env.JWT_SECRET
 
 
 //Verificacion alumno
-const verificacion = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, foto } = req.body;
+const verificacionAlumno = async (req, res) => {
+  const { fecha_de_nacimiento, telefono, pais, colegio } = req.body;
 
-  
-  if (!fecha_de_nacimiento || !telefono || !pais || !foto) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  // Validar que todos los campos estén presentes, incluidos los archivos
+  if (!fecha_de_nacimiento || !telefono || !pais || !colegio || !req.files || !req.files.foto) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo la foto' });
   }
 
   try {
-    const { rows } = await client.query(
-      `SELECT fecha_de_nacimiento, telefono, pais, foto 
-       FROM public.alumnos 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4`,
-      [fecha_de_nacimiento, telefono, pais, foto]
+    // Obtener el archivo de foto
+    const fotoFile = req.files.foto[0];
+
+    // Verificar la extensión de la foto
+    const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
+    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+
+    if (!extensionesPermitidas.includes(extensionFoto)) {
+      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
+    }
+
+    // Subir la foto a Cloudinary
+    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
+      folder: 'alumnos/fotos',
+    });
+    const fotoUrl = resultFoto.secure_url;
+
+    // Insertar la información del alumno en la base de datos
+    await client.query(
+      `INSERT INTO public.alumnos (fecha_de_nacimiento, telefono, pais, colegio, foto) 
+       VALUES ($1, $2, $3, $4, $5)`,
+      [fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]
     );
 
-    if (rows.length > 0) {
-      return res.status(409).json({ error: 'El alumno ya está registrado' });
-    } else {
-      return res.json({
-        message: 'Alumno registrado con exito'
-      });
-    }
+    return res.json({
+      message: 'Alumno registrado con éxito',
+      foto: fotoUrl,
+    });
+
   } catch (err) {
     console.error('Error al verificar el alumno:', err);
     return res.status(500).json({ error: 'Error al verificar el alumno' });
   }
 };
+
 
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
@@ -65,32 +82,6 @@ const getalumnobyID = async (req, res) => {
   } catch (err) {
     console.error('Error al obtener el alumno:', err);
     return res.status(500).json({ error: 'Error al obtener el alumno' });
-  }
-};
-
-// Crear un alumno
-const createAlumno = async (req, res) => {
-  const {nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas } = req.body;
-
-  // Verificación de campos requeridos
-  if (!nombre || !apellido || !contraseña || !fecha_de_nacimiento || !foto|| !email || !telefono || !pais || !idiomas) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
-  }
-try {
-    const salt = await bcrypt.genSalt(10)
-    const hashedContraseña = await bcrypt.hash(contraseña, salt)
-    const result = await client.query(
-      'INSERT INTO public.alumnos (nombre, apellido, contraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [nombre, apellido, hashedContraseña, fecha_de_nacimiento, foto, email, telefono, pais, idiomas]
-    );
-
-    res.status(201).json({
-      message: 'Alumno creado con éxito',
-      alumno: result.rows[0]  
-    });
-  } catch (err) {
-    console.error('Error al crear el alumno:', err.message);
-    res.status(500).json({ error: err.message });
   }
 };
 
@@ -200,10 +191,9 @@ const getperfilalumno = async (req, res) => {
 
 const alumnos = {
 
-  verificacion,
+  verificacionAlumno,
   getalumnos,
   getalumnobyID,
-  createAlumno,
   updateAlumno,
   deleteAlumno,
  // getclasebyalumno,

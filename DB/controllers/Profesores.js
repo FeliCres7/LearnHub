@@ -1,43 +1,73 @@
 import {client} from '../dbconfig.js'
 import bcrypt from "bcryptjs"
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import cloudinary from '../upload.js';
+import multer from 'multer'
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET
 
 
-
 //verificacion profesor
 const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, foto } = req.body;
+  const { fecha_de_nacimiento, telefono, pais, materia } = req.body;
 
-
-  if (!fecha_de_nacimiento || !telefono || !pais || !foto) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  // Validar que todos los campos estén presentes, incluidos los archivos
+  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
   }
 
   try {
-   
+    // Obtener los archivos subidos
+    const fotoFile = req.files.foto[0];  
+    const certificadoFile = req.files.certificadoestudio[0];
+
+    // Verificar la extensión de los archivos
+    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
+    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+    const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
+
+    if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
+      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
+    }
+
+    // Subir la foto a Cloudinary
+    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
+      folder: 'profesores/fotos',
+    });
+    const fotoUrl = resultFoto.secure_url;
+
+    // Subir el certificado a Cloudinary
+    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
+      folder: 'profesores/certificados',
+      resource_type: 'raw',  // Especificar que es un archivo PDF, no una imagen
+    });
+    const certificadoUrl = resultCertificado.secure_url;
+
+    // Comprobar si ya existe un profesor con la misma información
     const { rows } = await client.query(
-      `SELECT fecha_de_nacimiento, telefono, pais, foto 
+      `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
        FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4`,
-      [fecha_de_nacimiento, telefono, pais, foto]
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6`,
+      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl]
     );
 
-    
     if (rows.length > 0) {
       return res.status(409).json({ error: 'El profesor ya está registrado' });
-    } else {
-      return res.json({
-        message: 'Profesor registrado con exito'
-      });
     }
+
+    return res.json({
+      message: 'Profesor registrado con éxito',
+      foto: fotoUrl,
+      certificado: certificadoUrl
+    });
+
   } catch (err) {
     console.error('Error al verificar el profesor:', err);
     return res.status(500).json({ error: 'Error al verificar el profesor' });
   }
 };
+
 
 
 
@@ -72,25 +102,7 @@ const getprofbyID = async (req, res) => {
   }
 };
 
-//Crear un profesor
-const createprof = async (req, res) => {
-  const {nombre,apellido,fecha_de_nacimiento,email,telefono,valoracion,pais,idiomas,foto,descripcion_corta,contraseña, disponibilidad_horaria,dias} = req.body;
-  try {
-    const salt = await bcrypt.genSalt(10)
-    const hashedContraseña = await bcrypt.hash(contraseña,salt)
-    const result = await client.query(
-      'INSERT INTO profesores (nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta,contraseña, disponibilidad_horaria, dias ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *',
-      [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, hashedContraseña, disponibilidad_horaria, dias]
-    );
-    res.status(201).json({
-      message: ('Profesor creado con éxito'),
-      profesor: result.rows[0]  
-    });
-  } catch (err) {
-    console.error('Error al crear el profesor:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-};
+
 
 //Actualizar un profesor 
 
@@ -108,7 +120,7 @@ const updateprof = async (req, res) => {
        SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
             telefono = $5, valoracion = $6, pais = $7,
            idiomas = $8, foto = $9, descripcion_corta = $10, contraseña = $11, disponibilidad_horaria = $12
-       , dias=$13 WHERE "ID" = $14
+       , dias=$13 AND materia=$14 WHERE "ID" = $15
        RETURNING *`,
       [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID]
     );
@@ -213,7 +225,7 @@ res.status(500).send(err)
 
   }
 
-  const getprofbynombre = async (_,res) => {
+  const getprofbynombre = async (req,res) => {
     try {
       const { nombre } = req.params;
   
@@ -221,7 +233,7 @@ res.status(500).send(err)
         return res.status(400).json({ error: 'El nombre es requerido' });
       }
   
-      const query = 'SELECT * FROM public."profesores" WHERE LOWER("nombre") = LOWER($1)'; // lo que hace lower es buscar sin importar mayusculas o minusculas
+      const query = 'SELECT * FROM public."profesores" WHERE nombre=$1'
       const { rows } = await client.query(query, [nombre]);
   
       if (rows.length > 0) {
@@ -262,7 +274,6 @@ const profesores = {
   verificacionprof,
   getprof, 
   getprofbyID,
-  createprof,
   updateprof,
   deleteprof,
  getperfilprof,

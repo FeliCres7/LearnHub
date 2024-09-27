@@ -1,22 +1,18 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materiales de trabajo</title>
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
-
-
 </head>
-
 <body>
     <div id="header-container"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch('headerprofesor.html')
+            fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('header-container').innerHTML = data;
@@ -39,12 +35,7 @@
                     </div>
                     <div class="divbtndescargar"><button class="botondescargar"><p>Descargar</p><img src="Images html/ícono descargar.png" alt=""></button></div>            </div>
         </article>
-        <div class="editmateriales">
-            <button>Editar</button>
-            <button onclick="window.location.href='profesorcrearmateriales.html'">Crear Material</button>
-        </div>
 
     </main>
 </body>
-
 </html>

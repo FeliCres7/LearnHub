@@ -26,7 +26,7 @@ function CreateProfCard (prof) {
             </div>
             <div class="datacontainer">
                 <p class="bold">Días:</p>
-                <p>Echu pone dias</p>
+                <p>${prof.dias}</p>
             </div>
             <div class="datacontainer">
                 <p class="bold">Horarios:</p>
@@ -34,9 +34,8 @@ function CreateProfCard (prof) {
             </div>
         </div>
         <div class="botones-profesor">
-            <button>Materiales de trabajo</button>
+            <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
             <button>Ir a perfil</button>
-            <button>Enviar Mensaje</button>
         </div>
         <div class="valoracion-profesor">
             <p>${prof.valoracion}</p>
@@ -46,15 +45,21 @@ function CreateProfCard (prof) {
 }
 
 
-btn.addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    const mainCards = document.getElementById("lista-misprofesores");
+    if (!mainCards) {
+        console.error("El elemento con id 'lista-misprofesores' no se encontró.");
+        return;
+    }
+    
     fetch("https://learn-hub-eta.vercel.app/profesores")
-    .then(res => res.json())
-    .then((data) => {
-        console.log(data)
-        mainCards.innerHTML = ""
-        data.forEach((profesor) => {
-            const item = CreateProfCard(profesor)
-            mainCards.innerHTML += item
-        })
-    })
-}) 
+        .then(res => res.json())
+        .then((data) => {
+            console.log(data);
+            mainCards.innerHTML = "";
+            data.forEach((profesor) => {
+                const item = CreateProfCard(profesor);
+                mainCards.innerHTML += item;
+            });
+        });
+});

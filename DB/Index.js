@@ -12,6 +12,7 @@ import cors from "cors";
 import multer from "multer";
 import { fileURLToPath } from "url";
 import { dirname, join } from 'path';
+import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
 
 const app = express();
 const port = 3000;
@@ -94,35 +95,34 @@ app.listen(port, () => {
 //Rutas express!
 
 // LOG IN 
-app.post('/auth/login',auth.login);
+app.post('/auth/login', auth.login);
 
 //registrarse
-app.post('/auth/register', upload.single('foto'), auth.register)
+app.post('/auth/register', auth.register)
 
 
 //VERIFICACION 
-app.post('/Alumnos/verificacion', alumnos.verificacion);
-app.post('/profesores/verificacionprof', profesores.verificacionprof);
+app.post('/Alumnos/verificacionalumno',  upload.single('foto'), alumnos.verificacionAlumno);
+app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), profesores.verificacionprof);
 
 //Alumnos
 app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
-app.post('/Alumnos', alumnos.createAlumno);
-app.put('/Alumnos/ID', alumnos.updateAlumno);
-app.delete('/Alumnos/:ID', alumnos.deleteAlumno);
+app.put('/Alumnos/ID', verifyToken, alumnos.updateAlumno);
+app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 //app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
-app.get('/Alumnos/:ID/perfilalumno',alumnos.getperfilalumno)
+app.get('/Alumnos/:ID/perfilalumno', verifyToken, alumnos.getperfilalumno)
 
 //Profesores
 app.get('/profesores', profesores.getprof);
-app.get('/profesores/:ID', profesores.getprofbyID);
-app.get('/profesores/nombre',profesores.getprofbynombre);
-app.post('/profesores', profesores.createprof);
-app.put('/profesores/ID', profesores.updateprof);
-app.delete('/profesores/:ID', profesores.deleteprof);
+app.get('/profesores/:ID',profesores.getprofbyID);
+app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
+app.put('/profesores/ID', verifyToken, profesores.updateprof);
+app.delete('/profesores/:ID', verifyToken, profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
-app.get('/profesores/:ID/perfilprof',profesores.getperfilprof)
-app.get('/profesores/dicta', profesores.getdicta);
+app.get('/profesores/:ID/perfilprof', verifyToken, profesores.getperfilprof)
+app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
+app.get('/profesores/dicta', profesores.getdicta)
 app.post('/profesores/dicta/:ID', profesores.createdicta);
 
 //Clases
@@ -132,9 +132,9 @@ app.post('/Clases', clases.createClase);
 app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
 app.get('/Clases/:ID/valoracionesbyclases', clases.getvaloracionbyclases);
-app.post('/Clases/valoracionbyclases', clases.createvaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases', clases.deletevaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases/:ID', clases.deletevaloracionbyclases);
+app.post('/Clases/valoracionbyclases', verifyToken, clases.createvaloracionbyclases);
+app.delete('/Clases/valoracionbyclases/:IDclases',  verifyToken, verifyAdmin, clases.deletevaloracionbyclases); // dsp fijarse cual es la q esta bien
+app.delete('/Clases/valoracionbyclases/:IDclases/:ID', verifyToken, verifyAdmin, clases.deletevaloracionbyclases);
 
 
 //Materia
@@ -147,8 +147,8 @@ app.delete('/Materia/:ID', materia.deletemateria);
 //Material
 app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
-app.post('/Material', material.creatematerial);
-app.put('/Material/ID', material.updatematerial);
+app.post('/Material',verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
+app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', material.deletematerial);
 
 //reservaciones

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materiales de trabajo</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('headerprofesor.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                });
+        });
+    </script>
+    <script src="script.js"></script>
+    <main class="main-fondo-azul">
+        <article class="sectioncrearmateriales">
+            <div class="crearmaterialdiv">
+                <h1>Crear material de trabajo</h1>
+                <div class="sectionscrearmaterial">
+
+                    <div class="nombre-archivo-material">
+                        <p class="bold">Nombre del material</p>
+                        <input type="text" placeholder="Ej: Guía 1">
+                        <p class="bold">Subir archivo</p>
+                        <input type="file">
+                    </div>
+                    <div class="descripcion-subir-material">
+                        <p class="bold">Descripción</p>
+                        <textarea placeholder="Introduzca una breve descripción del material de trabajo"></textarea>
+                        <div class="subirmaterial"><input type="submit" value="Subir"></div>
+                    </div>
+                    <form action=""></form>
+                </div>
+            </div>
+            </div>
+
+        </article>
+
+    </main>
+</body>
+
+</html>

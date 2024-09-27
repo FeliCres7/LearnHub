@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
-import alumnos from "../controllers/alumnos.js";
-import profesores from "../controllers/profesores.js";
+import alumnos from "../controllers/Alumnos.js";
+import profesores from "../controllers/Profesores.js";
+
+
 
 export const verifyToken = async (req, res, next) => {
     const headerToken = req.headers['authorization'];
