@@ -5,22 +5,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="styler.css">
 </head>
+
 <body>
     <header class="headerlogin">
         <img src="Images html/LogoLH.png" alt="Logo">
-        <div> 
-        <p> Todavia no tenes cuenta?</p>
-        <button> Registrarse</button>
-    </div>
-    
+        <div>
+            <p>¿Todavía no tienes cuenta?</p>
+            <button>Registrarse</button>
+        </div>
     </header>
+
     <main>
         <div class="formulario">
             <h1>Iniciar sesión</h1>
-            <form method="post" action="pagina_exito.html">
+            <form id="loginForm">
                 <div class="usuario">
                     <img src="Images html/icon perfil.png" alt="Icono de perfil">
                     <input type="text" required placeholder="Usuario o Email" name="usuario">
@@ -30,11 +31,56 @@
                     <img src="Images html/logo seguridad cuenta.png" alt="Icono de seguridad">
                     <input type="password" placeholder="Contraseña" name="contraseña">
                 </div>
-                <div class="recordar"> <a href="">Olvidaste tu contraseña?</a></div>
-                <input type="submit" value="Iniciar sesión"> 
+                <div class="recordar"><a href="">¿Olvidaste tu contraseña?</a></div>
+                <input type="submit" value="Iniciar sesión">
+                <p id="error-msg" style="color:red; display:none;">Error: Datos incorrectos. Intente de nuevo.</p> <!-- Mensaje de error -->
             </form>
-        
         </div>
     </main>
+
+    <script>
+        // Agregar el listener al formulario para manejar el envío con JS
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();  // Prevenir el comportamiento por defecto del formulario (redirección)
+
+            // Obtener los datos del formulario
+            const usuario = document.querySelector('input[name="usuario"]').value;
+            const contraseña = document.querySelector('input[name="contraseña"]').value;
+
+            // Crear el cuerpo de la solicitud
+            const datos = {
+                email: usuario,
+                password: contraseña
+            };
+
+            try {
+                // Hacer una solicitud POST a la API
+                const response = await fetch('https://learn-hub-eta.vercel.app/profesores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                // Comprobar si la solicitud fue exitosa
+                if (response.ok) {
+                    const resultado = await response.json();
+                    console.log('Respuesta del servidor:', resultado);
+
+                    // Redirigir a home.html si es exitoso
+                    window.location.href = 'home.html';
+                } else {
+                    // Mostrar el mensaje de error en la misma página si falla el inicio de sesión
+                    document.getElementById('error-msg').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                // Mostrar el mensaje de error si hay un problema en la solicitud
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        });
+    </script>
 </body>
+
 </html>

@@ -52,6 +52,7 @@ body {
     border-radius: 54px;
     font-size: 16px;
     font-weight: 700;
+    padding: 5px;
 }
 .headerlogin p{
     margin: 0px;
@@ -134,8 +135,8 @@ main {
     border: 2px solid #ccc;
     font-size: 18px;
     color:black;
-    border-radius: 4px; /* Bordes redondeados en los inputs */
-    flex: 1; /* Permite que el input se expanda para llenar el espacio disponible */
+    border-radius: 4px;
+    flex: 1; 
 }
 
 
@@ -173,7 +174,7 @@ color: #1565C0;
 * {
     box-sizing: border-box;
     margin: 0;
-    padding: 0;
+    padding: px;
     font-family: Arial, sans-serif;
 }
 
@@ -222,18 +223,21 @@ h2 {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding-left: 10px;
+    background-color: #ccc;
+
 }
 
 .input-group i {
-    color: #aaa;
-    font-size: 18px;
-    margin-right: 10px; /* espacio entre el icono y el input */
+    color: #6b6b6b;
+    font-size: 30px;
+    margin-right: 10px;
+    height: 10%;
 }
 
 input[type="text"], input[type="email"], input[type="password"] {
     width: 100%;
     padding: 12px;
-    border: none;
+    border: 2px solid #ccc;
     font-size: 16px;
     outline: none;
     border-radius: 5px;
