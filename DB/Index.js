@@ -109,7 +109,7 @@ app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name:
 
 
 // SEGUIR 
-//app.get('/siguen', siguen.getprofesoresseguidos)
+app.get('/siguen', seguir.getprofesoresseguidos)
 app.post('/siguen', seguir.seguirprofesor);
 
 //Alumnos

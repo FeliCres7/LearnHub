@@ -83,6 +83,8 @@ GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 GET http://localhost:3000/Alumnos/7/perfilalumno HTTP/1.1
 
 
+
+
 //ALUMNO SEGUIR PROFESOR 
 ###
 
@@ -90,8 +92,8 @@ POST http://localhost:3000/siguen HTTP/1.1
 Content-Type: application/json
 
 {
-"IDalumno": 7,
-"IDprof": 2
+"IDalumno": 9,
+"IDprof": 4
 
 }
 

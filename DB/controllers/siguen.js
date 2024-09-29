@@ -1,5 +1,15 @@
 import { client } from "../dbconfig.js";
 
+
+const getprofesoresseguidos = async (_,res) => {
+
+
+
+
+
+
+
+}
 const seguirprofesor = async (req,res) => {
 try{
 const {IDalumno, IDprof} = req.body
@@ -29,8 +39,8 @@ if (rows.length === 0) {
 
 
 const seguir = {
-seguirprofesor
-
+seguirprofesor,
+getprofesoresseguidos
 };
 export default seguir;
 
