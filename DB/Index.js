@@ -6,6 +6,7 @@ import clases from './controllers/clases.js';
 import material from './controllers/Material.js'
 import materia from './controllers/Materia.js'
 import reservaciones from "./controllers/reservaciones.js";
+import seguir from './controllers/siguen.js'
 import fs from 'fs';
 import { client } from './dbconfig.js';
 import cors from "cors";
@@ -13,6 +14,7 @@ import multer from "multer";
 import { fileURLToPath } from "url";
 import { dirname, join } from 'path';
 import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
+
 
 const app = express();
 const port = 3000;
@@ -104,6 +106,11 @@ app.post('/auth/register', auth.register)
 //VERIFICACION 
 app.post('/Alumnos/verificacionalumno',  upload.single('foto'), alumnos.verificacionAlumno);
 app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), profesores.verificacionprof);
+
+
+// SEGUIR 
+//app.get('/siguen', siguen.getprofesoresseguidos)
+app.post('/siguen', seguir.seguirprofesor);
 
 //Alumnos
 app.get('/Alumnos', alumnos.getalumnos);
