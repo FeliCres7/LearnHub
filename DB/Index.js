@@ -153,3 +153,4 @@ app.delete('/Material/:ID', material.deletematerial);
 
 //reservaciones
 app.get('/reservaciones', reservaciones.getreservarclase);
+app.post('/reservaciones', reservaciones.createreservarclase);

@@ -17,7 +17,7 @@ if ( !IDclase || !IDalumno || !idprof || !dia || !hora){
 return res.status(400).json ({error:'todos los campos son requeridos'});
 }
 try{
-const query = `INSERT INTO public.reservaciones ("IDclase", "IDalumno", "idprof", "dia", "hora") 
+const query = `INSERT INTO public."reservaciones" ("IDclase", "IDalumno", "idprof", "dia", "hora") 
 VALUES ($1, $2, $3, $4, $5) RETURNING *;  `
 
 const values = [IDclase, IDalumno, idprof, dia, hora]; 
@@ -35,7 +35,6 @@ reservaciones: result.rows [0]
 const reservaciones = {
    getreservarclase,
    createreservarclase
-
   };
   
   export default reservaciones;

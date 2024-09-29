@@ -52,14 +52,14 @@ export const verifyAdmin = async (req, res, next) => {
     const id = req.id;
 
     // Recuperar detalles del usuario para verificar si es un administrador (profesor)
-    const usuario = await profesores.findById(id); // Solo verificar en profesores
+    const usuario = await profesores.findById(id); 
 
     if (!usuario) {
         return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     // Verificar si el usuario es un administrador (profesor)
-    if (usuario.role === 'admin') { // Suponiendo que el rol 'admin' está asignado a los profesores
+    if (usuario.role === 'admin') { 
         next();
     } else {
         return res.status(403).json({ message: "Acceso prohibido" });
