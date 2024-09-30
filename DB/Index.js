@@ -124,8 +124,9 @@ app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
 app.put('/profesores/ID', verifyToken, profesores.updateprof);
 app.delete('/profesores/:ID', verifyToken, profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
-app.get('/profesores/:ID/perfilprof', verifyToken, profesores.getperfilprof)
+app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
+app.get('/profesores/dias/:dias', profesores.getprofbydias);
 app.get('/profesores/dicta', profesores.getdicta)
 app.post('/profesores/dicta/:ID', profesores.createdicta);
 

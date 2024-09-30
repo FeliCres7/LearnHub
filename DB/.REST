@@ -92,14 +92,14 @@ POST http://localhost:3000/siguen HTTP/1.1
 Content-Type: application/json
 
 {
-"IDalumno": 9,
+"IDalumno": 22,
 "IDprof": 4
 
 }
 
 //Alumno deja de seguir a profe 
 ### 
-DELETE http://localhost:3000/siguen/11
+DELETE http://localhost:3000/siguen/4
 
                                              //PROFESORES 
 
@@ -115,6 +115,8 @@ Content-Type: application/json
     "telefono":"54524323",
     "pais": "Argentina",
     "materia": "ingles",
+    "dias": "martes y viernes ",
+    "disponibilidad_horaria": "18:00 - 20:00",
     "certificadoestudio": ".",
     "foto": "."
 }
@@ -175,6 +177,10 @@ GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1
 // obtener profesores by disponibilidad horaria
 ###
 GET http://localhost:3000/profesores/disponibilidad_horaria/14 HTTP/1.1
+
+// obtener profesores by dias
+###
+GET http://localhost:3000/profesores/dias/martes HTTP/1.1
 
 // obtener materias de los profesores
 ### 

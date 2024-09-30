@@ -10,10 +10,10 @@ const secret = process.env.JWT_SECRET
 
 //verificacion profesor
 const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, materia } = req.body;
+  const { fecha_de_nacimiento, telefono, pais, materia, dias, disponibilidad_horaria } = req.body;
 
   // Validar que todos los campos estén presentes, incluidos los archivos
-  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio) {
+  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio || !dias || !disponibilidad_horaria) {
     return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
   }
 
@@ -48,8 +48,8 @@ const verificacionprof = async (req, res) => {
     const { rows } = await client.query(
       `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
        FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6`,
-      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl]
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6 AND dias=$6 AND disponibilidad_horaria=$7`,
+      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl, dias, disponibilidad_horaria]
     );
 
     if (rows.length > 0) {
@@ -249,7 +249,7 @@ res.status(500).send(err)
 
 // Obtener profesores por disponibilidad horaria
 const getprofbydisponibilidadhoraria = async (req, res) => {
-  const { disponibilidad_horaria } = req.query; // Suponiendo que la disponibilidad se pasa como un parámetro de consulta
+  const { disponibilidad_horaria } = req.params; // Suponiendo que la disponibilidad se pasa como un parámetro de consulta
 
   if (!disponibilidad_horaria) {
       return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
@@ -270,6 +270,27 @@ const getprofbydisponibilidadhoraria = async (req, res) => {
   }
 };
 
+const getprofbydias = async (req,res) => {
+const {dias} = req.params;
+
+try{
+const query= 'SELECT * FROM public.profesores WHERE dias= $1';
+const {rows}= await client.query(query,[dias]);
+
+if (rows.length > 0){
+return res.status(200).json({profesores:rows})
+}else{
+  return res.status(404).json({error:'No se encontraron profesores con esa disponibilidad horaria'})
+}
+} catch (err) {
+  console.error('Error al obtener profesores por disponibilidad horaria:', err);
+  return res.status(500).json({ error: 'Error al obtener los profesores' });
+}
+
+
+}
+
+
 const profesores = {
   verificacionprof,
   getprof, 
@@ -280,6 +301,7 @@ const profesores = {
  getprofbynombre,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
+ getprofbydias,
  getdicta,
  createdicta,
 
