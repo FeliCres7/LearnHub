@@ -156,7 +156,7 @@ app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
 app.post('/Material',verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
-app.delete('/Material/:ID', material.deletematerial);
+app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
 //reservaciones
 app.get('/reservaciones', reservaciones.getreservarclase);
