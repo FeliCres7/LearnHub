@@ -1,15 +1,26 @@
 import { client } from "../dbconfig.js";
 
 
-const getprofesoresseguidos = async (_,res) => {
+const getprofesoresseguidos = async (req,res) => {
+const {IDalumno} = req.body
 
+try{
+const query = 'SELECT * FROM public."siguen" JOIN public."profesores terminar el join preguntarle a vigi'
+const {rows} = await client.query(query, [IDalumno])
 
-
-
-
-
-
+if (rows.length === 0) {
+  return res.status(404).json({ message: 'El alumno no sigue a ningún profesor' });
 }
+
+return res.status(200).json({message: 'profesores obtenidos con exito', profesores: rows});
+
+} catch (err) {
+  console.error('Error al obtener los profesores seguidos:', err);
+  return res.status(500).json({ error: 'Error al obtener los profesores seguidos' });
+}
+};
+
+
 const seguirprofesor = async (req,res) => {
 try{
 const {IDalumno, IDprof} = req.body
