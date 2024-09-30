@@ -35,10 +35,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const uploadDir = join(__dirname, "../uploads");
 
-// Asegurarse de que la carpeta existe, si no, crearla
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
 
 // Configuración de almacenamiento de multer
 const storage = multer.diskStorage({
