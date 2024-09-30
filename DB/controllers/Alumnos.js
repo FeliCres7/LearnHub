@@ -10,14 +10,10 @@ const secret = process.env.JWT_SECRET
 const verificacionAlumno = async (req, res) => {
   const { fecha_de_nacimiento, telefono, pais, colegio } = req.body;
 
-  // Validar que todos los campos estén presentes, incluidos los archivos
-  if (!fecha_de_nacimiento || !telefono || !pais || !colegio || !req.files || !req.files.foto) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo la foto' });
-  }
 
   try {
     // Obtener el archivo de foto
-    const fotoFile = req.files.foto[0];
+    const fotoFile = req.file;
 
     // Verificar la extensión de la foto
     const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
