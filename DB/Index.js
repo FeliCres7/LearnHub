@@ -111,6 +111,7 @@ app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name:
 // SEGUIR 
 app.get('/siguen', seguir.getprofesoresseguidos)
 app.post('/siguen', seguir.seguirprofesor);
+app.delete('/siguen/:ID', seguir.dejardeseguir);
 
 //Alumnos
 app.get('/Alumnos', alumnos.getalumnos);

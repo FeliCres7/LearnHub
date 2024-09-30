@@ -37,10 +37,24 @@ if (rows.length === 0) {
 };
 
 
+const dejardeseguir = async (req,res) => {
+const {IDalumno, IDprof}= req.body 
+
+try{
+const query ='DELETE FROM public.siguen WHERE "IDalumno"= $1 AND "IDprof"=$2 RETURNING *';
+const {rows} = await client.query(query,[IDalumno, IDprof]);
+
+
+return res.status(200).json({message: 'exito' , seguimiento:rows[0]})
+}catch (err) {
+return res.status(500).json({err}) 
+  }
+};
 
 const seguir = {
 seguirprofesor,
-getprofesoresseguidos
+getprofesoresseguidos,
+dejardeseguir
 };
 export default seguir;
 
