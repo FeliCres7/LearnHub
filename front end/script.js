@@ -36,8 +36,10 @@ function CreateProfCard (prof) {
         <div class="botones-profesor">
             <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
             <button>Ir a perfil</button>
+            <button>Ver datos de contacto</button>
         </div>
         <div class="valoracion-profesor">
+            <p class="bold">Valoración</p>
             <p>${prof.valoracion}</p>
         </div>
     </div>
