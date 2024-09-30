@@ -26,7 +26,7 @@ client.connect();
 // Middleware para JSON y CORS
 app.use(express.json());
 app.use(cors({
-  origin: "http://127.0.0.1:http://127.0.0.1:5500/front%20end/inicio.html", // origen permitido
+  origin: "*", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS'] // métodos permitidos
 }));
 
