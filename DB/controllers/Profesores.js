@@ -216,10 +216,10 @@ res.status(500).send(err)
 
 
   const getprofbymaterias = async (req,res) => {
-  const materias = req.params
+  const {materias} = req.params
   
   try{
-  const query = 'SELECT * FROM public.profesores WHERE "materias" = $1 *'
+  const query = 'SELECT * FROM public.profesores WHERE "materias" = $1'
   const {rows} = await client.query(query, [materias])
 
   if (rows.length > 0){

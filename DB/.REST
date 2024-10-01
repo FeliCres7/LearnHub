@@ -182,6 +182,10 @@ GET http://localhost:3000/profesores/disponibilidad_horaria/14 HTTP/1.1
 ###
 GET http://localhost:3000/profesores/dias/martes HTTP/1.1
 
+//obtener profesores by materias
+###
+GET http://localhost:3000/profesores/materias/matematica HTTP/1.1
+
 // obtener materias de los profesores
 ### 
 GET http://localhost:3000/profesores/dicta HTTP/1.1
