@@ -5,7 +5,11 @@ import dotenv from 'dotenv'
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
+// Verificar que la clave secreta esté disponible
+if (!process.env.JWT_SECRET) {
+  console.error('Error: JWT_SECRET no está definida.');
+  process.exit(1); // Salir del proceso si la clave no está definida
+}
 
 const login = async (req, res) => {
   const { usuario, contraseña } = req.body;

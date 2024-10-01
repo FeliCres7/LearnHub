@@ -14,7 +14,7 @@ import multer from "multer";
 import { fileURLToPath } from "url";
 import { dirname, join } from 'path';
 import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
-
+import dotenv from 'dotenv';
 
 const app = express();
 const port = 3000;
