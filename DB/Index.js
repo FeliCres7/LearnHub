@@ -8,7 +8,7 @@ import materia from './controllers/Materia.js'
 import reservaciones from "./controllers/reservaciones.js";
 import seguir from './controllers/siguen.js'
 import fs from 'fs';
-import { client } from './dbconfig.js';
+import {pool} from './dbconfig.js';
 import cors from "cors";
 import multer from "multer";
 import { fileURLToPath } from "url";
@@ -20,13 +20,13 @@ const app = express();
 const port = 3000;
 
 // Conectar a la base de datos
-client.connect();
+pool.connect();
 
 
 // Middleware para JSON y CORS
 app.use(express.json());
 app.use(cors({
-  origin: "*", // origen permitido
+  origin: "http://127.0.0.1:5500", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS'] // métodos permitidos
 }));
 
@@ -35,10 +35,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const uploadDir = join(__dirname, "../uploads");
 
-// Asegurarse de que la carpeta existe, si no, crearla
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
 
 // Configuración de almacenamiento de multer
 const storage = multer.diskStorage({
@@ -128,8 +124,10 @@ app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
 app.put('/profesores/ID', verifyToken, profesores.updateprof);
 app.delete('/profesores/:ID', verifyToken, profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
-app.get('/profesores/:ID/perfilprof', verifyToken, profesores.getperfilprof)
+app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
+app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
+app.get('/profesores/dias/:dias', profesores.getprofbydias);
 app.get('/profesores/dicta', profesores.getdicta)
 app.post('/profesores/dicta/:ID', profesores.createdicta);
 

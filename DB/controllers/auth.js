@@ -1,4 +1,4 @@
-import { client } from '../dbconfig.js';
+import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -17,11 +17,11 @@ const login = async (req, res) => {
     let checkUser;
 
     // Primero, buscamos en la tabla 'alumnos'
-    checkUser = await client.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
+    checkUser = await pool.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
 
     // Si no se encuentra en 'alumnos', buscamos en 'profesores'
     if (!checkUser.rows.length) {
-      checkUser = await client.query('SELECT * FROM public.profesores WHERE "email" = $1', [usuario]);
+      checkUser = await pool.query('SELECT * FROM public.profesores WHERE "email" = $1', [usuario]);
 
       // Si tampoco se encuentra en 'profesores', devolvemos error
       if (!checkUser.rows.length) {
@@ -79,7 +79,7 @@ const register = async (req, res) => {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
     }
 
-    const result = await client.query(query, [nombre, apellido, email, hashedContraseña]);
+    const result = await pool.query(query, [nombre, apellido, email, hashedContraseña]);
 
     // Generar un token JWT
     const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, JWT_SECRET, {

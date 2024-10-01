@@ -1,11 +1,10 @@
-import dotenv from 'dotenv/config';
 import pg from "pg";
 
-const { Client } = pg;
+const { Pool } = pg;
 
 
 
-export const client = new Client({
+export const pool = new Pool({
     user: "default",
     host: "ep-late-dream-a47fp0wv-pooler.us-east-1.aws.neon.tech",
     database: "verceldb",
