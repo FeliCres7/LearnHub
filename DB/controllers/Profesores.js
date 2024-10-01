@@ -216,13 +216,23 @@ res.status(500).send(err)
 
 
   const getprofbymaterias = async (req,res) => {
-  const materias = req.query
+  const materias = req.params
   
-  //const query = 'SELECT 
+  try{
+  const query = 'SELECT * FROM public.profesores WHERE "materias" = $1 *'
+  const {rows} = await client.query(query, [materias])
+
+  if (rows.length > 0){
+  return res.json({profesores:rows, message: 'profesores obtenidos con exito'});
+  } else {
+  return res.status(400).json({error: 'no hay profesores con esa materia'});
+  }
+} catch (err) {
+  console.error('Error al obtener profesores por materias:', err);
+  return res.status(500).json({ error: 'Error al obtener los profesores' });
 
 
-
-
+  }
   }
 
   const getprofbynombre = async (req,res) => {
