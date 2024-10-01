@@ -184,7 +184,7 @@ GET http://localhost:3000/profesores/dias/martes HTTP/1.1
 
 //obtener profesores by materias
 ###
-GET http://localhost:3000/profesores/materias/matematica HTTP/1.1
+GET http://localhost:3000/profesores/materias/español HTTP/1.1
 
 // obtener materias de los profesores
 ### 
