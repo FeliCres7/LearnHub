@@ -58,8 +58,7 @@
                 const response = await fetch('https://learn-hub-eta.vercel.app/auth/login', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': ''
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(datos)
                 });
@@ -72,6 +71,8 @@
                     // Redirigir a home.html si es exitoso
                     window.location.href = 'home.html';
                 } else {
+                    const errorResponse = await response.text();
+                    document.getElementById('error-msg').innerText = errorResponse;
                     // Mostrar el mensaje de error en la misma página si falla el inicio de sesión
                     document.getElementById('error-msg').style.display = 'block';
                 }

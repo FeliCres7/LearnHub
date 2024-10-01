@@ -36,11 +36,6 @@ const login = async (req, res) => {
     if (!isValidated) {
       return res.status(401).send("Contraseña incorrecta.");
     }
-      // Verificar si la variable JWT_SECRET está definida
-      if (!process.env.JWT_SECRET) {
-        throw new Error("Falta la clave secreta para JWT.");
-      }
-  
     // Generar JWT
     const token = jwt.sign(
       { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
@@ -50,18 +45,20 @@ const login = async (req, res) => {
 
     // Establecer cookie con el token
     res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 60 // Expira en 1 hora
+      maxAge: 1000 * 60 * 60, // Expira en 1 hora
+      httpOnly: true, // Importante para la seguridad
+      secure: process.env.NODE_ENV === 'production', // Asegúrate de usar HTTPS en producción
+      sameSite: 'strict' // Dependiendo de tu caso de uso
     });
 
     // Enviar respuesta con el usuario y token
     return res.status(200).json({ usuario: checkUser.rows[0].nombre, token });
 
-  } catch (error) {
-    console.error('Error en login:', error.message);
-    return res.status(500).send("Error del servidor.");
+  }catch (error) {
+      console.error('Error en login:', error);
+      return res.status(500).send(`Error del servidor: ${error.message}`);
   }
-};
-
+ }
 const register = async (req, res) => {
   const { nombre, apellido, email, contraseña, tipoUsuario } = req.body;
 
