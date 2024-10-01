@@ -36,7 +36,11 @@ const login = async (req, res) => {
     if (!isValidated) {
       return res.status(401).send("Contraseña incorrecta.");
     }
-
+      // Verificar si la variable JWT_SECRET está definida
+      if (!process.env.JWT_SECRET) {
+        throw new Error("Falta la clave secreta para JWT.");
+      }
+  
     // Generar JWT
     const token = jwt.sign(
       { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
