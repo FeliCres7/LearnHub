@@ -1,10 +1,10 @@
-import {client} from '../dbconfig.js'
+import {pool} from '../dbconfig.js'
 
 
 // Obtener todas las clases
 const getClases = async (_, res) => {
   try {
-    const { rows } = await client.query('SELECT * FROM public."Clases"');
+    const { rows } = await pool.query('SELECT * FROM public."Clases"');
     res.json(rows);
 
   } catch (err) {
@@ -17,7 +17,7 @@ const getClases = async (_, res) => {
 const getClaseByID = async (req, res) => {
   const { ID } = req.body;
   try {
-    const { rows } = await client.query('SELECT * FROM public."clases" WHERE "ID" = $1', [ID]);
+    const { rows } = await pool.query('SELECT * FROM public."clases" WHERE "ID" = $1', [ID]);
     if (rows.length == 1) {
       res.send("Clase obtenida con éxito: ");
       res.json(rows[0]);
@@ -46,7 +46,7 @@ const createClase = async (req, res) => {
     `;
     const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos];
     
-    const result = await client.query(query, values);
+    const result = await pool.query(query, values);
 
     // Respuesta exitosa
     res.status(201).json({
@@ -70,7 +70,7 @@ const updateClase = async (req, res) => {
   }
 
   try {
-    const result = await client.query(
+    const result = await pool.query(
       'UPDATE public."clases" SET "IDmateria" = $1, "IDprofesor" = $2, horainicio = $3, horafin = $4, idiomas = $5, link = $6, valoracion=$7, "IDalumnos"= $8 WHERE "ID" = $9 RETURNING *',
       [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, ID]
     );
@@ -91,7 +91,7 @@ const updateClase = async (req, res) => {
 
 const deleteclase = async (req,res) => {
 const ID= req.params.ID
-const result = await client.query
+const result = await pool.query
 ('DELETE FROM public."clases" WHERE "ID" = $1 RETURNING*',
 [ID])
 if (result.rows.length > 0) {
@@ -106,7 +106,7 @@ const getvaloracionbyclases = async (req, res) => {
   const { ID } = req.params;
 
   try {
-    const { rows } = await client.query(
+    const { rows } = await pool.query(
       'SELECT * FROM public."valoraciones" WHERE "IDclases" = $1',
       [ID]
     );
@@ -137,7 +137,7 @@ const createvaloracionbyclases = async (req, res) => {
     `;
     const values = [IDclases, valoracion, fecha, IDalumnos];
 
-    const result = await client.query(query, values);
+    const result = await pool.query(query, values);
     res.status(201).json({
       message: 'Valoración creada con éxito',
       valoracion: result.rows[0]
@@ -153,7 +153,7 @@ const deletevaloracionbyclases = async(req,res) => {
   const { IDclases } = req.params;
 
   try {
-    const { rowCount } = await client.query(
+    const { rowCount } = await pool.query(
       'DELETE FROM public.valoraciones WHERE "IDclases" = $1',
       [IDclases]
     );

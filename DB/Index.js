@@ -8,7 +8,7 @@ import materia from './controllers/Materia.js'
 import reservaciones from "./controllers/reservaciones.js";
 import seguir from './controllers/siguen.js'
 import fs from 'fs';
-import { client } from './dbconfig.js';
+import {pool} from './dbconfig.js';
 import cors from "cors";
 import multer from "multer";
 import { fileURLToPath } from "url";
@@ -20,7 +20,7 @@ const app = express();
 const port = 3000;
 
 // Conectar a la base de datos
-client.connect();
+pool.connect();
 
 
 // Middleware para JSON y CORS

@@ -1,4 +1,4 @@
-import { client } from "../dbconfig.js";
+import {pool} from "../dbconfig.js";
 
 
 const getprofesoresseguidos = async (req,res) => {
@@ -6,7 +6,7 @@ const {IDalumno} = req.body
 
 try{
 const query = 'SELECT * FROM public."siguen" JOIN public."profesores terminar el join preguntarle a vigi'
-const {rows} = await client.query(query, [IDalumno])
+const {rows} = await pool.query(query, [IDalumno])
 
 if (rows.length === 0) {
   return res.status(404).json({ message: 'El alumno no sigue a ningún profesor' });
@@ -30,7 +30,7 @@ return res.status(400).json({error: 'se requieren ambas cosas' })
 }
 
 const query = 'INSERT INTO public."siguen" ("IDalumno", "IDprof") VALUES ($1, $2) RETURNING*';
-const {rows} = await client.query(query, [IDalumno,IDprof]);
+const {rows} = await pool.query(query, [IDalumno,IDprof]);
 
 if (rows.length === 0) {
     return res.status(409).json({ message: 'El alumno ya sigue a este profesor' });
@@ -53,7 +53,7 @@ const {IDalumno, IDprof}= req.body
 
 try{
 const query ='DELETE FROM public.siguen WHERE "IDalumno"= $1 AND "IDprof"=$2 RETURNING *';
-const {rows} = await client.query(query,[IDalumno, IDprof]);
+const {rows} = await pool.query(query,[IDalumno, IDprof]);
 
 
 return res.status(200).json({message: 'exito' , seguimiento:rows[0]})

@@ -1,10 +1,10 @@
-import {client} from '../dbconfig.js'
+import {pool} from '../dbconfig.js'
 
 
 // Obtener todas los materiales
 const getmaterial = async (_, res) => {
   try {
-    const { rows } = await client.query('SELECT * FROM public."material"');
+    const { rows } = await pool.query('SELECT * FROM public."material"');
     res.json(rows);
 
   } catch (err) {
@@ -17,7 +17,7 @@ const getmaterial = async (_, res) => {
 const getmaterialByID = async (req, res) => {
   const { ID } = req.body;
   try {
-    const { rows } = await client.query('SELECT * FROM public."material" WHERE "ID" = $1', [ID]);
+    const { rows } = await pool.query('SELECT * FROM public."material" WHERE "ID" = $1', [ID]);
     if (rows.length == 1) {
       res.send("material obtenida con éxito: ");
       res.json(rows[0]);
@@ -61,7 +61,7 @@ const {IDprofesor, materia, Fecha, infoguia, archivo} = req.body;
     `;
     const values = [IDprofesor, materia, Fecha, infoguia, archivoUrl];
     
-    const result = await client.query(query, values);
+    const result = await pool.query(query, values);
 
     // Respuesta exitosa
     res.status(201).json({
@@ -85,7 +85,7 @@ const updatematerial = async (req, res) => {
   }
 
   try {
-    const result = await client.query(
+    const result = await pool.query(
       'UPDATE public."material" SET "IDprofesor" = $1,  "IDalumno"=$2, materia = $3, "Fecha" = $4, "infoguia"= $5, "archivo"=$6 WHERE "ID" = $7 RETURNING *',
       [IDprofesor, IDalumno, materia, Fecha, infoguia, archivo, ID]
     );
@@ -106,7 +106,7 @@ const updatematerial = async (req, res) => {
 
 const deletematerial = async (req,res) => {
 const ID= req.params.ID
-const result = await client.query
+const result = await pool.query
 ('DELETE FROM public."material" WHERE "ID" = $1 RETURNING*',
 [ID])
 if (result.rows.length > 0) {

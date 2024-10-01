@@ -1,8 +1,5 @@
-import {client} from '../dbconfig.js'
-import bcrypt from "bcryptjs"
-import jwt from 'jsonwebtoken';
+import {pool} from '../dbconfig.js'
 import cloudinary from '../upload.js';
-import multer from 'multer'
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET
@@ -45,7 +42,7 @@ const verificacionprof = async (req, res) => {
     const certificadoUrl = resultCertificado.secure_url;
 
     // Comprobar si ya existe un profesor con la misma información
-    const { rows } = await client.query(
+    const { rows } = await pool.query(
       `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
        FROM public.profesores 
        WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6 AND dias=$6 AND disponibilidad_horaria=$7`,
@@ -75,7 +72,7 @@ const verificacionprof = async (req, res) => {
 // Obtener todos los profesores
 const getprof = async (_, res) => {
   try {
-    const { rows } = await client.query('SELECT * FROM profesores');
+    const { rows } = await pool.query('SELECT * FROM profesores');
     res.json(rows);
     
   } catch (err) {
@@ -89,7 +86,7 @@ const getprofbyID = async (req, res) => {
   try {
     const ID = req.params.ID;
     const query = 'SELECT * FROM public."profesores" WHERE "ID" = $1';
-    const { rows } = await client.query(query, [ID]);
+    const { rows } = await pool.query(query, [ID]);
 
     if (rows.length === 1) {
       return res.json({ message: 'profesor obtenido con éxito', profesor: rows[0] });
@@ -115,7 +112,7 @@ const updateprof = async (req, res) => {
     } = req.body;
     
     // Ejecutar la consulta SQL para actualizar el registro del profesor
-    const result = await client.query(
+    const result = await pool.query(
       `UPDATE public."profesores"
        SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
             telefono = $5, valoracion = $6, pais = $7,
@@ -142,7 +139,7 @@ const updateprof = async (req, res) => {
 // eliminar profesor
 const deleteprof = async (req,res) => {
   const  ID  = req.params.ID;
-  const result = await client.query
+  const result = await pool.query
   ('DELETE from public."profesores" WHERE "ID" = $1 RETURNING*',
   [ID])
   if (result.rows.length > 0) {
@@ -161,7 +158,7 @@ const deleteprof = async (req,res) => {
       }
   
       const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion FROM public.profesores WHERE "ID" = $1';
-      const { rows } = await client.query(query, [ID]);
+      const { rows } = await pool.query(query, [ID]);
   
       if (rows.length === 1) {
         return res.json({
@@ -181,7 +178,7 @@ const deleteprof = async (req,res) => {
 //obtener las materias de los profesores
   const getdicta = async (_,res) => {
 try{
-const {rows} = await client.query('SELECT * FROM public.dicta');
+const {rows} = await pool.query('SELECT * FROM public.dicta');
 res.json (rows);
 } catch (err){
 res.send("materias obtenidas con exito");
@@ -200,7 +197,7 @@ try{
 const query= `INSERT INTO public."dicta" ("idmateria") VALUES ($1) RETURNING *`;
 
 const values = [idmateria]
-const result = await client.query(query,values);
+const result = await pool.query(query,values);
  res.status(201).json({
   message: 'materia creada con éxito',
   dicta: result.rows[0]  
@@ -220,7 +217,7 @@ res.status(500).send(err)
   
   try{
   const query = 'SELECT * FROM public.profesores WHERE "materias" = $1'
-  const {rows} = await client.query(query, [materias])
+  const {rows} = await pool.query(query, [materias])
 
   if (rows.length > 0){
   return res.json({profesores:rows, message: 'profesores obtenidos con exito'});
@@ -244,7 +241,7 @@ res.status(500).send(err)
       }
   
       const query = 'SELECT * FROM public."profesores" WHERE nombre=$1'
-      const { rows } = await client.query(query, [nombre]);
+      const { rows } = await pool.query(query, [nombre]);
   
       if (rows.length > 0) {
         return res.json({ message: 'Profesor(es) obtenido(s) con éxito', profesores: rows });
@@ -267,7 +264,7 @@ const getprofbydisponibilidadhoraria = async (req, res) => {
 
   try {
       const query = 'SELECT * FROM public."profesores" WHERE "disponibilidad_horaria" = $1';
-      const { rows } = await client.query(query, [disponibilidad_horaria]);
+      const { rows } = await pool.query(query, [disponibilidad_horaria]);
 
       if (rows.length > 0) {
           return res.json({ message: 'Profesores obtenidos con éxito', profesores: rows });
@@ -285,7 +282,7 @@ const {dias} = req.params;
 
 try{
 const query= 'SELECT * FROM public.profesores WHERE dias= $1';
-const {rows}= await client.query(query,[dias]);
+const {rows}= await pool.query(query,[dias]);
 
 if (rows.length > 0){
 return res.status(200).json({profesores:rows})
