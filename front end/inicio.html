@@ -49,8 +49,8 @@
 
             // Crear el cuerpo de la solicitud
             const datos = {
-                email: usuario,
-                password: contraseña
+                usuario: usuario,
+                contraseña: contraseña
             };
 
             try {
@@ -59,7 +59,6 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin': ''
                     },
                     body: JSON.stringify(datos)
                 });
