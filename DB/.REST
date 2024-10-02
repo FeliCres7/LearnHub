@@ -99,7 +99,7 @@ Content-Type: application/json
 
 //Alumno deja de seguir a profe 
 ### 
-DELETE http://localhost:3000/siguen/4
+DELETE http://localhost:3000/siguen/17
 
                                              //PROFESORES 
 

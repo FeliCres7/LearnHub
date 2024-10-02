@@ -49,17 +49,21 @@ if (rows.length === 0) {
 
 
 const dejardeseguir = async (req,res) => {
-const {IDalumno, IDprof}= req.body 
+const {IDalumno, IDprof}= req.body;
 
 try{
 const query ='DELETE FROM public.siguen WHERE "IDalumno"= $1 AND "IDprof"=$2 RETURNING *';
 const {rows} = await pool.query(query,[IDalumno, IDprof]);
 
-
-return res.status(200).json({message: 'exito' , seguimiento:rows[0]})
-}catch (err) {
-return res.status(500).json({err}) 
-  }
+ if (rows.length > 0) {
+    return res.status(200).json({ message: 'Éxito', seguimiento: rows[0] });
+} else {
+    return res.status(200).json({ message: 'No se encontró ningún seguimiento para eliminar.' });
+}
+} catch (err) {
+console.error('Error al dejar de seguir:', err);
+return res.status(500).json({ error: 'Error del servidor' });
+}
 };
 
 const seguir = {

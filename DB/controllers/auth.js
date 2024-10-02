@@ -47,8 +47,7 @@ const login = async (req, res) => {
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 60, // Expira en 1 hora
       httpOnly: true, // Importante para la seguridad
-      secure: process.env.NODE_ENV === 'production', // Asegúrate de usar HTTPS en producción
-      sameSite: 'strict' // Dependiendo de tu caso de uso
+      secure: process.env.NODE_ENV === 'production'
     });
 
     // Enviar respuesta con el usuario y token
@@ -58,7 +57,8 @@ const login = async (req, res) => {
       console.error('Error en login:', error);
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
- }
+};
+
 const register = async (req, res) => {
   const { nombre, apellido, email, contraseña, tipoUsuario } = req.body;
 
