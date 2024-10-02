@@ -32,6 +32,9 @@ const login = async (req, res) => {
     if (!isValidated) {
       return res.status(401).send("Contraseña incorrecta.");
     }
+
+    console.log(process.env.JWT_SECRET);
+
     // Generar JWT
     const token = jwt.sign(
       { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
