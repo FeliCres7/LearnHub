@@ -1,11 +1,7 @@
 import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv'
-
-dotenv.config();
-
-const JWT_SECRET = process.env.JWT_SECRET;
+import dotenv from 'dotenv/config'
 
 const login = async (req, res) => {
   const { usuario, contraseña } = req.body;
@@ -45,8 +41,8 @@ const login = async (req, res) => {
 
     // Establecer cookie con el token
     res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 60, // Expira en 1 hora
-      httpOnly: true, // Importante para la seguridad
+      maxAge: 1000 * 60 * 60, 
+      httpOnly: true, 
       secure: process.env.NODE_ENV === 'production'
     });
 
@@ -85,7 +81,7 @@ const register = async (req, res) => {
     const result = await pool.query(query, [nombre, apellido, email, hashedContraseña]);
 
     // Generar un token JWT
-    const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, JWT_SECRET, {
+    const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
