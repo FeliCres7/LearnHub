@@ -5,7 +5,12 @@ const getprofesoresseguidos = async (req,res) => {
 const {IDalumno} = req.body
 
 try{
-const query = 'SELECT * FROM public."siguen" JOIN public."profesores terminar el join preguntarle a vigi'
+const query = `
+            SELECT profesores.* 
+            FROM public."siguen", public."profesores" 
+            WHERE "siguen"."IDprof" = "profesores"."ID" 
+            AND "siguen"."IDalumno" = $1
+        `;
 const {rows} = await pool.query(query, [IDalumno])
 
 if (rows.length === 0) {

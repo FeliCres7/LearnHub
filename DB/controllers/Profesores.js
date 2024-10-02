@@ -176,7 +176,7 @@ const deleteprof = async (req,res) => {
 
 
 //obtener las materias de los profesores
-  const getdicta = async (_,res) => {
+const getdicta = async (_,res) => {
 try{
 const {rows} = await pool.query('SELECT * FROM public.dicta');
 res.json (rows);
