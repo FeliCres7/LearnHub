@@ -105,21 +105,19 @@ const getprofbyID = async (req, res) => {
 
 const updateprof = async (req, res) => {
   try {
-    console.log(req.body);
     const {
       nombre, apellido, fecha_de_nacimiento, email,
-      telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID
+      telefono, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, certificadoestudio, ID
     } = req.body;
     
     // Ejecutar la consulta SQL para actualizar el registro del profesor
     const result = await pool.query(
       `UPDATE public."profesores"
        SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
-            telefono = $5, valoracion = $6, pais = $7,
-           idiomas = $8, foto = $9, descripcion_corta = $10, contraseña = $11, disponibilidad_horaria = $12
-       , dias=$13 AND materia=$14 WHERE "ID" = $15
-       RETURNING *`,
-      [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID]
+            telefono = $5, foto = $6, descripcion_corta = $7, contraseña = $8, disponibilidad_horaria = $9
+       , dias=$10 AND certificadoestudio = $11 WHERE "ID" = $12
+       RETURNING *` ,
+      [nombre, apellido, fecha_de_nacimiento, email, telefono, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, certificadoestudio, ID]
     );
 
     // Verificar el resultado de la actualización

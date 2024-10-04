@@ -121,7 +121,7 @@ app.get('/Alumnos/:ID/perfilalumno', verifyToken, alumnos.getperfilalumno)
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
 app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
-app.put('/profesores/ID', verifyToken, profesores.updateprof);
+app.put('/profesores/ID', profesores.updateprof);
 app.delete('/profesores/:ID', verifyToken, profesores.deleteprof);
 // app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
 app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)

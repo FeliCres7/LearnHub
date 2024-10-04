@@ -101,7 +101,7 @@ Content-Type: application/json
 
 //Alumno deja de seguir a profe 
 ### 
-DELETE http://localhost:3000/siguen/17
+DELETE http://localhost:3000/siguen/21 HTTP/1.1
 
                                              //PROFESORES 
 
@@ -153,13 +153,12 @@ Content-Type: application/json
 "fecha_de_nacimiento":"2007/7/19", 
 "email":"ezeagr@gmail.com",
 "telefono":"5491133750973",
-"valoracion":"9",
-"pais":"Argentina", 
-"idiomas":"español y hungaro",
 "foto": ".",
 "descripcion_corta":"Hola soy eze y me encanta enseñar",
 "disponibilidad_horaria":"14:00",
- "ID": "6"
+"dias": true,
+"certificadoestudio":"ort",
+"ID": 9
 }
 
 ###
