@@ -58,7 +58,6 @@
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Capturar datos del formulario
             const nombre = document.getElementById('nombre').value;
             const apellido = document.getElementById('apellido').value;
             const email = document.getElementById('email').value;
@@ -66,23 +65,20 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
             const tipoUsuario = document.querySelector('input[name="role"]:checked').value;
 
-            // Verificar que las contraseñas coincidan
             if (password !== confirmPassword) {
                 alert('Las contraseñas no coinciden. Inténtalo de nuevo.');
                 return;
             }
 
-            // Crear el objeto con los datos del formulario
             const data = {
                 nombre,
                 apellido,
                 email,
-                contraseña: password, // la API espera el campo como 'contraseña'
-                tipoUsuario // puede ser 'alumno' o 'profesor'
+                contraseña: password, 
+                tipoUsuario 
             };
 
             try {
-                // Enviar los datos al backend con fetch
                 const response = await fetch('https://learn-hub-eta.vercel.app/auth/register', {
                     method: 'POST',
                     headers: {
@@ -92,12 +88,10 @@
                 });
 
                 if (response.ok) {
-                    // Registro exitoso
                     const result = await response.json();
                     alert(`${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito. ¡Bienvenido!`);
                     window.location.href = 'inicio.html'; // Redirigir a inicio de sesión
                 } else {
-                    // Error en el registro
                     const result = await response.json();
                     alert('Error en el registro: ' + result.error);
                 }
