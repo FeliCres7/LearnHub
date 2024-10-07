@@ -10,8 +10,8 @@
 <header class="headerlogin">
     <img src="Images html/LogoLH.png" alt="Logo">
     <div> 
-        <button>Ya tenes una cuenta?</button>
-        <button> Registrarse</button>
+        <p>¿Ya tienes una cuenta?</p>
+        <button onclick="window.location.href='inicio.html'">Iniciar sesión</button>
     </div>
 </header>
 <body>
@@ -19,23 +19,27 @@
         <div class="logo">
         </div>
         <div class="form-container">
-            <h2>Registrarse</h2>
-            <form action="#">
+            <h1>Registrarse</h1>
+            <form id="registerForm">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Nombre Completo" required>
+                    <input type="text" id="nombre" placeholder="Nombre" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="apellido" placeholder="Apellido" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="Dirección de email" required>
+                    <input type="email" id="email" placeholder="Dirección de email" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Contraseña" required>
+                    <input type="password" id="password" placeholder="Contraseña" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Confirmar contraseña" required>
+                    <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
                 </div>
 
                 <div class="radio-group">
@@ -44,11 +48,64 @@
                     <input type="radio" id="profesor" name="role" value="profesor" required>
                     <label for="profesor">Profesor</label>
                 </div>
-                
 
                 <button type="submit" class="btn">Registrarse</button>
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Capturar datos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const tipoUsuario = document.querySelector('input[name="role"]:checked').value;
+
+            // Verificar que las contraseñas coincidan
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden. Inténtalo de nuevo.');
+                return;
+            }
+
+            // Crear el objeto con los datos del formulario
+            const data = {
+                nombre,
+                apellido,
+                email,
+                contraseña: password, // la API espera el campo como 'contraseña'
+                tipoUsuario // puede ser 'alumno' o 'profesor'
+            };
+
+            try {
+                // Enviar los datos al backend con fetch
+                const response = await fetch('https://learn-hub-eta.vercel.app/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    // Registro exitoso
+                    const result = await response.json();
+                    alert(`${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito. ¡Bienvenido!`);
+                    window.location.href = 'inicio.html'; // Redirigir a inicio de sesión
+                } else {
+                    // Error en el registro
+                    const result = await response.json();
+                    alert('Error en el registro: ' + result.error);
+                }
+            } catch (error) {
+                alert('Hubo un error al registrar el usuario. Inténtalo de nuevo más tarde.');
+                console.error('Error:', error);
+            }
+        });
+    </script>
 </body>
 </html>
