@@ -101,7 +101,7 @@ Content-Type: application/json
 
 //Alumno deja de seguir a profe 
 ### 
-DELETE http://localhost:3000/siguen/21 HTTP/1.1
+DELETE http://localhost:3000/siguen/7 HTTP/1.1
 
                                              //PROFESORES 
 

@@ -168,6 +168,23 @@ const deletevaloracionbyclases = async(req,res) => {
   } 
 };
 
+const getclasebyalumno = async (req,res) => {
+const ID = req.params.ID; 
+
+try{
+const query= 'SELECT * "IDclases" FROM public."alumnos" WHERE "ID"=$1 RETURNING *'
+const {rows} = await pool.query [query, [ID]]
+
+if (rows.length > 0) {
+res.status(200).json({rows})
+} else {
+  res.status(404)
+}
+} catch (err) {
+res.status(500).json({ error: err.message });
+}
+};
+
 
 
 
@@ -179,7 +196,9 @@ const clases = {
   deleteclase,
   getvaloracionbyclases,
   createvaloracionbyclases,
-  deletevaloracionbyclases
+  deletevaloracionbyclases,
+  getclasebyalumno,
+  //getclasebyprof
 }
 
 export default clases;

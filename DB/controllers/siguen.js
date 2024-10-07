@@ -54,11 +54,11 @@ if (rows.length === 0) {
 
 
 const dejardeseguir = async (req,res) => {
-const {IDalumno, IDprof}= req.body;
+const ID= req.params.ID;
 
 try{
-const query ='DELETE FROM public.siguen WHERE "IDalumno"= $1 AND "IDprof"=$2 RETURNING *';
-const {rows} = await pool.query(query,[IDalumno, IDprof]);
+const query ='DELETE FROM public."siguen" WHERE "ID" = $1 RETURNING *';
+const {rows} = await pool.query(query,[ID]);
 
  if (rows.length > 0) {
     return res.status(200).json({ message: 'Éxito', seguimiento: rows[0] });
