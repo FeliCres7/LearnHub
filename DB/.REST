@@ -72,6 +72,7 @@ Content-Type: application/json
 //Eliminar un alumno
 
 DELETE http://localhost:3000/Alumnos/6 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyODMyMDA3NCwiZXhwIjoxNzI4MzIzNjc0fQ.JftzDnci0rC2lHOy_TDY1IpLabHXfI7zVLI3lLoDvXg
 
 ###
 //Obtener las clases de un alumno

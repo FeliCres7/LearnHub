@@ -4,6 +4,8 @@ import profesores from "../controllers/Profesores.js";
 
 
 
+
+// Middleware para verificar el token
 export const verifyToken = async (req, res, next) => {
     const headerToken = req.headers['authorization'];
 
@@ -19,49 +21,61 @@ export const verifyToken = async (req, res, next) => {
     }
 
     const token = tokenParts[1];
-
+    
     try {
-        const secret = "Vamos Racing";
+        const secret = "god";
         const decoded = jwt.verify(token, secret);
 
-        // Verificar si el token contiene un ID de usuario válido
+      
         const id = decoded.id;
         
-        // Intentar encontrar al usuario como alumno
-        let usuario = await alumnos.findById(id);
+        
+        let usuario = await alumnos.getalumnobyID(id);
         
         // Si no se encuentra como alumno, intentar encontrar como profesor
         if (!usuario) {
-            usuario = await profesores.findById(id);
+            usuario = await profesores.findOne(id);
         }
 
         if (!usuario) {
             return res.status(400).json({ message: "ID no válido" });
         }
 
-        // Adjuntar el ID de usuario y el rol al objeto de la solicitud
+        
         req.id = id;
-        req.role = usuario.role; // Suponiendo que 'role' indica si el usuario es alumno o profesor
+        req.role = usuario.role; 
         next();
     } catch (error) {
+        console.error(error); 
         return res.status(401).json({ error: "Token no válido o expirado" });
     }
 };
 
+// Middleware para verificar si es administrador (rol de profesor)
 export const verifyAdmin = async (req, res, next) => {
-    const id = req.id;
+    try {
+        const id = req.id;
 
-    // Recuperar detalles del usuario para verificar si es un administrador (profesor)
-    const usuario = await profesores.findById(id); 
+        // Verificar si se pasó el ID desde el middleware anterior
+        if (!id) {
+            return res.status(400).json({ message: "ID no proporcionado" });
+        }
 
-    if (!usuario) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-    }
+        // Intentar encontrar al usuario como profesor
+        const usuario = await profesores.findOne(id);
 
-    // Verificar si el usuario es un administrador (profesor)
-    if (usuario.role === 'admin') { 
-        next();
-    } else {
-        return res.status(403).json({ message: "Acceso prohibido" });
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        // Verificar si el rol es 'admin'
+        if (usuario.role === 'admin') { 
+            next();
+        } else {
+            return res.status(403).json({ message: "Acceso prohibido, no eres administrador" });
+        }
+    } catch (error) {
+        console.error(error); // Registrar el error
+        return res.status(500).json({ message: "Error del servidor al verificar administrador" });
     }
 };
