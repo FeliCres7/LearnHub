@@ -60,3 +60,28 @@ margin-bottom: 20px;
     padding: 5px 10px;
     margin-bottom: 20px;
 }
+.disponibilidad-horaria-div{
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px #00000066;
+    width: 60%;
+    height: fit-content;
+    font-size: 18px;
+    margin-top: 30px;
+}
+.light{
+    font-weight: 400;
+}
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.dias-disponibilidad input{
+    border: none;
+    background-color: #EDF3F8;
+    color: #979CAD;
+    border-radius: 10px;
+    font-size: 28px;
+}
