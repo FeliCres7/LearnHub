@@ -243,10 +243,10 @@ h1 {
     color: #6b6b6b;
     font-size: 30px;
     margin-right: 10px;
-    height: 10%;
+    width: 10%;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+input, select {
     width: 100%;
     padding: 12px;
     border: 2px solid #ccc;
@@ -255,7 +255,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     border-radius: 5px;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+input:focus, select:focus {
     border-color: #002d72;
     outline: 2px solid #002d72; /* resaltado al enfocar */
 }
@@ -319,4 +319,25 @@ p a:hover {
     background-color: #dae8ff;
 }
 
-
+.datos-profesor{
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 380px;
+}
+.datos-profesor p{
+    color: #001767;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+input[type="file"]{
+ border-radius: 20px;
+ border-color: #001767;
+ font-size: 10px;
+ padding: 5px 20px;
+ margin-bottom: 15px;
+}
