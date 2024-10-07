@@ -32,9 +32,21 @@ reservaciones: result.rows [0]
   res.status (500).send(err)
 }}
 
+const getreservacionbyalumno = async (req,res) => {
+
+
+}
+
+const getreservacionbyprof = async (req,res) => {
+
+  
+}
+
 const reservaciones = {
    getreservarclase,
-   createreservarclase
+   createreservarclase,
+   getreservacionbyalumno,
+   getreservacionbyprof 
   };
   
   export default reservaciones;
