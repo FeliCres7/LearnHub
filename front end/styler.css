@@ -27,7 +27,7 @@ body {
 
 
 .headerlogin img {
-    width: 100px; /* Ajusta según sea necesario */
+    width: 120px; 
     padding-top:20px;
     padding-left: 20;
    
@@ -52,10 +52,15 @@ body {
     border-radius: 54px;
     font-size: 16px;
     font-weight: 700;
-    padding: 5px;
+    padding: 10px;
+}
+.headerlogin button:hover{
+    cursor: pointer;
 }
 .headerlogin p{
     margin: 0px;
+    padding-right: 5px;
+    color: #001767;
 }
 main {
     display: flex;
@@ -68,9 +73,9 @@ main {
 
 .formulario {
     width: 350px;
-    border-radius: 30px;
+    border-radius: 15px;
     background-color: #ffffff;
-    padding: 30px;
+    padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -100,39 +105,44 @@ main {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-    background-color: #ccc;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    
 }
 .espacio{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 
 .usuario img {
-    height: 30px;
+    height: 50px;
     width: auto;
-    background-color: #ccc;
-    margin-right: 0px; /* Espacio entre la imagen y el input */
-   
-   
+    background-color: #d9d9d9;
+    margin-right: 0px; 
+    border-radius: 10px;
+
 
 
 }
 
 
 .contraseña img{
-    height: 30px;
+    height: 50px;
     width: auto;
-    background-color: #ccc;
-    margin-right: 0px; /* Espacio entre la imagen y el input */
+    background-color: #d9d9d9;
+    margin-right: 0px;
+    border-radius: 10px;
+
 }
 
 
 
 
 .formulario input {
-    height: 36px;
+    height: 50px;
+    font-size: 50px;
     padding: 0 10px;
-    border: 2px solid #ccc;
+    border: 2px solid #d9d9d9;
     font-size: 18px;
     color:black;
     border-radius: 4px;
@@ -211,9 +221,11 @@ body {
 }
 
 
-h2 {
+h1 {
     margin-bottom: 20px;
     color: #002d72;
+    width: 100%;
+    text-align: start;
 }
 
 .input-group {
