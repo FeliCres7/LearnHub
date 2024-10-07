@@ -2,7 +2,7 @@ import {pool} from "../dbconfig.js";
 
 
 const getprofesoresseguidos = async (req,res) => {
-const {IDalumno} = req.body
+const {IDalumno} = req.params
 
 try{
 const query = `
