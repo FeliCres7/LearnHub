@@ -20,36 +20,46 @@ export const verifyToken = async (req, res, next) => {
         return res.status(400).json({ message: "Formato del token no válido" });
     }
 
+    console.log(tokenParts);
+
     const token = tokenParts[1];
+
+    console.log(token)
     
     try {
         const secret = "god";
         const decoded = jwt.verify(token, secret);
 
-      
+      console.log(decoded)
+
+
         const id = decoded.id;
         
         
-        let usuario = await alumnos.getalumnobyID(id);
+        let usuario = await alumnos.getalumnos(id);
         
         // Si no se encuentra como alumno, intentar encontrar como profesor
         if (!usuario) {
-            usuario = await profesores.findOne(id);
+            usuario = await profesores.getprof(id);
         }
 
         if (!usuario) {
             return res.status(400).json({ message: "ID no válido" });
         }
 
-        
         req.id = id;
-        req.role = usuario.role; 
+        req.role = usuario; 
         next();
     } catch (error) {
-        console.error(error); 
-        return res.status(401).json({ error: "Token no válido o expirado" });
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: "Token inválido." });
+        } else if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: "Token expirado." });
+        } else {
+            return res.status(500).json({ error: "Error interno del servidor." });
+        }
     }
-};
+}
 
 // Middleware para verificar si es administrador (rol de profesor)
 export const verifyAdmin = async (req, res, next) => {
@@ -62,7 +72,7 @@ export const verifyAdmin = async (req, res, next) => {
         }
 
         // Intentar encontrar al usuario como profesor
-        const usuario = await profesores.findOne(id);
+        const usuario = await profesores.getprof(id);
 
         if (!usuario) {
             return res.status(404).json({ message: "Usuario no encontrado" });
