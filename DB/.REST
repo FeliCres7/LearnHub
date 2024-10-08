@@ -74,10 +74,6 @@ Content-Type: application/json
 DELETE http://localhost:3000/Alumnos/6 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyODMyMDA3NCwiZXhwIjoxNzI4MzIzNjc0fQ.JftzDnci0rC2lHOy_TDY1IpLabHXfI7zVLI3lLoDvXg
 
-###
-//Obtener las clases de un alumno
-
-GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 
 //Obtener perfil del alumno
 ###
@@ -167,10 +163,6 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/profesores/19 HTTP/1.1
 
-###
-//Obtener las clases de un profesor
-
-GET http://localhost:3000/profesores/3/clasebyprof/4 HTTP/1.1
 
 //Obtener perfil del profesor
 ###

@@ -32,15 +32,43 @@ reservaciones: result.rows [0]
   res.status (500).send(err)
 }}
 
-const getreservacionbyalumno = async (req,res) => {
+const getreservacionbyalumno = async (req, res) => {
+  const { IDalumno } = req.params;
 
+  if (!IDalumno) {
+    return res.status(400).json({ error: 'ID de alumno es requerido' });
+  }
 
-}
+  try {
+    const query = `
+      
+    `;
 
-const getreservacionbyprof = async (req,res) => {
+    const { rows } = await pool.query(query, [IDalumno]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
-  
-}
+const getreservacionbyprof = async (req, res) => {
+  const { idprof } = req.params;
+
+  if (!idprof) {
+    return res.status(400).json({ error: 'ID de profesor es requerido' });
+  }
+
+  try {
+    const query = `
+      
+    `;
+
+    const { rows } = await pool.query(query, [idprof]);
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 const reservaciones = {
    getreservarclase,

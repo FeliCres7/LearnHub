@@ -116,21 +116,6 @@ const deleteAlumno = async (req, res) => {
   }
 };
 
-//obtener las clases de un alumno
-/*const getclasebyalumno = async (req, res) => {
-  try {
-    const ID = req.params.ID;
-
-    // Consulta para obtener el arreglo de IDclases desde la tabla "alumnos"
-    const queryidclases = 'SELECT "idclases" FROM "alumnos" WHERE "ID" = $1';
-    const { rows: idclasesRows } = await client.query(queryidclases, [ID]);
-
-
-
-  }
-}
-*/
-
 
 const getperfilalumno = async (req, res) => {
   try {
