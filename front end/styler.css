@@ -51,9 +51,12 @@ body {
     font-size: 16px;
     font-weight: 700;
     padding: 10px;
+    transition: all 0.3s;
 }
 .headerlogin button:hover{
     cursor: pointer;
+    background-color: #eee;
+    filter: drop-shadow(0.5);
 }
 .headerlogin p{
     margin: 0px;
