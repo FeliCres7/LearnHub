@@ -27,7 +27,7 @@ export const verifyToken = async (req, res, next) => {
     console.log(token)
     
     try {
-        const secret = "god";
+        const secret = process.env.JWT_SECRET;
         const decoded = jwt.verify(token, secret);
 
       console.log(decoded)
