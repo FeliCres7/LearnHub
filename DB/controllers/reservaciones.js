@@ -35,10 +35,6 @@ reservaciones: result.rows [0]
 const getreservacionbyalumno = async (req, res) => {
   const { IDalumno } = req.params;
 
-  if (!IDalumno) {
-    return res.status(400).json({ error: 'ID de alumno es requerido' });
-  }
-
   try {
     const query = `
       
@@ -54,12 +50,9 @@ const getreservacionbyalumno = async (req, res) => {
 const getreservacionbyprof = async (req, res) => {
   const { idprof } = req.params;
 
-  if (!idprof) {
-    return res.status(400).json({ error: 'ID de profesor es requerido' });
-  }
 
   try {
-    const query = `
+    const query = ` SELECT "idprof" FROM 
       
     `;
 

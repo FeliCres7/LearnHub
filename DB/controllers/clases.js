@@ -31,7 +31,7 @@ const getClaseByID = async (req, res) => {
 
 // Crear una clase
 const createClase = async (req, res) => {
-  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos} = req.body;
+  const {IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, nombremateria} = req.body;
 
   
   if (!IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !link || !valoracion || !IDalumnos) {
@@ -40,11 +40,11 @@ const createClase = async (req, res) => {
 
   try {
     const query = `
-      INSERT INTO public."clases" ("IDmateria", "IDprofesor", "horainicio", "horafin", "idiomas", "link", "valoracion", "IDalumnos")
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO public."clases" ("IDmateria", "IDprofesor", "horainicio", "horafin", "nombremateria", "idiomas", "link", "valoracion", "IDalumnos")
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING *
     `;
-    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos];
+    const values = [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, nombremateria];
     
     const result = await pool.query(query, values);
 
@@ -62,7 +62,7 @@ const createClase = async (req, res) => {
 // Actualizar una clase
 const updateClase = async (req, res) => {
  
-  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, ID } = req.body;
+  const { IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, nombremateria, ID } = req.body;
 
   // Validar los datos aquí si es necesario
   if (!ID || !IDmateria || !IDprofesor || !horainicio || !horafin || !idiomas || !link || !valoracion || !IDalumnos) {
@@ -71,8 +71,8 @@ const updateClase = async (req, res) => {
 
   try {
     const result = await pool.query(
-      'UPDATE public."clases" SET "IDmateria" = $1, "IDprofesor" = $2, horainicio = $3, horafin = $4, idiomas = $5, link = $6, valoracion=$7, "IDalumnos"= $8 WHERE "ID" = $9 RETURNING *',
-      [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, ID]
+      'UPDATE public."clases" SET "IDmateria" = $1, "IDprofesor" = $2, horainicio = $3, horafin = $4, idiomas = $5, link = $6, valoracion=$7, "IDalumnos"= $8, "nombremateria" = $9 WHERE "ID" = $10 RETURNING *',
+      [IDmateria, IDprofesor, horainicio, horafin, idiomas, link, valoracion, IDalumnos, nombremateria, ID]
     );
 
     if (result.rows.length > 0) {
