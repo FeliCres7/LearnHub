@@ -32,7 +32,6 @@ export const verifyToken = async (req, res, next) => {
 
       console.log(decoded)
 
-
         const {id} = decoded;
         
         
@@ -48,7 +47,7 @@ export const verifyToken = async (req, res, next) => {
         }
 
         req.id = id;
-        req.role = usuario; 
+        req.role = usuario;
         next();
     } catch (error) {
         if (error.name === 'JsonWebTokenError') {
