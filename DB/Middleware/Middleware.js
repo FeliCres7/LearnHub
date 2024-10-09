@@ -33,14 +33,14 @@ export const verifyToken = async (req, res, next) => {
       console.log(decoded)
 
 
-        const id = decoded.id;
+        const {id} = decoded;
         
         
-        let usuario = await alumnos.getalumnos(id);
+        const usuario = await pool.query('SELECT * FROM public."alumnos"', [id])
         
         // Si no se encuentra como alumno, intentar encontrar como profesor
         if (!usuario) {
-            usuario = await profesores.getprof(id);
+            usuario = await pool.query('SELECT * FROM public."profesores"',[id]);
         }
 
         if (!usuario) {
@@ -72,7 +72,7 @@ export const verifyAdmin = async (req, res, next) => {
         }
 
         // Intentar encontrar al usuario como profesor
-        const usuario = await profesores.getprof(id);
+        const usuario = await pool.query('SELECT * FROM public."profesores"',[id]);
 
         if (!usuario) {
             return res.status(404).json({ message: "Usuario no encontrado" });
