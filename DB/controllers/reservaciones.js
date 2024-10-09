@@ -36,8 +36,12 @@ const getreservacionbyalumno = async (req, res) => {
   const { IDalumno } = req.params;
 
   try {
-    const query = ` SELECT "nombremateria" FROM public."clases" WHERE "ID"=$1 INNER JOIN public."reservaciones" WHERE "IDclase" = "ID" ON public."clases", public."alumnos" DSP TERMINARLO  
-    `;
+    const query = `SELECT clases.nombremateria, reservaciones.dia, reservaciones.hora
+    FROM public.reservaciones
+    INNER JOIN public.clases 
+      ON reservaciones."IDclase" = clases."ID"
+    WHERE reservaciones."IDalumno" = $1;
+  `
 
     const { rows } = await pool.query(query, [IDalumno]);
     res.json(rows);
@@ -51,8 +55,11 @@ const getreservacionbyprof = async (req, res) => {
 
 
   try {
-    const query = ` SELECT "idprof" FROM  DSP HACERLO
-      
+    const query = ` SELECT clases.nombremateria, reservaciones.dia, reservaciones.hora
+    FROM public.reservaciones
+    INNER JOIN public.clases 
+      ON reservaciones."IDclase" = clases."ID"
+    WHERE reservaciones."idprof" = $1;
     `;
 
     const { rows } = await pool.query(query, [idprof]);

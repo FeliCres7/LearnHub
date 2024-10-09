@@ -4,8 +4,8 @@ POST http://localhost:3000/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-    "usuario":"nicoagradnik@gmail.com",
-    "contraseña":"nico2012"
+    "usuario":"ezequielagradnik@gmail.com",
+    "contraseña":"12345"
 }
 
 ###
@@ -17,7 +17,6 @@ Content-Type: application/json
     "nombre":"benjamin",
     "apellido":"agradnik",
     "email":"nicoagradnik@gmail.com",
-    "foto": ".",
     "contraseña":"nico2012",
     "tipoUsuario":"alumno"
 }
@@ -51,7 +50,7 @@ GET http://localhost:3000/Alumnos/6 HTTP/1.1
 //Actualizar un alumno
 
 PUT http://localhost:3000/Alumnos/ID HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyNzMxNTA1NywiZXhwIjoxNzI3MzE4NjU3fQ.z_kk3-E94hk7Nodj9mzT-BmKSA9ZLgyBpb6R_N1772k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsInVzZXJuYW1lIjoiZXplcXVpZWwiLCJpYXQiOjE3Mjg0OTQ5MzIsImV4cCI6MTcyODQ5ODUzMn0.RorZJp7B4LZA-k1HUqcKGhQMND5HXS1nW5JXYFh0KrQ
 Content-Type: application/json
 
 {
