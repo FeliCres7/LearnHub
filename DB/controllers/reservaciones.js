@@ -36,8 +36,7 @@ const getreservacionbyalumno = async (req, res) => {
   const { IDalumno } = req.params;
 
   try {
-    const query = `
-      
+    const query = ` SELECT "nombremateria" FROM public."clases" WHERE "ID"=$1 INNER JOIN public."reservaciones" WHERE "IDclase" = "ID" ON public."clases", public."alumnos" DSP TERMINARLO  
     `;
 
     const { rows } = await pool.query(query, [IDalumno]);
@@ -52,7 +51,7 @@ const getreservacionbyprof = async (req, res) => {
 
 
   try {
-    const query = ` SELECT "idprof" FROM 
+    const query = ` SELECT "idprof" FROM  DSP HACERLO
       
     `;
 

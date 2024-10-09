@@ -160,3 +160,5 @@ app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 //reservaciones
 app.get('/reservaciones', reservaciones.getreservarclase);
 app.post('/reservaciones', reservaciones.createreservarclase);
+app.get('/reservaciones/IDalumno/:IDalumno', reservaciones.getreservacionbyalumno);
+app.get('/reservaciones/IDprof/:IDprof', reservaciones.getreservacionbyprof);
