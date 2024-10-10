@@ -61,16 +61,16 @@
         <form id="formProfesor">
             <div class="input-group">
                 <i class="fas fa-calendar"></i>
-                <input type="date" name="fecha_de_nacimiento" placeholder="Fecha de nacimiento" required>
+                <input type="date" id="fecha_de_nacimiento_profesor" placeholder="Fecha de nacimiento" required>
             </div>
             <div class="input-group">
                 <i class="fas fa-phone"></i>
-                <input type="tel" name="telefono" placeholder="Número de teléfono" required>
+                <input type="tel" id="telefono_profesor" placeholder="Número de teléfono" required>
             </div>
             <div class="input-group">
                 <i class="fas fa-map-marker"></i>
     
-            <select name="pais" required>
+            <select id="pais_profesor" required>
                 <option value="Afganistán">Afganistán</option>
                 <option value="Albania">Albania</option>
                 <option value="Argelia">Argelia</option>
@@ -257,12 +257,12 @@
         </div>
         <div class="input-group">
             <i class="fas fa-graduation-cap"></i>
-            <input type="text" name="materia" placeholder="Materias que enseñas" required>
+            <input type="text" id="materia_profesor" placeholder="Materias que enseñas" required>
         </div>
         <p>Agrega certificados de tus estudios</p>
-        <input type="file" name="certificadoestudio" required>
+        <input type="file" id="certificadoestudio_profesor" required>
         <p>Agrega una foto de perfil</p>
-        <input type="file" name="foto" required>
+        <input type="file" id="foto_profesor" required>
         <input type="submit" class="btn" value="Finalizar">
     </form>
 </div>
@@ -272,16 +272,16 @@
     <form id="formAlumno">
         <div class="input-group">
             <i class="fas fa-calendar"></i>
-            <input type="date" name="fecha_de_nacimiento" placeholder="Fecha de nacimiento" required>
+            <input type="date" id="fecha_de_nacimiento_alumno" placeholder="Fecha de nacimiento" required>
         </div>
         <div class="input-group">
             <i class="fas fa-phone"></i>
-            <input type="tel" name="telefono" placeholder="Número de teléfono" required>
+            <input type="tel" id="telefono_alumno" placeholder="Número de teléfono" required>
         </div>
         <div class="input-group">
             <i class="fas fa-map-marker"></i>
 
-        <select name="pais" required>
+        <select id="pais_alumno" required>
             <option value="Afganistán">Afganistán</option>
             <option value="Albania">Albania</option>
             <option value="Argelia">Argelia</option>
@@ -468,10 +468,10 @@
     </div>
     <div class="input-group">
         <i class="fas fa-graduation-cap"></i>
-        <input type="text" name="materia" placeholder="Colegio-Universidad" required>
+        <input type="text" id="colegio_alumno" placeholder="Colegio-Universidad" required>
     </div>
     <p>Agrega una foto de perfil</p>
-    <input type="file" name="foto" required>
+    <input type="file" id="foto_alumno" required>
     <input type="submit" class="btn" value="Finalizar">
 </form>
 </div>
@@ -499,39 +499,141 @@
             contraseña: password,
             tipoUsuario
         };
+        if (tipoUsuario === 'profesor') {
+            document.querySelector('.datos-profesor').style.display = 'block';
+            document.querySelector('.container').style.display = 'none';
 
-        try {
-            const response = await fetch('https://learn-hub-eta.vercel.app/auth/register', {
-                method: 'POST', // Specify the HTTP method
-                headers: {
-                    'Content-Type': 'application/json' 
-                },
-                body: JSON.stringify(data) 
-            });
+        document.getElementById('formProfesor').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-            if (!response.ok) {
-                throw new Error('Error en el registro'); 
-            }
+            const fecha_de_nacimiento = document.getElementById('fecha_de_nacimiento_profesor').value;
+            const telefono = document.getElementById('telefono_profesor').value;
+            const pais= document.getElementById('pais_profesor').value;
+            const materia = document.getElementById('materia_profesor').value;
+            const certificadoestudio = document.getElementById('certificadoestudio_profesor').value;
+            const foto = document.getElementById('foto_profesor').value;
 
-            const result = await response.json();
-            alert('Registro exitoso'); // Success message
-            
-            if (tipoUsuario === 'profesor') {
-                document.querySelector('.datos-profesor').style.display = 'block';
-                document.querySelector('.container').style.display = 'none';
-            }
-            if (tipoUsuario === 'alumno') {
-                document.querySelector('.datos-alumno').style.display = 'block';
-                document.querySelector('.container').style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Hubo un problema con el registro. Inténtalo de nuevo más tarde.'); // Error message
+            const dataprof={
+                fecha_de_nacimiento,
+                telefono,
+                pais,
+                materia,
+                certificadoestudio,
+                foto
+            };
+            try {
+                const response = await fetch('https://learn-hub-eta.vercel.app/auth/register', {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json' 
+                        },
+                        body: JSON.stringify(data)
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error('Error en el registro'); 
+                    }
+        
+                    const result = await response.json();
+                    alert('Registro exitoso');
+                    
+                } 
+                catch (error) {
+                    console.error('Error:', error);
+                    alert('Hubo un problema con el registro. Inténtalo de nuevo más tarde.'); 
+                }
+                try {
+                const response = await fetch('https://learn-hub-eta.vercel.app/profesores/verificacionprof', {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json' 
+                        },
+                        body: JSON.stringify(dataprof)
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error('Error en el registro'); 
+                    }
+        
+                    const result = await response.json();
+                    alert('Registro exitoso');
+                    
+                } 
+                catch (error) {
+                    console.error('Error:', error);
+                    alert('Hubo un problema con el registro. Inténtalo de nuevo más tarde.'); 
+                }
+        });
         }
+        if (tipoUsuario === 'alumno') {
+            document.querySelector('.datos-alumno').style.display = 'block';
+            document.querySelector('.container').style.display = 'none';
+
+            document.getElementById('formAlumno').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const fecha_de_nacimiento = document.getElementById('fecha_de_nacimiento_alumno').value;
+            const telefono = document.getElementById('telefono_alumno').value;
+            const pais = document.getElementById('pais_alumno').value;
+            const colegio= document.getElementById('colegio_alumno').value;
+            const foto = document.getElementById('foto_alumno').value;
+
+            const dataalumno={
+                fecha_de_nacimiento,
+                telefono,
+                pais,
+                colegio,
+                foto
+            };
+            try {
+                const response = await fetch('https://learn-hub-eta.vercel.app/auth/register', {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json' 
+                        },
+                        body: JSON.stringify(data)
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error('Error en el registro'); 
+                    }
+        
+                    const result = await response.json();
+                    alert('Registro exitoso');
+                    
+                } 
+                catch (error) {
+                    console.error('Error:', error);
+                    alert('Hubo un problema con el registro. Inténtalo de nuevo más tarde.'); 
+                }
+                try {
+                const response = await fetch('https://learn-hub-eta.vercel.app/Alumnos/verificacionalumno', {
+                    method: 'POST', 
+                    headers: {
+                        'Content-Type': 'application/json' 
+                        },
+                        body: JSON.stringify(dataalumno)
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error('Error en el registro'); 
+                    }
+        
+                    const result = await response.json();
+                    alert('Registro exitoso');
+                    
+                } 
+                catch (error) {
+                    console.error('Error:', error);
+                    alert('Hubo un problema con el registro. Inténtalo de nuevo más tarde.'); 
+                }
+        });
+    }
+    
+        
+        
     });
-
-
-    </script>
-</body>
-
-</html>
+        </script>
+        </body>
+        
+        </html>
