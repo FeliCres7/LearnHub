@@ -7,10 +7,10 @@ const secret = process.env.JWT_SECRET
 
 //verificacion profesor
 const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, materia, dias, disponibilidad_horaria } = req.body;
+  const { fecha_de_nacimiento, telefono, pais, materia} = req.body;
 
   // Validar que todos los campos estén presentes, incluidos los archivos
-  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio || !dias || !disponibilidad_horaria) {
+  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio) {
     return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
   }
 
@@ -45,8 +45,8 @@ const verificacionprof = async (req, res) => {
     const { rows } = await pool.query(
       `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
        FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6 AND dias=$6 AND disponibilidad_horaria=$7`,
-      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl, dias, disponibilidad_horaria]
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6`,
+      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl]
     );
 
     if (rows.length > 0) {
