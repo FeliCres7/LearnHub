@@ -442,3 +442,36 @@ font-weight: 600;
 .subirmaterial input:hover{
     filter: brightness(0.9);
 }
+.div-datoscontacto{
+    display: flex;
+    background-color: #ffffff;
+    color: #424242;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px #00000066;
+    padding: 20px;
+    margin-top: 25px;
+    flex-direction: column;
+    height: fit-content;
+    width: 60%;
+    padding-bottom: 40px;
+}
+.div-datoscontacto *{
+    margin-bottom: 25px;
+}
+.rounded-text{
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+    flex-direction: row;
+    border: 2px solid #424242;
+    border-radius: 30px;
+}
+.rounded-text p{
+    margin: 0;
+    padding: 5px 7.5px;
+}
+.centrardiv{
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+}
