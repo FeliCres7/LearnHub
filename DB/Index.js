@@ -114,7 +114,6 @@ app.get('/Alumnos', alumnos.getalumnos);
 app.get('/Alumnos/:ID', alumnos.getalumnobyID);
 app.put('/Alumnos/ID', verifyToken, alumnos.updateAlumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
-//app.get('/Alumnos/:ID/clasebyalumno/:IDclases/',alumnos.getclasebyalumno);
 app.get('/Alumnos/:ID/perfilalumno', verifyToken, alumnos.getperfilalumno)
 
 //Profesores
@@ -123,7 +122,6 @@ app.get('/profesores/:ID',profesores.getprofbyID);
 app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
 app.put('/profesores/ID', profesores.updateprof);
 app.delete('/profesores/:ID', verifyToken, verifyAdmin, profesores.deleteprof);
-// app.get('/profesores/:ID/clasesbyprof/IDclases', profesores.getclasesbyprof);
 app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
 app.get('/profesores/materias/:materias', profesores.getprofbymaterias);

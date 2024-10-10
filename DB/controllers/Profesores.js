@@ -214,7 +214,7 @@ res.status(500).send(err)
   const {materias} = req.params
   
   try{
-  const query = 'SELECT * FROM public.profesores WHERE "materias" = $1'
+  const query = 'SELECT * FROM public."profesores" WHERE "materias" = $1'
   const {rows} = await pool.query(query, [materias])
 
   if (rows.length > 0){
