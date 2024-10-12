@@ -13,9 +13,17 @@
 display: flex;
 align-items: center;
 margin-bottom: 20px;
+
 }
 .foto-perfil *{
     padding-right: 20px;
+}
+.foto-perfil img{
+    border-radius: 100%;
+}
+.foto-perfil button{
+    bottom: 0;
+    margin-top: auto;
 }
 .info-perfil-div button{
     border: 1px solid #424242;
@@ -46,6 +54,10 @@ margin-bottom: 20px;
     padding: 10px 20px;
     font-size: 22px;
     border-radius: 30px;
+}
+.confirmar button:hover{
+    cursor: pointer;
+    filter: brightness(0.9);
 }
 .datos-perfil p{
     font-size: 14px;
@@ -84,4 +96,8 @@ margin-bottom: 20px;
     color: #979CAD;
     border-radius: 10px;
     font-size: 28px;
+}
+button:hover{
+    cursor: pointer;
+    filter: brightness(0.9)
 }
