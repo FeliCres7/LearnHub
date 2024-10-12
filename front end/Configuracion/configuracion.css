@@ -50,10 +50,27 @@ margin-bottom: 20px;
     justify-content: flex-end;
     
 }
-.confirmar button{
-    padding: 10px 20px;
+.confirmar input[type="submit"]{
+    padding: 5px 20px;
     font-size: 22px;
     border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+
+}
+.confirmar input[type="submit"]:hover{
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+.confirmar button{
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+
 }
 .confirmar button:hover{
     cursor: pointer;
@@ -100,4 +117,57 @@ margin-bottom: 20px;
 button:hover{
     cursor: pointer;
     filter: brightness(0.9)
+}
+.shadow{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: #00000099;
+    z-index: 1000;
+    position: fixed;
+
+}
+.password-check{
+    z-index: 1001;
+    position: fixed;
+    width: 50vw;
+    margin: 20vh 25vw;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    align-content: center;
+    flex-direction: column;
+}
+.password-check *{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+.password-check input[type="password"]{
+    font-size: 24px;
+    background-color: #EDF3F8;
+    border: none;
+    text-indent: 10px;
+    border-radius: 10px;
+    width: 80%;
+}
+.buttons-passwordcheck{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.buttons-passwordcheck *{
+    font-size: 18px;
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+    margin: 0px 15px;
+}
+.buttons-passwordcheck *:hover{
+    filter: brightness(0.9);
+    cursor: pointer;
 }

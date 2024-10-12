@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Seguridad de la cuenta</title>
+    <title>Información personal</title>
     <link rel="stylesheet" href="../header.css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="configuracion.css">
@@ -14,37 +14,39 @@
 
 <body>
     <header class="header">
-
-        <img class="logoarriba" src="../Images html/LOGOLH.png" alt="Learn Hub">
+        <img class="logoarriba" src="../Images html/LOGOLH.png" alt="LearnHub">
         <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
         <nav class="navbar">
             <ul>
-                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='../home.html'"><img
-                            src="../Images html/logo inicio.png" alt=""></button><a href="../home.html">Inicio</a></li>
-                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img
-                            src="../Images html/logo perfil alumno.png" alt=""></button><a
-                        href="../perfil.html">Perfil</a>
-                </li>
-                <li class="boton-mis-profesores"><button onclick="window.location.href='../misprofesores.html'"><img
-                            src="../Images html/logo mis profesores.png" alt=""></button><a
-                        href="../misprofesores.html">Mis
-                        profesores</a></li>
-                <li class="boton-calendario"><button onclick="window.location.href='../calendario.html'"><img
-                            src="../Images html/logo calendario.png" alt=""></button><a
-                        href="../calendario.html">Calendario</a></li>
-                <li class="boton-configuracion"><button onclick="window.location.href='../configuracion.html'"><img
+                <li class="boton-inicio"><button class="inicio"><img src="../Images html/logo inicio.png"
+                            alt=""></button><a href="">Inicio</a></li>
+                <li class="boton-perfil-profesor"><button><img src="../Images html/logo perfil alumno.png"
+                            alt=""></button><a href="">Perfil</a></li>
+                <li class="boton-mis-clases"><button><img src="../Images html/Logo mis clases.png"
+                            alt=""></button><a href="">Mis clases</a></li>
+                <li class="boton-calendario"><button><img src="../Images html/logo calendario.png"
+                            alt=""></button><a href="">Calendario</a></li>
+                <li class="boton-configuracion"><button
+                        onclick="window.location.href='../configuracionprofesor.html'"><img
                             src="../Images html/logo configuracion.png" alt=""></button><a
-                        href="../configuracion.html">Configuración</a></li>
+                        href="../configuracionprofesor.html">Configuración</a></li>
+                <li class="boton-materiales-de-trabajo">
+                    <button onclick="window.location.href='../profesormaterialesdetrabajo.html'">
+                        <img src="../Images html/logo materiales.png" alt=""></button>
+                    <a href="../profesormaterialesdetrabajo.html">Materiales de trabajo</a>
+                </li>
             </ul>
         </nav>
         <button id="menubutton"><img src="../Images html/menubutton.png" alt="MENU"></button>
         <nav class="menu" id="menu">
             <ul>
-                <li><a href="../home.html">Inicio</a></li>
-                <li><a href="../perfil.html">Perfil</a></li>
-                <li><a href="../misprofesores.html">Mis profesores</a></li>
-                <li><a href="../calendario.html">Calendario</a></li>
-                <li><a href="../configuracion.html">Configuración</a></li>
+                <li><a href="">Inicio</a></li>
+                <li><a href="">Perfil</a></li>
+                <li><a href="">Mis clases</a></li>
+                <li><a href="">Calendario</a></li>
+                <li><a href="">Notificaciones</a></li>
+                <li><a href="../configuracionprofesor.html">Configuración</a></li>
+                <li><a href="../materialesdetrabajo.html">Mis materiales de trabajo</a></li>
             </ul>
         </nav>
     </header>
@@ -107,7 +109,7 @@ document.getElementById("buttonvolver").addEventListener("click", function(event
 
 document.getElementById("passwordForm").addEventListener("submit", function(event) {
     event.preventDefault(); 
-    window.location.href = '../configuracion.html';
+    window.location.href = '../configuracionprofesor.html';
 });
 
 </script>
