@@ -187,7 +187,7 @@ const query = await pool.query ('DELETE * FROM public."DisponibilidadHoraria" WH
     res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
   }
 
-
+// hacer asi para cada uno de los dias, domingo es 0 sabado 6
   }
 
 
