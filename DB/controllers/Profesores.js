@@ -148,13 +148,24 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 
 
 const updateseguridad = async (req,res) => {
-const {email, telefono, contraseña} = req.body  
+const {email, telefono, contraseña, confirmarContraseña, ID} = req.body  
+
+  // Validar que las contraseñas coincidan
+  if (contraseña !== confirmarContraseña) {
+    return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
+  }
 
 try {
-const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña]
-)
+const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña, ID]
+);
+if (result.rows.length > 0) {
+  res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+} else {
+  res.status(404).send('Profesor no encontrado');
+}
+} catch (err) {
 
-
+res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 }
 }
 

@@ -57,7 +57,7 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { nombre, apellido, email, contraseña, tipoUsuario } = req.body;
+  const { nombre, apellido, email, contraseña, confirmarContraseña, tipoUsuario } = req.body;
 
   // Validaciones de campos requeridos
   if (!nombre || !apellido || !email || !contraseña || !tipoUsuario) {
@@ -68,7 +68,7 @@ const register = async (req, res) => {
     if (contraseña !== confirmarContraseña) {
       return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
     }
-    
+
   try {
     // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
