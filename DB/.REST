@@ -137,25 +137,45 @@ GET http://localhost:3000/profesores/nombre/benjamin HTTP/1.1
 
 
 ###
-//Actualizar un profesor
+//Actualizar la informacion personal de un prof
 
-PUT http://localhost:3000/profesores/ID HTTP/1.1
+PUT http://localhost:3000/profesores/updateinfopersonal/ID HTTP/1.1
 Content-Type: application/json
 
 {
 "nombre":"benjamin",
 "apellido":"fridman", 
-"contraseña": "benja2008",
 "fecha_de_nacimiento":"2007/7/19", 
-"email":"ezeagr@gmail.com",
-"telefono":"5491133750973",
-"foto": ".",
-"descripcion_corta":"Hola soy eze y me encanta enseñar",
-"disponibilidad_horaria":"14:00",
-"dias": true,
-"certificadoestudio":"ort",
 "ID": 9
 }
+
+###
+//Actualizar la informacion del perfil de un prof
+
+PUT http://localhost:3000/profesores/updateperfil/ID HTTP/1.1
+Content-Type: application/json
+
+{
+"nombre":"benjamin",
+"apellido":"fridman", 
+"fecha_de_nacimiento":"2007/7/19", 
+"ID": 9
+}
+
+###
+//Actualizar la seguridad de un prof
+
+PUT http://localhost:3000/profesores/updateseguridad/ID HTTP/1.1
+Content-Type: application/json
+
+{
+"nombre":"benjamin",
+"apellido":"fridman", 
+"fecha_de_nacimiento":"2007/7/19", 
+"ID": 9
+}
+
+
 
 ###
 //Eliminar un profesor

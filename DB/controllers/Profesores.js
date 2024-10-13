@@ -103,34 +103,55 @@ const getprofbyID = async (req, res) => {
 
 //Actualizar un profesor 
 
-const updateprof = async (req, res) => {
+const updateinfopersonal = async (req, res) => {
   try {
     const {
-      nombre, apellido, fecha_de_nacimiento, email,
-      telefono, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, certificadoestudio, ID
+      nombre, apellido, fecha_de_nacimiento, ID
     } = req.body;
     
-    // Ejecutar la consulta SQL para actualizar el registro del profesor
+   
     const result = await pool.query(
       `UPDATE public."profesores"
-       SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
-            telefono = $5, foto = $6, descripcion_corta = $7, contraseña = $8, disponibilidad_horaria = $9
-       , dias=$10 AND certificadoestudio = $11 WHERE "ID" = $12
+       SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3 WHERE "ID" = $4
        RETURNING *` ,
-      [nombre, apellido, fecha_de_nacimiento, email, telefono, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, certificadoestudio, ID]
+      [nombre, apellido, fecha_de_nacimiento, ID]
     );
 
-    // Verificar el resultado de la actualización
+
     if (result.rows.length > 0) {
       res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
     } else {
       res.status(404).send('Profesor no encontrado');
     }
   } catch (err) {
-    // Manejar errores que puedan ocurrir durante la consulta
+    
     res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
   }
 };
+
+const updateperfil = async (req,res) => {
+const {foto,materias, material, descripcioncorta} = req.body
+
+
+
+
+}
+
+const updateseguridad = async (req,res) => {
+
+
+
+
+
+}
+
+const updatedisponibilidadhoraria = async (req,res) => {
+
+
+
+
+
+}
 
 
 
@@ -300,7 +321,10 @@ const profesores = {
   verificacionprof,
   getprof, 
   getprofbyID,
-  updateprof,
+  updateinfopersonal,
+  updateperfil,
+  updateseguridad,
+  updatedisponibilidadhoraria,
   deleteprof,
  getperfilprof,
  getprofbynombre,
