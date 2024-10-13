@@ -170,12 +170,29 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 }
 
 const updatedisponibilidadhoraria = async (req,res) => {
+const {idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo} = req.body;
+
+try {
+const query = await pool.query ('DELETE * FROM public."DisponibilidadHoraria" WHERE "idprof=$1"')
+  }  catch (err) {
+    res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+  }
+
+  try{
+    const querylunes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1,$2,$3)         '
+    const values = [idprof,"1",lunes]
+    const result = await pool.query(querylunes,values);
+
+  }  catch (err) {
+    res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+  }
+
+
+  }
 
 
 
 
-
-}
 
 
 
