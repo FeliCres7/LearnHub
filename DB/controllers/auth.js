@@ -63,7 +63,12 @@ const register = async (req, res) => {
   if (!nombre || !apellido || !email || !contraseña || !tipoUsuario) {
     return res.status(400).json({ error: 'Todos los campos son requeridos.' });
   }
-
+  
+    // Validar que las contraseñas coincidan
+    if (contraseña !== confirmarContraseña) {
+      return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
+    }
+    
   try {
     // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);

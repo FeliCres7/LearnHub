@@ -148,11 +148,14 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 
 
 const updateseguridad = async (req,res) => {
+const {email, telefono, contraseña} = req.body  
+
+try {
+const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña]
+)
 
 
-
-
-
+}
 }
 
 const updatedisponibilidadhoraria = async (req,res) => {
