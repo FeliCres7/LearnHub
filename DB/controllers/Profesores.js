@@ -7,10 +7,10 @@ const secret = process.env.JWT_SECRET
 
 //verificacion profesor
 const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, materia} = req.body;
+  const { fecha_de_nacimiento, telefono, pais, materias} = req.body;
 
   // Validar que todos los campos estén presentes, incluidos los archivos
-  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio) {
+  if (!fecha_de_nacimiento || !telefono || !pais || !materias || !req.files || !req.files.foto || !req.files.certificadoestudio) {
     return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
   }
 
@@ -43,9 +43,9 @@ const verificacionprof = async (req, res) => {
 
     // Comprobar si ya existe un profesor con la misma información
     const { rows } = await pool.query(
-      `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
+      `SELECT fecha_de_nacimiento, telefono, pais, foto, materias, certificadoestudio 
        FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6`,
+       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materias = $5 AND certificadoestudio = $6`,
       [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl]
     );
 
@@ -130,12 +130,22 @@ const updateinfopersonal = async (req, res) => {
 };
 
 const updateperfil = async (req,res) => {
-const {foto,materias, material, descripcioncorta} = req.body
+const {foto, materias, descripcion_corta, ID} = req.body
 
-
-
-
+try{
+const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, materias=$2, descripcion_corta=$3 WHERE "ID"= $4 RETURNING *', [foto, materias, descripcion_corta, ID]
+);
+if (result.rows.length > 0) {
+  res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+} else {
+  res.status(404).send('Profesor no encontrado');
 }
+} catch (err) {
+
+res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
+}
+}
+
 
 const updateseguridad = async (req,res) => {
 
