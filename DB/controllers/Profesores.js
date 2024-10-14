@@ -37,7 +37,7 @@ const verificacionprof = async (req, res) => {
     // Subir el certificado a Cloudinary
     const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
       folder: 'profesores/certificados',
-      resource_type: 'raw',  // Especificar que es un archivo PDF, no una imagen
+      resource_type: 'raw',  
     });
     const certificadoUrl = resultCertificado.secure_url;
 
@@ -46,7 +46,7 @@ const verificacionprof = async (req, res) => {
       `SELECT fecha_de_nacimiento, telefono, pais, foto, materias, certificadoestudio 
        FROM public.profesores 
        WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materias = $5 AND certificadoestudio = $6`,
-      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl]
+      [fecha_de_nacimiento, telefono, pais, fotoUrl, materias, certificadoUrl]
     );
 
     if (rows.length > 0) {

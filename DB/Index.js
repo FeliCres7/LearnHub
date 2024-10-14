@@ -11,10 +11,12 @@ import fs from 'fs';
 import {pool} from './dbconfig.js';
 import cors from "cors";
 import multer from "multer";
-import { fileURLToPath } from "url";
-import { dirname, join } from 'path';
 import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url'; 
+import { dirname } from 'path'; 
+import { join } from 'path';
+
 
 const app = express();
 const port = 3000;
@@ -27,13 +29,15 @@ pool.connect();
 app.use(express.json());
 app.use(cors({
   origin: "*", // origen permitido
-  methods: ['GET', 'POST', 'OPTIONS'] // métodos permitidos
+  methods: ['GET', 'POST', 'OPTIONS']
 }));
 
 // Definir las rutas estáticas y el directorio actual
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const uploadDir = join(__dirname, "../uploads");
+
+console.log("Directorio de subida:", uploadDir); 
 
 
 // Configuración de almacenamiento de multer
@@ -60,6 +64,8 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter
 });
+
+export default upload
 
 // Ruta de prueba
 app.get("/", (req, res) => {
