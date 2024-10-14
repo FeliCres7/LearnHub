@@ -173,22 +173,72 @@ const updatedisponibilidadhoraria = async (req,res) => {
 const {idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo} = req.body;
 
 try {
-const query = await pool.query ('DELETE * FROM public."DisponibilidadHoraria" WHERE "idprof=$1"')
-  }  catch (err) {
-    res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
-  }
-
+  const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
+  const deleteResult = await pool.query(deleteQuery, [idprof]);
+  console.log('Resultado de DELETE:', deleteResult);
+} catch (err) {
+  return res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+}
   try{
-    const querylunes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1,$2,$3)         '
-    const values = [idprof,"1",lunes]
-    const result = await pool.query(querylunes,values);
-
-  }  catch (err) {
-    res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+    const querylunes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valueslunes = [idprof, "1", lunes];
+    const resultlunes = await pool.query(querylunes, valueslunes);
+    console.log('Resultado de lunes:', resultlunes);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el lunes: ${err.message}`);
+  }
+  try{
+    const querymartes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valuesmartes = [idprof, "2", martes];
+    const resultmartes = await pool.query(querymartes, valuesmartes);
+    console.log('Resultado de martes:', resultmartes);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el martes: ${err.message}`);
+  }
+  try{
+    const querymiercoles = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valuesmiercoles = [idprof, "3", miercoles];
+    const resultmiercoles = await pool.query(querymiercoles, valuesmiercoles);
+    console.log('Resultado de miércoles:', resultmiercoles);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el miércoles: ${err.message}`);
+  }
+  try{
+    const queryjueves = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valuesjueves = [idprof, "4", jueves];
+    const resultjueves = await pool.query(queryjueves, valuesjueves);
+    console.log('Resultado de jueves:', resultjueves);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el jueves: ${err.message}`);
+  }
+  try{
+    const queryviernes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valuesviernes = [idprof, "5", viernes];
+    const resultviernes = await pool.query(queryviernes, valuesviernes);
+    console.log('Resultado de viernes:', resultviernes);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el viernes: ${err.message}`);
+  }
+  try{
+    const querysabado = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valuessabado = [idprof, "6", sabado];
+    const resultsabado = await pool.query(querysabado, valuessabado);
+    console.log('Resultado de sábado:', resultsabado);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el sábado: ${err.message}`);
+  }
+  try{
+    const querydomingo = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    const valuesdomingo = [idprof, "0", domingo];
+    const resultdomingo = await pool.query(querydomingo, valuesdomingo);
+    console.log('Resultado de domingo:', resultdomingo);
+  } catch (err) {
+    return res.status(500).send(`Error al actualizar la disponibilidad para el domingo: ${err.message}`);
   }
 
-// hacer asi para cada uno de los dias, domingo es 0 sabado 6
-  }
+  res.status(200).send("Disponibilidad actualizada correctamente");
+};
+  
 
 
 
