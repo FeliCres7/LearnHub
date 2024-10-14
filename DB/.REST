@@ -176,7 +176,22 @@ Content-Type: application/json
 "ID": 9
 }
 
+###
+//Actualizar la disponibilidad horaria de un prof
 
+PUT http://localhost:3000/profesores/disponibilidadhoraria/ID HTTP/1.1
+Content-Type: application/json
+
+{
+"lunes":"",
+"martes":"", 
+"miercoles":"", 
+"jueves" : "",
+"viernes":"", 
+"sabado":"", 
+"domingo" : "",
+"ID": 9
+}
 
 ###
 //Eliminar un profesor
