@@ -497,3 +497,32 @@ font-weight: 600;
     font-size: 20px;
     font-weight: 500;
 }
+.top-article-home{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #000000;
+}
+.main-home{
+    background-color: #DAE8FF;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+}
+.article-home{
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 10px;
+    height: fit-content;
+    width: 700px;
+    margin-top: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.fotoyvaloracion-article-home{
+    display: flex;
+}
+.fotoyvaloracion-article-home img{
+    height: 150px;
+    width: 150px;
+}
