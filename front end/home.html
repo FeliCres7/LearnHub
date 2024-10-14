@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,11 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="shortcut icon" href="Images html/logo pestaña.png">
 </head>
+
 <body>
     <div id="header-container"></div>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             fetch('header.html')
                 .then(response => response.text())
                 .then(data => {
@@ -19,6 +21,29 @@
                 });
         });
     </script>
-    <main class="main-fondo-azul"></main>
+    <main class="main-fondo-azul">
+        <aside class="aside-izq-home">
+            <img src="Images html/icon perfil.png" alt="">
+            <p class="big">Nombre y apellido</p>
+            <p class="small">País</p>
+        </aside>
+        <article class="article-home">
+            <div>
+                <p>Valora tu clase con</p>
+                <p class="bold">Nombre y apellido</p>
+            </div>
+            <div><img src="Images html/icon perfil.png" alt="">
+                <p>Coso para valorar</p>
+            </div>
+        </article>
+        <aside class="aside-der-home">
+            <p class="bold">Calendario</p>
+            <p>Próximas clases</p>
+            <p>Fecha y hora</p>
+            <p>Clase con nombre y apellido</p>
+            
+        </aside>
+    </main>
 </body>
+
 </html>

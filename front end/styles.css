@@ -478,3 +478,22 @@ font-weight: 600;
     justify-content: center;
     width: 100vw;
 }
+.aside-izq-home{
+    background-color: #ffffff;
+    height: fit-content;
+    width: 300px;
+    margin-left: 20px;
+    margin-top: 40px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px #00000066;
+    border-top: 70px solid #1565C0;
+}
+.small{
+    font-size: 14px;
+    font-weight: 400;
+}
+.big{
+    font-size: 20px;
+    font-weight: 500;
+}
