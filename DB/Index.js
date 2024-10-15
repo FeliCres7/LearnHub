@@ -32,15 +32,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS']
 }));
 
-// Definir las rutas estáticas y el directorio actual
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const uploadDir = join(__dirname, "../uploads");
 
-console.log("Directorio de subida:", uploadDir); 
-
-
-// Configuración de almacenamiento de multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDir);
@@ -50,7 +46,6 @@ const storage = multer.diskStorage({
   }
 });
 
-// Filtro para permitir solo archivos PDF, JPEG, PNG y JPG
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
   if (allowedTypes.includes(file.mimetype)) {
@@ -65,7 +60,6 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
-export default upload
 
 // Ruta de prueba
 app.get("/", (req, res) => {
@@ -74,7 +68,7 @@ app.get("/", (req, res) => {
 
 
 // Manejo de archivos
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload', upload.fields([{ name: 'foto' }, { name: 'certificadoestudio' }]), (req, res) => {
   res.send('Archivo subido con éxito');
 }, (error, req, res, next) => {
   if (error instanceof multer.MulterError) {
@@ -169,3 +163,5 @@ app.get('/reservaciones', reservaciones.getreservarclase);
 app.post('/reservaciones', reservaciones.createreservarclase);
 app.get('/reservaciones/IDalumno/:IDalumno', reservaciones.getreservacionbyalumno);
 app.get('/reservaciones/IDprof/:IDprof', reservaciones.getreservacionbyprof);
+
+
