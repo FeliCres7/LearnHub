@@ -23,13 +23,14 @@ Content-Type: application/json
 
 ###
 // VERIFICACION ALUMNOS
-POST http://localhost:3000/Alumnos/verificacion HTTP/1.1
+POST http://localhost:3000/Alumnos/verificacionalumno HTTP/1.1
 Content-Type: application/json
 
 {
     "fecha_de_nacimiento":"1999/7/3",
     "telefono":"53225542",
     "pais": "Argentina",
+    "colegio": "ORT",
     "foto": "."
 }
 

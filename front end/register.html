@@ -58,15 +58,15 @@
             <!-- Aquí van los inputs adicionales del profesor -->
             <div class="input-group">
                 <i class="fas fa-calendar"></i>
-                <input type="date" id="fecha_de_nacimiento_profesor" placeholder="Fecha de nacimiento" required>
-            </div>
-            <div class="input-group">
-                <i class="fas fa-phone"></i>
-                <input type="tel" id="telefono_profesor" placeholder="Número de teléfono" required>
-            </div>
-            <div class="input-group">
-                <i class="fas fa-map-marker"></i>
-                <select id="pais_profesor" required>
+                <input type="date" name="fecha_de_nacimiento_profesor" required>
+    </div>
+    <div class="input-group">
+        <i class="fas fa-phone"></i>
+        <input type="tel" name="telefono_profesor" required>
+    </div>
+    <div class="input-group">
+        <i class="fas fa-map-marker"></i>
+        <select name="pais_profesor" required>
                     <option value="Afganistán">Afganistán</option>
                     <option value="Albania">Albania</option>
                     <option value="Argelia">Argelia</option>
@@ -253,15 +253,14 @@
             </div>
             <div class="input-group">
                 <i class="fas fa-graduation-cap"></i>
-                <input type="text" id="materia_profesor" placeholder="Materias que enseñas" required>
+                <input type="text" name="materias_profesor" placeholder="Materias que enseñas" required>
             </div>
             <p>Agrega certificados de tus estudios</p>
-            <input type="file" id="certificadoestudio_profesor" required>
+            <input type="file" name="certificadoestudio_profesor" required>
             <p>Agrega una foto de perfil</p>
-            <input type="file" id="foto_profesor" required accept=".png, .jpg, .jpeg">
+            <input type="file" name="foto_profesor" required accept=".png, .jpg, .jpeg">
             <input type="submit" class="btn" value="Finalizar">
         </form>
-    </div>
 
     <!-- Formulario extra para alumnos -->
     <div class="datos-alumno" style="display: none;">
@@ -493,7 +492,8 @@
             nombre,
             apellido,
             email,
-            password,
+            contraseña: password,
+            confirmarContraseña: confirmPassword,
             tipoUsuario
         };
 
@@ -524,7 +524,7 @@
             fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_profesor').value,
             telefono: document.getElementById('telefono_profesor').value,
             pais: document.getElementById('pais_profesor').value,
-            materia: document.getElementById('materia_profesor').value,
+            materia: document.getElementById('materias_profesor').value,
             certificadoestudio: document.getElementById('certificadoestudio_profesor').files[0],
             foto: document.getElementById('foto_profesor').files[0]
         };
