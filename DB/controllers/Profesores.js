@@ -169,76 +169,44 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 }
 }
 
-const updatedisponibilidadhoraria = async (req,res) => {
-const {idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo} = req.body;
+const updatedisponibilidadhoraria = async (req, res) => {
+  const { idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
 
-try {
-  const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
-  const deleteResult = await pool.query(deleteQuery, [idprof]);
-  console.log('Resultado de DELETE:', deleteResult);
-} catch (err) {
-  return res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
-}
-  try{
-    const querylunes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valueslunes = [idprof, "1", lunes];
-    const resultlunes = await pool.query(querylunes, valueslunes);
-    console.log('Resultado de lunes:', resultlunes);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el lunes: ${err.message}`);
-  }
-  try{
-    const querymartes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valuesmartes = [idprof, "2", martes];
-    const resultmartes = await pool.query(querymartes, valuesmartes);
-    console.log('Resultado de martes:', resultmartes);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el martes: ${err.message}`);
-  }
-  try{
-    const querymiercoles = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valuesmiercoles = [idprof, "3", miercoles];
-    const resultmiercoles = await pool.query(querymiercoles, valuesmiercoles);
-    console.log('Resultado de miércoles:', resultmiercoles);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el miércoles: ${err.message}`);
-  }
-  try{
-    const queryjueves = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valuesjueves = [idprof, "4", jueves];
-    const resultjueves = await pool.query(queryjueves, valuesjueves);
-    console.log('Resultado de jueves:', resultjueves);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el jueves: ${err.message}`);
-  }
-  try{
-    const queryviernes = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valuesviernes = [idprof, "5", viernes];
-    const resultviernes = await pool.query(queryviernes, valuesviernes);
-    console.log('Resultado de viernes:', resultviernes);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el viernes: ${err.message}`);
-  }
-  try{
-    const querysabado = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valuessabado = [idprof, "6", sabado];
-    const resultsabado = await pool.query(querysabado, valuessabado);
-    console.log('Resultado de sábado:', resultsabado);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el sábado: ${err.message}`);
-  }
-  try{
-    const querydomingo = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    const valuesdomingo = [idprof, "0", domingo];
-    const resultdomingo = await pool.query(querydomingo, valuesdomingo);
-    console.log('Resultado de domingo:', resultdomingo);
-  } catch (err) {
-    return res.status(500).send(`Error al actualizar la disponibilidad para el domingo: ${err.message}`);
-  }
+  // Crear un array con los días y sus rangos correspondientes
+  const dias = [
+    { dia: "1", rango: lunes },
+    { dia: "2", rango: martes },
+    { dia: "3", rango: miercoles },
+    { dia: "4", rango: jueves },
+    { dia: "5", rango: viernes },
+    { dia: "6", rango: sabado },
+    { dia: "0", rango: domingo }
+  ];
 
-  res.status(200).send("Disponibilidad actualizada correctamente");
+  try {
+    // Borrar todas las entradas anteriores para este profesor
+    const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
+    await pool.query(deleteQuery, [idprof]);
+
+    // Realizar las inserciones en un solo bloque usando un loop
+    const insertQuery = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+    
+    // Promesas para las inserciones de cada día
+    const insertPromises = dias.map(({ dia, rango }) => {
+      return pool.query(insertQuery, [idprof, dia, rango]);
+    });
+
+    // Esperar a que todas las inserciones se completen
+    await Promise.all(insertPromises);
+
+    // Responder una vez completadas todas las inserciones
+    res.status(200).send("Disponibilidad actualizada correctamente");
+  } catch (err) {
+    console.error('Error al actualizar la disponibilidad horaria:', err);
+    res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+  }
 };
-  
+
 
 
 

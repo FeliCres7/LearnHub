@@ -177,22 +177,21 @@ Content-Type: application/json
 "ID": 9
 }
 
-###
-//Actualizar la disponibilidad horaria de un prof
-
-PUT http://localhost:3000/profesores/disponibilidadhoraria/ID HTTP/1.1
+### Actualizar disponibilidad horaria del profesor
+PUT http://localhost:3000/profesores/updatedisponibilidadhoraria
 Content-Type: application/json
 
 {
-"lunes":"",
-"martes":"", 
-"miercoles":"", 
-"jueves" : "",
-"viernes":"", 
-"sabado":"", 
-"domingo" : "",
-"ID": 9
+  "idprof": 1,
+  "lunes": "9-11",
+  "martes": "10-12",
+  "miercoles": "14-16",
+  "jueves": "8-10",
+  "viernes": "09-11",
+  "sabado": "10-12",
+  "domingo": "0"
 }
+
 
 ###
 //Eliminar un profesor
