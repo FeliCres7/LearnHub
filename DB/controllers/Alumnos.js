@@ -6,48 +6,6 @@ import cloudinary from '../upload.js';
 const secret = process.env.JWT_SECRET
 
 
-//Verificacion alumno
-const verificacionAlumno = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, colegio } = req.body;
-
-
-  try {
-    // Obtener el archivo de foto
-    const fotoFile = req.file;
-
-    // Verificar la extensión de la foto
-    const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
-
-    if (!extensionesPermitidas.includes(extensionFoto)) {
-      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
-    }
-
-    // Subir la foto a Cloudinary
-    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-      folder: 'alumnos/fotos',
-    });
-    const fotoUrl = resultFoto.secure_url;
-
-    // Insertar la información del alumno en la base de datos
-    await pool.query(
-      `INSERT INTO public.alumnos (fecha_de_nacimiento, telefono, pais, colegio, foto) 
-       VALUES ($1, $2, $3, $4, $5)`,
-      [fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]
-    );
-
-    return res.json({
-      message: 'Alumno registrado con éxito',
-      foto: fotoUrl,
-    });
-
-  } catch (err) {
-    console.error('Error al verificar el alumno:', err);
-    return res.status(500).json({ error: 'Error al verificar el alumno' });
-  }
-};
-
-
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
@@ -145,8 +103,6 @@ const getperfilalumno = async (req, res) => {
 
 
 const alumnos = {
-
-  verificacionAlumno,
   getalumnos,
   getalumnobyID,
   updateAlumno,

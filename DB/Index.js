@@ -96,12 +96,7 @@ app.listen(port, () => {
 app.post('/auth/login', auth.login);
 
 //registrarse
-app.post('/auth/register', auth.register)
-
-
-//VERIFICACION 
-app.post('/Alumnos/verificacionalumno',  upload.single('foto'), alumnos.verificacionAlumno);
-app.post('/profesores/verificacionprof', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), profesores.verificacionprof);
+app.post('/auth/register', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), auth.register)
 
 
 // SEGUIR 

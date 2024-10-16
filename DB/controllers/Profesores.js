@@ -5,69 +5,6 @@ import cloudinary from '../upload.js';
 const secret = process.env.JWT_SECRET
 
 
-//verificacion profesor
-const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, materias} = req.body;
-
-  // Validar que todos los campos estén presentes, incluidos los archivos
-  if (!fecha_de_nacimiento || !telefono || !pais || !materias || !req.files || !req.files.foto || !req.files.certificadoestudio) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
-  }
-
-  try {
-    // Obtener los archivos subidos
-    const fotoFile = req.files.foto[0];  
-    const certificadoFile = req.files.certificadoestudio[0];
-
-    // Verificar la extensión de los archivos
-    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
-    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
-    const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
-
-    if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
-      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
-    }
-
-    // Subir la foto a Cloudinary
-    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-      folder: 'profesores/fotos',
-    });
-    const fotoUrl = resultFoto.secure_url;
-
-    // Subir el certificado a Cloudinary
-    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
-      folder: 'profesores/certificados',
-      resource_type: 'raw',  
-    });
-    const certificadoUrl = resultCertificado.secure_url;
-
-    // Comprobar si ya existe un profesor con la misma información
-    const { rows } = await pool.query(
-      `SELECT fecha_de_nacimiento, telefono, pais, foto, materias, certificadoestudio 
-       FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materias = $5 AND certificadoestudio = $6`,
-      [fecha_de_nacimiento, telefono, pais, fotoUrl, materias, certificadoUrl]
-    );
-
-    if (rows.length > 0) {
-      return res.status(409).json({ error: 'El profesor ya está registrado' });
-    }
-
-    return res.json({
-      message: 'Profesor registrado con éxito',
-      foto: fotoUrl,
-      certificado: certificadoUrl
-    });
-
-  } catch (err) {
-    console.error('Error al verificar el profesor:', err);
-    return res.status(500).json({ error: 'Error al verificar el profesor' });
-  }
-};
-
-
-
-
 
 // Obtener todos los profesores
 const getprof = async (_, res) => {
@@ -377,7 +314,6 @@ return res.status(200).json({profesores:rows})
 
 
 const profesores = {
-  verificacionprof,
   getprof, 
   getprofbyID,
   updateinfopersonal,
