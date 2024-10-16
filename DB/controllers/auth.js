@@ -98,7 +98,7 @@ const register = async (req, res) => {
     });
   } catch (err) {
     console.error('Error al registrar:', err.message);
-    return res.status(500).json({ error: 'Error interno del servidor.' });
+    return res.status(500).json({ message: err.message });
   }
 };
 
