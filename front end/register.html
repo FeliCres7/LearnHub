@@ -473,115 +473,126 @@
     </div>
 
     <script>
-    document.getElementById('registerForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const nombre = document.getElementById('nombre').value;
-        const apellido = document.getElementById('apellido').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        const tipoUsuario = document.querySelector('input[name="role"]:checked').value;
-
-        if (password !== confirmPassword) {
-            alert('Las contraseñas no coinciden.');
-            return;
-        }
-
-        const data = {
-            nombre,
-            apellido,
-            email,
-            contraseña: password,
-            confirmarContraseña: confirmPassword,
-            tipoUsuario
-        };
-
-        if (tipoUsuario === 'profesor') {
-            document.querySelector('.datos-profesor').style.display = 'block';
-            document.querySelector('.container').style.display = 'none';
-
-            document.getElementById('formProfesor').addEventListener('submit', async function (e) {
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            // Obtener valores del formulario principal
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const tipoUsuario = document.querySelector('input[name="role"]:checked').value;
+    
+            // Validar que las contraseñas coincidan
+            if (password !== confirmPassword) {
+                alert('Las contraseñas no coinciden.');
+                return;
+            }
+    
+            // Crear objeto con los datos principales del usuario
+            const data = {
+                nombre,
+                apellido,
+                email,
+                password,
+                confirmPassword,
+                tipoUsuario
+            };
+    
+            // Mostrar formulario adicional según el tipo de usuario
+            if (tipoUsuario === 'profesor') {
+                document.querySelector('.datos-profesor').style.display = 'block';
+                document.querySelector('.container').style.display = 'none';
+            } else if (tipoUsuario === 'alumno') {
+                document.querySelector('.datos-alumno').style.display = 'block';
+                document.querySelector('.container').style.display = 'none';
+            }
+    
+            // Asignar evento al formulario adicional del profesor
+            document.getElementById('formProfesor').onsubmit = async function (e) {
                 e.preventDefault();
                 const datosProfesor = obtenerDatosProfesor();
-                enviarDatosRegistro(data, datosProfesor, 'https://learn-hub-eta.vercel.app/profesores/verificacionprof');
-            });
-
-        } else if (tipoUsuario === 'alumno') {
-            document.querySelector('.datos-alumno').style.display = 'block';
-            document.querySelector('.container').style.display = 'none';
-
-            document.getElementById('formAlumno').addEventListener('submit', async function (e) {
+                await enviarDatosRegistro(data, datosProfesor, 'profesor');
+            };
+    
+            // Asignar evento al formulario adicional del alumno
+            document.getElementById('formAlumno').onsubmit = async function (e) {
                 e.preventDefault();
                 const datosAlumno = obtenerDatosAlumno();
-                enviarDatosRegistro(data, datosAlumno, 'https://learn-hub-eta.vercel.app/alumnos/verificacionalumno');
-            });
+                await enviarDatosRegistro(data, datosAlumno, 'alumno');
+            };
+        });
+    
+        // Obtener los datos adicionales del formulario de profesor
+        function obtenerDatosProfesor() {
+            return {
+                fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_profesor').value,
+                telefono: document.getElementById('telefono_profesor').value,
+                pais: document.getElementById('pais_profesor').value,
+                materias: document.getElementById('materias_profesor').value,
+                certificadoestudio: document.getElementById('certificadoestudio_profesor').files[0],
+                foto: document.getElementById('foto_profesor').files[0]
+            };
         }
-    });
-
-    function obtenerDatosProfesor() {
-        return {
-            fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_profesor').value,
-            telefono: document.getElementById('telefono_profesor').value,
-            pais: document.getElementById('pais_profesor').value,
-            materia: document.getElementById('materias_profesor').value,
-            certificadoestudio: document.getElementById('certificadoestudio_profesor').files[0],
-            foto: document.getElementById('foto_profesor').files[0]
-        };
-    }
-
-    function obtenerDatosAlumno() {
-        return {
-            fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_alumno').value,
-            telefono: document.getElementById('telefono_alumno').value,
-            pais: document.getElementById('pais_alumno').value,
-            colegio: document.getElementById('colegio_alumno').value,
-            foto: document.getElementById('foto_alumno').files[0]
-        };
-    }
-
-    async function enviarDatosRegistro(data, datosExtra, endpoint) {
-        try {
-            console.log('Enviando datos al registro:', data);
-
-            // Enviar los datos del primer formulario
-            const response = await fetch('https://learn-hub-eta.vercel.app/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.log('Error en la solicitud de registro:', errorText);
-                throw new Error('Error en la solicitud de registro');
-            }
-
-            // Enviar el formulario adicional del profesor o alumno
-            const formData = new FormData();
-            for (const key in datosExtra) {
-                formData.append(key, datosExtra[key]);
-            }
-
-            const responseExtra = await fetch(endpoint, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!responseExtra.ok) {
-                const errorText = await responseExtra.text();
-                console.log('Error en la verificación:', errorText);
-                throw new Error('Error en la verificación');
-            }
-
-            alert('Registro exitoso');
-        } catch (error) {
-            console.error('Error al enviar los datos:', error);
-            alert(`Hubo un problema con el registro: ${error.message}`);
+    
+        // Obtener los datos adicionales del formulario de alumno
+        function obtenerDatosAlumno() {
+            return {
+                fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_alumno').value,
+                telefono: document.getElementById('telefono_alumno').value,
+                pais: document.getElementById('pais_alumno').value,
+                colegio: document.getElementById('colegio_alumno').value,
+                foto: document.getElementById('foto_alumno').files[0]
+            };
         }
+    
+        // Función para enviar los datos de registro
+        async function enviarDatosRegistro(data, datosExtra, tipoUsuario) {
+    try {
+        console.log('Enviando datos de registro:', data);
+
+        // Crear objeto FormData para enviar los datos del formulario adicional
+        const formData = new FormData();
+
+        // Añadir los datos principales
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
+        // Añadir los datos adicionales del alumno o profesor
+        for (const key in datosExtra) {
+            formData.append(key, datosExtra[key]);
+        }
+
+        // Imprimir los datos de FormData (sin mostrar el contenido de archivos)
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        // URL fija para el registro
+        const url = 'https://learn-hub-eta.vercel.app/auth/register';
+
+        // Enviar los datos a la ruta de registro
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Error en el registro:', errorText);
+            throw new Error('Error en el registro');
+        }
+
+        alert('Registro exitoso');
+    } catch (error) {
+        console.error('Error al enviar los datos:', error);
+        alert(`Hubo un problema con el registro: ${error.message}`);
     }
-        </script>        
+}
+
+    </script>
+           
 </body>
 </html>
