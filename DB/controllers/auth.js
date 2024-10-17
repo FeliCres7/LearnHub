@@ -2,6 +2,7 @@ import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv/config'
+import cloudinary from '../upload.js';
 
 const login = async (req, res) => {
   const { usuario, contraseña } = req.body;
@@ -58,104 +59,101 @@ const login = async (req, res) => {
 
 
 const register = async (req, res) => {
-  const { nombre, apellido, email, contraseña, confirmarContraseña, tipoUsuario, fecha_de_nacimiento, telefono, pais, colegio, materias } = req.body;
+  const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, pais, colegio, materias } = req.body;
 
+  console.log(req.body);
+  
   // Validaciones de campos requeridos para todos los usuarios
-  if (!nombre || !apellido || !email || !contraseña || !confirmarContraseña || !tipoUsuario) {
+  if (!nombre || !apellido || !email || !password || !confirmPassword || !tipoUsuario) {
     return res.status(400).json({ error: 'Todos los campos son requeridos.' });
   }
 
   // Validar que las contraseñas coincidan
-  if (contraseña !== confirmarContraseña) {
+  if (password !== confirmPassword) {
     return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
   }
 
-  try {
-    // Encriptar la contraseña
-    const salt = await bcrypt.genSalt(10);
-    const hashedContraseña = await bcrypt.hash(contraseña, salt);
+  // Encriptar la contraseña
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
-    let query;
-    let result;
+  let query;
+  let result;
 
-    // Registro según el tipo de usuario
-    if (tipoUsuario === 'alumno') {
-      const fotoFile = req.file; // Asume que multer está manejando la carga de la foto
+  // Registro según el tipo de usuario
+  if (tipoUsuario === 'alumno') {
+    const fotoFile = req.file; 
 
-      // Validar la extensión de la foto
-      const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-      const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+    // Validar la extensión de la foto
+    const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
+    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
 
-      if (!extensionesPermitidas.includes(extensionFoto)) {
-        return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
-      }
-
-      // Subir la foto a Cloudinary
-      const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-        folder: 'alumnos/fotos',
-      });
-      const fotoUrl = resultFoto.secure_url;
-
-      // Insertar datos del alumno en la base de datos
-      query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, colegio, foto) 
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedContraseña, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
-
-    } else if (tipoUsuario === 'profesor') {
-      const { foto, certificadoestudio } = req.files;
-
-      if (!foto || !certificadoestudio) {
-        return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio.' });
-      }
-
-      const fotoFile = foto[0];
-      const certificadoFile = certificadoestudio[0];
-
-      // Validar extensiones
-      const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
-      const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
-      const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
-
-      if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
-        return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
-      }
-
-      // Subir la foto y el certificado a Cloudinary
-      const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-        folder: 'profesores/fotos',
-      });
-      const fotoUrl = resultFoto.secure_url;
-
-      const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
-        folder: 'profesores/certificados',
-        resource_type: 'raw',
-      });
-      const certificadoUrl = resultCertificado.secure_url;
-
-      // Insertar datos del profesor en la base de datos
-      query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, materias, foto, certificadoestudio) 
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedContraseña, fecha_de_nacimiento, telefono, pais, materias, fotoUrl, certificadoUrl]);
-
-    } else {
-      return res.status(400).json({ error: 'Tipo de usuario inválido.' });
+    if (!extensionesPermitidas.includes(extensionFoto)) {
+      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
     }
 
-    // Generar un token JWT
-    const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
+    // Subir la foto a Cloudinary
+    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
+      folder: 'alumnos/fotos',
     });
+    const fotoUrl = resultFoto.secure_url;
 
-    return res.status(201).json({
-      message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
-      user: result.rows[0],
-      token,
+    // Insertar datos del alumno en la base de datos
+    query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, colegio, foto) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
+    result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
+
+  } else if (tipoUsuario === 'profesor') {
+    const { foto, certificadoestudio } = req.files;
+    console.log(req.files);
+
+    if (!foto || !certificadoestudio) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio.' });
+    }
+
+    const fotoFile = foto[0];
+    const certificadoFile = certificadoestudio[0];
+
+    // Validar extensiones
+    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
+    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+    const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
+
+    if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
+      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
+    }
+
+    // Subir la foto y el certificado a Cloudinary
+    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
+      folder: 'profesores/fotos',
     });
+    const fotoUrl = resultFoto.secure_url;
 
-  } catch (err) {
-    console.error('Error al registrar:', err.message);
-    return res.status(500).json({ message: err.message });
+    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
+      folder: 'profesores/certificados',
+      resource_type: 'raw',
+    });
+    const certificadoUrl = resultCertificado.secure_url;
+
+    // Insertar datos del profesor en la base de datos
+    query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, materias, foto, certificadoestudio) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
+    result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, materias, fotoUrl, certificadoUrl]);
+
+  } else {
+    return res.status(400).json({ error: 'Tipo de usuario inválido.' });
   }
+
+  // Generar un token JWT
+  const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, {
+    expiresIn: '1h',
+  });
+
+  return res.status(201).json({
+    message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
+    user: result.rows[0],
+    token,
+  });
 };
 
 
