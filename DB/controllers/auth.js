@@ -83,6 +83,8 @@ const register = async (req, res) => {
   if (tipoUsuario === 'alumno') {
     const foto = req.files.foto ? req.files.foto[0] : null;
 
+    console.log(foto)
+
     if (!foto) {
       return res.status(400).json({ error: 'Se requiere una foto.' });
     }
