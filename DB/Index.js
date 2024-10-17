@@ -69,6 +69,10 @@ app.get("/", (req, res) => {
 
 // Manejo de archivos
 app.post('/upload', upload.fields([{ name: 'foto' }, { name: 'certificadoestudio' }]), (req, res) => {
+  console.log(req.files); // Verifica qué archivos llegan
+  if (!req.files.foto || !req.files.certificadoestudio) {
+    return res.status(400).send('Se requieren ambos archivos: foto y certificado de estudio.');
+  }
   res.send('Archivo subido con éxito');
 }, (error, req, res, next) => {
   if (error instanceof multer.MulterError) {

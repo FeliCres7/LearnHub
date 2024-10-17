@@ -57,7 +57,6 @@ const login = async (req, res) => {
   }
 };
 
-
 const register = async (req, res) => {
   const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, pais, colegio, materias } = req.body;
 
@@ -82,30 +81,28 @@ const register = async (req, res) => {
 
   // Registro según el tipo de usuario
   if (tipoUsuario === 'alumno') {
-    const fotoFile = req.file; 
+    const foto = req.files.foto ? req.files.foto[0] : null;
 
-    // Validar la extensión de la foto
+    if (!foto) {
+      return res.status(400).json({ error: 'Se requiere una foto.' });
+    }
+
     const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+    const extensionFoto = foto.originalname.split('.').pop().toLowerCase();
 
     if (!extensionesPermitidas.includes(extensionFoto)) {
       return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
     }
 
-    // Subir la foto a Cloudinary
-    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-      folder: 'alumnos/fotos',
-    });
+    const resultFoto = await cloudinary.uploader.upload(foto.path, { folder: 'alumnos/fotos' });
     const fotoUrl = resultFoto.secure_url;
 
-    // Insertar datos del alumno en la base de datos
     query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, colegio, foto) 
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
     result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
 
   } else if (tipoUsuario === 'profesor') {
     const { foto, certificadoestudio } = req.files;
-    console.log(req.files);
 
     if (!foto || !certificadoestudio) {
       return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio.' });
@@ -114,7 +111,6 @@ const register = async (req, res) => {
     const fotoFile = foto[0];
     const certificadoFile = certificadoestudio[0];
 
-    // Validar extensiones
     const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
     const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
     const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
@@ -123,19 +119,12 @@ const register = async (req, res) => {
       return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
     }
 
-    // Subir la foto y el certificado a Cloudinary
-    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-      folder: 'profesores/fotos',
-    });
+    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, { folder: 'profesores/fotos' });
     const fotoUrl = resultFoto.secure_url;
 
-    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
-      folder: 'profesores/certificados',
-      resource_type: 'raw',
-    });
+    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, { folder: 'profesores/certificados', resource_type: 'raw' });
     const certificadoUrl = resultCertificado.secure_url;
 
-    // Insertar datos del profesor en la base de datos
     query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, materias, foto, certificadoestudio) 
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
     result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, materias, fotoUrl, certificadoUrl]);
@@ -144,10 +133,7 @@ const register = async (req, res) => {
     return res.status(400).json({ error: 'Tipo de usuario inválido.' });
   }
 
-  // Generar un token JWT
-  const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, {
-    expiresIn: '1h',
-  });
+  const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
   return res.status(201).json({
     message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
