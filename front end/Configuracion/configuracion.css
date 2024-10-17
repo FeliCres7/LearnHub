@@ -175,5 +175,51 @@ button:hover{
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    margin-right: 40%;
+    margin-right: 10%;
+}
+.inputs-time-div div{
+    display: flex;
+    align-items: center;
+}
+input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #1565C0; 
+    border-radius: 50%; 
+    cursor: pointer;
+    background-color: #ffffff; 
+    transition: background-color 0.3s, border-color 0.3s; 
+}
+
+input[type="checkbox"]:checked {
+    background-color: #1565C0;
+    border-color: #1565C0;
+}
+.disponibilidad-horaria-div input[type=submit]{
+    margin-top: 10px;
+    margin-right: 10%;
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+
+}
+.disponibilidad-horaria-div input[type=submit]:hover{
+    margin-top: 10px;
+    margin-right: 10%;
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+    cursor: pointer;
+    filter: brightness(0.9)
+}
+.disponibilidad-confirmar{
+    display: flex;
+    justify-content: right;
 }

@@ -17,23 +17,12 @@
         <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
         <nav class="navbar">
             <ul>
-                <li class="boton-inicio"><button class="inicio"><img src="../Images html/logo inicio.png"
-                            alt=""></button><a href="">Inicio</a></li>
-                <li class="boton-perfil-profesor"><button><img src="../Images html/logo perfil alumno.png"
-                            alt=""></button><a href="">Perfil</a></li>
-                <li class="boton-mis-clases"><button><img src="../Images html/Logo mis clases.png" alt=""></button><a
-                        href="">Mis clases</a></li>
-                <li class="boton-calendario"><button><img src="../Images html/logo calendario.png" alt=""></button><a
-                        href="">Calendario</a></li>
-                <li class="boton-configuracion"><button
-                        onclick="window.location.href='../configuracionprofesor.html'"><img
-                            src="../Images html/logo configuracion.png" alt=""></button><a
-                        href="../configuracionprofesor.html">Configuración</a></li>
-                <li class="boton-materiales-de-trabajo">
-                    <button onclick="window.location.href='../profesormaterialesdetrabajo.html'">
-                        <img src="../Images html/logo materiales.png" alt=""></button>
-                    <a href="../profesormaterialesdetrabajo.html">Materiales de trabajo</a>
-                </li>
+                <li class="boton-inicio"><button class="inicio"><img src="../Images html/logo inicio.png" alt=""></button><a href="">Inicio</a></li>
+                <li class="boton-perfil-profesor"><button><img src="../Images html/logo perfil alumno.png" alt=""></button><a href="">Perfil</a></li>
+                <li class="boton-mis-clases"><button><img src="../Images html/Logo mis clases.png" alt=""></button><a href="">Mis clases</a></li>
+                <li class="boton-calendario"><button><img src="../Images html/logo calendario.png" alt=""></button><a href="">Calendario</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='../configuracionprofesor.html'"><img src="../Images html/logo configuracion.png" alt=""></button><a href="../configuracionprofesor.html">Configuración</a></li>
+                <li class="boton-materiales-de-trabajo"><button onclick="window.location.href='../profesormaterialesdetrabajo.html'"><img src="../Images html/logo materiales.png" alt=""></button><a href="../profesormaterialesdetrabajo.html">Materiales de trabajo</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="../Images html/menubutton.png" alt="MENU"></button>
@@ -41,6 +30,7 @@
             <ul>
                 <li><a href="">Inicio</a></li>
                 <li><a href="">Perfil</a></li>
+                <li><a href="">Mis clases</a></li>
                 <li><a href="">Calendario</a></li>
                 <li><a href="../configuracionprofesor.html">Configuración</a></li>
                 <li><a href="../materialesdetrabajo.html">Mis materiales de trabajo</a></li>
@@ -55,45 +45,118 @@
                 <h3 class="light">(Si no hay disponibilidad, marcar con un 0)</h3>
                 <div class="dias-disponibilidad">
                     <p class="bold">Lunes</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="lunes-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="lunes-fin">
+                        <div><input type="checkbox" id="lunes-checkbox"><label for="lunes-checkbox">No hay disponibilidad</label></div>
                     </div>
                     <p class="bold">Martes</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="martes-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="martes-fin">
+                        <div><input type="checkbox" id="martes-checkbox"><label for="martes-checkbox">No hay disponibilidad</label></div>
                     </div>
+                    <!-- Repetimos el mismo patrón para los otros días -->
                     <p class="bold">Miércoles</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="miercoles-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="miercoles-fin">
+                        <div><input type="checkbox" id="miercoles-checkbox"><label for="miercoles-checkbox">No hay disponibilidad</label></div>
                     </div>
                     <p class="bold">Jueves</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="jueves-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="jueves-fin">
+                        <div><input type="checkbox" id="jueves-checkbox"><label for="jueves-checkbox">No hay disponibilidad</label></div>
                     </div>
                     <p class="bold">Viernes</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="viernes-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="viernes-fin">
+                        <div><input type="checkbox" id="viernes-checkbox"><label for="viernes-checkbox">No hay disponibilidad</label></div>
                     </div>
                     <p class="bold">Sábado</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="sabado-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="sabado-fin">
+                        <div><input type="checkbox" id="sabado-checkbox"><label for="sabado-checkbox">No hay disponibilidad</label></div>
                     </div>
                     <p class="bold">Domingo</p>
-                    <div class="inputs-time-div"><input type="time" value="ej. 13-14">
+                    <div class="inputs-time-div">
+                        <input type="time" id="domingo-inicio">
                         <p>-</p>
-                        <input type="time">
+                        <input type="time" id="domingo-fin">
+                        <div><input type="checkbox" id="domingo-checkbox"><label for="domingo-checkbox">No hay disponibilidad</label></div>
                     </div>
                 </div>
+                <div class="disponibilidad-confirmar"><input id="confirmar-btn" type="submit" value="Confirmar"></div>
             </div>
         </article>
-
     </main>
+
+    <script>
+        // Maneja la disponibilidad y habilita/deshabilita los inputs de tiempo
+        function manejarDisponibilidad(dia) {
+            const inicio = document.getElementById(`${dia}-inicio`);
+            const fin = document.getElementById(`${dia}-fin`);
+            const checkbox = document.getElementById(`${dia}-checkbox`);
+
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    // Deshabilitar inputs si está marcado
+                    inicio.value = "";
+                    fin.value = "";
+                    inicio.disabled = true;
+                    fin.disabled = true;
+                } else {
+                    // Habilitar inputs si se desmarca
+                    inicio.disabled = false;
+                    fin.disabled = false;
+                }
+            });
+        }
+
+        // Enviar los datos al servidor
+        document.getElementById('confirmar-btn').addEventListener('click', () => {
+            const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+            const disponibilidad = {};
+
+            dias.forEach(dia => {
+                const inicio = document.getElementById(`${dia}-inicio`).value;
+                const fin = document.getElementById(`${dia}-fin`).value;
+                const sinDisponibilidad = document.getElementById(`${dia}-checkbox`).checked;
+
+                disponibilidad[dia] = sinDisponibilidad ? null : `${inicio}-${fin}`;
+            });
+
+            const datos = { disponibilidad };
+
+            fetch('/updatedisponibilidadhoraria', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '../configuracionprofesor.html'; // Redirigir tras éxito
+                } else {
+                    alert('Error al actualizar la disponibilidad');
+                }
+            })
+            .catch(error => console.error('Error al enviar datos:', error));
+        });
+
+        // Aplicar la funcionalidad de manejarDisponibilidad a todos los días
+        const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+        dias.forEach(dia => manejarDisponibilidad(dia));
+    </script>
+
 </body>
 
 </html>
