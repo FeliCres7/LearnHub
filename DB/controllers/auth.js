@@ -4,6 +4,10 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv/config'
 import cloudinary from '../upload.js';
 
+
+//const JWT_secret = 'Learnhubtoken'
+const secret = process.env.JWT_SECRET
+
 const login = async (req, res) => {
   const { usuario, contraseña } = req.body;
 
@@ -83,21 +87,29 @@ const register = async (req, res) => {
   if (tipoUsuario === 'alumno') {
     const foto = req.files.foto ? req.files.foto[0] : null;
 
-    console.log(foto)
 
+    console.log('foto del alumno:',foto)
+
+   
     if (!foto) {
+      console.error('Error: Se requiere una foto.');
       return res.status(400).json({ error: 'Se requiere una foto.' });
     }
 
     const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
     const extensionFoto = foto.originalname.split('.').pop().toLowerCase();
+    console.log('Extensión de la foto:', extensionFoto);
 
     if (!extensionesPermitidas.includes(extensionFoto)) {
+      console.error('Error: Extensiones no permitidas para la foto.');
       return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
     }
 
-    const resultFoto = await cloudinary.uploader.upload(foto.path, { folder: 'alumnos/fotos' });
-    const fotoUrl = resultFoto.secure_url;
+
+     // Subir la foto a Cloudinary
+     const resultFoto = await cloudinary.uploader.upload(foto.path, { folder: 'alumnos/fotos' });
+     const fotoUrl = resultFoto.secure_url;
+     console.log('URL de la foto subida:', fotoUrl);
 
     query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, colegio, foto) 
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
@@ -105,10 +117,13 @@ const register = async (req, res) => {
 
   } else if (tipoUsuario === 'profesor') {
     const { foto, certificadoestudio } = req.files;
+    console.log('Archivos del profesor - Foto:', foto, 'Certificado:', certificadoestudio);
 
     if (!foto || !certificadoestudio) {
-      return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio.' });
+      console.error('Error: Se requieren la foto y el certificado de estudio.');
+      return res.status(400).json({ error: 'Se requieren la foto y el certificado de estudio.' });
     }
+
 
     const fotoFile = foto[0];
     const certificadoFile = certificadoestudio[0];
