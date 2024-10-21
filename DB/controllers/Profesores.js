@@ -109,7 +109,7 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 const updatedisponibilidadhoraria = async (req, res) => {
   const { idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
 
-  // Crear un array con los días y sus rangos correspondientes
+
   const dias = [
     { dia: "1", rango: lunes },
     { dia: "2", rango: martes },
@@ -121,19 +121,19 @@ const updatedisponibilidadhoraria = async (req, res) => {
   ];
 
   try {
-    // Borrar todas las entradas anteriores para este profesor
+    
     const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
     await pool.query(deleteQuery, [idprof]);
 
-    // Realizar las inserciones en un solo bloque usando un loop
+   
     const insertQuery = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
     
-    // Promesas para las inserciones de cada día
+    
     const insertPromises = dias.map(({ dia, rango }) => {
       return pool.query(insertQuery, [idprof, dia, rango]);
     });
 
-    // Esperar a que todas las inserciones se completen
+   
     await Promise.all(insertPromises);
 
     // Responder una vez completadas todas las inserciones
@@ -247,16 +247,16 @@ res.status(500).send(err)
   }
   }
 
-  const getprofbynombre = async (req,res) => {
+  const getprofbynombreyapellido = async (req,res) => {
     try {
-      const { nombre } = req.params;
+      const { nombre, apellido } = req.params;
   
-      if (!nombre) {
+      if (!nombre || !apellido) {
         return res.status(400).json({ error: 'El nombre es requerido' });
       }
   
-      const query = 'SELECT * FROM public."profesores" WHERE nombre=$1'
-      const { rows } = await pool.query(query, [nombre]);
+      const query = 'SELECT * FROM public."profesores" WHERE nombre=$1 AND apellido = $2'
+      const { rows } = await pool.query(query, [nombre, apellido]);
   
       if (rows.length > 0) {
         return res.json({ message: 'Profesor(es) obtenido(s) con éxito', profesores: rows });
@@ -322,7 +322,7 @@ const profesores = {
   updatedisponibilidadhoraria,
   deleteprof,
  getperfilprof,
- getprofbynombre,
+ getprofbynombreyapellido,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
  getprofbydias,

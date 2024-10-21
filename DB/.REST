@@ -1,6 +1,7 @@
 
 // LOG IN 
 POST http://localhost:3000/auth/login HTTP/1.1
+Authorization: bearer
 Content-Type: application/json
 
 {
@@ -108,8 +109,7 @@ GET http://localhost:3000/Profesores/2 HTTP/1.1
 ###
 // Obtener un profesor por nombre
 
-GET http://localhost:3000/profesores/nombre/benjamin HTTP/1.1
-
+GET http://localhost:3000/profesores/nombreapellido/benjamin/fridman HTTP/1.1
 
 
 ###
@@ -148,7 +148,7 @@ Content-Type: application/json
 "email":"benjaminfridman@gafae",
 "telefono":"5234232342", 
 "contraseña":"egjbsbaeugubusdfas24523A", 
-"confirmarContraseña" : "egjbsbaeugubusdfas2423A",
+"confirmarContraseña" : "egjbsbaeugubusdfas24523A",
 "ID": 9
 }
 
@@ -293,6 +293,11 @@ GET http://localhost:3000/material HTTP/1.1
 //Obtener un material por id
 
 GET http://localhost:3000/material/1 HTTP/1.1
+
+//obtener un material x nombre 
+###
+
+GET http://localhost:3000/material/guia1 HTTP/1.1 
 
 ###
 //Crear un material

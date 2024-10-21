@@ -13,6 +13,24 @@ const getmaterial = async (_, res) => {
   }
 }
 
+// obtener un material por el nombre 
+
+const getmaterialbynombre = async (req,res) => {
+const {nombre} = req.params;
+
+try{
+const {rows} = await pool.query('SELECT * FROM public.material WHERE nombre = $1', [nombre]);
+if (rows.length > 0){
+  return res.json({materiales:rows, message: 'materiales obtenidos con exito'});
+  } else {
+  return res.status(400).json({error: 'no hay materiales con ese nombre'});
+  }
+} catch (err) {
+  console.error('Error al obtener materiales:', err);
+  return res.status(500).json({ error: 'Error al obtener los materiales' });
+}
+};
+
 // Obtener un material por ID
 const getmaterialByID = async (req, res) => {
   const { ID } = req.body;
@@ -116,6 +134,7 @@ if (result.rows.length > 0) {
 
 const material = {
   getmaterial,
+  getmaterialbynombre,
   getmaterialByID,
   creatematerial,
   updatematerial,

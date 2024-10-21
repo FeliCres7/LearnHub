@@ -69,7 +69,6 @@ app.get("/", (req, res) => {
 
 // Manejo de archivos
 app.post('/upload', upload.fields([{ name: 'foto' }, { name: 'certificadoestudio' }]), (req, res) => {
-  console.log(req.files); // Verifica qué archivos llegan
   res.send('Archivo subido con éxito');
 }, (error, req, res, next) => {
   if (error instanceof multer.MulterError) {
@@ -115,7 +114,7 @@ app.get('/Alumnos/:ID/perfilalumno', verifyToken, alumnos.getperfilalumno)
 //Profesores
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
-app.get('/profesores/nombre/:nombre', profesores.getprofbynombre);
+app.get('/profesores/nombreapellido/:nombre/:apellido', profesores.getprofbynombreyapellido);
 app.put('/profesores/updateinfopersonal/ID', profesores.updateinfopersonal);
 app.put('/profesores/updateperfil/ID', profesores.updateperfil);
 app.put('/profesores/updateseguridad/ID', profesores.updateseguridad);
@@ -150,6 +149,7 @@ app.delete('/Materia/:ID', materia.deletemateria);
 //Material
 app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
+app.get('/Material/:nombre', material.getmaterialbynombre);
 app.post('/Material',verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
