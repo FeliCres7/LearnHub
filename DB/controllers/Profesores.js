@@ -176,9 +176,11 @@ const deleteprof = async (req,res) => {
       const { rows } = await pool.query(query, [ID]);
   
       if (rows.length === 1) {
+        const { certificadoestudio } = rows[0];
         return res.json({
           message: 'Perfil de profesores obtenido con éxito',
-          perfil: rows[0]
+          perfil: rows[0],
+          certificadoestudio: `descargar/${certificadoestudio}` 
         });
       } else {
         return res.status(404).json({ error: 'Profesor no encontrado' });
@@ -188,6 +190,7 @@ const deleteprof = async (req,res) => {
       return res.status(500).json({ error: 'Error al obtener el perfil' });
     }
   };
+  
 
 
 //obtener las materias de los profesores
