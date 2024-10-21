@@ -172,7 +172,7 @@ const deleteprof = async (req,res) => {
         return res.status(400).json({ error: 'ID es requerido' });
       }
   
-      const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion FROM public.profesores WHERE "ID" = $1';
+      const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion, certificadoestudio FROM public.profesores WHERE "ID" = $1';
       const { rows } = await pool.query(query, [ID]);
   
       if (rows.length === 1) {

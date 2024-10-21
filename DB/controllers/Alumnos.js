@@ -83,7 +83,7 @@ const getperfilalumno = async (req, res) => {
       return res.status(400).json({ error: 'ID es requerido' });
     }
 
-    const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais FROM public.alumnos WHERE "ID" = $1';
+    const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais, colegio FROM public.alumnos WHERE "ID" = $1';
     const { rows } = await pool.query(query, [ID]);
 
     if (rows.length === 1) {
