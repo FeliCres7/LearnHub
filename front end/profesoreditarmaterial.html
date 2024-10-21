@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header profesores</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body>
+<header class="header">
+    <img class="logoarriba" src="Images html/LOGOLH.png" alt="LearnHub">
+    <div class="search">
+        <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+        <button class="buttonsearch"><i class="fas fa-search"></i></button>
+    </div>
+    <nav class="navbar">
+        <ul>
+            <li class="boton-inicio"><button onclick="window.location.href='profesorhome.html'" class="inicio"><img src="Images html/logo inicio.png"
+                        alt=""></button><a href="profesorhome.html">Inicio</a></li>
+            <li class="boton-perfil-profesor"><button onclick="window.location.href='profesorperfil.html'"><img src="Images html/logo perfil alumno.png"
+                        alt=""></button><a href="profesorperfil.html">Perfil</a></li>
+            <li class="boton-calendario"><button onclick="window.location.href='profesorcalendario.html'"><img src="Images html/logo calendario.png" alt=""></button><a
+                    href="profesorcalendario.html">Calendario</a></li>
+            <li class="boton-configuracion"><button onclick="window.location.href='configuracionprofesor.html'"><img
+                        src="Images html/logo configuracion.png" alt=""></button><a
+                    href="configuracionprofesor.html">Configuración</a></li>
+            <li class="boton-materiales-de-trabajo">
+                <button onclick="window.location.href='profesormaterialesdetrabajo.html'">
+                    <img src="Images html/logo materiales.png" alt=""></button>
+                <a href="profesormaterialesdetrabajo.html">Materiales de trabajo</a>
+            </li>
+        </ul>
+    </nav>
+    <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
+    <nav class="menu" id="menu">
+        <ul>
+            <li><a href="profesorhome.html">Inicio</a></li>
+            <li><a href="profesorperfil.html">Perfil</a></li>
+            <li><a href="profesorcalendario.html">Calendario</a></li>
+            <li><a href="configuracionprofesor.html">Configuración</a></li>
+            <li><a href="profesormaterialesdetrabajo.html">Mis materiales de trabajo</a></li>
+        </ul>
+    </nav>
+</header>
+<script src="script.js"></script>
+<main class="main-fondo-azul">
+    <article class="sectioncrearmateriales">
+        <div class="crearmaterialdiv">
+            <h1>Crear material de trabajo</h1>
+            <div class="sectionscrearmaterial">
+
+                <div class="nombre-archivo-material">
+                    <p class="bold">Nombre del material</p>
+                    <input type="text" placeholder="Ej: Guía 1">
+                    <p class="bold">Subir archivo</p>
+                    <input type="file">
+                </div>
+                <div class="descripcion-subir-material">
+                    <p class="bold">Descripción</p>
+                    <textarea placeholder="Introduzca una breve descripción del material de trabajo"></textarea>
+                    <div class="subirmaterial"><input type="submit" value="Subir"></div>
+                </div>
+                <form action=""></form>
+            </div>
+        </div>
+        </div>
+
+    </article>
+
+</main>
+</body>
+
+</html>

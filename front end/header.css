@@ -21,17 +21,33 @@ header {
     max-height: 50px;
     max-width: 50px;
 }
-input[type="search"] {
+
+.search{
+    margin-left: 10px; 
+    margin-right: 20px;
+    flex-grow: 1;
+    max-width: 30%;
+    height: 25px;
+    align-items: center;
+    display: flex;
+}
+.search button{
+    height: 25px;
+    border: none;
+    padding: 0 5px;
+    background-color: #EDF3F8;
+    color: #5b6174;
+}
+.search input[type="search"] {
     background-color: #EDF3F8;
     border: none;
     font-size: 20px;
     border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     text-indent: 5px;
-    margin-left: 10px; 
-    margin-right: 20px;
-    color: #323232;
-    flex-grow: 1;
-    max-width: 30%;
+    height: 25px;
+
 
 }
 .header div{
