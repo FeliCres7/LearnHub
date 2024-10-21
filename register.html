@@ -53,3 +53,55 @@
 </body>
 
 </html>
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async function(event) {
+      event.preventDefault(); // Evitar el comportamiento por defecto del formulario
+  
+      // Obtener los valores del formulario
+      const nombre = document.getElementById('nombre').value;
+      const apellido = document.getElementById('apellido').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const role = document.querySelector('input[name="role"]:checked').value;
+  
+      // Validar que las contraseñas coincidan
+      if (password !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return;
+      }
+  
+      // Datos a enviar en el cuerpo de la solicitud
+      const datos = {
+        nombre: nombre,
+        apellido: apellido,
+        email: email,
+        password: password,
+        role: role
+      };
+  
+      try {
+        // Hacer la solicitud POST al servidor
+        const response = await fetch('https://learn-hub-eta.vercel.app/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(datos)
+        });
+  
+        // Manejar la respuesta
+        const result = await response.json();
+        if (response.ok) {
+          alert('Registro exitoso');
+          // Aquí puedes redirigir a otra página o mostrar un mensaje de éxito
+        } else {
+          alert('Error en el registro: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrió un error al registrarse.');
+      }
+    });
+  </script>
+  
