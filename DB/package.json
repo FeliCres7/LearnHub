@@ -27,6 +27,7 @@
     "sequelize": "^6.37.4"
   },
   "devDependencies": {
-    "@types/multer": "^1.4.12"
+    "@types/multer": "^1.4.12",
+    "nodemon": "^3.1.7"
   }
 }
