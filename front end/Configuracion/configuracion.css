@@ -13,9 +13,17 @@
 display: flex;
 align-items: center;
 margin-bottom: 20px;
+
 }
 .foto-perfil *{
     padding-right: 20px;
+}
+.foto-perfil img{
+    border-radius: 100%;
+}
+.foto-perfil button{
+    bottom: 0;
+    margin-top: auto;
 }
 .info-perfil-div button{
     border: 1px solid #424242;
@@ -42,10 +50,31 @@ margin-bottom: 20px;
     justify-content: flex-end;
     
 }
-.confirmar button{
-    padding: 10px 20px;
+.confirmar input[type="submit"]{
+    padding: 5px 20px;
     font-size: 22px;
     border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+
+}
+.confirmar input[type="submit"]:hover{
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+.confirmar button{
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+
+}
+.confirmar button:hover{
+    cursor: pointer;
+    filter: brightness(0.9);
 }
 .datos-perfil p{
     font-size: 14px;
@@ -59,4 +88,138 @@ margin-bottom: 20px;
     font-size: 18px;
     padding: 5px 10px;
     margin-bottom: 20px;
+}
+.disponibilidad-horaria-div{
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px #00000066;
+    width: 60%;
+    height: fit-content;
+    font-size: 18px;
+    margin-top: 30px;
+}
+.light{
+    font-weight: 400;
+}
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.dias-disponibilidad input{
+    border: none;
+    background-color: #EDF3F8;
+    color: #979CAD;
+    border-radius: 10px;
+    font-size: 28px;
+}
+button:hover{
+    cursor: pointer;
+    filter: brightness(0.9)
+}
+.shadow{
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    background-color: #00000099;
+    z-index: 1000;
+    position: fixed;
+
+}
+.password-check{
+    z-index: 1001;
+    position: fixed;
+    width: 50vw;
+    margin: 20vh 25vw;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    align-content: center;
+    flex-direction: column;
+}
+.password-check *{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+.password-check input[type="password"]{
+    font-size: 24px;
+    background-color: #EDF3F8;
+    border: none;
+    text-indent: 10px;
+    border-radius: 10px;
+    width: 80%;
+}
+.buttons-passwordcheck{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.buttons-passwordcheck *{
+    font-size: 18px;
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+    margin: 0px 15px;
+}
+.buttons-passwordcheck *:hover{
+    filter: brightness(0.9);
+    cursor: pointer;
+}
+.inputs-time-div{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-right: 10%;
+}
+.inputs-time-div div{
+    display: flex;
+    align-items: center;
+}
+input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #1565C0; 
+    border-radius: 50%; 
+    cursor: pointer;
+    background-color: #ffffff; 
+    transition: background-color 0.3s, border-color 0.3s; 
+}
+
+input[type="checkbox"]:checked {
+    background-color: #1565C0;
+    border-color: #1565C0;
+}
+.disponibilidad-horaria-div input[type=submit]{
+    margin-top: 10px;
+    margin-right: 10%;
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+
+}
+.disponibilidad-horaria-div input[type=submit]:hover{
+    margin-top: 10px;
+    margin-right: 10%;
+    padding: 5px 20px;
+    font-size: 22px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    box-shadow: none;
+    cursor: pointer;
+    filter: brightness(0.9)
+}
+.disponibilidad-confirmar{
+    display: flex;
+    justify-content: right;
 }

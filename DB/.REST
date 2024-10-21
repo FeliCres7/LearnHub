@@ -1,11 +1,12 @@
 
 // LOG IN 
 POST http://localhost:3000/auth/login HTTP/1.1
+Authorization: bearer
 Content-Type: application/json
 
 {
-    "usuario":"nicoagradnik@gmail.com",
-    "contraseña":"nico2012"
+    "usuario":"ezequielagradnik@gmail.com",
+    "contraseña":"12345"
 }
 
 ###
@@ -17,22 +18,11 @@ Content-Type: application/json
     "nombre":"benjamin",
     "apellido":"agradnik",
     "email":"nicoagradnik@gmail.com",
-    "foto": ".",
     "contraseña":"nico2012",
     "tipoUsuario":"alumno"
 }
 
-###
-// VERIFICACION ALUMNOS
-POST http://localhost:3000/Alumnos/verificacion HTTP/1.1
-Content-Type: application/json
 
-{
-    "fecha_de_nacimiento":"1999/7/3",
-    "telefono":"53225542",
-    "pais": "Argentina",
-    "foto": "."
-}
 
 
 
@@ -51,7 +41,7 @@ GET http://localhost:3000/Alumnos/6 HTTP/1.1
 //Actualizar un alumno
 
 PUT http://localhost:3000/Alumnos/ID HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyNzMxNTA1NywiZXhwIjoxNzI3MzE4NjU3fQ.z_kk3-E94hk7Nodj9mzT-BmKSA9ZLgyBpb6R_N1772k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsInVzZXJuYW1lIjoiZXplcXVpZWwiLCJpYXQiOjE3Mjg0OTQ5MzIsImV4cCI6MTcyODQ5ODUzMn0.RorZJp7B4LZA-k1HUqcKGhQMND5HXS1nW5JXYFh0KrQ
 Content-Type: application/json
 
 {
@@ -72,18 +62,17 @@ Content-Type: application/json
 //Eliminar un alumno
 
 DELETE http://localhost:3000/Alumnos/6 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyODMyMDA3NCwiZXhwIjoxNzI4MzIzNjc0fQ.JftzDnci0rC2lHOy_TDY1IpLabHXfI7zVLI3lLoDvXg
 
-###
-//Obtener las clases de un alumno
-
-GET http://localhost:3000/Alumnos/21/clasebyalumno/3 HTTP/1.1
 
 //Obtener perfil del alumno
 ###
 GET http://localhost:3000/Alumnos/7/perfilalumno HTTP/1.1
 
 
-
+//obtener todos los profesores seguidos de un alumno 
+###
+GET http://localhost:3000/siguen/IDalumno/22 HTTP/1.1
 
 //ALUMNO SEGUIR PROFESOR 
 ###
@@ -99,27 +88,13 @@ Content-Type: application/json
 
 //Alumno deja de seguir a profe 
 ### 
-DELETE http://localhost:3000/siguen/17
+DELETE http://localhost:3000/siguen/7 HTTP/1.1
 
                                              //PROFESORES 
 
                                             
 
-###
-// VERIFICACION PROFESORES
-POST http://localhost:3000/profesores/verificacionprof HTTP/1.1
-Content-Type: application/json
 
-{
-    "fecha_de_nacimiento":"2006/6/4",
-    "telefono":"54524323",
-    "pais": "Argentina",
-    "materia": "ingles",
-    "dias": "martes y viernes ",
-    "disponibilidad_horaria": "18:00 - 20:00",
-    "certificadoestudio": ".",
-    "foto": "."
-}
 
 ###
 //Obtener profesores
@@ -134,41 +109,70 @@ GET http://localhost:3000/Profesores/2 HTTP/1.1
 ###
 // Obtener un profesor por nombre
 
-GET http://localhost:3000/profesores/nombre/benjamin HTTP/1.1
-
+GET http://localhost:3000/profesores/nombreapellido/benjamin/fridman HTTP/1.1
 
 
 ###
-//Actualizar un profesor
+//Actualizar la informacion personal de un prof
 
-PUT http://localhost:3000/profesores/ID HTTP/1.1
+PUT http://localhost:3000/profesores/updateinfopersonal/ID HTTP/1.1
 Content-Type: application/json
 
 {
 "nombre":"benjamin",
 "apellido":"fridman", 
-"contraseña": "benja2008",
 "fecha_de_nacimiento":"2007/7/19", 
-"email":"ezeagr@gmail.com",
-"telefono":"5491133750973",
-"valoracion":"9",
-"pais":"Argentina", 
-"idiomas":"español y hungaro",
-"foto": ".",
-"descripcion_corta":"Hola soy eze y me encanta enseñar",
-"disponibilidad_horaria":"14:00",
- "ID": "6"
+"ID": 9
 }
+
+###
+//Actualizar la informacion del perfil de un prof
+
+PUT http://localhost:3000/profesores/updateperfil/ID HTTP/1.1
+Content-Type: application/json
+
+{
+"foto":"asfdgfhrfds",
+"materias":"español y tecnologia", 
+"descripcion_corta":"9/9/1999", 
+"ID": 9
+}
+
+###
+//Actualizar la seguridad de un prof
+
+PUT http://localhost:3000/profesores/updateseguridad/ID HTTP/1.1
+Content-Type: application/json
+
+{
+"email":"benjaminfridman@gafae",
+"telefono":"5234232342", 
+"contraseña":"egjbsbaeugubusdfas24523A", 
+"confirmarContraseña" : "egjbsbaeugubusdfas24523A",
+"ID": 9
+}
+
+### Actualizar disponibilidad horaria del profesor
+PUT http://localhost:3000/profesores/updatedisponibilidadhoraria
+Content-Type: application/json
+
+{
+  "idprof": 1,
+  "lunes": "9-11",
+  "martes": "10-12",
+  "miercoles": "14-16",
+  "jueves": "8-10",
+  "viernes": "09-11",
+  "sabado": "10-12",
+  "domingo": "0"
+}
+
 
 ###
 //Eliminar un profesor
 
 DELETE http://localhost:3000/profesores/19 HTTP/1.1
 
-###
-//Obtener las clases de un profesor
-
-GET http://localhost:3000/profesores/3/clasebyprof/4 HTTP/1.1
 
 //Obtener perfil del profesor
 ###
@@ -290,6 +294,11 @@ GET http://localhost:3000/material HTTP/1.1
 
 GET http://localhost:3000/material/1 HTTP/1.1
 
+//obtener un material x nombre 
+###
+
+GET http://localhost:3000/material/guia1 HTTP/1.1 
+
 ###
 //Crear un material
 
@@ -325,6 +334,7 @@ Content-Type: application/json
 //Eliminar un material
 
 DELETE http://localhost:3000/material/1 HTTP/1.1
+
 
                                                                        //MATERIA
 ###
@@ -368,6 +378,8 @@ DELETE http://localhost:3000/materia/9 HTTP/1.1
 //obtener una reservacion
 
 GET http://localhost:3000/reservaciones HTTP/1.1
+
+
 
 ###
 //crear una reserva

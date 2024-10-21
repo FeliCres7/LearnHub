@@ -6,48 +6,6 @@ import cloudinary from '../upload.js';
 const secret = process.env.JWT_SECRET
 
 
-//Verificacion alumno
-const verificacionAlumno = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, colegio } = req.body;
-
-
-  try {
-    // Obtener el archivo de foto
-    const fotoFile = req.file;
-
-    // Verificar la extensión de la foto
-    const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
-
-    if (!extensionesPermitidas.includes(extensionFoto)) {
-      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG.');
-    }
-
-    // Subir la foto a Cloudinary
-    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-      folder: 'alumnos/fotos',
-    });
-    const fotoUrl = resultFoto.secure_url;
-
-    // Insertar la información del alumno en la base de datos
-    await pool.query(
-      `INSERT INTO public.alumnos (fecha_de_nacimiento, telefono, pais, colegio, foto) 
-       VALUES ($1, $2, $3, $4, $5)`,
-      [fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]
-    );
-
-    return res.json({
-      message: 'Alumno registrado con éxito',
-      foto: fotoUrl,
-    });
-
-  } catch (err) {
-    console.error('Error al verificar el alumno:', err);
-    return res.status(500).json({ error: 'Error al verificar el alumno' });
-  }
-};
-
-
 //obtener todos los alumnos
 const getalumnos = async (_, res) => {
   try {
@@ -116,47 +74,6 @@ const deleteAlumno = async (req, res) => {
   }
 };
 
-//obtener las clases de un alumno
-/* const getclasebyalumno = async (req, res) => {
-  try {
-    const ID = req.params.ID;
-    const valoracion = req.params.valoracion
-
-    if (!ID) {
-      return res.status(400).json({ error: 'ID de alumno es requerido' });
-    }
-
-    // Consulta para obtener el arreglo de IDclases desde la tabla "alumnos"
-    const queryidclases = 'SELECT "idclases" FROM "alumnos" WHERE "ID" = $1';
-    const { rows: idclasesRows } = await client.query(queryidclases, [ID]);
-
-    if (idclasesRows.length === 0) {
-      return res.status(404).json({ error: 'No se encontraron clases para el alumno' });
-    }
-
-    const idclases = idclasesRows[0].idclases; // Extraer el arreglo de IDs de clases
-
-    // Consulta para obtener los detalles de las clases usando el arreglo de IDs
-    const queryclases = 'SELECT * FROM "clases" WHERE "ID" = $1';
-    const { rows: clases } = await client.query(queryclases, [idclases]);
-
-    // Consulta para obtener las valoraciones de la clase
-    const queryvaloracion = 'SELECT * FROM "valoraciones" WHERE "IDclases"=$1';
-    const { rows: valoracion } = await client.query(queryvaloracion, [idclases]);
-
-if (valoraciones.length === 0) {
-    return res.status(404).json({ error: 'No se encontraron valoraciones de la clase' });
-}
-    res.json({
-      message: 'Clases obtenidas con éxito',
-      clases
-    });
-  } catch (err) {
-    console.error('Error al obtener las clases del alumno:', err);
-    res.status(500).json({ error: 'Error al obtener las clases del alumno' });
-  }
-};
-*/
 
 const getperfilalumno = async (req, res) => {
   try {
@@ -166,7 +83,7 @@ const getperfilalumno = async (req, res) => {
       return res.status(400).json({ error: 'ID es requerido' });
     }
 
-    const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais FROM public.alumnos WHERE "ID" = $1';
+    const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais, colegio FROM public.alumnos WHERE "ID" = $1';
     const { rows } = await pool.query(query, [ID]);
 
     if (rows.length === 1) {
@@ -186,13 +103,10 @@ const getperfilalumno = async (req, res) => {
 
 
 const alumnos = {
-
-  verificacionAlumno,
   getalumnos,
   getalumnobyID,
   updateAlumno,
   deleteAlumno,
-  // getclasebyalumno,
   getperfilalumno
 };
 

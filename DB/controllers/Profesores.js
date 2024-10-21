@@ -5,69 +5,6 @@ import cloudinary from '../upload.js';
 const secret = process.env.JWT_SECRET
 
 
-//verificacion profesor
-const verificacionprof = async (req, res) => {
-  const { fecha_de_nacimiento, telefono, pais, materia, dias, disponibilidad_horaria } = req.body;
-
-  // Validar que todos los campos estén presentes, incluidos los archivos
-  if (!fecha_de_nacimiento || !telefono || !pais || !materia || !req.files || !req.files.foto || !req.files.certificadoestudio || !dias || !disponibilidad_horaria) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos, incluyendo los archivos de foto y certificado de estudio' });
-  }
-
-  try {
-    // Obtener los archivos subidos
-    const fotoFile = req.files.foto[0];  
-    const certificadoFile = req.files.certificadoestudio[0];
-
-    // Verificar la extensión de los archivos
-    const extensionesPermitidas = ['pdf', 'png', 'jpeg', 'jpg'];
-    const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
-    const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
-
-    if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
-      return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
-    }
-
-    // Subir la foto a Cloudinary
-    const resultFoto = await cloudinary.uploader.upload(fotoFile.path, {
-      folder: 'profesores/fotos',
-    });
-    const fotoUrl = resultFoto.secure_url;
-
-    // Subir el certificado a Cloudinary
-    const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, {
-      folder: 'profesores/certificados',
-      resource_type: 'raw',  // Especificar que es un archivo PDF, no una imagen
-    });
-    const certificadoUrl = resultCertificado.secure_url;
-
-    // Comprobar si ya existe un profesor con la misma información
-    const { rows } = await pool.query(
-      `SELECT fecha_de_nacimiento, telefono, pais, foto, materia, certificadoestudio 
-       FROM public.profesores 
-       WHERE fecha_de_nacimiento = $1 AND telefono = $2 AND pais = $3 AND foto = $4 AND materia = $5 AND certificadoestudio = $6 AND dias=$6 AND disponibilidad_horaria=$7`,
-      [fecha_de_nacimiento, telefono, pais, fotoUrl, materia, certificadoUrl, dias, disponibilidad_horaria]
-    );
-
-    if (rows.length > 0) {
-      return res.status(409).json({ error: 'El profesor ya está registrado' });
-    }
-
-    return res.json({
-      message: 'Profesor registrado con éxito',
-      foto: fotoUrl,
-      certificado: certificadoUrl
-    });
-
-  } catch (err) {
-    console.error('Error al verificar el profesor:', err);
-    return res.status(500).json({ error: 'Error al verificar el profesor' });
-  }
-};
-
-
-
-
 
 // Obtener todos los profesores
 const getprof = async (_, res) => {
@@ -103,36 +40,116 @@ const getprofbyID = async (req, res) => {
 
 //Actualizar un profesor 
 
-const updateprof = async (req, res) => {
+const updateinfopersonal = async (req, res) => {
   try {
-    console.log(req.body);
     const {
-      nombre, apellido, fecha_de_nacimiento, email,
-      telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID
+      nombre, apellido, fecha_de_nacimiento, ID
     } = req.body;
     
-    // Ejecutar la consulta SQL para actualizar el registro del profesor
+   
     const result = await pool.query(
       `UPDATE public."profesores"
-       SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3, email = $4,
-            telefono = $5, valoracion = $6, pais = $7,
-           idiomas = $8, foto = $9, descripcion_corta = $10, contraseña = $11, disponibilidad_horaria = $12
-       , dias=$13 AND materia=$14 WHERE "ID" = $15
-       RETURNING *`,
-      [nombre, apellido, fecha_de_nacimiento, email, telefono, valoracion, pais, idiomas, foto, descripcion_corta, contraseña, disponibilidad_horaria, dias, ID]
+       SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3 WHERE "ID" = $4
+       RETURNING *` ,
+      [nombre, apellido, fecha_de_nacimiento, ID]
     );
 
-    // Verificar el resultado de la actualización
+
     if (result.rows.length > 0) {
       res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
     } else {
       res.status(404).send('Profesor no encontrado');
     }
   } catch (err) {
-    // Manejar errores que puedan ocurrir durante la consulta
+    
     res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
   }
 };
+
+const updateperfil = async (req,res) => {
+const {foto, materias, descripcion_corta, ID} = req.body
+
+try{
+const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, materias=$2, descripcion_corta=$3 WHERE "ID"= $4 RETURNING *', [foto, materias, descripcion_corta, ID]
+);
+if (result.rows.length > 0) {
+  res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+} else {
+  res.status(404).send('Profesor no encontrado');
+}
+} catch (err) {
+
+res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
+}
+}
+
+
+const updateseguridad = async (req,res) => {
+const {email, telefono, contraseña, confirmarContraseña, ID} = req.body  
+
+  // Validar que las contraseñas coincidan
+  if (contraseña !== confirmarContraseña) {
+    return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
+  }
+
+try {
+const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña, ID]
+);
+if (result.rows.length > 0) {
+  res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+} else {
+  res.status(404).send('Profesor no encontrado');
+}
+} catch (err) {
+
+res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
+}
+}
+
+const updatedisponibilidadhoraria = async (req, res) => {
+  const { idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
+
+  if (!idprof) {
+    return res.status(400).send("El idprof es requerido");
+  }
+
+  const dias = [
+    { dia: "1", rango: lunes },
+    { dia: "2", rango: martes },
+    { dia: "3", rango: miercoles },
+    { dia: "4", rango: jueves },
+    { dia: "5", rango: viernes },
+    { dia: "6", rango: sabado },
+    { dia: "0", rango: domingo }
+  ];
+
+  
+  const diasFiltrados = dias.filter(({ rango }) => rango !== null && rango !== undefined);
+
+  try {
+    const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
+    await pool.query(deleteQuery, [idprof]);
+
+    const insertQuery = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
+
+    for (const { dia, rango } of diasFiltrados) {
+      try {
+        await pool.query(insertQuery, [idprof, dia, rango]);
+      } catch (err) {
+        console.error(`Error al insertar disponibilidad para el día ${dia}:`, err);
+      }
+    }
+
+    return res.status(200).send("Disponibilidad actualizada correctamente");
+  } catch (err) {
+    console.error('Error al actualizar la disponibilidad horaria:', err);
+    return res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+  }
+};
+
+
+
+
 
 
 
@@ -157,13 +174,15 @@ const deleteprof = async (req,res) => {
         return res.status(400).json({ error: 'ID es requerido' });
       }
   
-      const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion FROM public.profesores WHERE "ID" = $1';
+      const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion, certificadoestudio FROM public.profesores WHERE "ID" = $1';
       const { rows } = await pool.query(query, [ID]);
   
       if (rows.length === 1) {
+        const { certificadoestudio } = rows[0];
         return res.json({
           message: 'Perfil de profesores obtenido con éxito',
-          perfil: rows[0]
+          perfil: rows[0],
+          certificadoestudio: `descargar/${certificadoestudio}` 
         });
       } else {
         return res.status(404).json({ error: 'Profesor no encontrado' });
@@ -173,10 +192,11 @@ const deleteprof = async (req,res) => {
       return res.status(500).json({ error: 'Error al obtener el perfil' });
     }
   };
+  
 
 
 //obtener las materias de los profesores
-  const getdicta = async (_,res) => {
+const getdicta = async (_,res) => {
 try{
 const {rows} = await pool.query('SELECT * FROM public.dicta');
 res.json (rows);
@@ -216,7 +236,7 @@ res.status(500).send(err)
   const {materias} = req.params
   
   try{
-  const query = 'SELECT * FROM public.profesores WHERE "materias" = $1'
+  const query = 'SELECT * FROM public."profesores" WHERE "materias" = $1'
   const {rows} = await pool.query(query, [materias])
 
   if (rows.length > 0){
@@ -232,16 +252,16 @@ res.status(500).send(err)
   }
   }
 
-  const getprofbynombre = async (req,res) => {
+  const getprofbynombreyapellido = async (req,res) => {
     try {
-      const { nombre } = req.params;
+      const { nombre, apellido } = req.params;
   
-      if (!nombre) {
+      if (!nombre || !apellido) {
         return res.status(400).json({ error: 'El nombre es requerido' });
       }
   
-      const query = 'SELECT * FROM public."profesores" WHERE nombre=$1'
-      const { rows } = await pool.query(query, [nombre]);
+      const query = 'SELECT * FROM public."profesores" WHERE nombre=$1 AND apellido = $2'
+      const { rows } = await pool.query(query, [nombre, apellido]);
   
       if (rows.length > 0) {
         return res.json({ message: 'Profesor(es) obtenido(s) con éxito', profesores: rows });
@@ -299,13 +319,15 @@ return res.status(200).json({profesores:rows})
 
 
 const profesores = {
-  verificacionprof,
   getprof, 
   getprofbyID,
-  updateprof,
+  updateinfopersonal,
+  updateperfil,
+  updateseguridad,
+  updatedisponibilidadhoraria,
   deleteprof,
  getperfilprof,
- getprofbynombre,
+ getprofbynombreyapellido,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
  getprofbydias,

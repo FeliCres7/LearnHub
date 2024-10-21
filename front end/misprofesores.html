@@ -9,46 +9,53 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
 </head>
 
 <body>
     <header class="header">
+        
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
-        <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+        <div class="search">
+            <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+        </div>
+        
         <nav class="navbar">
             <ul>
-                <li class="boton-inicio"><button class="inicio"><img src="Images html/logo inicio.png"
-                            alt=""></button><a href="">Inicio</a></li>
-                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img src="Images html/logo perfil alumno.png"
-                            alt=""></button><a href="perfil.html">Perfil</a></li>
-                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img src="Images html/logo mis profesores.png"
-                            alt=""></button><a href="misprofesores.html">Mis profesores</a></li>
-                <li class="boton-calendario"><button><img src="Images html/logo calendario.png" alt=""></button><a
-                        href="">Calendario</a></li>
-                <li class="boton-notificaciones"><button><img src="Images html/logo notificaciones.png"
-                            alt=""></button><a href="">Notificaciones</a></li>
-                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
+                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img
+                    src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
+                    <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img
+                        src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a>
+                    </li>
+                    <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img
+                        src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis
+                            profesores</a></li>
+                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img
+                    src="Images html/logo calendario.png" alt=""></button><a
+                        href="calendario.html">Calendario</a></li>
+                        <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
                             src="Images html/logo configuracion.png" alt=""></button><a
-                        href="configuracion.html">Configuración</a></li>
-            </ul>
+                            href="configuracion.html">Configuración</a></li>
+                        </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
         <nav class="menu" id="menu">
             <ul>
-                <li><a href="">Inicio</a></li>
+                <li><a href="home.html">Inicio</a></li>
                 <li><a href="perfil.html">Perfil</a></li>
                 <li><a href="misprofesores.html">Mis profesores</a></li>
-                <li><a href="">Calendario</a></li>
-                <li><a href="">Notificaciones</a></li>
+                <li><a href="calendario.html">Calendario</a></li>
                 <li><a href="configuracion.html">Configuración</a></li>
             </ul>
         </nav>
     </header>
+    <script src="script.js"></script>
+    
     <main class="main-misprofesores">
         <aside class="aside-misprofesores">
             <div class="header-filtrar-profesores">
-                <button id="btnCheck">CHECK</button>
                 <p>Filtrar</p>
                 <img src="Images html/logo filtrar.png" alt="">
             </div>
@@ -67,27 +74,10 @@
                     <li>Sábado</li>
                     <li>Domingo</li>
                 </ul>
-                <p>Horarios</p>
-                <div><input type="time">
-                    <p>-</p><input type="time">
-                </div>
-                <p>Valoración</p>
-                <div class="estrellas">
-                    <input value="1" name="rate" id="star5" type="radio">
-                    <label title="text" for="star5"></label>
-                    <input value="2" name="rate" id="star4" type="radio">
-                    <label title="text" for="star4"></label>
-                    <input value="3" name="rate" id="star3" type="radio">
-                    <label title="text" for="star3"></label>
-                    <input value="4" name="rate" id="star2" type="radio">
-                    <label title="text" for="star2"></label>
-                    <input value="5" name="rate" id="star1" type="radio">
-                    <label title="text" for="star1"></label>
-                </div>
+                <button class="filtrar-button">Filtrar</button>
             </div>
         </aside>
         <section id="lista-misprofesores" class="lista-misprofesores">
-            <div class="h1misprof"><H1>Mis profesores</H1></div>
             <div class="profesor-misprofesores">
                 <p class="name-profesor">Foto profe</p>
                 <div class="content-profesor"><img src="" alt="Martín Melman">
@@ -106,9 +96,9 @@
                         </div>
                     </div>
                     <div class="botones-profesor">
-                        <button>Materiales de trabajo</button>
+                        <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
                         <button>Ir a perfil</button>
-                        <button>Ver datos de contacto</button>
+                        <button onclick="window.location.href='datosdecontacto.html'">Datos de contacto</button>
                     </div>
                     <div class="valoracion-profesor">
                         <p>Valoración</p>
@@ -118,10 +108,69 @@
             
         </section>
         <aside class="aside-misprofesores">
-
+            
         </aside>
     </main>
     <footer><img src="Images html/LogoLH.png" alt=""></footer>
 </body>
-<script src="script.js"></script>
+<script>
+    const btn = document.getElementById("btnCheck")
+const mainCards = document.getElementById("lista-misprofesores")
+console.log(mainCards);
+
+
+function CreateProfCard (prof) {
+    return `
+    <div class="profesor-misprofesores">
+    <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
+    <div class="content-profesor"><img src="" alt="Martín Melman">
+        <div class="datos-profesor">
+            <div class="datacontainer">
+                <p class="bold">Materia:</p>
+                <p> ${prof.materias} </p>
+                </div>
+                <div class="datacontainer">
+                    <p class="bold">Días:</p>
+                    <p>${prof.dias}</p>
+                    </div>
+                    <div class="datacontainer">
+                        <p class="bold">Horarios:</p>
+                        <p>${prof.disponibilidad_horaria}</p>
+                        </div>
+        </div>
+        <div class="botones-profesor">
+            <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
+            <button>Ir a perfil</button>
+            <button>Ver datos de contacto</button>
+            </div>
+            <div class="valoracion-profesor">
+                <p class="bold">Valoración</p>
+                <p>${prof.valoracion}</p>
+        </div>
+    </div>
+    </div>`
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const mainCards = document.getElementById("lista-misprofesores");
+    if (!mainCards) {
+        console.error("El elemento con id 'lista-misprofesores' no se encontró.");
+        return;
+    }
+    
+    fetch("https://learn-hub-eta.vercel.app/profesores")
+    .then(res => res.json())
+    .then((data) => {
+        console.log(data);
+        mainCards.innerHTML = "";
+        data.forEach((profesor) => {
+                const item = CreateProfCard(profesor);
+                mainCards.innerHTML += item;
+            });
+        });
+    });
+    
+</script>
+
 </html>

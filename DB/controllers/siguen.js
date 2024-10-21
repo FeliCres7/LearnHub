@@ -2,10 +2,15 @@ import {pool} from "../dbconfig.js";
 
 
 const getprofesoresseguidos = async (req,res) => {
-const {IDalumno} = req.body
+const {IDalumno} = req.params
 
 try{
-const query = 'SELECT * FROM public."siguen" JOIN public."profesores terminar el join preguntarle a vigi'
+const query = `
+            SELECT profesores.* 
+            FROM public."siguen", public."profesores" 
+            WHERE "siguen"."IDprof" = "profesores"."ID" 
+            AND "siguen"."IDalumno" = $1
+        `;
 const {rows} = await pool.query(query, [IDalumno])
 
 if (rows.length === 0) {
@@ -49,11 +54,11 @@ if (rows.length === 0) {
 
 
 const dejardeseguir = async (req,res) => {
-const {IDalumno, IDprof}= req.body;
+const ID= req.params.ID;
 
 try{
-const query ='DELETE FROM public.siguen WHERE "IDalumno"= $1 AND "IDprof"=$2 RETURNING *';
-const {rows} = await pool.query(query,[IDalumno, IDprof]);
+const query ='DELETE FROM public."siguen" WHERE "ID" = $1 RETURNING *';
+const {rows} = await pool.query(query,[ID]);
 
  if (rows.length > 0) {
     return res.status(200).json({ message: 'Éxito', seguimiento: rows[0] });

@@ -13,6 +13,24 @@ const getmaterial = async (_, res) => {
   }
 }
 
+// obtener un material por el nombre 
+
+const getmaterialbynombre = async (req,res) => {
+const {nombre} = req.params;
+
+try{
+const {rows} = await pool.query('SELECT * FROM public.material WHERE nombre = $1', [nombre]);
+if (rows.length > 0){
+  return res.json({materiales:rows, message: 'materiales obtenidos con exito'});
+  } else {
+  return res.status(400).json({error: 'no hay materiales con ese nombre'});
+  }
+} catch (err) {
+  console.error('Error al obtener materiales:', err);
+  return res.status(500).json({ error: 'Error al obtener los materiales' });
+}
+};
+
 // Obtener un material por ID
 const getmaterialByID = async (req, res) => {
   const { ID } = req.body;
@@ -29,47 +47,44 @@ const getmaterialByID = async (req, res) => {
   }
 };
 
-// Crear un material
 const creatematerial = async (req, res) => {
-const {IDprofesor, materia, Fecha, infoguia, archivo} = req.body;
+  const { IDprofesor, materia, Fecha, infoguia } = req.body;
 
-  
-  if (!IDprofesor || !materia || !Fecha || !infoguia || !req.files || !req.files.archivo) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos'});
+  if (!IDprofesor || !materia || !Fecha || !infoguia || !req.files || !req.files.archivo || req.files.archivo.length === 0) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
-
     const archivoFile = req.files.archivo[0];
-     // Verificar la extensión del archivo
-     const extensionesPermitidas = ['pdf', 'doc', 'docx'];
-     const extensionArchivo = archivoFile.originalname.split('.').pop().toLowerCase();
+    const extensionesPermitidas = ['pdf', 'doc', 'docx'];
+    const extensionArchivo = archivoFile.originalname.split('.').pop().toLowerCase();
 
-     if (!extensionesPermitidas.includes(extensionArchivo)) {
-         return res.status(400).send('Error: Extensiones no permitidas. El archivo debe ser PDF o DOC/DOCX.');
-     }
-      // Subir el archivo a Cloudinary
-      const Archivo = await cloudinary.uploader.upload(archivoFile.path, {
-        folder: 'materiales',
-        resource_type: 'raw'  // Especificar que es un archivo PDF o documento
+    if (!extensionesPermitidas.includes(extensionArchivo)) {
+      return res.status(400).send('Error: Extensiones no permitidas. El archivo debe ser PDF o DOC/DOCX.');
+    }
+
+    // Subir el archivo a Cloudinary
+    const Archivo = await cloudinary.uploader.upload(archivoFile.path, {
+      folder: 'materiales',
+      resource_type: 'raw'
     });
-    const archivoUrl = Archivo.secure_url; // URL del archivo subido
+    const archivoUrl = Archivo.secure_url;
+
     const query = `
       INSERT INTO public."material" ("IDprofesor", "materia", "Fecha", "infoguia", "archivo")
-      VALUES ($1, $2, $3, $4, $5, $6)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `;
     const values = [IDprofesor, materia, Fecha, infoguia, archivoUrl];
     
     const result = await pool.query(query, values);
 
-    // Respuesta exitosa
     res.status(201).json({
-      message: 'material creado con éxito',
-      clase: result.rows[0]  
+      message: 'Material creado con éxito',
+      material: result.rows[0]  
     });
   } catch (err) {
-    res.status(500).send(err)
+    res.status(500).json({ error: 'Error interno del servidor', details: err.message });
   }
 };
 
@@ -119,6 +134,7 @@ if (result.rows.length > 0) {
 
 const material = {
   getmaterial,
+  getmaterialbynombre,
   getmaterialByID,
   creatematerial,
   updatematerial,

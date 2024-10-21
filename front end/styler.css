@@ -27,9 +27,7 @@ body {
 
 
 .headerlogin img {
-    width: 100px; /* Ajusta según sea necesario */
-    padding-top:20px;
-    padding-left: 20;
+    width: 80px; 
    
 
 
@@ -52,10 +50,18 @@ body {
     border-radius: 54px;
     font-size: 16px;
     font-weight: 700;
-    padding: 5px;
+    padding: 10px;
+    transition: all 0.3s;
+}
+.headerlogin button:hover{
+    cursor: pointer;
+    background-color: #eee;
+    filter: drop-shadow(0.5);
 }
 .headerlogin p{
     margin: 0px;
+    padding-right: 5px;
+    color: #001767;
 }
 main {
     display: flex;
@@ -68,9 +74,9 @@ main {
 
 .formulario {
     width: 350px;
-    border-radius: 30px;
+    border-radius: 15px;
     background-color: #ffffff;
-    padding: 30px;
+    padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -100,39 +106,44 @@ main {
     display: flex;
     align-items: center;
     margin-bottom: 15px;
-    background-color: #ccc;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    
 }
 .espacio{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 
 .usuario img {
-    height: 30px;
+    height: 50px;
     width: auto;
-    background-color: #ccc;
-    margin-right: 0px; /* Espacio entre la imagen y el input */
-   
-   
+    background-color: #d9d9d9;
+    margin-right: 0px; 
+    border-radius: 10px;
+
 
 
 }
 
 
 .contraseña img{
-    height: 30px;
+    height: 50px;
     width: auto;
-    background-color: #ccc;
-    margin-right: 0px; /* Espacio entre la imagen y el input */
+    background-color: #d9d9d9;
+    margin-right: 0px;
+    border-radius: 10px;
+
 }
 
 
 
 
 .formulario input {
-    height: 36px;
+    height: 50px;
+    font-size: 50px;
     padding: 0 10px;
-    border: 2px solid #ccc;
+    border: 2px solid #d9d9d9;
     font-size: 18px;
     color:black;
     border-radius: 4px;
@@ -175,7 +186,6 @@ color: #1565C0;
     box-sizing: border-box;
     margin: 0;
     padding: px;
-    font-family: Arial, sans-serif;
 }
 
 
@@ -211,9 +221,11 @@ body {
 }
 
 
-h2 {
+h1 {
     margin-bottom: 20px;
     color: #002d72;
+    width: 100%;
+    text-align: start;
 }
 
 .input-group {
@@ -231,19 +243,20 @@ h2 {
     color: #6b6b6b;
     font-size: 30px;
     margin-right: 10px;
-    height: 10%;
+    width: 10%;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+input, select {
+    font-family: "Encode Sans Semi Expanded", sans-serif;
     width: 100%;
     padding: 12px;
     border: 2px solid #ccc;
-    font-size: 16px;
+    font-size: 14px;
     outline: none;
     border-radius: 5px;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+input:focus, select:focus {
     border-color: #002d72;
     outline: 2px solid #002d72; /* resaltado al enfocar */
 }
@@ -307,4 +320,39 @@ p a:hover {
     background-color: #dae8ff;
 }
 
-
+.datos-profesor{
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 380px;
+}
+.datos-profesor p{
+    color: #001767;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+input[type="file"]{
+ border-radius: 20px;
+ border-color: #001767;
+ font-size: 10px;
+ padding: 5px 20px;
+ margin-bottom: 5px;
+}
+.datos-alumno{
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 380px;
+}
+.datos-alumno p{
+    color: #001767;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;

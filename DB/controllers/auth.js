@@ -2,6 +2,11 @@ import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv/config'
+import cloudinary from '../upload.js';
+
+
+//const JWT_secret = 'Learnhubtoken'
+const secret = process.env.JWT_SECRET
 
 const login = async (req, res) => {
   const { usuario, contraseña } = req.body;
@@ -32,6 +37,7 @@ const login = async (req, res) => {
     if (!isValidated) {
       return res.status(401).send("Contraseña incorrecta.");
     }
+
     // Generar JWT
     const token = jwt.sign(
       { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
@@ -54,45 +60,106 @@ const login = async (req, res) => {
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
-
 const register = async (req, res) => {
-  const { nombre, apellido, email, contraseña, tipoUsuario } = req.body;
-
-  // Validaciones de campos requeridos
-  if (!nombre || !apellido || !email || !contraseña || !tipoUsuario) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos.' });
-  }
-
   try {
+    const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, pais, colegio, materias } = req.body;
+
+    console.log(req.body);
+    
+    // Validaciones de campos requeridos
+    if (!nombre || !apellido || !email || !password || !confirmPassword || !tipoUsuario) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+    }
+
+    // Validar que las contraseñas coincidan
+    if (password !== confirmPassword) {
+      return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
+    }
+
     // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
-    const hashedContraseña = await bcrypt.hash(contraseña, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Dependiendo del tipo de usuario, insertar en la tabla correspondiente
     let query;
+    let result;
+
+    // Registro según el tipo de usuario
     if (tipoUsuario === 'alumno') {
-      query = "INSERT INTO public.alumnos (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *";
+      const foto = req.files?.foto?.[0] || null;
+
+      console.log('Foto del alumno:', foto);
+
+      // Validar que la foto fue cargada
+      if (!foto) {
+        return res.status(400).json({ error: 'Se requiere una foto.' });
+      }
+
+      // Validar la extensión de la foto
+      const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
+      const extensionFoto = foto.originalname.split('.').pop().toLowerCase();
+      if (!extensionesPermitidas.includes(extensionFoto)) {
+        return res.status(400).send('Error: Extensión no permitida. La foto debe ser PNG, JPEG o JPG.');
+      }
+
+      // Subir la foto a Cloudinary
+      const resultFoto = await cloudinary.uploader.upload(foto.path, { folder: 'alumnos/fotos' });
+      const fotoUrl = resultFoto.secure_url;
+      console.log('URL de la foto subida:', fotoUrl);
+
+      // Insertar el alumno en la base de datos
+      query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, colegio, foto) 
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
+
     } else if (tipoUsuario === 'profesor') {
-      query = "INSERT INTO public.profesores (nombre, apellido, email, contraseña) VALUES ($1, $2, $3, $4) RETURNING *";
+      const { foto, certificadoestudio } = req.files;
+      console.log('Archivos del profesor - Foto:', foto, 'Certificado:', certificadoestudio);
+
+      // Validar que ambos archivos fueron cargados
+      if (!foto || !certificadoestudio) {
+        return res.status(400).json({ error: 'Se requieren la foto y el certificado de estudio.' });
+      }
+
+      const fotoFile = foto[0];
+      const certificadoFile = certificadoestudio[0];
+
+      // Validar la extensión de la foto y del certificado
+      const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
+      const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
+      const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
+
+      if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
+        return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
+      }
+
+      // Subir la foto y el certificado a Cloudinary
+      const resultFoto = await cloudinary.uploader.upload(fotoFile.path, { folder: 'profesores/fotos' });
+      const fotoUrl = resultFoto.secure_url;
+
+      const resultCertificado = await cloudinary.uploader.upload(certificadoFile.path, { folder: 'profesores/certificados', resource_type: 'raw' });
+      const certificadoUrl = resultCertificado.secure_url;
+
+      // Insertar el profesor en la base de datos
+      query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, materias, foto, certificadoestudio) 
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, materias, fotoUrl, certificadoUrl]);
+
     } else {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
     }
 
-    const result = await pool.query(query, [nombre, apellido, email, hashedContraseña]);
+    // Crear el token JWT
+    const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Generar un token JWT
-    const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
-
+    // Devolver la respuesta con el usuario registrado y el token
     return res.status(201).json({
       message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
       user: result.rows[0],
       token,
     });
   } catch (err) {
-    console.error('Error al registrar:', err.message);
-    return res.status(500).json({ error: 'Error interno del servidor.' });
+    console.error('Error al registrar:', err);
+    return res.status(500).json({ error: 'Ocurrió un error al registrar al usuario.' });
   }
 };
 

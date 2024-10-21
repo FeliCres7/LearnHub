@@ -5,33 +5,53 @@
 header {
     position: fixed;
     display: flex;
-    align-items: center; 
+    justify-content: space-between;
+    align-items: center;
     background-color: #ffffff;
     height: 65px;
     width: 100%;
     padding: 0 20px;
-    z-index: 1000; 
+    z-index: 1000;
     padding-top: 5px;
-    top:0;
+    top: 0;
     flex-wrap: wrap;
-    justify-content: space-between;
 
 }
 .logoarriba{
     max-height: 50px;
     max-width: 50px;
 }
-input[type="search"] {
+
+.search{
+    margin-left: 10px; 
+    margin-right: 20px;
+    flex-grow: 1;
+    max-width: 30%;
+    height: 25px;
+    align-items: center;
+    display: flex;
+}
+.search button{
+    height: 25px;
+    border: none;
+    padding: 0 5px;
+    background-color: #EDF3F8;
+    color: #5b6174;
+}
+.search input[type="search"] {
     background-color: #EDF3F8;
     border: none;
     font-size: 20px;
     border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
     text-indent: 5px;
-    margin-left: 10px; 
-    margin-right: 20px;
-    color: #323232;
-    flex-grow: 1;
-    
+    height: 25px;
+
+
+}
+.header div{
+width: max-content;
 }
 @media (max-width: 768px) {
     .header {
@@ -75,12 +95,16 @@ header ul{
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-left: auto;
+
 }
 header ul li {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-left: 30px;
+    margin: 0 30px;
+    flex-grow: 1; /* Cada li ocupará un espacio proporcional */
+    text-align: center; /* Centra el contenido de cada li */
 }
 header ul li a {
     text-decoration: none; 

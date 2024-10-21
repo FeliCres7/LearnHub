@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Seguridad de la cuenta</title>
+    <link rel="stylesheet" href="../header.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="configuracion.css">
+    <link rel="icon" href="../Images html/logo pestaña.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+<body>
+    <header class="header">
+
+        <img class="logoarriba" src="../Images html/LOGOLH.png" alt="Learn Hub">
+        <div class="search">
+            <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+        </div>
+
+        <nav class="navbar">
+            <ul>
+                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='../home.html'"><img
+                            src="../Images html/logo inicio.png" alt=""></button><a href="../home.html">Inicio</a></li>
+                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img
+                            src="../Images html/logo perfil alumno.png" alt=""></button><a href="../perfil.html">Perfil</a>
+                </li>
+                <li class="boton-mis-profesores"><button onclick="window.location.href='../misprofesores.html'"><img
+                            src="../Images html/logo mis profesores.png" alt=""></button><a href="../misprofesores.html">Mis
+                        profesores</a></li>
+                <li class="boton-calendario"><button onclick="window.location.href='../calendario.html'"><img
+                            src="../Images html/logo calendario.png" alt=""></button><a
+                        href="../calendario.html">Calendario</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='../configuracion.html'"><img
+                            src="../Images html/logo configuracion.png" alt=""></button><a
+                        href="../configuracion.html">Configuración</a></li>
+            </ul>
+        </nav>
+        <button id="menubutton"><img src="../Images html/menubutton.png" alt="MENU"></button>
+        <nav class="menu" id="menu">
+            <ul>
+                <li><a href="../home.html">Inicio</a></li>
+                <li><a href="../perfil.html">Perfil</a></li>
+                <li><a href="../misprofesores.html">Mis profesores</a></li>
+                <li><a href="../calendario.html">Calendario</a></li>
+                <li><a href="../configuracion.html">Configuración</a></li>
+            </ul>
+        </nav>
+    </header>
+    <script src="script.js"></script>
+
+    <main class="main-fondo-azul">
+        <aside class="PanelIzquierdo">
+            <p class="config">Configuración</p>
+            <div class="ajustes">
+                <img src="../Images html/logo ajustes usuario.png" alt="">
+                <p>Ajustes de usuario</p>
+            </div>
+            <div class="seguridad">
+                <img src="../Images html/logo seguridad cuenta azul.png" alt="">
+                <p>Información personal</p>
+
+            </div>
+        </aside>
+        <article class="panel-configuracion">
+            <div class="info-perfil-div">
+                <h1>Seguridad de la cuenta</h1>
+                <form class="datos-perfil">
+                    <p>Correo electrónico</p>
+                    <input type="email" value="">
+                    <p>Número de telefono</p>
+                    <input type="tel" value="">
+                    <p>Contraseña</p>
+                    <input type="password" value="">
+                    <p>Confirmar contraseña</p>
+                    <input type="password" value="">
+                    <div class="confirmar">
+                        <button id="btnconfirmar">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </article>
+        <div class="password-check" style="display: none;">
+            <h1>Introduce tu contraseña original para guardar los cambios</h1>
+            <form id="passwordForm">
+                <p>Si acabas de cambiar tu contraseña, introduce tu contraseña anterior</p>
+                <input type="password" placeholder="Contraseña">
+                <div class="buttons-passwordcheck"><button id="buttonvolver">Volver</button>
+                <input type="submit" value="Enviar" id="buttonenviar"></div>
+            </form>
+        </div>
+    </main>
+    <div class="shadow" style="display: none;"></div>
+</body>
+<script src="../script.js"></script>
+<script>
+document.getElementById("btnconfirmar").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.querySelector(".shadow").style.display = "block";
+    document.querySelector(".password-check").style.display = "block";
+});
+
+document.getElementById("buttonvolver").addEventListener("click", function(event) {
+    event.preventDefault();
+    document.querySelector(".shadow").style.display = "none";
+    document.querySelector(".password-check").style.display = "none";
+});
+
+document.getElementById("passwordForm").addEventListener("submit", function(event) {
+    event.preventDefault(); 
+    window.location.href = '../configuracion.html';
+});
+
+</script>
+</html>
