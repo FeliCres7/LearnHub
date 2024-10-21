@@ -109,6 +109,9 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 const updatedisponibilidadhoraria = async (req, res) => {
   const { idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
 
+  if (!idprof) {
+    return res.status(400).send("El idprof es requerido");
+  }
 
   const dias = [
     { dia: "1", rango: lunes },
@@ -120,30 +123,29 @@ const updatedisponibilidadhoraria = async (req, res) => {
     { dia: "0", rango: domingo }
   ];
 
+  
+  const diasFiltrados = dias.filter(({ rango }) => rango !== null && rango !== undefined);
+
   try {
-    
     const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
     await pool.query(deleteQuery, [idprof]);
 
-   
     const insertQuery = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-    
-    
-    const insertPromises = dias.map(({ dia, rango }) => {
-      return pool.query(insertQuery, [idprof, dia, rango]);
-    });
 
-   
-    await Promise.all(insertPromises);
+    for (const { dia, rango } of diasFiltrados) {
+      try {
+        await pool.query(insertQuery, [idprof, dia, rango]);
+      } catch (err) {
+        console.error(`Error al insertar disponibilidad para el día ${dia}:`, err);
+      }
+    }
 
-    // Responder una vez completadas todas las inserciones
-    res.status(200).send("Disponibilidad actualizada correctamente");
+    return res.status(200).send("Disponibilidad actualizada correctamente");
   } catch (err) {
     console.error('Error al actualizar la disponibilidad horaria:', err);
-    res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
+    return res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
   }
 };
-
 
 
 
