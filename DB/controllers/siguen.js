@@ -61,7 +61,7 @@ const query ='DELETE FROM public."siguen" WHERE "ID" = $1 RETURNING *';
 const {rows} = await pool.query(query,[ID]);
 
  if (rows.length > 0) {
-    return res.status(200).json({ message: 'Éxito', seguimiento: rows[0] });
+    return res.status(200).json({ message: 'Se dejo de seguir al profesor con exito ', seguimiento: rows[0] });
 } else {
     return res.status(200).json({ message: 'No se encontró ningún seguimiento para eliminar.' });
 }
