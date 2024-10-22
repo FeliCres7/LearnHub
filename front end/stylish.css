@@ -44,25 +44,19 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
 }
-.perfil-data div{
-    justify-content: space-between;
-}
-.button-editarperfil{
-    display: flex;
-    align-items: end;
-    width: max-content;
-    right: 0;
-    margin-left: auto;
-}
+
 .bold{
     font-weight: 600;
 }
 .data-container{
+    display: flex;
     flex-direction: row;
+    margin: 5px 0;
 }
-.button-editarperfil button{
-    background: none;
+.perfil-data button{
+    background-color: #ffffff;
     font-size: 18px;
     border: 2px solid #424242;
     color: #424242;
@@ -70,4 +64,15 @@ main {
     border-radius: 20px;
     margin-top: auto;
     width: 120px;
+    right: 0;
+    margin-left: auto;
+}
+.div-central-perfil{
+    width: max-content;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.perfil-data button:hover{
+    cursor: pointer;
+    filter: brightness(0.9);
 }
