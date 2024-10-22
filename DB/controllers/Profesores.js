@@ -108,7 +108,6 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 
 const updatedisponibilidadhoraria = async (req, res) => {
   const { idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
-
   if (!idprof) {
     return res.status(400).send("El idprof es requerido");
   }
@@ -123,15 +122,13 @@ const updatedisponibilidadhoraria = async (req, res) => {
     { dia: "0", rango: domingo }
   ];
 
-  
   const diasFiltrados = dias.filter(({ rango }) => rango !== null && rango !== undefined);
 
   try {
     const deleteQuery = 'DELETE FROM public."DisponibilidadHoraria" WHERE "idprof"=$1';
     await pool.query(deleteQuery, [idprof]);
 
-    const insertQuery = 'INSERT INTO public."DisponibilidadHoraria" (idprof, dia, rango) VALUES ($1, $2, $3)';
-
+    const insertQuery = 'INSERT INTO public."DisponibilidadHoraria" (idprof, iddias, rango) VALUES ($1, $2, $3)';
     for (const { dia, rango } of diasFiltrados) {
       try {
         await pool.query(insertQuery, [idprof, dia, rango]);
@@ -192,7 +189,7 @@ const deleteprof = async (req,res) => {
       return res.status(500).json({ error: 'Error al obtener el perfil' });
     }
   };
-  
+
 
 
 //obtener las materias de los profesores
@@ -274,28 +271,30 @@ res.status(500).send(err)
     }
   };
 
-// Obtener profesores por disponibilidad horaria
-const getprofbydisponibilidadhoraria = async (req, res) => {
-  const { disponibilidad_horaria } = req.params; // Suponiendo que la disponibilidad se pasa como un parámetro de consulta
-
-  if (!disponibilidad_horaria) {
-      return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
-  }
-
-  try {
-      const query = 'SELECT * FROM public."profesores" WHERE "disponibilidad_horaria" = $1';
-      const { rows } = await pool.query(query, [disponibilidad_horaria]);
-
-      if (rows.length > 0) {
-          return res.json({ message: 'Profesores obtenidos con éxito', profesores: rows });
-      } else {
-          return res.status(404).json({ error: 'No se encontraron profesores con esa disponibilidad horaria' });
-      }
-  } catch (err) {
-      console.error('Error al obtener profesores por disponibilidad horaria:', err);
-      return res.status(500).json({ error: 'Error al obtener los profesores' });
-  }
-};
+  const getprofbydisponibilidadhoraria = async (req, res) => {
+    const { disponibilidad_horaria } = req.params; // Suponiendo que la disponibilidad se pasa como un parámetro de consulta
+    if (!disponibilidad_horaria) {
+        return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
+    }
+  
+    try {
+        const query = `
+          SELECT p.*
+          FROM public."profesores" p
+          JOIN public."DisponibilidadHoraria" dh ON p.idprof = dh.idprof
+          WHERE dh.rango = $1
+        `;
+        const { rows } = await pool.query(query, [disponibilidad_horaria]);
+        if (rows.length > 0) {
+            return res.json({ message: 'Profesores obtenidos con éxito', profesores: rows });
+        } else {
+            return res.status(404).json({ error: 'No se encontraron profesores con esa disponibilidad horaria' });
+        }
+    } catch (err) {
+        console.error('Error al obtener profesores por disponibilidad horaria:', err);
+        return res.status(500).json({ error: 'Error al obtener los profesores' });
+    }
+  }  
 
 const getprofbydias = async (req,res) => {
 const {dias} = req.params;
