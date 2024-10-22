@@ -16,6 +16,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url'; 
 import { dirname } from 'path'; 
 import { join } from 'path';
+import cloudinary from '../upload.js';
 
 
 const app = express();
@@ -67,16 +68,6 @@ app.get("/", (req, res) => {
 });
 
 
-// Manejo de archivos
-app.post('/upload', upload.fields([{ name: 'foto' }, { name: 'certificadoestudio' }]), (req, res) => {
-  res.send('Archivo subido con éxito');
-}, (error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    return res.status(400).send(error.message);
-  } else if (error) {
-    return res.status(400).send(error.message);
-  }
-});
 
 // Middleware de manejo de errores, para que tire mas info 
 app.use((err, req, res, next) => {
