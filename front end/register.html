@@ -500,7 +500,7 @@
                 tipoUsuario
             };
     
-            // Mostrar formulario adicional según el tipo de usuario
+            // Mostrar formulario adicional  según el tipo de usuario
             if (tipoUsuario === 'profesor') {
                 document.querySelector('.datos-profesor').style.display = 'block';
                 document.querySelector('.container').style.display = 'none';
@@ -560,20 +560,20 @@
             formData.append(key, data[key]);
         }
 
-        // Añadir los datos adicionales del alumno o profesor
+        // Append de los datos extra de alumno o profesor
         for (const key in datosExtra) {
             formData.append(key, datosExtra[key]);
         }
 
-        // Imprimir los datos de FormData (sin mostrar el contenido de archivos)
+        // Console log del formdata (sin mostrar el contenido de archivos)
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
 
-        // URL fija para el registro
+        // URL de la api
         const url = 'https://learn-hub-eta.vercel.app/auth/register';
 
-        // Enviar los datos a la ruta de registro
+        // fetchear los datos
         const response = await fetch(url, {
             method: 'POST',
             body: formData
