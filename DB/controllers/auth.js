@@ -112,9 +112,16 @@ const register = async (req, res) => {
       result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
 
     } else if (tipoUsuario === 'profesor') {
+      const { foto, certificadoestudio } = req.files.path;
+      console.log('Archivos del profesor - Foto:', foto, 'Certificado:', certificadoestudio);
 
-      const fotoFile = req.file.path;
-      const certificadoFile = req.file.path;
+      // Validar que ambos archivos fueron cargados
+      if (!foto || !certificadoestudio) {
+        return res.status(400).json({ error: 'Se requieren la foto y el certificado de estudio.' });
+      }
+
+      const fotoFile = foto[0];
+      const certificadoFile = certificadoestudio[0];
 
       // Validar la extensión de la foto y del certificado
       const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
