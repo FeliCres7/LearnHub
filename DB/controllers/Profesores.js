@@ -364,8 +364,6 @@ const createvaloracionbyclases = async (req, res) => {
   }
 };
 
-
-// Función para recalcular el promedio de valoraciones del profesor
 const updateProfessorRating = async (idprof) => {
   try {
     const query = `

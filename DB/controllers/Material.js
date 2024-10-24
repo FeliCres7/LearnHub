@@ -92,7 +92,7 @@ const creatematerial = async (req, res) => {
 // Actualizar un Material
 const updatematerial = async (req, res) => {
   console.log(req.body)
-  const { IDprofesor, IDalumno, materia, Fecha, infoguia, archivo, ID} = req.body;
+  const { IDprofesor, materia, Fecha, infoguia, archivo, ID} = req.body;
 
   // Validar los datos aquí si es necesario
   if (!ID ||!IDprofesor || !IDalumno ||!materia || !Fecha ) {

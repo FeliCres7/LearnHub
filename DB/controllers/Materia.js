@@ -1,5 +1,5 @@
 import {pool} from '../dbconfig.js'
-
+/*
 
 // Obtener todas las materia
 const getmateria = async (_, res) => {
@@ -110,3 +110,5 @@ const materia = {
 }
 
 export default materia;
+
+*/

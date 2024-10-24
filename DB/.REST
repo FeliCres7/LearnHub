@@ -199,11 +199,11 @@ Content-Type: application/json
 {
 "idmateria":1
 }
-
                                                                        //CLASES
 
+
 ###
-//Obtener clases
+//Obtener clases 
 
 GET http://localhost:3000/clases HTTP/1.1
 
@@ -219,14 +219,13 @@ POST http://localhost:3000/Clases HTTP/1.1
 Content-Type: application/json
 
 {
-"IDmateria": 1,
-"IDprofesor": 2,
+"IDmateria": 9,
+"IDprofesor": 38,
 "horainicio": "16:00", 
 "horafin": "17:00", 
 "idiomas": "español", 
 "link": ".",
-"valoracion": 5,
-"IDalumnos": 36
+"IDalumnos": 72
 }
 
 ###
@@ -254,10 +253,6 @@ DELETE http://localhost:3000/clases/20 HTTP/1.1
 
                                   //VALORACION
 
-###
-// Obtener todas las valoraciones para una clase seleccionada
-
-GET http://localhost:3000/Clases/17/valoracionesbyclases HTTP/1.1
 
 ###
 //Crear una valoracion 
@@ -271,11 +266,6 @@ Content-Type: application/json
 "fecha": "2024/8/25",
 "IDalumnos": 6
 }
-
-###
-//Eliminar una valoracion 
-
-DELETE http://localhost:3000/Clases/valoracionbyclases/21/11 HTTP/1.1
 
 
 
@@ -306,7 +296,6 @@ Content-Type: application/json
 "IDprofesor": 2,
 "materia": "ingles", 
 "Fecha": "2024/8/24",
-"IDalumno": 7,
 "infoguia":"hola soy eric y esto es un material de info",
 "archivo":"."
 }
@@ -321,7 +310,6 @@ Content-Type: application/json
 "IDprofesor": 2,
 "materia": "base de datos y back end", 
 "Fecha": "2024/8/24" ,
-"IDalumno": 7,
 "archivo": ".",
 "infoguia": "hola soy eric y esto es un material de tic",
 "ID":5
