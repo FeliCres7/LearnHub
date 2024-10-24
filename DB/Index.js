@@ -118,6 +118,7 @@ app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
 app.get('/profesores/dias/:dias', profesores.getprofbydias);
 app.get('/profesores/dicta', profesores.getdicta)
 app.post('/profesores/dicta/:ID', profesores.createdicta);
+app.post('/profesores/valoraciones', verifyToken, profesores.createvaloracionbyclases)
 
 //Clases
 app.get('/clases', clases.getClases);
@@ -125,11 +126,6 @@ app.get('/Clases/:ID', clases.getClaseByID);
 app.post('/Clases', clases.createClase);
 app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
-app.get('/Clases/:ID/valoracionesbyclases', clases.getvaloracionbyclases);
-app.post('/Clases/valoracionbyclases', verifyToken, clases.createvaloracionbyclases);
-app.delete('/Clases/valoracionbyclases/:IDclases',  verifyToken, verifyAdmin, clases.deletevaloracionbyclases); // dsp fijarse cual es la q esta bien
-app.delete('/Clases/valoracionbyclases/:IDclases/:ID', verifyToken, verifyAdmin, clases.deletevaloracionbyclases);
-
 
 //Materia
 app.get('/Materia', materia.getmateria);

@@ -194,11 +194,6 @@ const clases = {
   createClase,
   updateClase,
   deleteclase,
-  getvaloracionbyclases,
-  createvaloracionbyclases,
-  deletevaloracionbyclases,
-  getclasebyalumno,
-  //getclasebyprof
 }
 
 export default clases;

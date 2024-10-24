@@ -171,15 +171,33 @@ const deleteprof = async (req,res) => {
         return res.status(400).json({ error: 'ID es requerido' });
       }
   
-      const query = 'SELECT nombre, apellido, foto, fecha_de_nacimiento, pais,valoracion, certificadoestudio FROM public.profesores WHERE "ID" = $1';
-      const { rows } = await pool.query(query, [ID]);
+      // Consulta para obtener los datos del profesor
+      const queryProfesor = `
+        SELECT nombre, apellido, foto, fecha_de_nacimiento, pais, certificadoestudio 
+        FROM public.profesores 
+        WHERE "ID" = $1
+      `;
+      const { rows: profesorRows } = await pool.query(queryProfesor, [ID]);
   
-      if (rows.length === 1) {
-        const { certificadoestudio } = rows[0];
+      if (profesorRows.length === 1) {
+        const { certificadoestudio } = profesorRows[0];
+  
+        // Consulta para obtener el promedio de valoraciones del profesor
+        const queryValoracion = `
+          SELECT AVG(valoracion) AS valoracion
+          FROM public.valoraciones
+          WHERE idprof = $1
+        `;
+        const { rows: valoracionRows } = await pool.query(queryValoracion, [ID]);
+  
+        // Valoración promedio
+        const valoracion_promedio = valoracionRows[0]?.valoracion_promedio || 0; // Si no tiene valoraciones, se pone en 0
+  
         return res.json({
-          message: 'Perfil de profesores obtenido con éxito',
-          perfil: rows[0],
-          certificadoestudio: `descargar/${certificadoestudio}` 
+          message: 'Perfil de profesor obtenido con éxito',
+          perfil: profesorRows[0],
+          valoracion_promedio,  // Incluimos la valoración promedio
+          certificadoestudio: `descargar/${certificadoestudio}`
         });
       } else {
         return res.status(404).json({ error: 'Profesor no encontrado' });
@@ -188,10 +206,9 @@ const deleteprof = async (req,res) => {
       console.error('Error al obtener el perfil del profesor:', err);
       return res.status(500).json({ error: 'Error al obtener el perfil' });
     }
-  };
 
 
-
+  }
 //obtener las materias de los profesores
 const getdicta = async (_,res) => {
 try{
@@ -316,6 +333,64 @@ return res.status(200).json({profesores:rows})
 
 }
 
+// Crear una valoración
+const createvaloracionbyclases = async (req, res) => {
+  const { IDclases, valoracion, fecha, IDalumnos, idprof } = req.body;
+
+  // Validar los datos recibidos
+  if (!IDclases || !valoracion || !fecha || !IDalumnos || !idprof) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO public."valoraciones" ("IDclases", "valoracion", "fecha", "IDalumnos", "idprof")
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+    const values = [IDclases, valoracion, fecha, IDalumnos, idprof];
+
+    const result = await pool.query(query, values);
+
+    // Recalcular el promedio del profesor
+    await updateProfessorRating(idprof);
+
+    res.status(201).json({
+      message: 'Valoración creada con éxito',
+      valoracion: result.rows[0]
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+// Función para recalcular el promedio de valoraciones del profesor
+const updateProfessorRating = async (idprof) => {
+  try {
+    const query = `
+      SELECT AVG(valoracion) as promedio
+      FROM public."valoraciones"
+      WHERE idprof = $1
+    `;
+    const values = [idprof];
+    
+    const result = await pool.query(query, values);
+    const promedio = result.rows[0].promedio;
+
+    // Actualizar el perfil del profesor con el nuevo promedio
+    const updateQuery = `
+      UPDATE public."profesores"
+      SET valoracion = $1
+      WHERE idprof = $2
+    `;
+    const updateValues = [promedio, idprof];
+
+    await pool.query(updateQuery, updateValues);
+  } catch (err) {
+    console.error('Error al actualizar la valoración promedio del profesor:', err.message);
+  }
+};
 
 const profesores = {
   getprof, 
@@ -332,7 +407,7 @@ const profesores = {
  getprofbydias,
  getdicta,
  createdicta,
-
+createvaloracionbyclases
 
 };
 
