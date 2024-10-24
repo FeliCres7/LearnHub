@@ -574,3 +574,7 @@ font-weight: 600;
     filter: brightness(0.9);
     cursor: pointer;
 }
+#foto-perfil{
+    height: 100px;
+    width: 100px;
+}

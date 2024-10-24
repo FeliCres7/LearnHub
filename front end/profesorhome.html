@@ -48,7 +48,84 @@
         </nav>
     </header>
     <script src="script.js"></script>
+    <main class="main-home">
+        <aside class="aside-izq-home">
+            <img id="foto-perfil" src="Images html/icon perfil.png" alt="">
+            <p id="nombre-apellido" class="big">Nombre y apellido</p>
+            <p id="pais" class="small">País</p>
+        </aside>
+        <article class="article-home">
+            <div class="top-article-home">
+                <p>Valora tu clase con </p>
+                <p class="bold"> Nombre y apellido</p>
+            </div>
+            <div class="fotoyvaloracion-article-home"><img src="Images html/icon perfil.png" alt="">
+                
+                <div><p>Coso para valorar</p>
+                <button class="enviar-valoracion">Enviar valoración</button></div>
+                
+            </div>
+        </article>
+        <aside class="aside-der-home">
+            <div class="title-aside-der-home"><p class="bold">Calendario</p></div>
+            <div>
+                <p class="bold">Día</p>
+                <p>Fecha y hora</p>
+                <p>Clase con nombre y apellido</p>
+            </div>
 
+        </aside>
+    </main>
 </body>
+<script>window.onload = function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'inicio.html';
+    } else {
+        cargarDatosUsuario(token);
+    }
+};
+
+function cargarDatosUsuario(token) {
+    fetch('https://learn-hub-eta.vercel.app/profesores', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Mostrar los datos obtenidos de la API en la consola
+        mostrarDatosUsuario(data);
+    })
+    .catch(error => {
+        console.error('Error al cargar los datos del usuario:', error);
+    });
+}
+
+function mostrarDatosUsuario(data) {
+    const nombreApellido = document.getElementById('nombre-apellido');
+    const fotoPerfil = document.getElementById('foto-perfil');
+    const pais = document.getElementById('pais');
+
+    // Verificación de los datos obtenidos, mostrando un fallback si algún dato no está disponible
+    if (nombreApellido && fotoPerfil && pais) {
+        // Asignar nombre y apellido, con fallback en caso de que falten los datos
+        nombreApellido.innerText = `${data.nombre || 'Nombre no disponible'} ${data.apellido || 'Apellido no disponible'}`;
+
+        // Verificar si la imagen de perfil está disponible, si no usar una imagen por defecto
+        fotoPerfil.src = data.foto || 'Images html/default-foto.png';
+        // En caso de error al cargar la imagen, usar la imagen por defecto
+        fotoPerfil.onerror = function() {
+            fotoPerfil.src = 'Images html/default-foto.png';
+        };
+
+        // Asignar el país, con fallback si falta el dato
+        pais.innerText = data.pais || 'País no disponible';
+    } else {
+        console.error('No se encontraron algunos de los elementos en el DOM');
+    }
+}
+</script>
 
 </html>

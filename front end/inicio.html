@@ -42,49 +42,51 @@
 
     <script>
         // Agregar el listener al formulario para manejar el envío con JS
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();  // Prevenir el comportamiento por defecto del formulario (redirección)
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        event.preventDefault();  // Prevenir el comportamiento por defecto del formulario (redirección)
 
-            // Obtener los datos del formulario
-            const usuario = document.querySelector('input[name="usuario"]').value;
-            const contraseña = document.querySelector('input[name="contraseña"]').value;
+        // Obtener los datos del formulario
+        const usuario = document.querySelector('input[name="usuario"]').value;
+        const contraseña = document.querySelector('input[name="contraseña"]').value;
 
-            // Crear el cuerpo de la solicitud
-            const datos = {
-                usuario: usuario,
-                contraseña: contraseña
-            };
+        // Crear el cuerpo de la solicitud
+        const datos = {
+            usuario: usuario,
+            contraseña: contraseña
+        };
 
-            try {
-                // Hacer una solicitud POST a la API
-                const response = await fetch('https://learn-hub-eta.vercel.app/auth/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(datos)
-                });
+        try {
+            // Hacer una solicitud POST a la API
+            const response = await fetch('https://learn-hub-eta.vercel.app/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datos)
+            });
 
-                // Comprobar si la solicitud fue exitosa
-                if (response.ok) {
-                    const resultado = await response.json();
-                    console.log('Respuesta del servidor:', resultado);
+            // Comprobar si la solicitud fue exitosa
+            if (response.ok) {
+                const resultado = await response.json();
+                console.log('Respuesta del servidor:', resultado);
 
-                    // Redirigir a home.html si es exitoso
-                    window.location.href = 'home.html';
-                } else {
-                    const errorResponse = await response.text();
-                    document.getElementById('error-msg').innerText = errorResponse;
-                    // Mostrar el mensaje de error en la misma página si falla el inicio de sesión
-                    document.getElementById('error-msg').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Error en la solicitud:', error);
-                // Mostrar el mensaje de error si hay un problema en la solicitud
+                // Guardar el token en localStorage o sessionStorage
+                localStorage.setItem('token', resultado.token); // O sessionStorage.setItem('token', resultado.token)
+
+                // Redirigir a home.html si es exitoso
+                window.location.href = 'profesorhome.html';
+            } else {
+                const errorResponse = await response.text();
+                document.getElementById('error-msg').innerText = errorResponse;
+                // Mostrar el mensaje de error en la misma página si falla el inicio de sesión
                 document.getElementById('error-msg').style.display = 'block';
             }
-        });
-    </script>
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+            // Mostrar el mensaje de error si hay un problema en la solicitud
+            document.getElementById('error-msg').style.display = 'block';
+        }
+    });    </script>
 </body>
 
 </html>
