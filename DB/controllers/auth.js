@@ -85,7 +85,7 @@ const register = async (req, res) => {
 
     // Registro según el tipo de usuario
     if (tipoUsuario === 'alumno') {
-      const foto = req.files?.foto?.[0] || null;
+      const foto = req.file.path
 
       console.log('Foto del alumno:', foto);
 
@@ -96,7 +96,7 @@ const register = async (req, res) => {
 
       // Validar la extensión de la foto
       const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-      const extensionFoto = foto.originalname.split('.').pop().toLowerCase();
+      const extensionFoto = foto.split('.').pop()
       if (!extensionesPermitidas.includes(extensionFoto)) {
         return res.status(400).send('Error: Extensión no permitida. La foto debe ser PNG, JPEG o JPG.');
       }
@@ -112,21 +112,14 @@ const register = async (req, res) => {
       result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
 
     } else if (tipoUsuario === 'profesor') {
-      const { foto, certificadoestudio } = req.files;
-      console.log('Archivos del profesor - Foto:', foto, 'Certificado:', certificadoestudio);
 
-      // Validar que ambos archivos fueron cargados
-      if (!foto || !certificadoestudio) {
-        return res.status(400).json({ error: 'Se requieren la foto y el certificado de estudio.' });
-      }
-
-      const fotoFile = foto[0];
-      const certificadoFile = certificadoestudio[0];
+      const fotoFile = req.file.path;
+      const certificadoFile = req.file.path;
 
       // Validar la extensión de la foto y del certificado
       const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-      const extensionFoto = fotoFile.originalname.split('.').pop().toLowerCase();
-      const extensionCertificado = certificadoFile.originalname.split('.').pop().toLowerCase();
+      const extensionFoto = fotoFile.split('.').pop()
+      const extensionCertificado = certificadoFile.split('.').pop()
 
       if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
         return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
