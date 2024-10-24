@@ -80,13 +80,16 @@
 <script>window.onload = function() {
     const token = localStorage.getItem('token');
     if (!token) {
+        // Si no hay token, redirige a la página de inicio de sesión
         window.location.href = 'inicio.html';
     } else {
+        // Si hay token, carga los datos del usuario
         cargarDatosUsuario(token);
     }
 };
 
 function cargarDatosUsuario(token) {
+    // Realiza una solicitud GET a la API con el token de autorización
     fetch('https://learn-hub-eta.vercel.app/profesores', {
         method: 'GET',
         headers: {
@@ -95,7 +98,7 @@ function cargarDatosUsuario(token) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data); // Mostrar los datos obtenidos de la API en la consola
+        // Muestra los datos del usuario si la solicitud fue exitosa
         mostrarDatosUsuario(data);
     })
     .catch(error => {
@@ -104,28 +107,27 @@ function cargarDatosUsuario(token) {
 }
 
 function mostrarDatosUsuario(data) {
-    const nombreApellido = document.getElementById('nombre-apellido');
-    const fotoPerfil = document.getElementById('foto-perfil');
-    const pais = document.getElementById('pais');
+    // Verifica que el array tenga al menos un elemento
+    if (data.length > 0) {
+        const profesor = data[0];  // Accede al primer profesor del array
+        
+        const nombreApellido = document.getElementById('nombre-apellido');
+        const fotoPerfil = document.getElementById('foto-perfil');
+        const pais = document.getElementById('pais');
 
-    // Verificación de los datos obtenidos, mostrando un fallback si algún dato no está disponible
-    if (nombreApellido && fotoPerfil && pais) {
-        // Asignar nombre y apellido, con fallback en caso de que falten los datos
-        nombreApellido.innerText = `${data.nombre || 'Nombre no disponible'} ${data.apellido || 'Apellido no disponible'}`;
-
-        // Verificar si la imagen de perfil está disponible, si no usar una imagen por defecto
-        fotoPerfil.src = data.foto || 'Images html/default-foto.png';
-        // En caso de error al cargar la imagen, usar la imagen por defecto
-        fotoPerfil.onerror = function() {
-            fotoPerfil.src = 'Images html/default-foto.png';
-        };
-
-        // Asignar el país, con fallback si falta el dato
-        pais.innerText = data.pais || 'País no disponible';
+        // Asegúrate de que los elementos existan antes de modificar su contenido
+        if (nombreApellido && fotoPerfil && pais) {
+            nombreApellido.innerText = `${profesor.nombre} ${profesor.apellido}`;
+            fotoPerfil.src = profesor.foto || 'Images html/default-foto.png';  // Usa una foto por defecto si no hay foto
+            pais.innerText = profesor.pais;
+        } else {
+            console.error('No se encontraron algunos de los elementos en el DOM');
+        }
     } else {
-        console.error('No se encontraron algunos de los elementos en el DOM');
+        console.error('No se encontraron profesores en la respuesta');
     }
 }
+
 </script>
 
 </html>
