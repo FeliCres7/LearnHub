@@ -52,6 +52,8 @@ const login = async (req, res) => {
       secure: process.env.NODE_ENV === 'production'
     });
 
+
+
     // Enviar respuesta con el usuario y token
     return res.status(200).json({ usuario: checkUser.rows[0].nombre, token });
 

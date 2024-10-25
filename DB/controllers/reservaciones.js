@@ -11,13 +11,13 @@ try {
 
 //reservar clase
 const createreservarclase = async (req,res) => {
-const {IDclase, IDalumno, idprof, dia, hora} = req.body
+const {IDalumno, idprof, dia, hora} = req.body
 
-if ( !IDclase || !IDalumno || !idprof || !dia || !hora){
+if (!IDalumno || !idprof || !dia || !hora){
 return res.status(400).json ({error:'todos los campos son requeridos'});
 }
 try{
-const query = `INSERT INTO public."reservaciones" ("IDclase", "IDalumno", "idprof", "dia", "hora") 
+const query = `INSERT INTO public."reservaciones" ("IDalumno", "idprof", "dia", "hora") 
 VALUES ($1, $2, $3, $4, $5) RETURNING *;  `
 
 const values = [IDclase, IDalumno, idprof, dia, hora]; 

@@ -4,7 +4,8 @@ import auth from './controllers/auth.js'
 import profesores from './controllers/Profesores.js';
 //import clases from './controllers/clases.js';
 import material from './controllers/Material.js'
-//import materia from './controllers/Materia.js'
+import materia from './controllers/Materia.js'
+import paises from './controllers/paises.js'
 import reservaciones from "./controllers/reservaciones.js";
 import seguir from './controllers/siguen.js'
 import fs from 'fs';
@@ -118,7 +119,7 @@ app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
 app.get('/profesores/dias/:dias', profesores.getprofbydias);
 app.get('/profesores/dicta', profesores.getdicta)
 app.post('/profesores/dicta/:ID', profesores.createdicta);
-app.post('/profesores/valoraciones', verifyToken, profesores.createvaloracionbyclases)
+app.post('/profesores/valoraciones', verifyToken, profesores.createvaloracionbyclases);
 
 /* //Clases
 app.get('/clases', clases.getClases);
@@ -126,14 +127,13 @@ app.get('/Clases/:ID', clases.getClaseByID);
 app.post('/Clases', clases.createClase);
 app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
+*/
 
 //Materia
 app.get('/Materia', materia.getmateria);
-app.get('/Materia/:ID', materia.getmateriaByID);
-app.post('/Materia', materia.createmateria);
-app.put('/Materia/ID', materia.updatemateria);
-app.delete('/Materia/:ID', materia.deletemateria);
-*/
+
+app.get('/paises', paises.getpaises);
+
 
 //Material
 app.get('/Material', material.getmaterial);

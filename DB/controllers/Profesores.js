@@ -376,7 +376,7 @@ const updateProfessorRating = async (idprof) => {
     const result = await pool.query(query, values);
     const promedio = result.rows[0].promedio;
 
-    // Actualizar el perfil del profesor con el nuevo promedio
+   
     const updateQuery = `
       UPDATE public."profesores"
       SET valoracion = $1
