@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="stars">
+        <img src="" alt="">
+        <img src="" alt="">
+        <img src="" alt="">
+        <img src="" alt="">
+        <img src="" alt="">
+    </div>
+    <input type="number" id="input">
+</body>
+<script>
+    const input = document.getElementById('input');
+    const starImages = document.querySelectorAll('.stars img');
+    
+    // Array de rutas de imágenes según el estado (vacía, media, completa)
+    const images = [
+        'Images html/estrella vacia.png',   // 0
+        'Images html/Media estrella.png',   // 1
+        'Images html/estrella completa.png' // 2
+    ];
+
+    input.addEventListener('input', () => {
+        let value = parseInt(input.value, 10);
+
+        // Limitar el valor entre 0 y 10
+        value = Math.min(Math.max(value, 0), 10);
+
+        // Asignar imágenes a las estrellas en función del valor
+        starImages.forEach((img, index) => {
+            const imageIndex = Math.min(2, Math.max(0, value - index * 2)); // Determina el estado de la estrella (vacía, media o completa)
+            img.src = images[imageIndex];
+        });
+    });
+</script>
+</html>
