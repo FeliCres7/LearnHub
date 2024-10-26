@@ -117,9 +117,7 @@ app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
 app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
 app.get('/profesores/dias/:dias', profesores.getprofbydias);
-app.get('/profesores/dicta', profesores.getdicta)
-app.post('/profesores/dicta/:ID', profesores.createdicta);
-app.post('/profesores/valoraciones', verifyToken, profesores.createvaloracionbyclases);
+app.post('/profesores/valoraciones', profesores.createvaloracionbyclases);
 
 /* //Clases
 app.get('/clases', clases.getClases);
@@ -139,7 +137,7 @@ app.get('/paises', paises.getpaises);
 app.get('/Material', material.getmaterial);
 app.get('/Material/:ID', material.getmaterialByID);
 app.get('/Material/:nombre', material.getmaterialbynombre);
-app.post('/Material',verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
+app.post('/Material', verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 

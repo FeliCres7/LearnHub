@@ -64,7 +64,7 @@ const login = async (req, res) => {
 };
 const register = async (req, res) => {
   try {
-    const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, pais, colegio, materias } = req.body;
+    const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria     } = req.body;
 
     console.log(req.body);
     
@@ -109,9 +109,9 @@ const register = async (req, res) => {
       console.log('URL de la foto subida:', fotoUrl);
 
       // Insertar el alumno en la base de datos
-      query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, colegio, foto) 
+      query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, colegio, foto) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, colegio, fotoUrl]);
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, colegio, fotoUrl]);
 
     } else if (tipoUsuario === 'profesor') {
       const { foto, certificadoestudio } = req.files.path;
@@ -142,9 +142,9 @@ const register = async (req, res) => {
       const certificadoUrl = resultCertificado.secure_url;
 
       // Insertar el profesor en la base de datos
-      query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, pais, materias, foto, certificadoestudio) 
+      query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, idmateria, foto, certificadoestudio) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, pais, materias, fotoUrl, certificadoUrl]);
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, idmateria, fotoUrl, certificadoUrl]);
 
     } else {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });

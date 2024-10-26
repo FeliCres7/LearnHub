@@ -18,9 +18,9 @@ return res.status(400).json ({error:'todos los campos son requeridos'});
 }
 try{
 const query = `INSERT INTO public."reservaciones" ("IDalumno", "idprof", "dia", "hora") 
-VALUES ($1, $2, $3, $4, $5) RETURNING *;  `
+VALUES ($1, $2, $3, $4) RETURNING *;  `
 
-const values = [IDclase, IDalumno, idprof, dia, hora]; 
+const values = [IDalumno, idprof, dia, hora]; 
 
 const result = await pool.query(query, values); 
 
@@ -36,11 +36,10 @@ const getreservacionbyalumno = async (req, res) => {
   const { IDalumno } = req.params;
 
   try {
-    const query = `SELECT clases.nombremateria, reservaciones.dia, reservaciones.hora
-    FROM public.reservaciones
-    INNER JOIN public.clases 
-      ON reservaciones."IDclase" = clases."ID"
-    WHERE reservaciones."IDalumno" = $1;
+    const query = `  SELECT "IDalumno", "idprof", "dia", "hora"
+      FROM public."reservaciones"
+      WHERE "IDalumno" = $1
+      ORDER BY "dia", "hora";
   `
 
     const { rows } = await pool.query(query, [IDalumno]);
@@ -55,11 +54,10 @@ const getreservacionbyprof = async (req, res) => {
 
 
   try {
-    const query = ` SELECT clases.nombremateria, reservaciones.dia, reservaciones.hora
-    FROM public.reservaciones
-    INNER JOIN public.clases 
-      ON reservaciones."IDclase" = clases."ID"
-    WHERE reservaciones."idprof" = $1;
+    const query = ` SELECT "IDalumno", "idprof", "dia", "hora"
+      FROM public."reservaciones"
+      WHERE "idprof" = $1
+      ORDER BY "dia", "hora";
     `;
 
     const { rows } = await pool.query(query, [idprof]);

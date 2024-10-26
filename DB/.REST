@@ -257,14 +257,15 @@ DELETE http://localhost:3000/clases/20 HTTP/1.1
 ###
 //Crear una valoracion 
 
-POST http://localhost:3000/clases/valoracionbyclases HTTP/1.1
+POST http://localhost:3000/profesores/valoraciones HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclases": 21,
-"valoracion": 5,
+"idreserva": 5,
+"valoracion": 2,
 "fecha": "2024/8/25",
-"IDalumnos": 6
+"IDalumnos": 72,
+"idprof": 38
 }
 
 
@@ -373,9 +374,8 @@ POST http://localhost:3000/reservaciones HTTP/1.1
 Content-Type: application/json
 
 {
-"IDclase": 25,
-"IDalumno": 36,
-"idprof": 10,
+"IDalumno": 72,
+"idprof": 38,
 "dia": "martes",
 "hora": "18 horas"
 }
