@@ -578,3 +578,21 @@ font-weight: 600;
     height: 100px;
     width: 100px;
 }
+.stars{
+    padding: 5px;
+    border: 2px solid #424242;
+    border-radius: 20px;
+}
+.stars img{
+    height: 20px;
+    width: 20px;
+}
+.valoracion-profesor{
+    align-items: center;
+    margin-right: 20px;
+}
+.fotomisprofesores{
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+}

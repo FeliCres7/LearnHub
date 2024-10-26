@@ -78,33 +78,7 @@
             </div>
         </aside>
         <section id="lista-misprofesores" class="lista-misprofesores">
-            <div class="profesor-misprofesores">
-                <p class="name-profesor">Foto profe</p>
-                <div class="content-profesor"><img src="" alt="Martín Melman">
-                    <div class="datos-profesor">
-                        <div class="datacontainer">
-                            <p class="bold">Materia:</p>
-                            <p> Lengua</p>
-                        </div>
-                        <div class="datacontainer">
-                            <p class="bold">Días:</p>
-                            <p> Miércoles</p>
-                        </div>
-                        <div class="datacontainer">
-                            <p class="bold">Horarios:</p>
-                            <p> 13:30-14:30</p>
-                        </div>
-                    </div>
-                    <div class="botones-profesor">
-                        <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
-                        <button>Ir a perfil</button>
-                        <button onclick="window.location.href='datosdecontacto.html'">Datos de contacto</button>
-                    </div>
-                    <div class="valoracion-profesor">
-                        <p>Valoración</p>
-                    </div>
-                </div>
-            </div>
+            
             
         </section>
         <aside class="aside-misprofesores">
@@ -114,63 +88,91 @@
     <footer><img src="Images html/LogoLH.png" alt=""></footer>
 </body>
 <script>
-    const btn = document.getElementById("btnCheck")
-const mainCards = document.getElementById("lista-misprofesores")
-console.log(mainCards);
+    const mainCards = document.getElementById("lista-misprofesores");
 
-
-function CreateProfCard (prof) {
-    return `
-    <div class="profesor-misprofesores">
-    <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
-    <div class="content-profesor"><img src="" alt=" ">
-        <div class="datos-profesor">
-            <div class="datacontainer">
-                <p class="bold">Materia:</p>
-                <p> ${prof.materias} </p>
-                </div>
-                <div class="datacontainer">
-                    <p class="bold">Días:</p>
-                    <p>${prof.dias}</p>
+    function CreateProfCard(prof) {
+        return `
+        <div class="profesor-misprofesores">
+            <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
+            <div class="content-profesor"><img class="fotomisprofesores" src="${prof.foto}" alt=" ">
+                <div class="datos-profesor">
+                    <div class="datacontainer">
+                        <p class="bold">Materia:</p>
+                        <p>${prof.materias}</p>
+                    </div>
+                    <div class="datacontainer">
+                        <p class="bold">Días:</p>
+                        <p>${prof.dias}</p>
                     </div>
                     <div class="datacontainer">
                         <p class="bold">Horarios:</p>
                         <p>${prof.disponibilidad_horaria}</p>
-                        </div>
-        </div>
-        <div class="botones-profesor">
-            <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
-            <button>Ir a perfil</button>
-            <button>Ver datos de contacto</button>
+                    </div>
+                </div>
+                <div class="botones-profesor">
+                    <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
+                    <button>Ir a perfil</button>
+                    <button>Ver datos de contacto</button>
+                </div>
+                <div class="valoracion-profesor">
+                    <p class="bold">Valoración</p>
+                    <div class="stars" data-valoracion="${prof.valoracion}">
+                        <img src="" alt="">
+                        <img src="" alt="">
+                        <img src="" alt="">
+                        <img src="" alt="">
+                        <img src="" alt="">
+                    </div>
+                </div>
             </div>
-            <div class="valoracion-profesor">
-                <p class="bold">Valoración</p>
-                <p>${prof.valoracion}</p>
-        </div>
-    </div>
-    </div>`
-}
-
-
-document.addEventListener("DOMContentLoaded", async () => {
-    const mainCards = document.getElementById("lista-misprofesores");
-    if (!mainCards) {
-        console.error("El elemento con id 'lista-misprofesores' no se encontró.");
-        return;
+        </div>`;
     }
-    
-    fetch("https://learn-hub-eta.vercel.app/profesores")
-    .then(res => res.json())
-    .then((data) => {
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (!mainCards) {
+            console.error("El elemento con id 'lista-misprofesores' no se encontró.");
+            return;
+        }
+        
+        // Obtener datos de los profesores
+        const response = await fetch("https://learn-hub-eta.vercel.app/profesores");
+        const data = await response.json();
         console.log(data);
+
+        // Limpiar y renderizar las tarjetas de profesores
         mainCards.innerHTML = "";
         data.forEach((profesor) => {
-                const item = CreateProfCard(profesor);
-                mainCards.innerHTML += item;
+            const item = CreateProfCard(profesor);
+            mainCards.innerHTML += item;
+        });
+
+        // Array de rutas de imágenes según el estado (vacía, media, completa)
+        const images = [
+            'Images html/estrella vacia.png',   // 0
+            'Images html/Media estrella.png',   // 1
+            'Images html/estrella completa.png' // 2
+        ];
+
+        // Asignar las estrellas de valoración a cada tarjeta
+        document.querySelectorAll('.stars').forEach(starContainer => {
+            let valoracion = parseFloat(starContainer.getAttribute('data-valoracion'));
+
+            // Redondear la valoración al número entero más cercano y dividir por 2
+            valoracion = Math.round(valoracion / 2);
+
+            const starImages = starContainer.querySelectorAll('img');
+            
+            // Asignar imágenes a las estrellas en función del valor redondeado
+            starImages.forEach((img, index) => {
+                if (valoracion >= index + 1) {
+                    img.src = images[2]; // Estrella completa
+                } else if (valoracion >= index + 0.5) {
+                    img.src = images[1]; // Media estrella
+                } else {
+                    img.src = images[0]; // Estrella vacía
+                }
             });
         });
     });
-    
 </script>
-
 </html>
