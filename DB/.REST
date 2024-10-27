@@ -262,7 +262,7 @@ Content-Type: application/json
 
 {
 "idreserva": 5,
-"valoracion": 2,
+"valoracion": 9,
 "fecha": "2024/8/25",
 "IDalumnos": 72,
 "idprof": 38
