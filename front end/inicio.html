@@ -39,61 +39,54 @@
         </div>
     </main>
 
-    <script>document.getElementById('loginForm').addEventListener('submit', async function(event) {
-        event.preventDefault();  // Prevenir el comportamiento por defecto del formulario (redirección)
-    
-        // Obtener los datos del formulario
-        const usuario = document.querySelector('input[name="usuario"]').value;
-        const contraseña = document.querySelector('input[name="contraseña"]').value;
-    
-        // Crear el cuerpo de la solicitud
-        const datos = {
-            usuario: usuario,
-            contraseña: contraseña
-        };
-    
-        try {
-            // Hacer una solicitud POST a la API de inicio de sesión
-            const response = await fetch('https://learn-hub-eta.vercel.app/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datos)
-            });
-    
-            // Comprobar si la solicitud fue exitosa
-            if (response.ok) {
-                const resultado = await response.json();
-                console.log('Respuesta del servidor:', resultado);
-    
-                // Guardar el token en localStorage
-                localStorage.setItem('token', resultado.token);
-    
-                // Redirigir según el tipo de usuario
-                const tipoUsuario = resultado.tipoUsuario;  // Asegúrate de que el back envía esto
-                if (tipoUsuario === 'profesor') {
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();  // Prevenir el comportamiento por defecto del formulario (redirección)
+        
+            // Obtener los datos del formulario
+            const usuario = document.querySelector('input[name="usuario"]').value;
+            const contraseña = document.querySelector('input[name="contraseña"]').value;
+        
+            // Crear el cuerpo de la solicitud
+            const datos = {
+                usuario: usuario,
+                contraseña: contraseña
+            };
+        
+            try {
+                // Hacer una solicitud POST a la API de inicio de sesión
+                const response = await fetch('https://learn-hub-eta.vercel.app/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                });
+        
+                // Comprobar si la solicitud fue exitosa
+                if (response.ok) {
+                    const resultado = await response.json();
+                    console.log('Respuesta del servidor:', resultado);
+        
+                    // Guardar el token en localStorage
+                    localStorage.setItem('token', resultado.token);
+        
+                    // Redirigir directamente a la página del profesor
                     window.location.href = 'profesorhome.html';
-                } else if (tipoUsuario === 'alumno') {
-                    window.location.href = 'home.html';
+        
                 } else {
-                    document.getElementById('error-msg').innerText = 'Tipo de usuario desconocido';
+                    // Si la solicitud de inicio de sesión falla
+                    const errorResponse = await response.text();
+                    document.getElementById('error-msg').innerText = errorResponse;
                     document.getElementById('error-msg').style.display = 'block';
                 }
-    
-            } else {
-                // Si la solicitud de inicio de sesión falla
-                const errorResponse = await response.text();
-                document.getElementById('error-msg').innerText = errorResponse;
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
                 document.getElementById('error-msg').style.display = 'block';
             }
-        } catch (error) {
-            console.error('Error en la solicitud:', error);
-            document.getElementById('error-msg').style.display = 'block';
-        }
-    });
-    
+        });
     </script>
+    
 </body>
 
 </html>

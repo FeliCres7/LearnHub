@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 </head>
 
 <body>
@@ -54,26 +56,97 @@
             <div class="crearmaterialdiv">
                 <h1>Crear material de trabajo</h1>
                 <div class="sectionscrearmaterial">
-
                     <div class="nombre-archivo-material">
                         <p class="bold">Nombre del material</p>
-                        <input type="text" placeholder="Ej: Guía 1">
+                        <input type="text" id="nombreMaterial" placeholder="Ej: Guía 1" required>
                         <p class="bold">Subir archivo</p>
-                        <input type="file">
+                        <input type="file" id="archivo" required>
                     </div>
                     <div class="descripcion-subir-material">
                         <p class="bold">Descripción</p>
-                        <textarea placeholder="Introduzca una breve descripción del material de trabajo"></textarea>
-                        <div class="subirmaterial"><input type="submit" value="Subir"></div>
+                        <textarea id="descripcion" placeholder="Introduzca una breve descripción del material de trabajo" required></textarea>
+                        <div class="subirmaterial"><input type="submit" value="Subir" id="submitMaterial"></div>
                     </div>
-                    <form action=""></form>
                 </div>
             </div>
-            </div>
-
         </article>
-
     </main>
 </body>
+<script>
+document.getElementById("submitMaterial").addEventListener("click", async function(event) {
+    event.preventDefault();
+    console.log("Botón de envío clickeado");
 
+    const nombreMaterial = document.getElementById("nombreMaterial").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const archivoInput = document.getElementById("archivo");
+    const archivo = archivoInput.files[0];
+
+    console.log("Valores de los campos - Nombre:", nombreMaterial, "Descripción:", descripcion, "Archivo:", archivo);
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        console.error("Token no encontrado");
+        alert("No se encontró un token de autenticación.");
+        return;
+    }
+    console.log("Token encontrado:", token);
+
+    let IDprofesor;
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        IDprofesor = payload.id; // Cambiado para usar 'id' en lugar de 'IDprofesor'
+        console.log("ID del profesor obtenido del token:", IDprofesor);
+    } catch (error) {
+        console.error("Error al obtener ID del token:", error);
+        alert("Error al procesar el token de autenticación.");
+        return;
+    }
+
+    if (!nombreMaterial || !descripcion || !archivo) {
+        console.error("Campos requeridos vacíos");
+        alert("Todos los campos son requeridos.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("IDprofesor", IDprofesor);
+    formData.append("materia", nombreMaterial);
+    formData.append("Fecha", new Date().toISOString().slice(0, 10));
+    formData.append("infoguia", descripcion);
+    formData.append("archivo", archivo);
+
+    console.log("Datos preparados para enviar:", {
+        IDprofesor,
+        materia: nombreMaterial,
+        Fecha: new Date().toISOString().slice(0, 10),
+        infoguia: descripcion,
+        archivo
+    });
+
+    try {
+        const response = await fetch("https://learn-hub-eta.vercel.app/Material", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData,
+        });
+        console.log("Respuesta recibida:", response);
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("Material creado con éxito:", data);
+            alert(data.message || "Material creado con éxito.");
+        } else {
+            const errorData = await response.json();
+            console.error("Error en la respuesta:", errorData);
+            alert(errorData.error || "Error al crear el material.");
+        }
+    } catch (error) {
+        console.error("Error en la solicitud de red:", error);
+        alert("Error interno del servidor. Inténtelo de nuevo más tarde.");
+    }
+});
+</script>
 </html>
