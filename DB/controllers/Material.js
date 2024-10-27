@@ -31,22 +31,6 @@ if (rows.length > 0){
 }
 };
 
-// Obtener un material por ID
-const getmaterialByID = async (req, res) => {
-  const { ID } = req.body;
-  try {
-    const { rows } = await pool.query('SELECT * FROM public."material" WHERE "ID" = $1', [ID]);
-    if (rows.length == 1) {
-      res.send("material obtenida con éxito: ");
-      res.json(rows[0]);
-    } else {
-      res.status(404).send("material no encontrado");
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 const creatematerial = async (req, res) => {
   const { IDprofesor, materia, Fecha, infoguia } = req.body;
 
@@ -95,14 +79,14 @@ const updatematerial = async (req, res) => {
   const { IDprofesor, materia, Fecha, infoguia, archivo, ID} = req.body;
 
   // Validar los datos aquí si es necesario
-  if (!ID ||!IDprofesor || !IDalumno ||!materia || !Fecha ) {
+  if (!ID ||!IDprofesor ||!materia || !Fecha ) {
     return res.status(400).send('Faltan datos necesarios');
   }
 
   try {
     const result = await pool.query(
-      'UPDATE public."material" SET "IDprofesor" = $1,  "IDalumno"=$2, materia = $3, "Fecha" = $4, "infoguia"= $5, "archivo"=$6 WHERE "ID" = $7 RETURNING *',
-      [IDprofesor, IDalumno, materia, Fecha, infoguia, archivo, ID]
+      'UPDATE public."material" SET "IDprofesor" = $1, materia = $2, "Fecha" = $3, "infoguia"= $4, "archivo"=$5 WHERE "ID" = $6 RETURNING *',
+      [IDprofesor, materia, Fecha, infoguia, archivo, ID]
     );
 
     if (result.rows.length > 0) {
@@ -135,7 +119,6 @@ if (result.rows.length > 0) {
 const material = {
   getmaterial,
   getmaterialbynombre,
-  getmaterialByID,
   creatematerial,
   updatematerial,
   deletematerial

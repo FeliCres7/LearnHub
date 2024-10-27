@@ -17,10 +17,14 @@ if (!IDalumno || !idprof || !dia || !hora){
 return res.status(400).json ({error:'todos los campos son requeridos'});
 }
 try{
+   const horaNum = parseInt(hora, 10);
+   const horaFin = parseInt(hora) + 1; 
+   const horaFormateada = `${hora}-${horaFin}hs`;
+
 const query = `INSERT INTO public."reservaciones" ("IDalumno", "idprof", "dia", "hora") 
 VALUES ($1, $2, $3, $4) RETURNING *;  `
 
-const values = [IDalumno, idprof, dia, hora]; 
+const values = [IDalumno, idprof, dia, horaNum]; 
 
 const result = await pool.query(query, values); 
 
@@ -36,10 +40,12 @@ const getreservacionbyalumno = async (req, res) => {
   const { IDalumno } = req.params;
 
   try {
-    const query = `  SELECT "IDalumno", "idprof", "dia", "hora"
-      FROM public."reservaciones"
-      WHERE "IDalumno" = $1
-      ORDER BY "dia", "hora";
+    const query = ` SELECT a."nombre" AS alumno, p."nombre" AS profesor, r."dia", r."hora"
+      FROM public."reservaciones" r
+      JOIN public."alumnos" a ON r."IDalumno" = a."ID"
+      JOIN public."profesores" p ON r."idprof" = p."ID"
+      WHERE r."IDalumno" = $1
+      ORDER BY r."dia", r."hora";
   `
 
     const { rows } = await pool.query(query, [IDalumno]);
@@ -54,10 +60,12 @@ const getreservacionbyprof = async (req, res) => {
 
 
   try {
-    const query = ` SELECT "IDalumno", "idprof", "dia", "hora"
-      FROM public."reservaciones"
-      WHERE "idprof" = $1
-      ORDER BY "dia", "hora";
+    const query = ` SELECT a."nombre" AS alumno, p."nombre" AS profesor, r."dia", r."hora"
+      FROM public."reservaciones" r
+      JOIN public."alumnos" a ON r."IDalumno" = a."ID"
+      JOIN public."profesores" p ON r."idprof" = p."ID"
+      WHERE r."idprof" = $1
+      ORDER BY r."dia", r."hora";
     `;
 
     const { rows } = await pool.query(query, [idprof]);

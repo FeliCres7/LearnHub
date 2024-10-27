@@ -85,26 +85,24 @@ app.listen(port, () => {
 //Rutas express!
 
 // LOG IN 
-app.post('/auth/login', auth.login);
+app.post('/auth/login', auth.login); // terminado
 
 //registrarse
-app.post('/auth/register', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), auth.register)
+app.post('/auth/register', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), auth.register) //falta q funcione
 
 
-// SEGUIR 
+// SEGUIR. terminado
 app.get('/siguen/IDalumno/:IDalumno', seguir.getprofesoresseguidos)
 app.post('/siguen', seguir.seguirprofesor);
 app.delete('/siguen/:ID', seguir.dejardeseguir);
 
-//Alumnos
-app.get('/Alumnos', alumnos.getalumnos);
-app.get('/Alumnos/:ID', alumnos.getalumnobyID);
+//Alumnos. terminado
 app.put('/Alumnos/seguridad/ID', verifyToken, alumnos.updateseguridadalumno);
 app.put('/Alumnos/info/ID', verifyToken, alumnos.updateinfoalumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 app.get('/Alumnos/:ID/perfilalumno', alumnos.getperfilalumno)
 
-//Profesores
+//Profesores. terminar algunas cositas chicas
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
 app.get('/profesores/nombreapellido/:nombre/:apellido', profesores.getprofbynombreyapellido);
@@ -127,24 +125,23 @@ app.put('/Clases/ID', clases.updateClase);
 app.delete('/Clases/:ID', clases.deleteclase);
 */
 
-//Materia
+//Materia terminado
 app.get('/Materia', materia.getmateria);
-
+//paises terminado
 app.get('/paises', paises.getpaises);
 
 
-//Material
+//Material. terminado
 app.get('/Material', material.getmaterial);
-app.get('/Material/:ID', material.getmaterialByID);
 app.get('/Material/:nombre', material.getmaterialbynombre);
 app.post('/Material', verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
-//reservaciones
+//reservaciones. terminado
 app.get('/reservaciones', reservaciones.getreservarclase);
 app.post('/reservaciones', reservaciones.createreservarclase);
 app.get('/reservaciones/IDalumno/:IDalumno', reservaciones.getreservacionbyalumno);
-app.get('/reservaciones/IDprof/:IDprof', reservaciones.getreservacionbyprof);
+app.get('/reservaciones/IDprof/:idprof', reservaciones.getreservacionbyprof);
 
 
