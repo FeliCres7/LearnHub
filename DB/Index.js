@@ -106,11 +106,11 @@ app.get('/Alumnos/:ID/perfilalumno', alumnos.getperfilalumno)
 //Profesores. terminar algunas cositas chicas
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
-app.get('/profesores/:email', profesores.getprofbymail);
+app.get('/profesores/email/:email', profesores.getprofbymail);
 app.get('/profesores/nombreapellido/:nombre/:apellido', profesores.getprofbynombreyapellido);
 app.put('/profesores/updateinfopersonal/ID', verifyToken, verifyAdmin, profesores.updateinfopersonal);
 app.put('/profesores/updateperfil/ID', verifyToken, verifyAdmin, profesores.updateperfil);
-app.put('/profesores/updateseguridad/ID',verifyToken, verifyAdmin, profesores.updateseguridad);
+app.put('/profesores/updateseguridad/:ID', profesores.updateseguridad);
 app.put('/profesores/updatedisponibilidadhoraria', profesores.updatedisponibilidadhoraria);
 app.delete('/profesores/:ID', verifyToken, verifyAdmin, profesores.deleteprof);
 app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)

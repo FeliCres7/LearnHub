@@ -97,8 +97,9 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 }
 
 
-const updateseguridad = async (req,res) => {
-const {email, telefono, contraseña, confirmarContraseña, ID} = req.body  
+const updateseguridad = async (req,res) => { 
+const { ID } = req.params; 
+const {email, telefono, contraseña, confirmarContraseña} = req.body  
 
   // Validar que las contraseñas coincidan
   if (contraseña !== confirmarContraseña) {
