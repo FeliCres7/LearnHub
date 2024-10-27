@@ -596,3 +596,11 @@ font-weight: 600;
     width: 120px;
     border-radius: 50%;
 }
+.foto-perfil{
+
+    border-radius: 50%;
+}
+.div-material-busqueda{
+    display: flex;
+    background-color: #ffffff;
+}
