@@ -97,6 +97,7 @@ app.post('/siguen', seguir.seguirprofesor);
 app.delete('/siguen/:ID', seguir.dejardeseguir);
 
 //Alumnos. terminado
+app.get('/Alumnos/:email', alumnos.getalumnosbymail)
 app.put('/Alumnos/seguridad/ID', verifyToken, alumnos.updateseguridadalumno);
 app.put('/Alumnos/info/ID', verifyToken, alumnos.updateinfoalumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
@@ -105,6 +106,7 @@ app.get('/Alumnos/:ID/perfilalumno', alumnos.getperfilalumno)
 //Profesores. terminar algunas cositas chicas
 app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
+app.get('/profesores/:email', profesores.getprofbymail);
 app.get('/profesores/nombreapellido/:nombre/:apellido', profesores.getprofbynombreyapellido);
 app.put('/profesores/updateinfopersonal/ID', verifyToken, verifyAdmin, profesores.updateinfopersonal);
 app.put('/profesores/updateperfil/ID', verifyToken, verifyAdmin, profesores.updateperfil);

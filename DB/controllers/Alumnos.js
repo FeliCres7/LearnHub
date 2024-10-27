@@ -3,6 +3,18 @@ import { pool } from '../dbconfig.js'
 
 const secret = process.env.JWT_SECRET
 
+const getalumnosbymail = async (req,res) => {
+const {email} = req.params
+try{
+const query = 'SELECT * FROM public.alumnos WHERE email = $1'
+const {rows} = await pool.query(query, [email]);
+res.json (rows);
+}
+catch (err) {
+  res.status(500).json({ error: err.message });
+}
+}
+
 const updateinfoalumno = async (req,res) => {
     try {
       const {
@@ -93,6 +105,7 @@ const getperfilalumno = async (req, res) => {
 
 
 const alumnos = {
+  getalumnosbymail,
   updateseguridadalumno,
   updateinfoalumno,
   deleteAlumno,

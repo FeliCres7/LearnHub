@@ -18,6 +18,19 @@ const getprof = async (_, res) => {
   }
 }
 
+const getprofbymail = async (req,res) => {
+  const {email} = req.params
+  try{
+  const query = 'SELECT * FROM public.profesores WHERE email = $1'
+  const {rows} = await pool.query(query, [email]);
+  res.json (rows);
+  }
+  catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+  }
+  
+
 //Obtener un profesor por ID
 const getprofbyID = async (req, res) => {
   try {
@@ -358,6 +371,7 @@ const updateProfessorRating = async (idprof) => {
 const profesores = {
   getprof, 
   getprofbyID,
+  getprofbymail,
   updateinfopersonal,
   updateperfil,
   updateseguridad,
