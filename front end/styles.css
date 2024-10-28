@@ -603,4 +603,19 @@ font-weight: 600;
 .div-material-busqueda{
     display: flex;
     background-color: #ffffff;
+    flex-direction: column;
+    height: fit-content;
+    width: 320px;
+    padding: 10px;
+    margin: 20px 0;
+    box-shadow: 0 4px 6px #00000066;
+    border-radius: 10px;
+}
+.article-resultados-busqueda{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual tamaño */
+    grid-template-rows: auto auto;
+    margin: 20px 25px;
 }
