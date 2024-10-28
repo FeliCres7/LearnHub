@@ -284,3 +284,9 @@ Content-Type: application/json
 //obtener todas las materias
 
 GET http://localhost:3000/Materia HTTP/1.1
+
+
+###
+//obtener todas las p
+
+GET http://localhost:3000/paises HTTP/1.1
