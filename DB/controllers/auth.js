@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv/config'
 import cloudinary from '../upload.js';
+import multer from 'multer'
 
 
 //const JWT_secret = 'Learnhubtoken'
@@ -62,24 +63,18 @@ const login = async (req, res) => {
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
-
 const register = async (req, res) => {
   try {
     const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria } = req.body;
 
-    console.log(req.body);
-
-    // Validaciones de campos requeridos
     if (!nombre || !apellido || !email || !password || !confirmPassword || !tipoUsuario) {
       return res.status(400).json({ error: 'Todos los campos son requeridos.' });
     }
 
-    // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
       return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
     }
 
-    // Encriptar la contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -87,16 +82,14 @@ const register = async (req, res) => {
     let result;
 
     if (tipoUsuario === 'alumno') {
-      const foto = req.file?.path;
+      const foto = req.files.foto ? req.files.foto[0].path : null;
 
-      console.log('Foto del alumno:', foto);
 
-      // Validar que la foto fue cargada
+
       if (!foto) {
         return res.status(400).json({ error: 'Se requiere una foto.' });
       }
 
-      // Validar la extensión de la foto
       const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
       const extensionFoto = foto.split('.').pop();
       if (!extensionesPermitidas.includes(extensionFoto)) {
@@ -106,7 +99,6 @@ const register = async (req, res) => {
       // Subir la foto a Cloudinary
       const resultFoto = await cloudinary.uploader.upload(foto, { folder: 'alumnos/fotos' });
       const fotoUrl = resultFoto.secure_url;
-      console.log('URL de la foto subida:', fotoUrl);
 
       // Insertar el alumno en la base de datos
       query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, colegio, foto) 
@@ -119,14 +111,10 @@ const register = async (req, res) => {
       const fotoFile = foto ? foto[0].path : null;
       const certificadoFile = certificadoestudio ? certificadoestudio[0].path : null;
 
-      console.log('Archivos del profesor - Foto:', fotoFile, 'Certificado:', certificadoFile);
-
-      // Validar que ambos archivos fueron cargados
       if (!fotoFile || !certificadoFile) {
         return res.status(400).json({ error: 'Se requieren la foto y el certificado de estudio.' });
       }
 
-      // Validar la extensión de la foto y del certificado
       const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
       const extensionFoto = fotoFile.split('.').pop();
       const extensionCertificado = certificadoFile.split('.').pop();
@@ -142,7 +130,6 @@ const register = async (req, res) => {
       const resultCertificado = await cloudinary.uploader.upload(certificadoFile, { folder: 'profesores/certificados', resource_type: 'raw' });
       const certificadoUrl = resultCertificado.secure_url;
 
-      // Insertar el profesor en la base de datos
       query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, idmateria, foto, certificadoestudio) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
       result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, idmateria, fotoUrl, certificadoUrl]);
@@ -154,7 +141,6 @@ const register = async (req, res) => {
     // Crear el token JWT
     const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Devolver la respuesta con el usuario registrado y el token
     return res.status(201).json({
       message: `${tipoUsuario.charAt(0).toUpperCase() + tipoUsuario.slice(1)} registrado con éxito`,
       user: result.rows[0],
