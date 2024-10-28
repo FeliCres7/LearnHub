@@ -183,18 +183,6 @@ GET http://localhost:3000/profesores/dias/martes HTTP/1.1
 ###
 GET http://localhost:3000/profesores/materias/español HTTP/1.1
 
-// obtener materias de los profesores
-### 
-GET http://localhost:3000/profesores/dicta HTTP/1.1
-
-// obtener materias de los profesores
-### 
-POST http://localhost:3000/profesores/dicta/1 HTTP/1.1
-Content-Type: application/json
-
-{
-"idmateria":1
-}
 
 
 
@@ -292,3 +280,13 @@ Content-Type: application/json
 }
 
 
+###
+//obtener todas las materias
+
+GET http://localhost:3000/Materia HTTP/1.1
+
+
+###
+//obtener todas las p
+
+GET http://localhost:3000/paises HTTP/1.1
