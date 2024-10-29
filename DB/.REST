@@ -31,28 +31,29 @@ Content-Type: application/json
 GET http://localhost:3000/Alumnos/ezequielagradnik@gmail.com HTTP/1.1
 
 
-
 ###
-//Actualizar un alumno
+// actualizar la seguridad del alumno
 
-PUT http://localhost:3000/Alumnos/ID HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsInVzZXJuYW1lIjoiZXplcXVpZWwiLCJpYXQiOjE3Mjg0OTQ5MzIsImV4cCI6MTcyODQ5ODUzMn0.RorZJp7B4LZA-k1HUqcKGhQMND5HXS1nW5JXYFh0KrQ
+PUT http://localhost:3000/Alumnos/seguridad/72 HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "BENJAMIN",
-    "apellido": "agradnik",
-    "contraseña": "ezeagradnik",
-    "fecha_de_nacimiento": "1997/07/10",
-    "foto": ".",
-    "email": "agradnik@gmail.com",
-    "telefono": "123",
-    "pais": "argentina",
-    "idiomas": "ingles",
-    "ID":"6"
-    
+  "email": "crespo@gmail.com",
+  "telefono": "1234567890",
+  "contraseña": "crespowop",
+  "confirmarContraseña": "crespowop"
 }
 
+###
+// actualizar la info del alumno
+PUT http://localhost:3000/Alumnos/info/72 HTTP/1.1
+Content-Type: application/json
+
+{
+"nombre": "felipe",
+"apellido": "Crespo",
+"fecha_de_nacimiento": "2000-01-01"
+}
 ###
 //Eliminar un alumno
 
