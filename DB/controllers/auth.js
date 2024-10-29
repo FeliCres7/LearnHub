@@ -61,10 +61,11 @@ const login = async (req, res) => {
       console.error('Error en login:', error);
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
-};
-const register = async (req, res) => {
+};const register = async (req, res) => {
   try {
     const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria } = req.body;
+
+    console.log("Datos recibidos:", { nombre, apellido, email, password, confirmPassword, tipoUsuario });
 
     if (!nombre || !apellido || !email || !password || !confirmPassword || !tipoUsuario) {
       return res.status(400).json({ error: 'Todos los campos son requeridos.' });
@@ -77,50 +78,43 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    console.log("Password encriptado:", hashedPassword);
+
     let query;
     let result;
 
     if (tipoUsuario === 'alumno') {
-      const foto = req.files.foto ? req.files.foto[0].path : null;
+      const foto = req.file ? req.file.path : null;
+      console.log("Foto del alumno:", foto);
 
       if (!foto) {
         return res.status(400).json({ error: 'Se requiere una foto.' });
-      }
-
-      const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-      const extensionFoto = foto.split('.').pop();
-      if (!extensionesPermitidas.includes(extensionFoto)) {
-        return res.status(400).send('Error: Extensión no permitida. La foto debe ser PNG, JPEG o JPG.');
       }
 
       // Subir la foto a Cloudinary
       const resultFoto = await cloudinary.uploader.upload(foto, { folder: 'alumnos/fotos' });
       const fotoUrl = resultFoto.secure_url;
 
+      console.log("URL de foto en Cloudinary:", fotoUrl);
+
       // Insertar el alumno en la base de datos
       query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, colegio, foto) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
       result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, colegio, fotoUrl]);
-      
+
     } else if (tipoUsuario === 'profesor') {
-      const { foto } = req.files || {};
+      const foto = req.file ? req.file.path : null;
+      console.log("Foto del profesor:", foto);
 
-      const fotoFile = foto ? foto[0].path : null;
-
-      if (!fotoFile) {
+      if (!foto) {
         return res.status(400).json({ error: 'Se requiere una foto.' });
       }
 
-      const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
-      const extensionFoto = fotoFile.split('.').pop();
-
-      if (!extensionesPermitidas.includes(extensionFoto)) {
-        return res.status(400).send('Error: Extensión no permitida. La foto debe ser PNG, JPEG o JPG.');
-      }
-
       // Subir la foto a Cloudinary
-      const resultFoto = await cloudinary.uploader.upload(fotoFile, { folder: 'profesores/fotos' });
+      const resultFoto = await cloudinary.uploader.upload(foto, { folder: 'profesores/fotos' });
       const fotoUrl = resultFoto.secure_url;
+
+      console.log("URL de foto en Cloudinary:", fotoUrl);
 
       query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, idmateria, foto) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
@@ -130,7 +124,8 @@ const register = async (req, res) => {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
     }
 
-    // Crear el token JWT
+    console.log("Resultado de la inserción en BD:", result.rows[0]);
+
     const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     return res.status(201).json({
@@ -139,7 +134,7 @@ const register = async (req, res) => {
       token,
     });
   } catch (err) {
-    console.error('Error al registrar:', err.message);
+    console.error('Error al registrar:', err);
     return res.status(500).json({ error: 'Ocurrió un error al registrar al usuario.', message: err.message });
   }
 };
