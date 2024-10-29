@@ -10,6 +10,7 @@ export const pool = new Pool({
     database: "verceldb",
     password: "ha1HAPemuLj2" ,
     port: 5432,
-    ssl: true
+    ssl: true,
+    connectionTimeoutMillis: 5000, // Aumenta el tiempo de espera a 5000 ms (5 segundos)
 });
 
