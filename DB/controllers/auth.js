@@ -62,7 +62,6 @@ const login = async (req, res) => {
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
-
 const register = async (req, res) => {
   try {
     const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria } = req.body;
@@ -84,8 +83,6 @@ const register = async (req, res) => {
     if (tipoUsuario === 'alumno') {
       const foto = req.files.foto ? req.files.foto[0].path : null;
 
-
-
       if (!foto) {
         return res.status(400).json({ error: 'Se requiere una foto.' });
       }
@@ -106,33 +103,28 @@ const register = async (req, res) => {
       result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, colegio, fotoUrl]);
       
     } else if (tipoUsuario === 'profesor') {
-      const { foto, certificadoestudio } = req.files || {};
+      const { foto } = req.files || {};
 
       const fotoFile = foto ? foto[0].path : null;
-      const certificadoFile = certificadoestudio ? certificadoestudio[0].path : null;
 
-      if (!fotoFile || !certificadoFile) {
-        return res.status(400).json({ error: 'Se requieren la foto y el certificado de estudio.' });
+      if (!fotoFile) {
+        return res.status(400).json({ error: 'Se requiere una foto.' });
       }
 
       const extensionesPermitidas = ['png', 'jpeg', 'jpg'];
       const extensionFoto = fotoFile.split('.').pop();
-      const extensionCertificado = certificadoFile.split('.').pop();
 
-      if (!extensionesPermitidas.includes(extensionFoto) || extensionCertificado !== 'pdf') {
-        return res.status(400).send('Error: Extensiones no permitidas. La foto debe ser PNG, JPEG o JPG y el certificado debe ser PDF.');
+      if (!extensionesPermitidas.includes(extensionFoto)) {
+        return res.status(400).send('Error: Extensión no permitida. La foto debe ser PNG, JPEG o JPG.');
       }
 
-      // Subir la foto y el certificado a Cloudinary
+      // Subir la foto a Cloudinary
       const resultFoto = await cloudinary.uploader.upload(fotoFile, { folder: 'profesores/fotos' });
       const fotoUrl = resultFoto.secure_url;
 
-      const resultCertificado = await cloudinary.uploader.upload(certificadoFile, { folder: 'profesores/certificados', resource_type: 'raw' });
-      const certificadoUrl = resultCertificado.secure_url;
-
-      query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, idmateria, foto, certificadoestudio) 
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, idmateria, fotoUrl, certificadoUrl]);
+      query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, idmateria, foto) 
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, idmateria, fotoUrl]);
 
     } else {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
