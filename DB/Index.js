@@ -48,7 +48,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
+  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
@@ -87,7 +87,7 @@ app.listen(port, () => {
 app.post('/auth/login', auth.login); // terminado
 
 //registrarse
-app.post('/auth/register', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), auth.register) //falta q funcione
+app.post('/auth/register', upload.single('foto'), auth.register) //falta q funcione
 
 
 // SEGUIR. terminado
