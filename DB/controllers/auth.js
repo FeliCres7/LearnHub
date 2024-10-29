@@ -2,10 +2,8 @@ import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import cloudinary from '../upload.js';
-import multer from 'multer'
-import fs from 'fs'
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import dotenv from 'dotenv'
+dotenv.config()
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET
