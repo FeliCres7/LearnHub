@@ -43,7 +43,8 @@ const creatematerial = async (req, res) => {
   try {
     const archivoFile = req.file
     const extensionesPermitidas = ['pdf', 'doc', 'docx'];
-    const extensionArchivo = archivoFile.split('.').pop()
+    const extensionArchivo = archivoFile.originalname.split('.').pop();
+
 
     if (!extensionesPermitidas.includes(extensionArchivo)) {
       return res.status(400).send('Error: Extensiones no permitidas. El archivo debe ser PDF o DOC/DOCX.');

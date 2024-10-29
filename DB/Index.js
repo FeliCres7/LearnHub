@@ -135,7 +135,7 @@ app.get('/paises', paises.getpaises);
 //Material. terminado
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
-app.post('/Material', upload.single([{ name: 'archivo' }]), material.creatematerial);
+app.post('/Material', upload.single('archivo'), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
