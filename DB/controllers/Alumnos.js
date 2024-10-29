@@ -14,54 +14,68 @@ catch (err) {
   res.status(500).json({ error: err.message });
 }
 }
+const updateinfoalumno = async (req, res) => {
+  const { nombre, apellido, fecha_de_nacimiento } = req.body;
+  const { ID } = req.params;
 
-const updateinfoalumno = async (req,res) => {
-    try {
-      const {
-        nombre, apellido, fecha_de_nacimiento, ID
-      } = req.body;
-      
-     
-      const result = await pool.query(
-        `UPDATE public."profesores"
-         SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3 WHERE "ID" = $4
-         RETURNING *` ,
-        [nombre, apellido, fecha_de_nacimiento, ID]
-      );
-  
-  
-      if (result.rows.length > 0) {
-        res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
-      } else {
-        res.status(404).send('Profesor no encontrado');
-      }
-    } catch (err) {
-      
-      res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
-    }
-  };
+  if (!nombre || !apellido || !fecha_de_nacimiento) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+  }
 
-const updateseguridadalumno = async (req,res) => {
-  const {email, telefono, contraseña, confirmarContraseña, ID} = req.body  
-    
-      
-      if (contraseña !== confirmarContraseña) {
-        return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
-      }
-    
-    try {
-    const result =  await pool.query('UPDATE public.alumnos SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña, ID]
+  try {
+    const result = await pool.query(
+      `UPDATE public."alumnos"
+       SET nombre = $1, apellido = $2, fecha_de_nacimiento = $3 WHERE "ID" = $4
+       RETURNING *`,
+      [nombre, apellido, fecha_de_nacimiento, ID]
     );
+
     if (result.rows.length > 0) {
-      res.status(200).send(`Alumno actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
+      return res.status(200).json({
+        message: 'Alumno actualizado con éxito',
+        alumno: result.rows[0],
+      });
     } else {
-      res.status(404).send('Alumno no encontrado');
+      return res.status(404).json({ error: 'Alumno no encontrado' });
     }
-    } catch (err) {
-    
-    res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
+  } catch (err) {
+    console.error('Error al actualizar el alumno:', err.message);
+    return res.status(500).json({ error: 'Error al actualizar el alumno', details: err.message });
+  }
+};
+
+// Función para actualizar información de seguridad del alumno
+const updateseguridadalumno = async (req, res) => {
+  const { email, telefono, contraseña, confirmarContraseña } = req.body;
+  const { ID } = req.params;
+
+  if (contraseña !== confirmarContraseña) {
+    return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
+  }
+
+  if (!email || !telefono || !contraseña) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+  }
+
+  try {
+    const result = await pool.query(
+      'UPDATE public.alumnos SET email = $1, telefono = $2, contraseña = $3 WHERE "ID" = $4 RETURNING *',
+      [email, telefono, contraseña, ID]
+    );
+
+    if (result.rows.length > 0) {
+      return res.status(200).json({
+        message: 'Datos de seguridad actualizados con éxito',
+        alumno: result.rows[0],
+      });
+    } else {
+      return res.status(404).json({ error: 'Alumno no encontrado' });
     }
-    }
+  } catch (err) {
+    console.error('Error al actualizar los datos de seguridad:', err.message);
+    return res.status(500).json({ error: 'Error al actualizar los datos de seguridad', details: err.message });
+  }
+};
 
 //Eliminar alumno 
 const deleteAlumno = async (req, res) => {

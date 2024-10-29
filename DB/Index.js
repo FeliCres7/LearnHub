@@ -97,8 +97,8 @@ app.delete('/siguen/:ID', seguir.dejardeseguir);
 
 //Alumnos. terminado
 app.get('/Alumnos/:email', alumnos.getalumnosbymail)
-app.put('/Alumnos/seguridad/ID', verifyToken, alumnos.updateseguridadalumno);
-app.put('/Alumnos/info/ID', verifyToken, alumnos.updateinfoalumno);
+app.put('/Alumnos/seguridad/:ID', alumnos.updateseguridadalumno);
+app.put('/Alumnos/info/:ID', alumnos.updateinfoalumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 app.get('/Alumnos/:ID/perfilalumno', alumnos.getperfilalumno)
 
