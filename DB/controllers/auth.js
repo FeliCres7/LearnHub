@@ -11,9 +11,12 @@ import { fileURLToPath } from 'url';
 const secret = process.env.JWT_SECRET
 
 const login = async (req, res) => {
-  const { usuario, contraseña } = req.body;
+  const { usuario, contraseña, tipoUsuario } = req.body;
 
-  // Validación: la contraseña debe tener más de 3 caracteres
+  if (!tipoUsuario || !['alumno', 'profesor'].includes(tipoUsuario)) {
+    return res.status(400).send("El tipo de usuario debe ser 'alumno' o 'profesor'.");
+  }
+
   if (!contraseña || contraseña.length <= 3) {
     return res.status(400).send("La contraseña debe tener más de 3 caracteres.");
   }
@@ -21,49 +24,43 @@ const login = async (req, res) => {
   try {
     let checkUser;
 
-    // Primero, buscamos en la tabla 'alumnos'
-    checkUser = await pool.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
-
-    // Si no se encuentra en 'alumnos', buscamos en 'profesores'
-    if (!checkUser.rows.length) {
+    if (tipoUsuario === 'alumno') {
+      checkUser = await pool.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
+    } else if (tipoUsuario === 'profesor') {
       checkUser = await pool.query('SELECT * FROM public.profesores WHERE "email" = $1', [usuario]);
-
-      // Si tampoco se encuentra en 'profesores', devolvemos error
-      if (!checkUser.rows.length) {
-        return res.status(404).send("Usuario no encontrado.");
-      }
     }
 
-    // Comparar contraseñas
+    if (!checkUser.rows.length) {
+      return res.status(404).send("Usuario no encontrado.");
+    }
+
     const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña);
     if (!isValidated) {
       return res.status(401).send("Contraseña incorrecta.");
     }
 
-    // Generar JWT
+    
     const token = jwt.sign(
-      { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
+      { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre, tipoUsuario },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    // Establecer cookie con el token
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 60, 
       httpOnly: true, 
       secure: process.env.NODE_ENV === 'production'
     });
 
+    const destino = tipoUsuario === 'alumno' ? 'alumnohome' : 'profesorhome';
+    return res.status(200).json({ usuario: checkUser.rows[0].nombre, token, destino });
 
-
-    // Enviar respuesta con el usuario y token
-    return res.status(200).json({ usuario: checkUser.rows[0].nombre, token });
-
-  }catch (error) {
-      console.error('Error en login:', error);
-      return res.status(500).send(`Error del servidor: ${error.message}`);
+  } catch (error) {
+    console.error('Error en login:', error);
+    return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
+
 
 const register = async (req, res) => {
   try {
