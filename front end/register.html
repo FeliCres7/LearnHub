@@ -74,8 +74,6 @@
                 <select id="materias_profesor" required> 
                 </select> 
             </div>
-            <p>Agrega certificados de tus estudios</p>
-            <input type="file" id="certificadoestudio_profesor" required>
             <p>Agrega una foto de perfil</p>
             <input type="file" id="foto_profesor" required accept=".png, .jpg, .jpeg">
             <input type="submit" class="btn" value="Finalizar">
@@ -143,7 +141,7 @@
                 // Llenar el select de países para profesores
                 materias.forEach(materias => {
                     const option = document.createElement('option');
-                    option.value = materias.id; // Asumiendo que el ID es la propiedad que necesitas
+                    option.value = materias.nombre_materia; // Asumiendo que el ID es la propiedad que necesitas
                     option.textContent = materias.nombre_materia; // Cambia 'nombre' por la propiedad correspondiente
                     selectMateriasProfesor.appendChild(option.cloneNode(true));
                 });
@@ -209,7 +207,6 @@
                 telefono: document.getElementById('telefono_profesor').value,
                 pais: document.getElementById('pais_profesor').value,
                 materias: document.getElementById('materias_profesor').value,
-                certificadoestudio: document.getElementById('certificadoestudio_profesor').files[0],
                 foto: document.getElementById('foto_profesor').files[0]
             };
         }
