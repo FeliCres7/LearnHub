@@ -219,6 +219,12 @@ GET http://localhost:3000/material/1 HTTP/1.1
 
 GET http://localhost:3000/material/guia1 HTTP/1.1 
 
+//obtener un material x id del profesor
+###
+
+GET http://localhost:3000/material/idprof/42  HTTP/1.1 
+
+
 ###
 //Crear un material
 
@@ -287,6 +293,6 @@ GET http://localhost:3000/Materia HTTP/1.1
 
 
 ###
-//obtener todas las p
+//obtener todas las paises
 
 GET http://localhost:3000/paises HTTP/1.1

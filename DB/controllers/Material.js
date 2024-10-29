@@ -118,13 +118,35 @@ if (result.rows.length > 0) {
 }
 };
 
+// Obtener materiales por ID del profesor
+const getmaterialbyidprof = async (req, res) => {
+  const { IDprofesor } = req.params;
 
+  try {
+    const { rows } = await pool.query(
+      'SELECT * FROM public."material" WHERE "IDprofesor" = $1',
+      [IDprofesor]
+    );
+
+    if (rows.length > 0) {
+      return res.json({ materiales: rows, message: 'Materiales obtenidos con éxito' });
+    } else {
+      return res.status(404).json({ error: 'No se encontraron materiales para este profesor' });
+    }
+  } catch (err) {
+    console.error('Error al obtener materiales por ID del profesor:', err);
+    return res.status(500).json({ error: 'Error al obtener los materiales' });
+  }
+};
+
+// Añade la función al objeto de exportación
 const material = {
   getmaterial,
   getmaterialbynombre,
+  getmaterialbyidprof, 
   creatematerial,
   updatematerial,
   deletematerial
-}
+};
 
 export default material;
