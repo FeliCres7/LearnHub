@@ -322,13 +322,17 @@ font-weight: 600;
     color: #424242;
     padding: 5px 25px;
     font-size: 18px;
-    margin-left: auto;
+    margin-left: 5px;
     margin-right: 0px;
     transition: color 0.7s;
     font-weight: 500;
 }
+.botondescargar i{
+padding-left: 10px;
+}
 .divbtndescargar{
     display: flex;
+    justify-content: right;
 }
 .botondescargar:hover{
     filter:brightness(0.9);

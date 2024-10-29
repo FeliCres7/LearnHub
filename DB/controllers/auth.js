@@ -1,10 +1,9 @@
 import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv/config'
 import cloudinary from '../upload.js';
-import multer from 'multer'
-
+import dotenv from 'dotenv'
+dotenv.config()
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET
@@ -63,6 +62,7 @@ const login = async (req, res) => {
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
+
 const register = async (req, res) => {
   try {
     const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria } = req.body;
@@ -104,7 +104,7 @@ const register = async (req, res) => {
       query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, colegio, foto) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
       result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, colegio, fotoUrl]);
-
+      
     } else if (tipoUsuario === 'profesor') {
       const { foto, certificadoestudio } = req.files || {};
 

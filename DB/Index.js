@@ -19,7 +19,6 @@ import { dirname } from 'path';
 import { join } from 'path';
 
 
-
 const app = express();
 const port = 3000;
 
@@ -136,7 +135,7 @@ app.get('/paises', paises.getpaises);
 //Material. terminado
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
-app.post('/Material', verifyToken, verifyAdmin, upload.fields([{ name: 'archivo' }]), material.creatematerial);
+app.post('/Material', upload.single('archivo'), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
