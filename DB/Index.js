@@ -105,12 +105,12 @@ app.get('/paises', paises.getpaises);
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
 app.get('/Material/idprof/:IDprofesor', material.getmaterialbyidprof);
-app.post('/Material', material.creatematerial);
+app.post('/Material', verifyToken, verifyAdmin, material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
 //reservaciones. terminado
 app.get('/reservaciones', reservaciones.getreservarclase);
-app.post('/reservaciones', reservaciones.createreservarclase);
+app.post('/reservaciones', verifyToken, reservaciones.createreservarclase);
 app.get('/reservaciones/IDalumno/:IDalumno', reservaciones.getreservacionbyalumno);
 app.get('/reservaciones/IDprof/:idprof', reservaciones.getreservacionbyprof);
