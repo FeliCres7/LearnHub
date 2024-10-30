@@ -62,9 +62,9 @@ const login = async (req, res) => {
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
-const register = async (req, res) => {
+const register = async (req, res) => { 
   try {
-    const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria } = req.body;
+    const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria, foto } = req.body;
 
     console.log("Datos recibidos:", { nombre, apellido, email, password, confirmPassword, tipoUsuario });
 
@@ -81,45 +81,24 @@ const register = async (req, res) => {
 
     console.log("Password encriptado:", hashedPassword);
 
+    if (!foto) {
+      return res.status(400).json({ error: 'Se requiere una foto' });
+    }
+
     let query;
     let result;
 
     if (tipoUsuario === 'alumno') {
-      const foto = req.file ? req.file.path : null;
-      console.log("Foto del alumno:", foto);
-
-      if (!foto) {
-        return res.status(400).json({ error: 'Se requiere una foto.' });
-      }
-
-      // Subir la foto a Cloudinary
-      const resultFoto = await cloudinary.uploader.upload(foto, { folder: 'alumnos/fotos' });
-      const fotoUrl = resultFoto.secure_url;
-
-      console.log("URL de foto en Cloudinary:", fotoUrl);
-
-      // Insertar el alumno en la base de datos
+      // Insertar el alumno en la base de datos con la foto en base64
       query = `INSERT INTO public.alumnos (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, colegio, foto) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, colegio, fotoUrl]);
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, colegio, foto]);
 
     } else if (tipoUsuario === 'profesor') {
-      const foto = req.file ? req.file.path : null;
-      console.log("Foto del profesor:", foto);
-
-      if (!foto) {
-        return res.status(400).json({ error: 'Se requiere una foto.' });
-      }
-
-      // Subir la foto a Cloudinary
-      const resultFoto = await cloudinary.uploader.upload(foto, { folder: 'profesores/fotos' });
-      const fotoUrl = resultFoto.secure_url;
-
-      console.log("URL de foto en Cloudinary:", fotoUrl);
-
+      // Insertar el profesor en la base de datos con la foto en base64
       query = `INSERT INTO public.profesores (nombre, apellido, email, contraseña, fecha_de_nacimiento, telefono, idpais, idmateria, foto) 
                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`;
-      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, idmateria, fotoUrl]);
+      result = await pool.query(query, [nombre, apellido, email, hashedPassword, fecha_de_nacimiento, telefono, idpais, idmateria, foto]);
 
     } else {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });

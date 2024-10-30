@@ -8,15 +8,11 @@ import materia from './controllers/Materia.js'
 import paises from './controllers/paises.js'
 import reservaciones from "./controllers/reservaciones.js";
 import seguir from './controllers/siguen.js'
-import fs from 'fs';
 import {pool} from './dbconfig.js';
 import cors from "cors";
-import multer from "multer";
 import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
 import dotenv from 'dotenv';
-import { fileURLToPath } from 'url'; 
-import { dirname } from 'path'; 
-import { join } from 'path';
+
 
 
 const app = express();
@@ -33,33 +29,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS']
 }));
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const uploadDir = join(__dirname, "./uploads");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  }
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error('Invalid file type. Only PDF, PNG, JPEG, and JPG files are allowed.'), false);
-  }
-};
-
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter
-});
 
 
 // Ruta de prueba
@@ -87,7 +56,7 @@ app.listen(port, () => {
 app.post('/auth/login', auth.login); // terminado
 
 //registrarse
-app.post('/auth/register', upload.single('file'), auth.register) //falta q funcione
+app.post('/auth/register', auth.register) //falta q funcione
 
 
 // SEGUIR. terminado
@@ -136,7 +105,7 @@ app.get('/paises', paises.getpaises);
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
 app.get('/Material/idprof/:IDprofesor', material.getmaterialbyidprof);
-app.post('/Material', upload.single('archivo'), material.creatematerial);
+app.post('/Material', material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
