@@ -55,7 +55,7 @@ const login = async (req, res) => {
 
 
     // Enviar respuesta con el usuario y token
-    return res.status(200).json({ usuario: checkUser.rows[0].nombre, token });
+    return res.status(200).json({ usuario: checkUser.rows[0].nombre, token, tipoUsuario });
 
   }catch (error) {
       console.error('Error en login:', error);
