@@ -13,7 +13,7 @@ import {pool} from './dbconfig.js';
 import cors from "cors";
 import multer from "multer";
 import { verifyAdmin, verifyToken } from "./Middleware/Middleware.js"
-import dotenv from 'dotenv'; 
+import dotenv from 'dotenv';
 import { fileURLToPath } from 'url'; 
 import { dirname } from 'path'; 
 import { join } from 'path';
@@ -48,7 +48,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'application/pdf'];
+  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
@@ -87,7 +87,7 @@ app.listen(port, () => {
 app.post('/auth/login', auth.login); // terminado
 
 //registrarse
-app.post('/auth/register', upload.fields([{ name: 'foto'}, { name: 'certificadoestudio'}]), auth.register) //falta q funcione
+app.post('/auth/register', upload.single('foto'), auth.register) //falta q funcione
 
 
 // SEGUIR. terminado
@@ -97,8 +97,8 @@ app.delete('/siguen/:ID', seguir.dejardeseguir);
 
 //Alumnos. terminado
 app.get('/Alumnos/:email', alumnos.getalumnosbymail)
-app.put('/Alumnos/seguridad/ID', verifyToken, alumnos.updateseguridadalumno);
-app.put('/Alumnos/info/ID', verifyToken, alumnos.updateinfoalumno);
+app.put('/Alumnos/seguridad/:ID', alumnos.updateseguridadalumno);
+app.put('/Alumnos/info/:ID', alumnos.updateinfoalumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 app.get('/Alumnos/:ID/perfilalumno', alumnos.getperfilalumno)
 
@@ -135,6 +135,7 @@ app.get('/paises', paises.getpaises);
 //Material. terminado
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
+app.get('/Material/idprof/:IDprofesor', material.getmaterialbyidprof);
 app.post('/Material', upload.single('archivo'), material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
@@ -144,5 +145,3 @@ app.get('/reservaciones', reservaciones.getreservarclase);
 app.post('/reservaciones', reservaciones.createreservarclase);
 app.get('/reservaciones/IDalumno/:IDalumno', reservaciones.getreservacionbyalumno);
 app.get('/reservaciones/IDprof/:idprof', reservaciones.getreservacionbyprof);
-
-

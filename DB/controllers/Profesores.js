@@ -176,7 +176,6 @@ const deleteprof = async (req,res) => {
     res.status(404).send('profesor no encontrado');
   }
   };
-  
   const getperfilprof = async (req, res) => {
     try {
       const ID = req.params.ID;
@@ -187,15 +186,13 @@ const deleteprof = async (req,res) => {
   
       // Consulta para obtener los datos del profesor
       const queryProfesor = `
-        SELECT nombre, apellido, foto, fecha_de_nacimiento, pais, certificadoestudio 
+        SELECT nombre, apellido, foto, fecha_de_nacimiento, pais
         FROM public.profesores 
         WHERE "ID" = $1
       `;
       const { rows: profesorRows } = await pool.query(queryProfesor, [ID]);
   
       if (profesorRows.length === 1) {
-        const { certificadoestudio } = profesorRows[0];
-  
         // Consulta para obtener el promedio de valoraciones del profesor
         const queryValoracion = `
           SELECT AVG(valoracion) AS valoracion
@@ -210,8 +207,7 @@ const deleteprof = async (req,res) => {
         return res.json({
           message: 'Perfil de profesor obtenido con éxito',
           perfil: profesorRows[0],
-          valoracion_promedio,  // Incluimos la valoración promedio
-          certificadoestudio: `descargar/${certificadoestudio}`
+          valoracion_promedio  // Incluimos la valoración promedio
         });
       } else {
         return res.status(404).json({ error: 'Profesor no encontrado' });
@@ -220,10 +216,8 @@ const deleteprof = async (req,res) => {
       console.error('Error al obtener el perfil del profesor:', err);
       return res.status(500).json({ error: 'Error al obtener el perfil' });
     }
-
-
   }
-
+  
 
   const getprofbymaterias = async (req,res) => {
   const {materias} = req.params
@@ -388,4 +382,3 @@ createvaloracionbyclases
 };
 
 export default profesores;
-  
