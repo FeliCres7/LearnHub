@@ -1,7 +1,6 @@
 import { pool } from '../dbconfig.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import cloudinary from '../upload.js';
 import dotenv from 'dotenv'
 dotenv.config()
 
