@@ -61,7 +61,8 @@ const login = async (req, res) => {
       console.error('Error en login:', error);
       return res.status(500).send(`Error del servidor: ${error.message}`);
   }
-};const register = async (req, res) => {
+};
+const register = async (req, res) => {
   try {
     const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria } = req.body;
 
