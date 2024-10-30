@@ -1,5 +1,5 @@
 import {pool} from '../dbconfig.js'
-import cloudinary from '../upload.js';
+
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET

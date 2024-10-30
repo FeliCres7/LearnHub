@@ -1,7 +1,6 @@
 import {pool} from '../dbconfig.js'
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import cloudinary from '../upload.js';
 
 // Obtener todas los materiales
 const getmaterial = async (_, res) => {
@@ -33,36 +32,29 @@ if (rows.length > 0){
 }
 };
 
-const creatematerial = async (req, res) => {
-  const { IDprofesor, nombre, infoguia } = req.body;
+const creatematerial = async (req, res) => {       
+  const { IDprofesor, nombre, infoguia, archivo } = req.body;
 
-  if (!IDprofesor || !nombre || !infoguia) {
+  // Validar que todos los campos estén presentes
+  if (!IDprofesor || !nombre || !infoguia || !archivo) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
+  // Validar la extensión del archivo
+  const extensionesPermitidas = ['pdf', 'doc', 'docx'];
+  const extensionArchivo = archivo.split('.').pop();
+  if (!extensionesPermitidas.includes(extensionArchivo)) {
+    return res.status(400).send('Error: Extensiones no permitidas. El archivo debe ser PDF o DOC/DOCX.');
+  }
+
   try {
-    const archivoFile = req.file
-    const extensionesPermitidas = ['pdf', 'doc', 'docx'];
-    const extensionArchivo = archivoFile.originalname.split('.').pop();
-
-
-    if (!extensionesPermitidas.includes(extensionArchivo)) {
-      return res.status(400).send('Error: Extensiones no permitidas. El archivo debe ser PDF o DOC/DOCX.');
-    }
-
-    // Subir el archivo a Cloudinary
-    const Archivo = await cloudinary.uploader.upload(archivoFile.path, {
-      folder: 'materiales',
-      resource_type: 'raw'
-    });
-    const archivoUrl = Archivo.secure_url;
-
+    // Consulta para insertar el material en la base de datos
     const query = `
       INSERT INTO public."material" ("IDprofesor", "nombre", "infoguia", "archivo")
       VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
-    const values = [IDprofesor, infoguia, nombre, archivoUrl];
+    const values = [IDprofesor, nombre, infoguia, archivo];
     
     const result = await pool.query(query, values);
 
