@@ -36,7 +36,7 @@ app.use(cors({
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const uploadDir = join(__dirname, "./uploads");
+const uploadDir = join(__dirname, "../uploads");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
