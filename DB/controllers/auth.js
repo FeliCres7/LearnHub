@@ -6,24 +6,25 @@ dotenv.config()
 
 //const JWT_secret = 'Learnhubtoken'
 const secret = process.env.JWT_SECRET
-
 const login = async (req, res) => {
   const { usuario, contraseña } = req.body;
 
-  // Validación: la contraseña debe tener más de 3 caracteres
   if (!contraseña || contraseña.length <= 3) {
     return res.status(400).send("La contraseña debe tener más de 3 caracteres.");
   }
 
   try {
     let checkUser;
+    let tipoUsuario;
 
     // Primero, buscamos en la tabla 'alumnos'
     checkUser = await pool.query('SELECT * FROM public.alumnos WHERE "email" = $1', [usuario]);
+    tipoUsuario = checkUser.rows.length ? 'alumno' : null;
 
     // Si no se encuentra en 'alumnos', buscamos en 'profesores'
     if (!checkUser.rows.length) {
       checkUser = await pool.query('SELECT * FROM public.profesores WHERE "email" = $1', [usuario]);
+      tipoUsuario = checkUser.rows.length ? 'profesor' : null;
 
       // Si tampoco se encuentra en 'profesores', devolvemos error
       if (!checkUser.rows.length) {
@@ -31,36 +32,35 @@ const login = async (req, res) => {
       }
     }
 
-    // Comparar contraseñas
     const isValidated = await bcrypt.compare(contraseña, checkUser.rows[0].contraseña);
     if (!isValidated) {
       return res.status(401).send("Contraseña incorrecta.");
     }
 
-    // Generar JWT
+    // Generar el token con los permisos adecuados
     const token = jwt.sign(
-      { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre },
+      { id: checkUser.rows[0].ID, username: checkUser.rows[0].nombre, role: tipoUsuario },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    // Establecer cookie con el token
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 60, 
       httpOnly: true, 
       secure: process.env.NODE_ENV === 'production'
     });
 
-
-
-    // Enviar respuesta con el usuario y token
-    return res.status(200).json({ usuario: checkUser.rows[0].nombre, token, tipoUsuario });
-
-  }catch (error) {
-      console.error('Error en login:', error);
-      return res.status(500).send(`Error del servidor: ${error.message}`);
+    return res.status(200).json({
+      usuario: checkUser.rows[0].nombre,
+      token,
+      tipoUsuario
+    });
+  } catch (error) {
+    console.error('Error en login:', error);
+    return res.status(500).send(`Error del servidor: ${error.message}`);
   }
 };
+
 const register = async (req, res) => { 
   try {
     const { nombre, apellido, email, password, confirmPassword, tipoUsuario, fecha_de_nacimiento, telefono, idpais, colegio, idmateria, foto } = req.body;
@@ -103,7 +103,7 @@ const register = async (req, res) => {
       return res.status(400).json({ error: 'Tipo de usuario inválido.' });
     }
 
-    console.log("Resultado de la inserción en BD:", result.rows[0]);
+    console.log("Resultado de la query:", result.rows[0]);
 
     const token = jwt.sign({ id: result.rows[0].id, tipoUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
