@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="styler.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="Images html/logo pestaña.png">
-
 </head>
 
 <body>
@@ -44,15 +43,22 @@
         document.getElementById('loginForm').addEventListener('submit', async function(event) {
             event.preventDefault();  // Prevenir el comportamiento por defecto del formulario (redirección)
         
+            console.log("Formulario enviado");
+
             // Obtener los datos del formulario
             const usuario = document.querySelector('input[name="usuario"]').value;
             const contraseña = document.querySelector('input[name="contraseña"]').value;
-        
+
+            console.log("Usuario ingresado:", usuario);
+            console.log("Contraseña ingresada:", contraseña);
+
             // Crear el cuerpo de la solicitud
             const datos = {
                 usuario: usuario,
                 contraseña: contraseña
             };
+
+            console.log("Datos de solicitud:", datos);
         
             try {
                 // Hacer una solicitud POST a la API de inicio de sesión
@@ -63,26 +69,36 @@
                     },
                     body: JSON.stringify(datos)
                 });
+                
+                console.log("Respuesta recibida:", response);
         
                 // Comprobar si la solicitud fue exitosa
                 if (response.ok) {
                     const resultado = await response.json();
-                    console.log('Respuesta del servidor:', resultado);
+                    console.log("Datos recibidos del servidor:", resultado);
         
                     // Guardar el token en localStorage
                     localStorage.setItem('token', resultado.token);
+                    console.log("Token guardado en localStorage:", resultado.token);
         
-                    // Redirigir directamente a la página del profesor
-                    window.location.href = 'profesorhome.html';
-        
+                    // Redirigir según el tipo de usuario
+                    if (resultado.tipoUsuario === 'profesor') {
+                        console.log("Usuario es profesor, redirigiendo a profesorhome.html");
+                        window.location.href = 'profesorhome.html';
+                    } else {
+                        console.log("Usuario no es profesor, redirigiendo a home.html");
+                        window.location.href = 'home.html';
+                    }
                 } else {
                     // Si la solicitud de inicio de sesión falla
                     const errorResponse = await response.text();
+                    console.log("Error en la respuesta del servidor:", errorResponse);
                     document.getElementById('error-msg').innerText = errorResponse;
                     document.getElementById('error-msg').style.display = 'block';
                 }
             } catch (error) {
-                console.error('Error en la solicitud:', error);
+                console.error("Error en la solicitud:", error);
+                document.getElementById('error-msg').innerText = 'No se pudo conectar al servidor. Intente más tarde.';
                 document.getElementById('error-msg').style.display = 'block';
             }
         });
