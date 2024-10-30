@@ -87,7 +87,7 @@ app.listen(port, () => {
 app.post('/auth/login', auth.login); // terminado
 
 //registrarse
-app.post('/auth/register', upload.single('foto'), auth.register) //falta q funcione
+app.post('/auth/register', upload.single('file'), auth.register) //falta q funcione
 
 
 // SEGUIR. terminado
