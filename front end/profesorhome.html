@@ -69,10 +69,8 @@
         </article>
         <aside class="aside-der-home">
             <div class="title-aside-der-home"><p class="bold">Calendario</p></div>
-            <div>
-                <p class="bold">Día</p>
-                <p>Fecha y hora</p>
-                <p>Clase con nombre y apellido</p>
+            <div id="reservaciones-lista">
+                
             </div>
 
         </aside>
@@ -86,6 +84,7 @@
         const userId = obtenerIdUsuarioDelToken(token); // Decodificar token para obtener id
         if (userId) {
             cargarDatosUsuario(userId, token);
+            cargarReservaciones(token); // Solo se pasa el token
         } else {
             console.error('No se pudo obtener el id del usuario del token');
         }
@@ -123,7 +122,6 @@ function cargarDatosUsuario(userId, token) {
 }
 
 function mostrarDatosUsuario(data) {
-    // Accede a la propiedad `profesor` dentro de `data`
     const profesor = data.profesor;
 
     if (profesor) {
@@ -131,10 +129,12 @@ function mostrarDatosUsuario(data) {
         const fotoPerfil = document.getElementById('foto-perfil');
         const pais = document.getElementById('pais');
 
-        // Asegúrate de que los elementos DOM existen antes de modificarlos
         if (nombreApellido && fotoPerfil && pais) {
             nombreApellido.innerText = `${profesor.nombre || 'Nombre'} ${profesor.apellido || 'Apellido'}`;
-            fotoPerfil.src = profesor.foto || 'Images html/default-foto.png';
+            
+            // Si `profesor.foto` está en base64, la pasamos como una data URL
+            fotoPerfil.src = profesor.foto ? `data:image/jpeg;base64,${profesor.foto}` : 'Images html/default-foto.png';
+            
             pais.innerText = profesor.idpais || 'País no disponible';
         } else {
             console.error('No se encontraron algunos de los elementos en el DOM');
@@ -144,6 +144,54 @@ function mostrarDatosUsuario(data) {
     }
 }
 
+async function cargarReservaciones(token) {
+    try {
+        const idprof = obtenerIdUsuarioDelToken(token); // Obtener ID del profesor desde el token
+        if (!idprof) {
+            throw new Error('IDprof no encontrado en el token');
+        }
+        
+        const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/IDprof/${idprof}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al cargar las reservaciones');
+        }
+
+        const reservaciones = await response.json();
+        mostrarReservaciones(reservaciones);
+    } catch (error) {
+        console.error('Error al cargar reservaciones:', error);
+    }
+}
+
+function mostrarReservaciones(reservaciones) {
+    const reservacionesLista = document.getElementById('reservaciones-lista');
+    reservacionesLista.innerHTML = ""; // Limpiar la lista antes de agregar nuevas reservaciones
+
+    if (reservaciones.length === 0) {
+        reservacionesLista.innerHTML = '<p>No hay reservaciones para mostrar.</p>';
+        return;
+    }
+
+    reservaciones.forEach(reservacion => {
+        const reservacionDiv = document.createElement('div');
+        reservacionDiv.classList.add('reservacion-item'); // Agregar clase para estilo
+
+        reservacionDiv.innerHTML = `
+            <p><strong>Alumno:</strong> ${reservacion.alumno}</p>
+            <p><strong>Profesor:</strong> ${reservacion.profesor}</p>
+            <p><strong>Día:</strong> ${reservacion.dia}</p>
+            <p><strong>Hora:</strong> ${reservacion.hora}</p>
+        `;
+
+        reservacionesLista.appendChild(reservacionDiv);
+    });
+}
 </script>
 
 </html>
