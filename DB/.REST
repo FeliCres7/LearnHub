@@ -16,7 +16,7 @@ ntent-Type: application/json
 }
 
 ### // OBTENER TODOS LOS ALUMNOS 
-GET http://localhost:3000/Alumnos/ezequielagradnik@gmail.com HTTP/1.1
+GET http://localhost:3000/Alumnos/90 HTTP/1.1
 
 ### // actualizar la seguridad del alumno
 
