@@ -3,6 +3,27 @@ import { pool } from '../dbconfig.js'
 
 const secret = process.env.JWT_SECRET
 
+const getalumnosbyid = async (req, res) => {
+  const { ID } = req.params;
+
+  try {
+    const query = 'SELECT * FROM public.alumnos WHERE "ID" = $1';
+    const { rows } = await pool.query(query, [ID]);
+
+    if (rows.length > 0) {
+      res.json({
+        message: 'Alumno obtenido con éxito',
+        alumno: rows[0]
+      });
+    } else {
+      res.status(404).json({ error: 'Alumno no encontrado' });
+    }
+  } catch (err) {
+    console.error('Error al obtener el alumno por ID:', err.message);
+    res.status(500).json({ error: 'Error al obtener el alumno por ID' });
+  }
+};
+
 const getalumnosbymail = async (req,res) => {
 const {email} = req.params
 try{
@@ -119,6 +140,7 @@ const getperfilalumno = async (req, res) => {
 
 
 const alumnos = {
+  getalumnosbyid,
   getalumnosbymail,
   updateseguridadalumno,
   updateinfoalumno,
