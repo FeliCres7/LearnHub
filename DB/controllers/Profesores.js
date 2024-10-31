@@ -83,7 +83,7 @@ const updateperfil = async (req,res) => {
 const {foto, materias, descripcion_corta, ID} = req.body
 
 try{
-const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, materias=$2, descripcion_corta=$3 WHERE "ID"= $4 RETURNING *', [foto, materias, descripcion_corta, ID]
+const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmaterias=$2 WHERE "ID"= $3 RETURNING *', [foto, materias, descripcion_corta, ID]
 );
 if (result.rows.length > 0) {
   res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
@@ -157,9 +157,6 @@ const updatedisponibilidadhoraria = async (req, res) => {
     return res.status(500).send(`Error al actualizar la disponibilidad: ${err.message}`);
   }
 };
-
-
-
 
 
 

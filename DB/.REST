@@ -7,13 +7,6 @@ Content-Type: application/json
 "contraseña":"1234"
 }
 
-### //REGISTRARSE 
-POST http://localhost:3000/auth/register HTTP/1.1 
-ntent-Type: application/json
-
-{
-"nombre":"benjamin", "apellido":"agradnik", "email":"nicoagradnik@gmail.com", "contraseña":"nico2012", "tipoUsuario":"alumno"
-}
 
 ### // OBTENER TODOS LOS ALUMNOS 
 GET http://localhost:3000/Alumnos/90 HTTP/1.1
