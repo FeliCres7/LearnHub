@@ -65,6 +65,7 @@ app.post('/siguen', seguir.seguirprofesor);
 app.delete('/siguen/:ID', seguir.dejardeseguir);
 
 //Alumnos. terminado
+app.get('/Alumnos', alumnos.getalumnosbyid)
 app.get('/Alumnos/:email', alumnos.getalumnosbymail)
 app.put('/Alumnos/seguridad/:ID', alumnos.updateseguridadalumno);
 app.put('/Alumnos/info/:ID', alumnos.updateinfoalumno);
