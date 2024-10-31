@@ -12,8 +12,15 @@ const getmateria = async (_, res) => {
     }
   }
 
+
+  const getMateriaById = async (idmateria) => {
+    const query = `SELECT nombre_materia FROM materias WHERE id = $1`;
+    const result = await pool.query(query, [idmateria]);
+    return result.rows[0]?.nombre_materia;
+  };
   const materia = {
-    getmateria
+    getmateria,
+    getMateriaById
   }
   
   export default materia;

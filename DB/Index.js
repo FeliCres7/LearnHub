@@ -98,6 +98,8 @@ app.delete('/Clases/:ID', clases.deleteclase);
 
 //Materia terminado
 app.get('/Materia', materia.getmateria);
+app.get('/Materia/ID', materia.getMateriaById);
+
 //paises terminado
 app.get('/paises', paises.getpaises);
 
