@@ -79,81 +79,104 @@
     </main>
 
     <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        console.log("DOM cargado y script iniciado.");
-    
-        try {
-            // Obtener el token
-            const token = localStorage.getItem("token");
-            console.log("Token obtenido del localStorage:", token);
-    
-            if (!token) {
-                console.log("No se encontró un token, redirigiendo al login.");
-                window.location.href = "login.html";
-                return;
-            }
-    
-            // Decodificar el token para obtener el ID del usuario
-            const base64Url = token.split(".")[1];
-            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-            const jsonPayload = decodeURIComponent(
-                atob(base64)
-                    .split("")
-                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-                    .join("")
-            );
-            const payload = JSON.parse(jsonPayload);
-            const userId = payload.userId;
-            console.log("Payload decodificado:", payload);
-            console.log("ID de usuario obtenido:", userId);
-    
-            // Obtener datos del alumno
-            const alumnoResponse = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${userId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log("Respuesta de la API Alumnos:", alumnoResponse);
-    
-            if (!alumnoResponse.ok) {
-                console.log("Error al obtener datos del alumno, status:", alumnoResponse.status);
-                throw new Error("No se pudieron obtener los datos del alumno");
-            }
-            const alumnoData = await alumnoResponse.json();
-            console.log("Datos del alumno:", alumnoData);
-    
-            // Obtener datos de las reservaciones del alumno
-            const IDalumno = alumnoData.id;
-            console.log("ID del alumno para la API Reservaciones:", IDalumno);
-    
-            const reservacionesResponse = await fetch(
-                `https://learn-hub-eta.vercel.app/reservaciones/IDalumno/${IDalumno}`,
-                {
+        document.addEventListener("DOMContentLoaded", async () => {
+            console.log("DOM cargado y script iniciado.");
+
+            try {
+                const token = localStorage.getItem("token");
+                console.log("Token obtenido del localStorage:", token);
+
+                if (!token) {
+                    console.log("No se encontró un token, redirigiendo al login.");
+                    window.location.href = "inicio.html";
+                    return;
+                }
+
+                // Decodificar el token
+                const base64Url = token.split(".")[1];
+                const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+                const jsonPayload = decodeURIComponent(
+                    atob(base64)
+                        .split("")
+                        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                        .join("")
+                );
+                const payload = JSON.parse(jsonPayload);
+                console.log("Payload completo del token:", payload);
+
+                const userId = payload.id; // Usar directamente el `id` del payload
+                console.log("ID de usuario obtenido del token:", userId);
+
+                if (!userId) {
+                    throw new Error("ID de usuario no encontrado en el payload del token.");
+                }
+
+                // Hacer solicitud para obtener datos del alumno
+                const alumnoResponse = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                });
+                console.log("Respuesta de la API Alumnos:", alumnoResponse);
+
+                if (!alumnoResponse.ok) {
+                    console.log("Error al obtener datos del alumno, status:", alumnoResponse.status);
+                    throw new Error("No se pudieron obtener los datos del alumno");
                 }
-            );
-            console.log("Respuesta de la API Reservaciones:", reservacionesResponse);
-    
-            if (!reservacionesResponse.ok) {
-                console.log("Error al obtener reservaciones, status:", reservacionesResponse.status);
-                throw new Error("No se pudieron obtener las reservaciones");
+
+                const alumnoData = await alumnoResponse.json();
+                console.log("Datos del alumno:", alumnoData);
+
+                // Obtener el objeto alumno y su ID
+                const alumno = alumnoData.alumno; // Acceder al objeto alumno
+                console.log("Objeto alumno:", alumno); // Verificar el objeto
+                const IDalumno = alumno.ID; // Obtener el ID del alumno
+
+                if (!IDalumno) {
+                    throw new Error("ID del alumno no encontrado.");
+                }
+
+                // Mostrar los datos del alumno en el aside izquierdo
+                document.getElementById("foto-perfil").src = alumno.foto || "Images html/icon perfil.png"; // Asignar foto de perfil (con un valor por defecto)
+                document.getElementById("nombre-apellido").textContent = `${alumno.nombre} ${alumno.apellido}`; // Asignar nombre y apellido
+                document.getElementById("pais").textContent = alumno.pais || "No disponible"; // Asignar país (con un valor por defecto)
+
+                // Hacer solicitud para obtener las reservaciones
+                const reservacionesResponse = await fetch(
+                    `https://learn-hub-eta.vercel.app/reservaciones/${IDalumno}`, // Usar IDalumno aquí
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                console.log("Respuesta de la API Reservaciones:", reservacionesResponse);
+
+                if (!reservacionesResponse.ok) {
+                    console.log("Error al obtener reservaciones, status:", reservacionesResponse.status);
+                    throw new Error("No se pudieron obtener las reservaciones");
+                }
+
+                const reservacionesData = await reservacionesResponse.json();
+                console.log("Datos de las reservaciones:", reservacionesData);
+
+                // Actualizar el DOM con las reservaciones
+                const reservacionesLista = document.getElementById("reservaciones-lista");
+                reservacionesLista.innerHTML = ""; // Limpiar contenido previo
+                reservacionesData.forEach(reserva => {
+                    const reservaItem = document.createElement("p");
+                    reservaItem.textContent = `Clase con ${reserva.profesor} el ${reserva.dia} a las ${reserva.hora}`;
+                    reservacionesLista.appendChild(reservaItem);
+                });
+
+                console.log("DOM actualizado con los datos del alumno y sus reservaciones.");
+
+            } catch (error) {
+                console.error("Error en el flujo del script:", error);
             }
-    
-            const reservacionesData = await reservacionesResponse.json();
-            console.log("Datos de las reservaciones:", reservacionesData);
-    
-            // Manipulación del DOM con los datos
-            document.getElementById("nombre").textContent = alumnoData.nombre;
-            document.getElementById("apellido").textContent = alumnoData.apellido;
-            document.getElementById("reservaciones").textContent = JSON.stringify(reservacionesData);
-            console.log("DOM actualizado con los datos del alumno y sus reservaciones.");
-            
-        } catch (error) {
-            console.error("Error en el flujo del script:", error);
-        }
-    });
+        });
     </script>
 </body>
+
 </html>
