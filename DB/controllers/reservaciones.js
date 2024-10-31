@@ -18,8 +18,6 @@ return res.status(400).json ({error:'todos los campos son requeridos'});
 }
 try{
    const horaNum = parseInt(hora, 10);
-   const horaFin = parseInt(hora) + 1; 
-   const horaFormateada = `${hora}-${horaFin}hs`;
 
 const query = `INSERT INTO public."reservaciones" ("IDalumno", "idprof", "dia", "hora") 
 VALUES ($1, $2, $3, $4) RETURNING *;  `
