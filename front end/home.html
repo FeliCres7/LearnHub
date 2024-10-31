@@ -9,12 +9,10 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="shortcut icon" href="Images html/logo pestaña.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
 
 <body>
     <header class="header">
-
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
@@ -50,90 +48,112 @@
             </ul>
         </nav>
     </header>
-    <script src="script.js"></script>
 
     <main class="main-home">
         <aside class="aside-izq-home">
-            <img src="Images html/icon perfil.png" alt="">
-            <p class="big">Nombre y apellido</p>
-            <p class="small">País</p>
+            <img class="foto-perfil" id="foto-perfil" src="Images html/icon perfil.png" alt="">
+            <p id="nombre-apellido" class="big">Nombre y apellido</p>
+            <p id="pais" class="small">País</p>
         </aside>
         <article class="article-home">
             <div class="top-article-home">
                 <p>Valora tu clase con </p>
-                <p class="bold"> Nombre y apellido</p>
+                <p class="bold" id="nombre-alumno"> Nombre y apellido</p>
             </div>
-            <div class="fotoyvaloracion-article-home"><img src="Images html/icon perfil.png" alt="">
-                
-                <div><p>Coso para valorar</p>
-                <button class="enviar-valoracion">Enviar valoración</button></div>
-                
+            <div class="fotoyvaloracion-article-home">
+                <img src="Images html/icon perfil.png" alt="">
+                <div>
+                    <p>Coso para valorar</p>
+                    <button class="enviar-valoracion">Enviar valoración</button>
+                </div>
             </div>
         </article>
         <aside class="aside-der-home">
-            <div class="title-aside-der-home"><p class="bold">Calendario</p></div>
-            <div>
-                <p class="bold">Día</p>
-                <p>Fecha y hora</p>
-                <p>Clase con nombre y apellido</p>
+            <div class="title-aside-der-home">
+                <p class="bold">Calendario</p>
             </div>
-
+            <div id="reservaciones-lista">
+                <!-- Las reservaciones se cargarán aquí -->
+            </div>
         </aside>
     </main>
+
     <script>
-        window.onload = function() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                // Si no hay token, redirige a la página de inicio de sesión
-                window.location.href = 'inicio.html';
-            } else {
-                // Si hay token, carga los datos del alumno
-                cargarDatosAlumno(token);
-            }
-        };
-        
-        function cargarDatosAlumno(token) {
-            // Realiza una solicitud GET a la API con el token de autorización
-            fetch('https://learn-hub-eta.vercel.app/alumnos', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Muestra los datos del alumno si la solicitud fue exitosa
-                mostrarDatosAlumno(data);
-            })
-            .catch(error => {
-                console.error('Error al cargar los datos del alumno:', error);
-            });
-        }
-        
-        function mostrarDatosAlumno(data) {
-            // Verifica que el array tenga al menos un elemento
-            if (data.length > 0) {
-                const alumno = data[0];  // Accede al primer alumno del array
-                
-                const nombreApellido = document.querySelector('.big');
-                const fotoPerfil = document.querySelector('.aside-izq-home img');
-                const pais = document.querySelector('.small');
-        
-                // Asegúrate de que los elementos existan antes de modificar su contenido
-                if (nombreApellido && fotoPerfil && pais) {
-                    nombreApellido.innerText = `${alumno.nombre} ${alumno.apellido}`;
-                    fotoPerfil.src = alumno.foto || 'Images html/default-foto.png';  // Usa una foto por defecto si no hay foto
-                    pais.innerText = alumno.pais;
-                } else {
-                    console.error('No se encontraron algunos de los elementos en el DOM');
-                }
-            } else {
-                console.error('No se encontraron alumnos en la respuesta');
-            }
-        }
-    </script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        console.log("DOM cargado y script iniciado.");
     
+        try {
+            // Obtener el token
+            const token = localStorage.getItem("token");
+            console.log("Token obtenido del localStorage:", token);
+    
+            if (!token) {
+                console.log("No se encontró un token, redirigiendo al login.");
+                window.location.href = "login.html";
+                return;
+            }
+    
+            // Decodificar el token para obtener el ID del usuario
+            const base64Url = token.split(".")[1];
+            const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+            const jsonPayload = decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+                    .join("")
+            );
+            const payload = JSON.parse(jsonPayload);
+            const userId = payload.userId;
+            console.log("Payload decodificado:", payload);
+            console.log("ID de usuario obtenido:", userId);
+    
+            // Obtener datos del alumno
+            const alumnoResponse = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log("Respuesta de la API Alumnos:", alumnoResponse);
+    
+            if (!alumnoResponse.ok) {
+                console.log("Error al obtener datos del alumno, status:", alumnoResponse.status);
+                throw new Error("No se pudieron obtener los datos del alumno");
+            }
+            const alumnoData = await alumnoResponse.json();
+            console.log("Datos del alumno:", alumnoData);
+    
+            // Obtener datos de las reservaciones del alumno
+            const IDalumno = alumnoData.id;
+            console.log("ID del alumno para la API Reservaciones:", IDalumno);
+    
+            const reservacionesResponse = await fetch(
+                `https://learn-hub-eta.vercel.app/reservaciones/IDalumno/${IDalumno}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            console.log("Respuesta de la API Reservaciones:", reservacionesResponse);
+    
+            if (!reservacionesResponse.ok) {
+                console.log("Error al obtener reservaciones, status:", reservacionesResponse.status);
+                throw new Error("No se pudieron obtener las reservaciones");
+            }
+    
+            const reservacionesData = await reservacionesResponse.json();
+            console.log("Datos de las reservaciones:", reservacionesData);
+    
+            // Manipulación del DOM con los datos
+            document.getElementById("nombre").textContent = alumnoData.nombre;
+            document.getElementById("apellido").textContent = alumnoData.apellido;
+            document.getElementById("reservaciones").textContent = JSON.stringify(reservacionesData);
+            console.log("DOM actualizado con los datos del alumno y sus reservaciones.");
+            
+        } catch (error) {
+            console.error("Error en el flujo del script:", error);
+        }
+    });
+    </script>
 </body>
-
-
 </html>
