@@ -117,11 +117,10 @@
                 const selectPaisProfesor = document.getElementById('pais_profesor');
                 const selectPaisAlumno = document.getElementById('pais_alumno');
     
-                // Llenar el select de países para profesores
                 paises.forEach(pais => {
                     const option = document.createElement('option');
-                    option.value = pais.id; // Asumiendo que el ID es la propiedad que necesitas
-                    option.textContent = pais.nombre; // Cambia 'nombre' por la propiedad correspondiente
+                    option.value = pais.id;
+                    option.textContent = pais.nombre;
                     selectPaisProfesor.appendChild(option.cloneNode(true));
                     selectPaisAlumno.appendChild(option);
                 });
@@ -138,20 +137,30 @@
                 
                 const selectMateriasProfesor = document.getElementById('materias_profesor');
     
-                // Llenar el select de países para profesores
-                materias.forEach(materias => {
+                materias.forEach(materia => {
                     const option = document.createElement('option');
-                    option.value = materias.nombre_materia; // Asumiendo que el ID es la propiedad que necesitas
-                    option.textContent = materias.nombre_materia; // Cambia 'nombre' por la propiedad correspondiente
+                    option.value = materia.nombre_materia;
+                    option.textContent = materia.nombre_materia;
                     selectMateriasProfesor.appendChild(option.cloneNode(true));
                 });
             } catch (error) {
                 console.error('Error al cargar las materias:', error);
             }
         }
+    
+        // Convertir archivo a Base64
+        function convertirABase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]); // Devuelve solo el contenido en Base64
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+    
         document.getElementById('registerForm').addEventListener('submit', function (e) {
             e.preventDefault();
-        
+    
             // Obtener valores del formulario principal
             const nombre = document.getElementById('nombre').value;
             const apellido = document.getElementById('apellido').value;
@@ -159,14 +168,12 @@
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             const tipoUsuario = document.querySelector('input[name="role"]:checked').value;
-        
-            // Validar que las contraseñas coincidan
+    
             if (password !== confirmPassword) {
                 alert('Las contraseñas no coinciden.');
                 return;
             }
-        
-            // Crear objeto con los datos principales del usuario
+    
             const data = {
                 nombre,
                 apellido,
@@ -175,8 +182,7 @@
                 confirmPassword,
                 tipoUsuario
             };
-        
-            // Mostrar formulario adicional según el tipo de usuario
+    
             if (tipoUsuario === 'profesor') {
                 document.querySelector('.datos-profesor').style.display = 'block';
                 document.querySelector('.container').style.display = 'none';
@@ -184,94 +190,80 @@
                 document.querySelector('.datos-alumno').style.display = 'block';
                 document.querySelector('.container').style.display = 'none';
             }
-        
-            // Asignar evento al formulario adicional del profesor
+    
             document.getElementById('formProfesor').onsubmit = async function (e) {
                 e.preventDefault();
-                const datosProfesor = obtenerDatosProfesor();
+                const datosProfesor = await obtenerDatosProfesor();
                 await enviarDatosRegistro(data, datosProfesor, 'profesor');
             };
-        
-            // Asignar evento al formulario adicional del alumno
+    
             document.getElementById('formAlumno').onsubmit = async function (e) {
                 e.preventDefault();
-                const datosAlumno = obtenerDatosAlumno();
+                const datosAlumno = await obtenerDatosAlumno();
                 await enviarDatosRegistro(data, datosAlumno, 'alumno');
             };
         });
-        
+    
         // Obtener los datos adicionales del formulario de profesor
-        function obtenerDatosProfesor() {
+        async function obtenerDatosProfesor() {
+            const foto = document.getElementById('foto_profesor').files[0];
+            const fotoBase64 = foto ? await convertirABase64(foto) : null;
+    
             return {
                 fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_profesor').value,
                 telefono: document.getElementById('telefono_profesor').value,
                 pais: document.getElementById('pais_profesor').value,
                 materias: document.getElementById('materias_profesor').value,
-                foto: document.getElementById('foto_profesor').files[0]
+                foto: fotoBase64
             };
         }
-        
+    
         // Obtener los datos adicionales del formulario de alumno
-        function obtenerDatosAlumno() {
+        async function obtenerDatosAlumno() {
+            const foto = document.getElementById('foto_alumno').files[0];
+            const fotoBase64 = foto ? await convertirABase64(foto) : null;
+    
             return {
                 fecha_de_nacimiento: document.getElementById('fecha_de_nacimiento_alumno').value,
                 telefono: document.getElementById('telefono_alumno').value,
                 pais: document.getElementById('pais_alumno').value,
                 colegio: document.getElementById('colegio_alumno').value,
-                foto: document.getElementById('foto_alumno').files[0]
+                foto: fotoBase64
             };
         }
-        
+    
         // Función para enviar los datos de registro
         async function enviarDatosRegistro(data, datosExtra, tipoUsuario) {
             try {
-                console.log('Enviando datos de registro:', data);
-        
-                // Crear objeto FormData para enviar los datos del formulario adicional
-                const formData = new FormData();
-        
-                // Añadir los datos principales
-                for (const key in data) {
-                    formData.append(key, data[key]);
-                }
-        
-                // Append de los datos extra de alumno o profesor
-                for (const key in datosExtra) {
-                    formData.append(key, datosExtra[key]);
-                }
-        
-                // Console log del formdata (sin mostrar el contenido de archivos)
-                for (let [key, value] of formData.entries()) {
-                    console.log(`${key}: ${value}`);
-                }
-        
-                // URL de la API
+                const requestData = { ...data, ...datosExtra };
+    
                 const url = 'https://learn-hub-eta.vercel.app/auth/register';
-        
-                // Fetchear los datos
+    
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
                 });
-        
+    
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Error en el registro:', errorText);
                     throw new Error('Error en el registro');
                 }
-        
+    
                 alert('Registro exitoso');
             } catch (error) {
                 console.error('Error al enviar los datos:', error);
-                alert(`Hubo un problema con el registro: ${error.message}`);
+                alert('Hubo un problema con el registro: ${error.message}');
             }
         }
     
-        // Llamar a las funciones al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
             cargarPaises();
             cargarMaterias();
-        });
+        });
     </script>
     
            
