@@ -385,7 +385,7 @@ const profesores = {
  getprofbynombreyapellido,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
-createvaloracionbyclases
+ createvaloracionbyclases
 };
 
 export default profesores;

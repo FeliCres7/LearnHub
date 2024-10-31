@@ -61,14 +61,14 @@ app.post('/auth/register', auth.register) //falta q funcione
 
 // SEGUIR. terminado
 app.get('/siguen/IDalumno/:IDalumno', seguir.getprofesoresseguidos)
-app.post('/siguen', seguir.seguirprofesor);
+app.post('/siguen', verifyToken, seguir.seguirprofesor);
 app.delete('/siguen/:ID', seguir.dejardeseguir);
 
 //Alumnos. terminado
 app.get('/Alumnos/:ID', alumnos.getalumnosbyid)
 app.get('/Alumnos/:email', alumnos.getalumnosbymail)
-app.put('/Alumnos/seguridad/:ID', alumnos.updateseguridadalumno);
-app.put('/Alumnos/info/:ID', alumnos.updateinfoalumno);
+app.put('/Alumnos/seguridad/:ID', verifyToken, alumnos.updateseguridadalumno);
+app.put('/Alumnos/info/:ID', verifyToken, alumnos.updateinfoalumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
 app.get('/Alumnos/:ID/perfilalumno', alumnos.getperfilalumno)
 
