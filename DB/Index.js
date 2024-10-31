@@ -86,7 +86,6 @@ app.delete('/profesores/:ID', verifyToken, verifyAdmin, profesores.deleteprof);
 app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
 app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
-app.get('/profesores/dias/:dias', profesores.getprofbydias);
 app.post('/profesores/valoraciones', profesores.createvaloracionbyclases);
 
 /* //Clases
