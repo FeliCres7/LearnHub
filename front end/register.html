@@ -139,7 +139,7 @@
     
                 materias.forEach(materia => {
                     const option = document.createElement('option');
-                    option.value = materia.nombre_materia;
+                    option.value = materia.id;
                     option.textContent = materia.nombre_materia;
                     selectMateriasProfesor.appendChild(option.cloneNode(true));
                 });

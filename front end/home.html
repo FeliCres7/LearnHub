@@ -80,6 +80,59 @@
 
         </aside>
     </main>
+    <script>
+        window.onload = function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                // Si no hay token, redirige a la página de inicio de sesión
+                window.location.href = 'inicio.html';
+            } else {
+                // Si hay token, carga los datos del alumno
+                cargarDatosAlumno(token);
+            }
+        };
+        
+        function cargarDatosAlumno(token) {
+            // Realiza una solicitud GET a la API con el token de autorización
+            fetch('https://learn-hub-eta.vercel.app/alumnos', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Muestra los datos del alumno si la solicitud fue exitosa
+                mostrarDatosAlumno(data);
+            })
+            .catch(error => {
+                console.error('Error al cargar los datos del alumno:', error);
+            });
+        }
+        
+        function mostrarDatosAlumno(data) {
+            // Verifica que el array tenga al menos un elemento
+            if (data.length > 0) {
+                const alumno = data[0];  // Accede al primer alumno del array
+                
+                const nombreApellido = document.querySelector('.big');
+                const fotoPerfil = document.querySelector('.aside-izq-home img');
+                const pais = document.querySelector('.small');
+        
+                // Asegúrate de que los elementos existan antes de modificar su contenido
+                if (nombreApellido && fotoPerfil && pais) {
+                    nombreApellido.innerText = `${alumno.nombre} ${alumno.apellido}`;
+                    fotoPerfil.src = alumno.foto || 'Images html/default-foto.png';  // Usa una foto por defecto si no hay foto
+                    pais.innerText = alumno.pais;
+                } else {
+                    console.error('No se encontraron algunos de los elementos en el DOM');
+                }
+            } else {
+                console.error('No se encontraron alumnos en la respuesta');
+            }
+        }
+    </script>
+    
 </body>
 
 

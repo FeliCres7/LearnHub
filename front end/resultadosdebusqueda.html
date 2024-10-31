@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -8,36 +7,24 @@
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
 </head>
 
 <body>
     <header class="header">
-
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+            <button class="buttonsearch" onclick="buscar()"> <i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
             <ul>
-                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img
-                            src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
-                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img
-                            src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a>
-                </li>
-                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img
-                            src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis
-                        profesores</a></li>
-                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img
-                            src="Images html/logo calendario.png" alt=""></button><a
-                        href="calendario.html">Calendario</a></li>
-                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
-                            src="Images html/logo configuracion.png" alt=""></button><a
-                        href="configuracion.html">Configuración</a></li>
+                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
+                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a></li>
+                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis profesores</a></li>
+                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img src="Images html/logo calendario.png" alt=""></button><a href="calendario.html">Calendario</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img src="Images html/logo configuracion.png" alt=""></button><a href="configuracion.html">Configuración</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -51,26 +38,20 @@
             </ul>
         </nav>
     </header>
-    <script src="script.js"></script>
-    <main class="main-fondo-azul">
-        <article class="article-resultados-busqueda">
-            <div class="div-material-busqueda">
-            <p class="big">Titulo</p>
-            <p class="bold">Autor</p>
-            <p>Descripcion</p>
-            <button>Descargar</button>
-        </div>
-        <div class="div-material-busqueda">
-            <p class="big">Nombre y apellido</p>
-            <p class="bold">Materias</p>
-            <p>Descripcion</p>
-            <button>Ver perfil</button>
-        </div>
-        
-    </article>
-        
+
+    <main class="main-fondo-azul-busqueda">
+        <h1 class="h1-busqueda">Mostrando resultados para: </h1>
+        <article class="article-resultados-busqueda"></article>
     </main>
 
+    <script>
+        function buscar() {
+            const query = document.getElementById('búsqueda').value;
+            if (query) {
+                window.location.href = `resultados.html?search=${query}`;
+            }
+        }
+    </script>
+    <script src="script.js"></script>
 </body>
-
 </html>
