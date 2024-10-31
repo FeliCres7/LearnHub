@@ -86,4 +86,8 @@ main {
 
     margin: 0;
 }
-.div-horarios-clases
+#calendar{
+    width: 45vw;
+    height: auto;
+    margin: 60px auto;
+}
