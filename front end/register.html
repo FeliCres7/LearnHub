@@ -108,16 +108,21 @@
     </div>
 
     <script>
-        // Función para cargar los países en el select
-        async function cargarPaises() {
+async function cargarPaises() {
     try {
         const response = await fetch('https://learn-hub-eta.vercel.app/paises');
+        console.log("Respuesta de la API de países:", response); // Log para ver detalles de la respuesta
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        
         const paises = await response.json();
-        console.log(paises); // Verifica los datos recibidos
+        console.log("Datos de países recibidos:", paises); // Verifica los datos recibidos
 
         const selectPaisProfesor = document.getElementById('pais_profesor');
         const selectPaisAlumno = document.getElementById('pais_alumno');
+
+        // Vacía los selects antes de añadir nuevas opciones (en caso de recargar)
+        selectPaisProfesor.innerHTML = "";
+        selectPaisAlumno.innerHTML = "";
 
         paises.forEach(pais => {
             const option = document.createElement('option');
@@ -135,11 +140,16 @@
 async function cargarMaterias() {
     try {
         const response = await fetch('https://learn-hub-eta.vercel.app/Materia');
+        console.log("Respuesta de la API de materias:", response); // Log para ver detalles de la respuesta
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
         const materias = await response.json();
-        console.log(materias); // Verifica los datos recibidos
+        console.log("Datos de materias recibidos:", materias); // Verifica los datos recibidos
 
         const selectMateriasProfesor = document.getElementById('materias_profesor');
+        
+        // Vacía el select antes de añadir nuevas opciones (en caso de recargar)
+        selectMateriasProfesor.innerHTML = "";
 
         materias.forEach(materia => {
             const option = document.createElement('option');
@@ -152,6 +162,13 @@ async function cargarMaterias() {
         alert(`No se pudieron cargar las materias: ${error.message}`);
     }
 }
+
+// Ejecuta las funciones al cargar el DOM
+document.addEventListener('DOMContentLoaded', () => {
+    cargarPaises();
+    cargarMaterias();
+});
+
 
     
         document.getElementById('registerForm').addEventListener('submit', function (e) {
@@ -327,10 +344,6 @@ async function enviarDatosRegistro(data, datosExtra, tipoUsuario) {
         alert(`Hubo un problema con el registro: ${error.message}`);
     }
 }
-        document.addEventListener('DOMContentLoaded', () => {
-            cargarPaises();
-            cargarMaterias();
-        });
     </script>
     
            
