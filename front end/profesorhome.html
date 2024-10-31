@@ -81,17 +81,32 @@
 <script>window.onload = function() {
     const token = localStorage.getItem('token');
     if (!token) {
-        // Si no hay token, redirige a la página de inicio de sesión
         window.location.href = 'inicio.html';
     } else {
-        // Si hay token, carga los datos del usuario
-        cargarDatosUsuario(token);
+        const userId = obtenerIdUsuarioDelToken(token); // Decodificar token para obtener id
+        if (userId) {
+            cargarDatosUsuario(userId, token);
+        } else {
+            console.error('No se pudo obtener el id del usuario del token');
+        }
     }
 };
 
-function cargarDatosUsuario(token) {
-    // Realiza una solicitud GET a la API con el token de autorización
-    fetch('https://learn-hub-eta.vercel.app/profesores', {
+// Función para decodificar el token y obtener el id de usuario
+function obtenerIdUsuarioDelToken(token) {
+    try {
+        const payloadBase64 = token.split('.')[1];
+        const payload = JSON.parse(atob(payloadBase64));
+        console.log('Payload del token:', payload); // Verifica el contenido del payload
+        return payload.id; // Asegúrate de que esta propiedad exista en el payload
+    } catch (error) {
+        console.error('Error al decodificar el token:', error);
+        return null;
+    }
+}
+
+function cargarDatosUsuario(userId, token) {
+    fetch(`https://learn-hub-eta.vercel.app/profesores/${userId}`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -99,7 +114,7 @@ function cargarDatosUsuario(token) {
     })
     .then(response => response.json())
     .then(data => {
-        // Muestra los datos del usuario si la solicitud fue exitosa
+        console.log('Datos del usuario:', data); // Verifica el contenido de la respuesta de la API
         mostrarDatosUsuario(data);
     })
     .catch(error => {
@@ -108,24 +123,24 @@ function cargarDatosUsuario(token) {
 }
 
 function mostrarDatosUsuario(data) {
-    // Verifica que el array tenga al menos un elemento
-    if (data.length > 0) {
-        const profesor = data[0];  // Accede al primer profesor del array
-        
+    // Accede a la propiedad `profesor` dentro de `data`
+    const profesor = data.profesor;
+
+    if (profesor) {
         const nombreApellido = document.getElementById('nombre-apellido');
         const fotoPerfil = document.getElementById('foto-perfil');
         const pais = document.getElementById('pais');
 
-        // Asegúrate de que los elementos existan antes de modificar su contenido
+        // Asegúrate de que los elementos DOM existen antes de modificarlos
         if (nombreApellido && fotoPerfil && pais) {
-            nombreApellido.innerText = `${profesor.nombre} ${profesor.apellido}`;
-            fotoPerfil.src = profesor.foto || 'Images html/default-foto.png';  // Usa una foto por defecto si no hay foto
-            pais.innerText = profesor.pais;
+            nombreApellido.innerText = `${profesor.nombre || 'Nombre'} ${profesor.apellido || 'Apellido'}`;
+            fotoPerfil.src = profesor.foto || 'Images html/default-foto.png';
+            pais.innerText = profesor.idpais || 'País no disponible';
         } else {
             console.error('No se encontraron algunos de los elementos en el DOM');
         }
     } else {
-        console.error('No se encontraron profesores en la respuesta');
+        console.error('No se encontró información del profesor en la respuesta');
     }
 }
 
