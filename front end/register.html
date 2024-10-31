@@ -236,7 +236,7 @@
         async function enviarDatosRegistro(data, datosExtra, tipoUsuario) {
             try {
                 const requestData = { ...data, ...datosExtra };
-    
+                
                 const url = 'https://learn-hub-eta.vercel.app/auth/register';
     
                 const response = await fetch(url, {

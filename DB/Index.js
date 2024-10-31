@@ -77,10 +77,11 @@ app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
 app.get('/profesores/email/:email', profesores.getprofbymail);
 app.get('/profesores/nombreapellido/:nombre/:apellido', profesores.getprofbynombreyapellido);
+app.get('/profesores/getdisponibilidadhoraria/:idprof', profesores.getDisponibilidadHoraria)
 app.put('/profesores/updateinfopersonal/ID', verifyToken, verifyAdmin, profesores.updateinfopersonal);
 app.put('/profesores/updateperfil/ID', verifyToken, verifyAdmin, profesores.updateperfil);
 app.put('/profesores/updateseguridad/:ID', profesores.updateseguridad);
-app.put('/profesores/updatedisponibilidadhoraria', profesores.updatedisponibilidadhoraria);
+app.put('/profesores/updatedisponibilidadhoraria/:idprof', profesores.updatedisponibilidadhoraria);
 app.delete('/profesores/:ID', verifyToken, verifyAdmin, profesores.deleteprof);
 app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 

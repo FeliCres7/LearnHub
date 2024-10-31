@@ -49,7 +49,36 @@ const getprofbyID = async (req, res) => {
   }
 };
 
+const getDisponibilidadHoraria = async (req, res) => {
+  const { idprof } = req.params;
 
+  if (!idprof) {
+    return res.status(400).send("El idprof es requerido");
+  }
+
+  try {
+    const query = `
+      SELECT dh.iddias, dh.rango, d.nombre AS dia
+      FROM public."disponibilidadHoraria" dh
+      JOIN public."dias" d ON dh.iddias = d.ID
+      WHERE dh.idprof = $1
+      ORDER BY dh.iddias;
+    `;
+    
+    const result = await pool.query(query, [idprof]);
+
+    const disponibilidad = result.rows.map(row => ({
+      dia: row.dia,
+      iddias: row.iddias,
+      rango: row.rango,
+    }));
+
+    return res.status(200).json(disponibilidad);
+  } catch (err) {
+    console.error('Error al obtener la disponibilidad horaria:', err);
+    return res.status(500).send(`Error al obtener la disponibilidad: ${err.message}`);
+  }
+};
 
 //Actualizar un profesor 
 
@@ -80,10 +109,10 @@ const updateinfopersonal = async (req, res) => {
 };
 
 const updateperfil = async (req,res) => {
-const {foto, materias, descripcion_corta, ID} = req.body
+const {foto, idmaterias, ID} = req.body
 
 try{
-const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmaterias=$2 WHERE "ID"= $3 RETURNING *', [foto, materias, descripcion_corta, ID]
+const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmaterias=$2 WHERE "ID"= $3 RETURNING *', [foto, idmaterias, ID]
 );
 if (result.rows.length > 0) {
   res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
@@ -121,10 +150,9 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 }
 
 const updatedisponibilidadhoraria = async (req, res) => {
-  const { idprof, lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
-  if (!idprof) {
-    return res.status(400).send("El idprof es requerido");
-  }
+  const {idprof} = req.params;
+  const {lunes, martes, miercoles, jueves, viernes, sabado, domingo } = req.body;
+ 
 
   const dias = [
     { dia: "1", rango: lunes },
@@ -173,7 +201,8 @@ const deleteprof = async (req,res) => {
     res.status(404).send('profesor no encontrado');
   }
   };
-  const getperfilprof = async (req, res) => {
+
+const getperfilprof = async (req, res) => {
     try {
       const ID = req.params.ID;
   
@@ -259,7 +288,7 @@ const deleteprof = async (req,res) => {
   };
 
   const getprofbydisponibilidadhoraria = async (req, res) => {
-    const { disponibilidad_horaria } = req.params; // Suponiendo que la disponibilidad se pasa como un parámetro de consulta
+    const { disponibilidad_horaria } = req.params; 
     if (!disponibilidad_horaria) {
         return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
     }
@@ -283,25 +312,7 @@ const deleteprof = async (req,res) => {
     }
   }  
 
-const getprofbydias = async (req,res) => {
-const {dias} = req.params;
 
-try{
-const query= 'SELECT * FROM public.profesores WHERE dias= $1';
-const {rows}= await pool.query(query,[dias]);
-
-if (rows.length > 0){
-return res.status(200).json({profesores:rows})
-}else{
-  return res.status(404).json({error:'No se encontraron profesores con esa disponibilidad horaria'})
-}
-} catch (err) {
-  console.error('Error al obtener profesores por disponibilidad horaria:', err);
-  return res.status(500).json({ error: 'Error al obtener los profesores' });
-}
-
-
-}
 
 // Crear una valoración
 const createvaloracionbyclases = async (req, res) => {
@@ -364,6 +375,7 @@ const profesores = {
   getprof, 
   getprofbyID,
   getprofbymail,
+  getDisponibilidadHoraria,
   updateinfopersonal,
   updateperfil,
   updateseguridad,
@@ -373,7 +385,6 @@ const profesores = {
  getprofbynombreyapellido,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
- getprofbydias,
 createvaloracionbyclases
 
 };
