@@ -1,5 +1,7 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
+import { Server } from "socket.io";
+import { createServer } from "node:http";
 import auth from './controllers/auth.js'
 import profesores from './controllers/Profesores.js';
 //import clases from './controllers/clases.js';
@@ -29,7 +31,43 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS']
 }));
 
+const server = createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
+// CHAT: 
+io.on('connection', (socket) => {
+  console.log("Usuario conectado");
+
+  socket.on("disconnect", () => {
+    console.log("Usuario desconectado");
+  });
+
+  socket.on("chat message", async ({ idprof, idalumno, content }) => {
+    try {
+      const result = await pool.query(
+        "INSERT INTO messages (idprof, idalumno, content, timestamp) VALUES ($1, $2, $3, NOW()) RETURNING id",
+        [idprof, idalumno, content]
+      );
+      const messageId = result.rows[0].id;
+
+      io.emit("chat message", {
+        id: messageId,
+        idprof,
+        idalumno,
+        content,
+        timestamp: new Date()
+      });
+
+    } catch (error) {
+      console.error("Error al guardar el mensaje:", error);
+    }
+  });
+});
 
 // Ruta de prueba
 app.get("/", (req, res) => {
