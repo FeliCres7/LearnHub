@@ -61,7 +61,7 @@
     </script>
 
     <script src="script.js"></script>
-    <div class="Proxima Clases"
+    <div id="Proximas clases"
         <h1>Proximas Clases</h1>
         <p>Lunes 1/10</p>
         <p>15:00-16:30 </p>
@@ -74,37 +74,6 @@
         <p>15:00-16:00</p>
         <p>Clase con sergio coppa</p>
     </div>
-   
-
 </body>
 </html>
 
-async function getReservacionesByAlumno(IDalumno) {
-    try {
-        const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/IDalumno/${IDalumno}`);
-        if (!response.ok) {
-            throw new Error('Error en la solicitud');
-        }
-        const reservaciones = await response.json();
-        displayReservaciones(reservaciones);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-function displayReservaciones(reservaciones) {
-    const clasesContainer = document.querySelector('.proximas-clases');
-    clasesContainer.innerHTML = '<h1>Próximas Clases</h1>';
-
-    reservaciones.forEach(reserva => {
-        const reservaHTML = `
-            <p>${reserva.dia}</p>
-            <p>${reserva.hora}</p>
-            <p>Clase con ${reserva.profesor}</p>
-        `;
-        clasesContainer.innerHTML += reservaHTML;
-    });
-}
-
-// Llamada a la función con un ejemplo de IDalumno
-getReservacionesByAlumno(1); // Reemplaza 1 con el ID del alumno real
