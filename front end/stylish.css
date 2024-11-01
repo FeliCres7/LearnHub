@@ -11,6 +11,7 @@ background-color: #dae8ff;
 
 }
 body{
+    background-image: url('Images html/Pantalla\ Basica\ con\ Header\ \(Profesor\).png');
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -93,8 +94,12 @@ main {
     width: 45vw;
     height: auto;
     margin: 60px auto;
+    display: flex;
 }
-#proximasclases{
+#Proximasclases{
+    display: flex;
+    background-color: #ffffff;
+    
 
 
 }
