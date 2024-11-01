@@ -9,11 +9,9 @@
   <script type="module">
     import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
 
-    // Obtener `idprof` y `idalumno` desde la URL o de alguna fuente conocida
     const idprof = new URLSearchParams(window.location.search).get('idprof') ?? null;
     const idalumno = new URLSearchParams(window.location.search).get('idalumno') ?? null;
 
-    // Inicializar la conexión de Socket.io con credenciales de autenticación
     const socket = io({
       auth: {
         idprof,
@@ -25,7 +23,6 @@
     const input = document.getElementById('input');
     const messages = document.getElementById('messages');
 
-    // Escuchar mensajes de chat recibidos del servidor
     socket.on('chat message', ({ id, idprof, idalumno, content, timestamp }) => {
       const senderType = idprof ? 'Profesor' : 'Alumno';
       const senderId = idprof || idalumno;
@@ -36,16 +33,13 @@
       </li>`;
       messages.insertAdjacentHTML('beforeend', item);
 
-      // Scroll automático al final de la lista de mensajes
       messages.scrollTop = messages.scrollHeight;
     });
 
-    // Enviar mensaje al servidor cuando se envía el formulario
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       if (input.value) {
-        // Emitir el mensaje con el `idprof` o `idalumno` según corresponda
         socket.emit('chat message', {
           idprof: idprof || null,
           idalumno: idalumno || null,
@@ -57,7 +51,6 @@
   </script>
 
   <style>
-    /* CSS sin cambios */
   </style>
 </head>
 
@@ -69,6 +62,94 @@
       <button type="submit">Enviar</button>
     </form>
   </section>
+</body>
+
+</html>
+
+<style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      color-scheme: light dark;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      display: grid;
+      place-content: center;
+      height: 100vh;
+      padding: 36px 36px 100px 36px;
+      grid-template-rows: 1fr;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow-y: scroll;
+      height: 100%;
+      scroll-behavior: smooth;
+      padding-bottom: 48px;
+    }
+
+    #messages>li {
+      padding: .5rem 1rem;
+    }
+
+    #messages>li:nth-child(odd) {
+      background: #000;
+    }
+
+    #chat {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      overflow: hidden;
+      width: 350px;
+      height: 100%;
+      position: relative;
+    }
+
+    #form {
+      bottom: 0;
+      display: flex;
+      height: 48px;
+      left: 0;
+      padding: 4px;
+      position: absolute;
+      right: 0;
+    }
+
+    #input {
+      border-radius: 9999px;
+      border: 1px solid #eee;
+      flex: 1;
+      margin: 4px;
+      padding: 0 8px;
+    }
+
+    #input:focus {
+      outline: 0;
+    }
+
+    #form>button {
+      background: #09f;
+      color: #fff;
+      border: 0;
+      margin: 4px;
+      border-radius: 4px;
+    }
+
+    #form>button:hover {
+      background: #0cf;
+    }
+  </style>
+</head>
+
 </body>
 
 </html>
