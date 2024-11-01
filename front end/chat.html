@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat de Learnhub</title>
+
+  <script type="module">
+    import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
+
+    // Obtener `idprof` y `idalumno` desde la URL o de alguna fuente conocida
+    const idprof = new URLSearchParams(window.location.search).get('idprof') ?? null;
+    const idalumno = new URLSearchParams(window.location.search).get('idalumno') ?? null;
+
+    // Inicializar la conexión de Socket.io con credenciales de autenticación
+    const socket = io({
+      auth: {
+        idprof,
+        idalumno
+      }
+    });
+
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const messages = document.getElementById('messages');
+
+    // Escuchar mensajes de chat recibidos del servidor
+    socket.on('chat message', ({ id, idprof, idalumno, content, timestamp }) => {
+      const senderType = idprof ? 'Profesor' : 'Alumno';
+      const senderId = idprof || idalumno;
+
+      const item = `<li>
+        <p>${content}</p>
+        <small>${senderType} ID: ${senderId} - ${new Date(timestamp).toLocaleString()}</small>
+      </li>`;
+      messages.insertAdjacentHTML('beforeend', item);
+
+      // Scroll automático al final de la lista de mensajes
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    // Enviar mensaje al servidor cuando se envía el formulario
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (input.value) {
+        // Emitir el mensaje con el `idprof` o `idalumno` según corresponda
+        socket.emit('chat message', {
+          idprof: idprof || null,
+          idalumno: idalumno || null,
+          content: input.value
+        });
+        input.value = '';
+      }
+    });
+  </script>
+
+  <style>
+    /* CSS sin cambios */
+  </style>
+</head>
+
+<body>
+  <section id="chat">
+    <ul id="messages"></ul>
+    <form id="form">
+      <input type="text" name="message" id="input" placeholder="Escribe un mensaje" autocomplete="off" />
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+</body>
+
+</html>
