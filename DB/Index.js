@@ -69,6 +69,21 @@ io.on('connection', (socket) => {
   });
 });
 
+app.get('/api/messages', async (req, res) => {
+  const { idprof, idalumno } = req.query;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM messages WHERE idprof = $1 AND idalumno = $2 ORDER BY timestamp ASC",
+      [idprof, idalumno]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener mensajes:", error);
+    res.status(500).json({ error: "Error al obtener mensajes" });
+  }
+});
+
+
 // Ruta de prueba
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub está funcionando!");

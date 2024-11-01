@@ -1,0 +1,153 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  body {
+    margin: 0;
+    background-color: #f0f2f5;
+  }
+  
+  .navbar {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    height: 40px;
+    margin-right: 20px;
+  }
+  
+  .search-bar {
+    flex: 1;
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    outline: none;
+  }
+  
+  .nav-icons span {
+    margin-right: 15px;
+    font-size: 0.9em;
+    color: #555;
+    cursor: pointer;
+  }
+  
+  .chat-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    height: 70vh;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .sidebar {
+    width: 25%;
+    background-color: #e6eaf3;
+    padding: 20px;
+  }
+  
+  .contact-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .contact-list li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #333;
+    text-align: center;
+  }
+  
+  .chat-box {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    background-color: #eaf0fb;
+  }
+  
+  .messages {
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    background-color: #f4f7fc;
+  }
+  
+  .messages li {
+    max-width: 70%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    position: relative;
+  }
+  
+  .message-prof {
+    background-color: #0b81ff;
+    align-self: flex-start;
+    border-radius: 10px 10px 10px 0;
+  }
+  
+  .message-alumno {
+    background-color: #c7dafb;
+    color: black;
+    align-self: flex-end;
+    border-radius: 10px 10px 0 10px;
+  }
+  
+  .message-prof p,
+  .message-alumno p {
+    margin: 0;
+    padding-bottom: 5px;
+  }
+  
+  .message-prof small,
+  .message-alumno small {
+    font-size: 0.75em;
+    color: #f0f0f0;
+    position: absolute;
+    bottom: -15px;
+    right: 10px;
+  }
+  
+  .input-box {
+    display: flex;
+    padding: 10px;
+    background-color: #003c8f;
+    align-items: center;
+  }
+  
+  #input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    outline: none;
+  }
+  
+  button {
+    padding: 10px 15px;
+    background-color: #0056b3;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #004c99;
+  }
+  
