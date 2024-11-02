@@ -1,90 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat de Learnhub</title>
-  <link rel="stylesheet" href="chatstyle.css"> <!-- Enlace al archivo CSS -->
-
-  <script type="module">
-    import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
-
-    const idprof = new URLSearchParams(window.location.search).get('idprof') ?? null;
-    const idalumno = new URLSearchParams(window.location.search).get('idalumno') ?? null;
-
-    // Conexión con el servidor de Socket.io
-    const socket = io("https://learn-hub-eta.vercel.app", {
-      auth: {
-        idprof,
-        idalumno
-      }
-    });
-
-    const form = document.getElementById('form');
-    const input = document.getElementById('input');
-    const messages = document.getElementById('messages');
-
-    // Función para cargar mensajes previos desde el servidor
-    async function loadMessages() {
-      try {
-        const response = await fetch(`https://learn-hub-eta.vercel.app/chats?idprof=${idprof}&idalumno=${idalumno}`);
-        const data = await response.json();
-
-        data.forEach(({ idprof, idalumno, content, timestamp }) => {
-          addMessage(idprof, idalumno, content, timestamp);
-        });
-
-        messages.scrollTop = messages.scrollHeight;
-      } catch (error) {
-        console.error("Error al cargar los mensajes:", error);
-      }
-    }
-
-    // Llamar a loadMessages al cargar la página
-    loadMessages();
-
-    // Escuchar nuevos mensajes de otros usuarios
-    socket.on('chat message', ({ idprof, idalumno, content, timestamp }) => {
-      addMessage(idprof, idalumno, content, timestamp);
-      messages.scrollTop = messages.scrollHeight;
-    });
-
-    // Enviar mensaje nuevo
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      if (input.value) {
-        socket.emit('chat message', {
-          idprof: idprof || null,
-          idalumno: idalumno || null,
-          content: input.value
-        });
-
-        // Agregar el mensaje que envió el usuario al chat
-        addMessage(idprof, idalumno, input.value, new Date().toISOString());
-        input.value = '';
-      }
-    });
-
-    // Función para agregar un mensaje al chat
-    function addMessage(idprof, idalumno, content, timestamp) {
-      const senderType = idprof ? 'Profesor' : 'Alumno';
-      const senderId = idprof || idalumno;
-
-      const item = document.createElement('li');
-      item.innerHTML = `<p>${content}</p><small>${senderType} ID: ${senderId} - ${new Date(timestamp).toLocaleString()}</small>`;
-      messages.appendChild(item);
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat de Learnhub</title>
+    <link rel="stylesheet" href="chatstyle.css">
 </head>
-
 <body>
-  <section id="chat">
-    <ul id="messages" style="list-style-type: none; padding: 0; max-height: 400px; overflow-y: auto;"></ul>
-    <form id="form" style="display: flex; gap: 8px;">
-      <input type="text" name="message" id="input" placeholder="Escribe un mensaje" autocomplete="off" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"/>
-      <button type="submit" style="padding: 8px 16px; border: none; border-radius: 4px; background-color: #007bff; color: #fff; cursor: pointer;">Enviar</button>
-    </form>
-  </section>
+    <div class="chat-container">
+        <!-- Sidebar de contactos -->
+        <div class="chat-list" id="chatList">
+            <h3>Chats</h3>
+            <!-- Los contactos se agregarán aquí dinámicamente -->
+        </div>
+
+        <!-- Chat principal -->
+        <div class="chat-box">
+            <div class="message-list" id="messageList"></div>
+            <form id="messageForm">
+                <input type="text" id="messageInput" placeholder="Escribe un mensaje">
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="chat.js"></script>
 </body>
 </html>

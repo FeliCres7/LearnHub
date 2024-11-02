@@ -83,7 +83,26 @@ app.get('/api/messages', async (req, res) => {
   }
 });
 
-
+app.get('/api/chats', async (req, res) => {
+  try {
+      const result = await pool.query(`
+          SELECT 
+              CASE 
+                  WHEN m.idprof = p.id THEN p.nombre || ' ' || p.apellido
+                  WHEN m.idalumno = a.id THEN a.nombre || ' ' || a.apellido
+              END AS nombre,
+              m.idprof, m.idalumno
+          FROM messages m
+          LEFT JOIN profesores p ON m.idprof = p.id
+          LEFT JOIN alumnos a ON m.idalumno = a.id
+          GROUP BY nombre, m.idprof, m.idalumno
+      `);
+      res.json(result.rows);
+  } catch (error) {
+      console.error("Error al obtener la lista de chats:", error);
+      res.status(500).json({ error: "Error al obtener la lista de chats" });
+  }
+});
 // Ruta de prueba
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub está funcionando!");
