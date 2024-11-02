@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000"); 
+const socket = io(); 
 const chatList = document.getElementById('chatList');
 const messageList = document.getElementById('messageList');
 const messageForm = document.getElementById('messageForm');
@@ -7,7 +7,7 @@ const messageInput = document.getElementById('messageInput');
 let currentChat = null;
 
 // Cargar la lista de chats al cargar la página
-fetch('/api/chats')
+fetch('https://learn-hub-eta.vercel.app/api/chats')
     .then(response => response.json())
     .then(chats => {
         chats.forEach(chat => {
@@ -25,7 +25,7 @@ fetch('/api/chats')
 // Función para cargar el historial de un chat
 function loadChat(idprof, idalumno) {
     currentChat = { idprof, idalumno };
-    fetch(`/api/messages?idprof=${idprof}&idalumno=${idalumno}`)
+    fetch(`https://learn-hub-eta.vercel.app/api/messages?idprof=${idprof}&idalumno=${idalumno}`)
         .then(response => response.json())
         .then(messages => {
             messageList.innerHTML = '';
