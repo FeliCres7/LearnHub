@@ -88,13 +88,13 @@ app.get('/api/chats', async (req, res) => {
       const result = await pool.query(`
           SELECT 
               CASE 
-                  WHEN m.idprof = p.id THEN p.nombre || ' ' || p.apellido
-                  WHEN m.idalumno = a.id THEN a.nombre || ' ' || a.apellido
+                  WHEN m.idprof = p."ID" THEN p.nombre || ' ' || p.apellido
+                  WHEN m.idalumno = a."ID" THEN a.nombre || ' ' || a.apellido
               END AS nombre,
               m.idprof, m.idalumno
           FROM messages m
-          LEFT JOIN profesores p ON m.idprof = p.id
-          LEFT JOIN alumnos a ON m.idalumno = a.id
+          LEFT JOIN profesores p ON m.idprof = p."ID"
+          LEFT JOIN alumnos a ON m.idalumno = a."ID"
           GROUP BY nombre, m.idprof, m.idalumno
       `);
       res.json(result.rows);
