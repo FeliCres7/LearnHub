@@ -137,7 +137,7 @@
                 }
 
                 // Mostrar los datos del alumno en el aside izquierdo
-                document.getElementById("foto-perfil").src = alumno.foto || "Images html/icon perfil.png"; // Asignar foto de perfil (con un valor por defecto)
+                document.getElementById("foto-perfil").src = `data:image/jpeg;base64,${alumno.foto}`;
                 document.getElementById("nombre-apellido").textContent = `${alumno.nombre} ${alumno.apellido}`; // Asignar nombre y apellido
                 document.getElementById("pais").textContent = alumno.pais || "No disponible"; // Asignar país (con un valor por defecto)
 

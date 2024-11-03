@@ -56,27 +56,77 @@
 
         <div class="perfil">
             <div class="fotoperfil">
-                <img src="Images html/images.jfif" alt="">
+                <img id="foto-perfil" src="" alt=" ">
             </div>
             <div class="perfil-data">
-                <h1>Ciro Voievdca</h1>
-                <p class="grey">Argentina</p>
+                <h1 id="nombre-apellido"></h1>
+                <p id="pais" class="grey"></p>
                 <div class="div-central-perfil">
                     <div class="data-container">
                         <p class="bold">Fecha de nacimiento:</p>
-                        <p>22/10/2007</p>
+                        <p id="fecha_de_nacimiento"></p>
                     </div>
                     <div class="data-container">
                         <p class="bold">Estudia en:</p>
-                        <p>ORT</p>
+                        <p id="colegio"></p>
                     </div>
                 </div>
-                <Button class="editar-perfil-button" onclick="window.location.href='configuracion.html'">Editar perfil</Button>
+                <Button class="editar-perfil-button" onclick="window.location.href='configuracion.html'">Editar
+                    perfil</Button>
             </div>
 
         </div>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Verificar si existe un token
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Token no encontrado. Redireccionando...");
+                window.location.href = "inicio.html";  // Redirige al login si no hay token
+                return;
+            }
 
+            // Decodificar el token para obtener el ID del alumno
+            const payloadBase64 = token.split(".")[1];
+            const payloadJson = JSON.parse(atob(payloadBase64));
+            const alumnoId = payloadJson.id;
+
+            try {
+                // Llamar a la API para obtener los datos del alumno
+                const response = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${alumnoId}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.error("Error al obtener datos del alumno:", data.error);
+                    return;
+                }
+
+                const alumno = data.alumno;
+
+                // Colocar los datos en sus respectivos lugares
+                document.getElementById("nombre-apellido").textContent = `${alumno.nombre} ${alumno.apellido}`;
+                document.getElementById("pais").textContent = alumno.idpais;
+                const fechaNacimiento = new Date(alumno.fecha_de_nacimiento);
+                const fechaFormateada = fechaNacimiento.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                document.getElementById("fecha_de_nacimiento").textContent = fechaFormateada;
+
+                document.getElementById("colegio").textContent = alumno.colegio;
+
+                // Decodificar la foto de perfil en base64 y establecerla en el src de la imagen
+                document.getElementById("foto-perfil").src = `data:image/jpeg;base64,${alumno.foto}`;
+
+            } catch (error) {
+                console.error("Error al obtener los datos del alumno:", error);
+            }
+        });
+
+    </script>
 </body>
+
 
 </html>

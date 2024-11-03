@@ -83,7 +83,6 @@
                         <p class="bold">Enseña:</p>
                         <p id="materias">Materia</p>
                     </div>
-                    <button id="ver-certificados" class="button-vercertificadosestudio">Ver certificados de estudio</button>
                 </div>
                 <button class="editar-perfil-button" onclick="window.location.href='configuracionprofesor.html'">Editar perfil</button>
             </div>
@@ -91,57 +90,54 @@
     </main>
     
 </body>
-<script>// Espera a que el DOM esté completamente cargado
-    window.addEventListener("load", () => {
-        cargarPerfilProfesor();  // Llama a la función directamente sin timeout
-    });
-    
-    async function cargarPerfilProfesor() {
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        // Verificar si existe un token
         const token = localStorage.getItem("token");
-    
         if (!token) {
-            alert("Por favor, inicia sesión para ver el perfil.");
-            window.location.href = "inicio.html";
+            console.error("Token no encontrado. Redireccionando...");
+            window.location.href = "inicio.html";  // Redirige al login si no hay token
             return;
         }
-    
+
+        // Decodificar el token para obtener el ID del alumno
+        const payloadBase64 = token.split(".")[1];
+        const payloadJson = JSON.parse(atob(payloadBase64));
+        const profesorId = payloadJson.id;
+
         try {
-            // Decodificamos el token para obtener el ID del profesor
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const ID = payload.id; // Asegúrate de que el ID esté en el payload
-    
-            const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${ID}/perfilprof`, {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
+            // Llamar a la API para obtener los datos del alumno
+            const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error("Error al obtener datos del alumno:", data.error);
+                return;
+            }
+
+            const profesor = data.profesor;
+
+            // Colocar los datos en sus respectivos lugares
+            document.getElementById("nombre-apellido").textContent = `${profesor.nombre} ${profesor.apellido}`;
+            document.getElementById("pais").textContent = profesor.idpais;
+            const fechaNacimiento = new Date(profesor.fecha_de_nacimiento);
+            const fechaFormateada = fechaNacimiento.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
             });
-    
-            if (!response.ok) throw new Error("No se pudo obtener la información del perfil");
-    
-            const profesor = await response.json();
-    
-            document.getElementById("foto-perfil").src = profesor.perfil.foto; // Asegúrate de que la estructura de datos sea correcta
-            document.getElementById("nombre-apellido").textContent = `${profesor.perfil.nombre} ${profesor.perfil.apellido}`; // Cambia según la estructura
-            document.getElementById("pais").textContent = profesor.perfil.pais; // Cambia según la estructura
-            document.getElementById("fecha-nacimiento").textContent = profesor.perfil.fecha_de_nacimiento; // Cambia según la estructura
-            document.getElementById("materias").textContent = profesor.materias.join(", "); // Cambia según la estructura
-    
-            document.getElementById("ver-certificados").addEventListener("click", () => {
-                descargarCertificado(profesor.certificadoestudio); // Cambia según la estructura
-            });
+            document.getElementById("fecha-nacimiento").textContent = fechaFormateada;
+
+            document.getElementById("materias").textContent = profesor.idmateria;
+
+            // Decodificar la foto de perfil en base64 y establecerla en el src de la imagen
+            document.getElementById("foto-perfil").src = `data:image/jpeg;base64,${profesor.foto}`;
+
         } catch (error) {
-            console.error("Error al cargar el perfil:", error);
-            alert("Error al cargar el perfil del profesor. Por favor, intenta nuevamente.");
+            console.error("Error al obtener los datos del profesor:", error);
         }
-    }
-    
-    function descargarCertificado(url) {
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "certificado.pdf";
-        link.click();
-    }
-    </script>
+    });
+
+</script>
 
 </html>
