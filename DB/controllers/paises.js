@@ -12,8 +12,27 @@ const getpaises = async (_, res) => {
     }
   }
 
+  const getpaisesById = async (_, res) => {
+    try {
+      const query = `SELECT nombre FROM paises WHERE id = $1`;
+      const result = await pool.query(query);
+  
+      if (result.rows.length > 0) {
+        const pais = result.rows[0].nombre;
+        res.json({ pais });
+      } else {
+        res.status(404).json({ error: 'pais not found' });
+      }
+    } catch (error) {
+      console.error('Error fetching pais:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+
   const paises = {
-    getpaises
+    getpaises,
+    getpaisesById
   }
   
   export default paises;

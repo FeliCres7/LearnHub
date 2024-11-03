@@ -316,20 +316,20 @@ const getperfilprof = async (req, res) => {
 
 // Crear una valoración
 const createvaloracionbyclases = async (req, res) => {
-  const { idreserva , valoracion, fecha, IDalumnos, idprof } = req.body;
+  const { idreserva , valoracion, IDalumnos, idprof } = req.body;
 
   // Validar los datos recibidos
-  if (!idreserva || !valoracion || !fecha || !IDalumnos || !idprof) {
+  if (!idreserva || !valoracion || !IDalumnos || !idprof) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
   try {
     const query = `
-      INSERT INTO public."valoraciones" ("idreserva", "valoracion", "fecha", "IDalumnos", "idprof")
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO public."valoraciones" ("idreserva", "valoracion", "IDalumnos", "idprof")
+      VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
-    const values = [idreserva, valoracion, fecha, IDalumnos, idprof];
+    const values = [idreserva, valoracion, IDalumnos, idprof];
 
     const result = await pool.query(query, values);
 

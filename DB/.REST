@@ -3,10 +3,13 @@ POST http://localhost:3000/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-"usuario":"saidcotur@gmail.com", 
+"usuario":"dana@gmail.com", 
 "contraseña":"1234"
 }
 
+### Obtener mensajes entre un profesor y un alumno
+GET http://localhost:3000/api/messages?idprof=1&idalumno=2
+Content-Type: application/json
 
 ### // OBTENER TODOS LOS ALUMNOS 
 GET http://localhost:3000/Alumnos/90 HTTP/1.1
@@ -102,9 +105,10 @@ GET http://localhost:3000/profesores/materias/español HTTP/1.1
 
 ### //Crear una valoracion
 
-POST http://localhost:3000/profesores/valoraciones HTTP/1.1 Content-Type: application/json
+POST http://localhost:3000/profesores/valoraciones HTTP/1.1 
+Content-Type: application/json
 
-{ "idreserva": 7, "valoracion": 9, "fecha": "2024/8/25", "IDalumnos": 72, "idprof": 38 }
+{ "idreserva": 8, "valoracion": 9, "IDalumnos": 97, "idprof": 60 }
 
 //MATERIAL
 ### //Obtener material
@@ -149,9 +153,11 @@ GET http://localhost:3000/reservaciones/idprof/38 HTTP/1.1
 
 ### //crear una reserva
 
-POST http://localhost:3000/reservaciones HTTP/1.1 Content-Type: application/json
+POST http://localhost:3000/reservaciones HTTP/1.1 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTcsInVzZXJuYW1lIjoiZGFuYSIsInJvbGUiOiJhbHVtbm8iLCJpYXQiOjE3MzA2MzU2MDYsImV4cCI6MTczMDYzOTIwNn0.h5MDwunKsrQ7je4svUgmIgj3IuJJ-vsyLvz-xTVI134
 
-{ "IDalumno": 72, "idprof": 38, "dia": "martes", "hora": 18 }
+{ "IDalumno": 97, "idprof": 60, "dia": "martes", "hora": 18 }
 
 ### //obtener todas las materias
 
