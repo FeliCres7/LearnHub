@@ -87,16 +87,16 @@ app.get('/api/chats', async (req, res) => {
   try {
       const result = await pool.query(`
           SELECT 
-              CASE 
-                  WHEN m.idprof = p."ID" THEN p.nombre || ' ' || p.apellido
-                  WHEN m.idalumno = a."ID" THEN a.nombre || ' ' || a.apellido
-              END AS nombre,
-              m.idprof, m.idalumno
-          FROM messages m
-          LEFT JOIN profesores p ON m.idprof = p."ID"
-          LEFT JOIN alumnos a ON m.idalumno = a."ID"
-          GROUP BY nombre, m.idprof, m.idalumno
-      `);
+          CASE 
+              WHEN m.idprof = p."ID" THEN p.nombre || ' ' || p.apellido
+              WHEN m.idalumno = a."ID" THEN a.nombre || ' ' || a.apellido
+          END AS nombre,
+          m.idprof, m.idalumno
+      FROM messages m
+      LEFT JOIN profesores p ON m.idprof = p."ID"
+      LEFT JOIN alumnos a ON m.idalumno = a."ID"
+      GROUP BY m.idprof, m.idalumno, p.nombre, p.apellido, a.nombre, a.apellido
+    `);
       res.json(result.rows);
   } catch (error) {
       console.error("Error al obtener la lista de chats:", error);
@@ -174,7 +174,7 @@ app.get('/Materia/ID', materia.getMateriaById);
 
 //paises terminado
 app.get('/paises', paises.getpaises);
-
+app.get('/paises/ID', paises.getpaisesById);
 
 //Material. terminado
 app.get('/Material', material.getmaterial);
