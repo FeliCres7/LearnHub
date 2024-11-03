@@ -31,25 +31,19 @@ if (rows.length > 0){
 }
 };
 
-const creatematerial = async (req, res) => {       
-  const { IDprofesor, nombre, infoguia, archivo } = req.body;
+const creatematerial = async (req, res) => {     
+  const {IDprofesor} = req.params  
+  const { nombre, infoguia, archivo } = req.body;
 
   // Validar que todos los campos estén presentes
-  if (!IDprofesor || !nombre || !infoguia || !archivo) {
+  if (!nombre || !infoguia || !archivo) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
-  }
-
-  // Validar la extensión del archivo
-  const extensionesPermitidas = ['pdf', 'doc', 'docx'];
-  const extensionArchivo = archivo.split('.').pop();
-  if (!extensionesPermitidas.includes(extensionArchivo)) {
-    return res.status(400).send('Error: Extensiones no permitidas. El archivo debe ser PDF o DOC/DOCX.');
   }
 
   try {
     // Consulta para insertar el material en la base de datos
     const query = `
-      INSERT INTO public."material" ("IDprofesor", "nombre", "infoguia", "archivo")
+      INSERT INTO public."material" ("nombre", "infoguia", "archivo")
       VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
