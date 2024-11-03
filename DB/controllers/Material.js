@@ -35,15 +35,10 @@ const creatematerial = async (req, res) => {
   const {IDprofesor} = req.params  
   const { nombre, infoguia, archivo } = req.body;
 
-  // Validar que todos los campos estén presentes
-  if (!nombre || !infoguia || !archivo) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
-  }
-
   try {
     // Consulta para insertar el material en la base de datos
     const query = `
-      INSERT INTO public."material" ("nombre", "infoguia", "archivo")
+      INSERT INTO public."material" ("IDprofesor" ,"nombre", "infoguia", "archivo")
       VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
