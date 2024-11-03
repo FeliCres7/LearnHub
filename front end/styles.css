@@ -667,3 +667,11 @@ padding-left: 10px;
     border-radius: 30px;
     padding: 5px;
 }
+.mensaje-sin-materiales{
+    text-align: center;
+    margin-top: 25px;
+    font-size: 18px;
+}
+.article-materialesdetrabajo{
+        width: 100%;
+}

@@ -58,13 +58,13 @@
                 <div class="sectionscrearmaterial">
                     <div class="nombre-archivo-material">
                         <p class="bold">Nombre del material</p>
-                        <input type="text" id="nombreMaterial" placeholder="Ej: Guía 1" required>
+                        <input type="text" id="nombre" placeholder="Ej: Guía 1" required>
                         <p class="bold">Subir archivo</p>
                         <input type="file" id="archivo" required>
                     </div>
                     <div class="descripcion-subir-material">
                         <p class="bold">Descripción</p>
-                        <textarea id="descripcion" placeholder="Introduzca una breve descripción del material de trabajo" required></textarea>
+                        <textarea id="infoguia" placeholder="Introduzca una breve descripción del material de trabajo" required></textarea>
                         <div class="subirmaterial"><input type="submit" value="Subir" id="submitMaterial"></div>
                     </div>
                 </div>
@@ -77,8 +77,8 @@ document.getElementById("submitMaterial").addEventListener("click", async functi
     event.preventDefault();
     console.log("Botón de envío clickeado");
 
-    const nombreMaterial = document.getElementById("nombreMaterial").value;
-    const descripcion = document.getElementById("descripcion").value;
+    const nombreMaterial = document.getElementById("nombre").value; // Cambiado a "nombre"
+    const descripcion = document.getElementById("infoguia").value; // Cambiado a "infoguia"
     const archivoInput = document.getElementById("archivo");
     const archivo = archivoInput.files[0];
 
@@ -111,16 +111,14 @@ document.getElementById("submitMaterial").addEventListener("click", async functi
 
     const formData = new FormData();
     formData.append("IDprofesor", IDprofesor);
-    formData.append("materia", nombreMaterial);
-    formData.append("Fecha", new Date().toISOString().slice(0, 10));
-    formData.append("infoguia", descripcion);
+    formData.append("nombre", nombreMaterial); // Asegúrate de que coincida
+    formData.append("infoguia", descripcion); // Asegúrate de que coincida
     formData.append("archivo", archivo);
 
     console.log("Datos preparados para enviar:", {
         IDprofesor,
-        materia: nombreMaterial,
-        Fecha: new Date().toISOString().slice(0, 10),
-        infoguia: descripcion,
+        nombre: nombreMaterial, // Asegúrate de que coincida
+        infoguia: descripcion, // Asegúrate de que coincida
         archivo
     });
 
@@ -148,5 +146,6 @@ document.getElementById("submitMaterial").addEventListener("click", async functi
         alert("Error interno del servidor. Inténtelo de nuevo más tarde.");
     }
 });
+
 </script>
 </html>
