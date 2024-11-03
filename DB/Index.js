@@ -190,7 +190,7 @@ app.get('/paises/ID', paises.getpaisesById);
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
 app.get('/Material/idprof/:IDprofesor', material.getmaterialbyidprof);
-app.post('/Material', verifyToken, verifyAdmin, material.creatematerial);
+app.post('/Material/:IDprofesor', verifyToken, verifyAdmin, material.creatematerial);
 app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
