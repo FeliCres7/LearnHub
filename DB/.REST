@@ -11,6 +11,22 @@ Content-Type: application/json
 GET http://localhost:3000/api/messages?idprof=1&idalumno=2
 Content-Type: application/json
 
+### Insertar mensaje en la tabla messages
+POST http://localhost:3000/api/messages
+Content-Type: application/json
+
+{
+  "idprof": 55,
+  "idalumno": 97,
+  "content": "Este es un mensaje de prueba"
+}
+
+
+### Obtener mensajes entre un profesor y un alumno
+GET http://localhost:3000/api/chats
+Content-Type: application/json
+
+
 ### // OBTENER TODOS LOS ALUMNOS 
 GET http://localhost:3000/Alumnos/90 HTTP/1.1
 
@@ -62,7 +78,8 @@ GET http://localhost:3000/profesores/nombreapellido/ezequiel/agradnik HTTP/1.1
 
 ### //Actualizar la informacion personal de un prof
 
-PUT http://localhost:3000/profesores/updateinfopersonal/ID HTTP/1.1 Content-Type: application/json Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzIsInVzZXJuYW1lIjoiZXplcXVpZWwiLCJpYXQiOjE3MzAwNjkxNzMsImV4cCI6MTczMDA3Mjc3M30.AYzVBQsRnv-dm-1P7jW2TJKjlC3G0uTPlSprqU6Jt7c
+PUT http://localhost:3000/profesores/updateinfopersonal/ID HTTP/1.1 
+Content-Type: application/json Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzIsInVzZXJuYW1lIjoiZXplcXVpZWwiLCJpYXQiOjE3MzAwNjkxNzMsImV4cCI6MTczMDA3Mjc3M30.AYzVBQsRnv-dm-1P7jW2TJKjlC3G0uTPlSprqU6Jt7c
 
 { "nombre":"benjamin", "apellido":"fridman", "fecha_de_nacimiento":"2007/7/19", "ID": 9 }
 

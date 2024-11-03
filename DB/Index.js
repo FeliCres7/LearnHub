@@ -46,27 +46,35 @@ io.on('connection', (socket) => {
   socket.on("disconnect", () => {
     console.log("Usuario desconectado");
   });
+});
 
-  socket.on("chat message", async ({ idprof, idalumno, content }) => {
-    try {
-      const result = await pool.query(
-        "INSERT INTO messages (idprof, idalumno, content, timestamp) VALUES ($1, $2, $3, NOW()) RETURNING id",
-        [idprof, idalumno, content]
-      );
-      const messageId = result.rows[0].id;
+// Manejador POST para guardar un mensaje y emitirlo con Socket.IO
+app.post('/api/messages', async (req, res) => {
+  const { idprof, idalumno, content } = req.body;
+  if (!idprof || !idalumno || !content) {
+    return res.status(400).json({ error: "Faltan datos necesarios para el mensaje." });
+  }
 
-      io.emit("chat message", {
-        id: messageId,
-        idprof,
-        idalumno,
-        content,
-        timestamp: new Date()
-      });
+  try {
+    const result = await pool.query(
+      "INSERT INTO messages (idprof, idalumno, content, timestamp) VALUES ($1, $2, $3, NOW()) RETURNING id",
+      [idprof, idalumno, content]
+    );
+    const messageId = result.rows[0].id;
 
-    } catch (error) {
-      console.error("Error al guardar el mensaje:", error);
-    }
-  });
+    io.emit("chat message", {
+      id: messageId,
+      idprof,
+      idalumno,
+      content,
+      timestamp: new Date()
+    });
+
+    res.status(201).json({ id: messageId });
+  } catch (error) {
+    console.error("Error al guardar el mensaje:", error);
+    res.status(500).json({ error: "Error al guardar el mensaje." });
+  }
 });
 
 app.get('/api/messages', async (req, res) => {
@@ -84,6 +92,7 @@ app.get('/api/messages', async (req, res) => {
 });
 
 app.get('/api/chats', async (req, res) => {
+  const { idprof, idalumno } = req.query;
   try {
       const result = await pool.query(`
           SELECT 
@@ -95,8 +104,9 @@ app.get('/api/chats', async (req, res) => {
       FROM messages m
       LEFT JOIN profesores p ON m.idprof = p."ID"
       LEFT JOIN alumnos a ON m.idalumno = a."ID"
-      GROUP BY m.idprof, m.idalumno, p.nombre, p.apellido, a.nombre, a.apellido
-    `);
+      where  m.idprof = $1  and m.idalumno=$2
+      GROUP BY m.idprof, m.idalumno, p."ID", a."ID", p.nombre, p.apellido, a.nombre, a.apellido
+    `, [idprof, idalumno] );
       res.json(result.rows);
   } catch (error) {
       console.error("Error al obtener la lista de chats:", error);
