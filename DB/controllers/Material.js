@@ -36,7 +36,6 @@ const creatematerial = async (req, res) => {
   const { nombre, infoguia, archivo } = req.body;
 
   try {
-    // Consulta para insertar el material en la base de datos
     const query = `
       INSERT INTO public."material" ("IDprofesor" ,"nombre", "infoguia", "archivo")
       VALUES ($1, $2, $3, $4)
@@ -57,19 +56,20 @@ const creatematerial = async (req, res) => {
 
 
 // Actualizar un Material
+
 const updatematerial = async (req, res) => {
-  console.log(req.body)
-  const { IDprofesor, materia, Fecha, infoguia, archivo, ID} = req.body;
+  const { IDprofesor, infoguia, archivo } = req.body;
+  const { ID } = req.params;
 
   // Validar los datos aquí si es necesario
-  if (!ID ||!IDprofesor ||!materia || !Fecha ) {
+  if (!ID || !IDprofesor || !infoguia || !archivo) {
     return res.status(400).send('Faltan datos necesarios');
   }
 
   try {
     const result = await pool.query(
-      'UPDATE public."material" SET "IDprofesor" = $1, materia = $2, "Fecha" = $3, "infoguia"= $4, "archivo"=$5 WHERE "ID" = $6 RETURNING *',
-      [IDprofesor, materia, Fecha, infoguia, archivo, ID]
+      'UPDATE public."material" SET "IDprofesor" = $1, "infoguia" = $2, "archivo" = $3 WHERE "ID" = $4 RETURNING *',
+      [IDprofesor, infoguia, archivo, ID]
     );
 
     if (result.rows.length > 0) {
@@ -81,6 +81,7 @@ const updatematerial = async (req, res) => {
     res.status(500).send(`Error al actualizar el material: ${err.message}`);
   }
 };
+
 
 
 
