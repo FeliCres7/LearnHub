@@ -519,6 +519,7 @@ padding-left: 10px;
 .article-home{
     background-color: #ffffff;
     padding: 5px;
+    padding-top: 20px;
     border-radius: 10px;
     height: fit-content;
     width: 700px;
@@ -526,8 +527,12 @@ padding-left: 10px;
     margin-left: 50px;
     margin-right: 50px;
     box-shadow: 0 4px 6px #00000066;
-
 }
+.article-home h1{
+    padding-top: 10px;
+    margin-left: 15px;
+}
+
 .aside-der-home{
     background-color: #ffffff;
     padding: 10px;
@@ -648,4 +653,17 @@ padding-left: 10px;
     text-indent: 10px;
     box-shadow: 0 4px 6px #00000066;
 
+}
+.bottom-article-profesorhome{
+    margin-top: 10px;
+    display: flex;
+    justify-content: right;
+    padding-right: 15px;
+    padding-bottom: 20px;
+    font-size: 20px;
+}
+.bottom-article-profesorhome *{
+    font-size: 30px;
+    border-radius: 30px;
+    padding: 5px;
 }
