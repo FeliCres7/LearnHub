@@ -108,33 +108,35 @@
         return;
     }
 
-    const formData = new FormData();
-    formData.append("nombre", nombre);
-    formData.append("infoguia", descripcion);
-    formData.append("archivo", archivo); // El archivo es tratado como 'archivo'
+    const reader = new FileReader();
+    
+    reader.onload = async function(event) {
+        const base64Archivo = event.target.result.split(',')[1]; // Extraer solo la parte base64
+        const dataToSend = {
+            IDprofesor: IDprofesor,
+            nombre: nombre,
+            infoguia: descripcion,
+            archivo: base64Archivo // Aquí envías el archivo en base64
+        };
 
-    console.log("Datos preparados para enviar:", {
-        IDprofesor,
-        nombre,
-        infoguia: descripcion,
-        archivo
-    });
+        console.log("Datos preparados para enviar:", dataToSend);
 
-    try {
+        try {
     const response = await fetch(`https://learn-hub-eta.vercel.app/Material/${IDprofesor}`, {
         method: "POST",
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
         },
-        body: formData,
+        body: JSON.stringify(dataToSend),
     });
 
     console.log("Respuesta recibida:", response);
 
     if (!response.ok) {
-        const errorText = await response.text(); // Leer el cuerpo de la respuesta como texto
+        const errorText = await response.text();
         console.error("Error en la respuesta:", errorText);
-        alert(`Error: ${errorText}`); // Mostrar el texto de error en el alert
+        alert(`Error: ${response.status} - ${response.statusText}\nDetalles: ${errorText}`);
     } else {
         const data = await response.json();
         console.log("Material creado con éxito:", data);
@@ -145,6 +147,14 @@
     alert("Error interno del servidor. Inténtelo de nuevo más tarde.");
 }
 
+    };
+
+    reader.onerror = function(error) {
+        console.error("Error al leer el archivo:", error);
+        alert("Error al procesar el archivo. Inténtelo de nuevo.");
+    };
+
+    reader.readAsDataURL(archivo); // Inicia la lectura del archivo
 });
 </script>
 </html>
