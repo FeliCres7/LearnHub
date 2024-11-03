@@ -1,6 +1,5 @@
 import {pool} from '../dbconfig.js'
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+
 
 // Obtener todas los materiales
 const getmaterial = async (_, res) => {
