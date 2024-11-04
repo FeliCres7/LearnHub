@@ -95,6 +95,7 @@ main {
     height: auto;
     margin: 60px auto;
     display: flex;
+    background-color: #ffffff;
 }
 #Proximasclases{
     display: flex;
