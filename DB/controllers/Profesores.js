@@ -313,63 +313,69 @@ const getperfilprof = async (req, res) => {
   }  
 
 
+  const createvaloracionbyclases = async (req, res) => {
+    const { idreserva, valoracion, IDalumnos, idprof } = req.body;
+  
+    // Validar los datos recibidos
+    if (!idreserva || !valoracion || !IDalumnos || !idprof) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+  
+    try {
+      // Verificar si la reserva está completada
+      const checkReservaQuery = `
+        SELECT estado 
+        FROM public."reservaciones" 
+        WHERE "ID" = $1
+      `;
+      const reservaResult = await pool.query(checkReservaQuery, [idreserva]);
+  
+      if (reservaResult.rows.length === 0 || reservaResult.rows[0].estado !== 'completada') {
+        return res.status(400).json({ error: 'La clase no ha sido completada, no se puede valorar.' });
+      }
+  
+      const query = `
+        INSERT INTO public."valoraciones" ("idreserva", "valoracion", "IDalumnos", "idprof")
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+      `;
+      const values = [idreserva, valoracion, IDalumnos, idprof];
+  
+      const result = await pool.query(query, values);
+  
+      // Recalcular el promedio del profesor
+      await updateProfessorRating(idprof);
+  
+      res.status(201).json({
+        message: 'Valoración creada con éxito',
+        valoracion: result.rows[0]
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 
-// Crear una valoración
-const createvaloracionbyclases = async (req, res) => {
-  const { idreserva , valoracion, IDalumnos, idprof } = req.body;
-
-  // Validar los datos recibidos
-  if (!idreserva || !valoracion || !IDalumnos || !idprof) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos' });
-  }
-
-  try {
-    const query = `
-      INSERT INTO public."valoraciones" ("idreserva", "valoracion", "IDalumnos", "idprof")
-      VALUES ($1, $2, $3, $4)
-      RETURNING *
-    `;
-    const values = [idreserva, valoracion, IDalumnos, idprof];
-
-    const result = await pool.query(query, values);
-
-    // Recalcular el promedio del profesor
-    await updateProfessorRating(idprof);
-
-    res.status(201).json({
-      message: 'Valoración creada con éxito',
-      valoracion: result.rows[0]
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-const updateProfessorRating = async (idprof) => {
-  try {
-    const query = `
-      SELECT AVG(valoracion) as promedio
-      FROM public."valoraciones"
-      WHERE idprof = $1
-    `;
-    const values = [idprof];
-    
-    const result = await pool.query(query, values);
-    const promedio = result.rows[0].promedio;
-
-   
-    const updateQuery = `
-      UPDATE public."profesores"
-      SET valoracion = $1
-      WHERE "ID" = $2
-    `;
-    const updateValues = [promedio, idprof];
-
-    await pool.query(updateQuery, updateValues);
-  } catch (err) {
-    console.error('Error al actualizar la valoración promedio del profesor:', err.message);
-  }
-};
+  const updatereservacion = async () => {
+    try {
+      const query = `
+        UPDATE public."reservaciones"
+        SET estado = 'completada'
+        WHERE estado = 'pendiente' 
+        AND (hora::timestamp + INTERVAL '1 hour') <= NOW()
+        RETURNING *;
+      `;
+  
+      const result = await pool.query(query);
+  
+      if (result.rows.length > 0) {
+        console.log(`Reservas actualizadas a 'completada': ${result.rows.length}`);
+      }
+    } catch (error) {
+      console.error('Error al actualizar el estado de las reservas:', error.message);
+    }
+  };
+  
+  setInterval(updatereservacion, 5 * 60 * 1000);
 
 const profesores = {
   getprof, 
@@ -385,7 +391,8 @@ const profesores = {
  getprofbynombreyapellido,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
- createvaloracionbyclases
+ createvaloracionbyclases,
+ updatereservacion
 };
 
 export default profesores;
