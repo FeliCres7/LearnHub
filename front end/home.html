@@ -81,18 +81,15 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             console.log("DOM cargado y script iniciado.");
-
+    
             try {
                 const token = localStorage.getItem("token");
-                console.log("Token obtenido del localStorage:", token);
-
+    
                 if (!token) {
-                    console.log("No se encontró un token, redirigiendo al login.");
                     window.location.href = "inicio.html";
                     return;
                 }
-
-                // Decodificar el token
+    
                 const base64Url = token.split(".")[1];
                 const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
                 const jsonPayload = decodeURIComponent(
@@ -102,81 +99,75 @@
                         .join("")
                 );
                 const payload = JSON.parse(jsonPayload);
-                console.log("Payload completo del token:", payload);
-
-                const userId = payload.id; // Usar directamente el `id` del payload
-                console.log("ID de usuario obtenido del token:", userId);
-
+                const userId = payload.id;
+    
                 if (!userId) {
                     throw new Error("ID de usuario no encontrado en el payload del token.");
                 }
-
-                // Hacer solicitud para obtener datos del alumno
+    
+                // Obtener datos del alumno
                 const alumnoResponse = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                console.log("Respuesta de la API Alumnos:", alumnoResponse);
-
+    
                 if (!alumnoResponse.ok) {
-                    console.log("Error al obtener datos del alumno, status:", alumnoResponse.status);
                     throw new Error("No se pudieron obtener los datos del alumno");
                 }
-
+    
                 const alumnoData = await alumnoResponse.json();
-                console.log("Datos del alumno:", alumnoData);
-
-                // Obtener el objeto alumno y su ID
-                const alumno = alumnoData.alumno; // Acceder al objeto alumno
-                console.log("Objeto alumno:", alumno); // Verificar el objeto
-                const IDalumno = alumno.ID; // Obtener el ID del alumno
-
-                if (!IDalumno) {
-                    throw new Error("ID del alumno no encontrado.");
-                }
-
-                // Mostrar los datos del alumno en el aside izquierdo
+                const alumno = alumnoData.alumno;
+    
+                // Obtener y mostrar país
+                const nombrePais = await obtenerNombrePais(alumno.idpais);
+                document.getElementById("pais").textContent = nombrePais;
+    
                 document.getElementById("foto-perfil").src = `data:image/jpeg;base64,${alumno.foto}`;
-                document.getElementById("nombre-apellido").textContent = `${alumno.nombre} ${alumno.apellido}`; // Asignar nombre y apellido
-                document.getElementById("pais").textContent = alumno.pais || "No disponible"; // Asignar país (con un valor por defecto)
-
-                // Hacer solicitud para obtener las reservaciones
+                document.getElementById("nombre-apellido").textContent = `${alumno.nombre} ${alumno.apellido}`;
+    
                 const reservacionesResponse = await fetch(
-                    `https://learn-hub-eta.vercel.app/reservaciones/${IDalumno}`, // Usar IDalumno aquí
+                    `https://learn-hub-eta.vercel.app/reservaciones/${userId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
                     }
                 );
-
-                console.log("Respuesta de la API Reservaciones:", reservacionesResponse);
-
+    
                 if (!reservacionesResponse.ok) {
-                    console.log("Error al obtener reservaciones, status:", reservacionesResponse.status);
                     throw new Error("No se pudieron obtener las reservaciones");
                 }
-
+    
                 const reservacionesData = await reservacionesResponse.json();
-                console.log("Datos de las reservaciones:", reservacionesData);
-
-                // Actualizar el DOM con las reservaciones
                 const reservacionesLista = document.getElementById("reservaciones-lista");
-                reservacionesLista.innerHTML = ""; // Limpiar contenido previo
+                reservacionesLista.innerHTML = "";
+    
                 reservacionesData.forEach(reserva => {
                     const reservaItem = document.createElement("p");
                     reservaItem.textContent = `Clase con ${reserva.profesor} el ${reserva.dia} a las ${reserva.hora}`;
                     reservacionesLista.appendChild(reservaItem);
                 });
-
-                console.log("DOM actualizado con los datos del alumno y sus reservaciones.");
-
+    
             } catch (error) {
                 console.error("Error en el flujo del script:", error);
             }
         });
+    
+        async function obtenerNombrePais(idPais) {
+            try {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/paises/${idPais}`);
+                if (!response.ok) throw new Error("Error al obtener el país");
+    
+                const data = await response.json();
+                return data.pais;
+            } catch (error) {
+                console.error("Error al obtener el nombre del país:", error);
+                return "País no encontrado";
+            }
+        }
     </script>
+    
 </body>
 
 </html>
