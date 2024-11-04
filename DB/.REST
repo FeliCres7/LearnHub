@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### Obtener mensajes entre un profesor y un alumno
-GET http://localhost:3000/api/messages?idprof=1&idalumno=2
+GET http://localhost:3000/api/messages?idprof=55&idalumno=97
 Content-Type: application/json
 
 ### Insertar mensaje en la tabla messages
@@ -22,8 +22,13 @@ Content-Type: application/json
 }
 
 
-### Obtener mensajes entre un profesor y un alumno
-GET http://localhost:3000/api/chats
+### Obtener mensajes entre vos y un profesor 
+GET http://localhost:3000/api/chats?userId=97&tipoUsuario=alumno
+Content-Type: application/json
+
+
+### Obtener mensajes entre vos y un profesor 
+GET http://localhost:3000/api/chats?userId=55&tipoUsuario=profesor
 Content-Type: application/json
 
 

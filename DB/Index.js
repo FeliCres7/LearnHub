@@ -1,7 +1,7 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
-//import { Server } from "socket.io";
-//import { createServer } from "node:http";
+import { Server } from "socket.io";
+import { createServer } from "node:http";
 import auth from './controllers/auth.js'
 import profesores from './controllers/Profesores.js';
 //import clases from './controllers/clases.js';
@@ -30,7 +30,7 @@ app.use(cors({
   origin: "*", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS']
 }));
-/*
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
@@ -92,28 +92,31 @@ app.get('/api/messages', async (req, res) => {
 });
 
 app.get('/api/chats', async (req, res) => {
-  const { idprof, idalumno } = req.query;
+  const { userId, tipoUsuario } = req.query;
+
   try {
-      const result = await pool.query(`
-          SELECT 
-          CASE 
-              WHEN m.idprof = p."ID" THEN p.nombre || ' ' || p.apellido
-              WHEN m.idalumno = a."ID" THEN a.nombre || ' ' || a.apellido
-          END AS nombre,
-          m.idprof, m.idalumno
+    const query = `
+      SELECT 
+        CASE 
+            WHEN m.idprof = p."ID" THEN p.nombre || ' ' || p.apellido
+            WHEN m.idalumno = a."ID" THEN a.nombre || ' ' || a.apellido
+        END AS nombre,
+        m.idprof, m.idalumno
       FROM messages m
       LEFT JOIN profesores p ON m.idprof = p."ID"
       LEFT JOIN alumnos a ON m.idalumno = a."ID"
-      where  m.idprof = $1  and m.idalumno=$2
+      WHERE ${tipoUsuario === 'profesor' ? 'm.idprof' : 'm.idalumno'} = $1
       GROUP BY m.idprof, m.idalumno, p."ID", a."ID", p.nombre, p.apellido, a.nombre, a.apellido
-    `, [idprof, idalumno] );
-      res.json(result.rows);
+    `;
+
+    const result = await pool.query(query, [userId]);
+    res.json(result.rows);
   } catch (error) {
-      console.error("Error al obtener la lista de chats:", error);
-      res.status(500).json({ error: "Error al obtener la lista de chats" });
+    console.error("Error al obtener la lista de chats:", error);
+    res.status(500).json({ error: "Error al obtener la lista de chats" });
   }
 });
-*/
+
 
 // Ruta de prueba
 app.get("/", (req, res) => {

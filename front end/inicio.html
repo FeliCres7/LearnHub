@@ -80,6 +80,8 @@
                     // Guardar el token en localStorage
                     localStorage.setItem('token', resultado.token);
                     console.log("Token guardado en localStorage:", resultado.token);
+
+                    localStorage.setItem('userId', resultado.userId); // Guarda el ID del usuario
         
                     // Redirigir según el tipo de usuario
                     if (resultado.tipoUsuario === 'profesor') {

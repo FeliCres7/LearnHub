@@ -53,7 +53,8 @@ const login = async (req, res) => {
     return res.status(200).json({
       usuario: checkUser.rows[0].nombre,
       token,
-      tipoUsuario
+      tipoUsuario,
+      userId: checkUser.rows[0].ID 
     });
   } catch (error) {
     console.error('Error en login:', error);
