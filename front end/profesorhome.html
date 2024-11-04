@@ -63,15 +63,20 @@
                 <div class="fotoyvaloracion-article-home"><img src="Images html/logo cuaderno.png" alt="">
                     <h1 style="color: #424242; font-size: 32px;">Sube un nuevo material de trabajo</h1>
                 </div>
-                <div class="bottom-article-profesorhome"><button onclick="window.location.href='profesormaterialesdetrabajo.html'" class="enviar-valoracion">Ir a materiales de
+                <div class="bottom-article-profesorhome"><button
+                        onclick="window.location.href='profesormaterialesdetrabajo.html'" class="enviar-valoracion">Ir a
+                        materiales de
                         trabajo</button></div>
             </div>
             </div>
             <div class="article-home">
-                <div class="fotoyvaloracion-article-home"><i class="fas fa-calendar-days" style="color: #1565c0; font-size: 200px; margin-left: 15px;"></i>
-                    <h1 style="color: #424242; font-size: 32px;"> Vea sus próximas clases en la sección "Calendario"</h1>
-            </div>
-            <div class="bottom-article-profesorhome"> <button class="enviar-valoracion">Ir a calendario</button></div>
+                <div class="fotoyvaloracion-article-home"><i class="fas fa-calendar-days"
+                        style="color: #1565c0; font-size: 100px; margin-left: 15px;"></i>
+                    <h1 style="color: #424242; font-size: 32px;"> Vea sus próximas clases en la sección "Calendario"
+                    </h1>
+                </div>
+                <div class="bottom-article-profesorhome"> <button class="enviar-valoracion">Ir a calendario</button>
+                </div>
             </div>
         </article>
         <aside class="aside-der-home">
@@ -133,28 +138,48 @@
             });
     }
 
-    function mostrarDatosUsuario(data) {
-        const profesor = data.profesor;
+// Función para obtener el nombre del país por ID
+const obtenerNombrePais = async (idPais) => {
+    try {
+        const response = await fetch(`https://learn-hub-eta.vercel.app/paises/${idPais}`);
 
-        if (profesor) {
-            const nombreApellido = document.getElementById('nombre-apellido');
-            const fotoPerfil = document.getElementById('foto-perfil');
-            const pais = document.getElementById('pais');
-
-            if (nombreApellido && fotoPerfil && pais) {
-                nombreApellido.innerText = `${profesor.nombre || 'Nombre'} ${profesor.apellido || 'Apellido'}`;
-
-                // Si `profesor.foto` está en base64, la pasamos como una data URL
-                fotoPerfil.src = profesor.foto ? `data:image/jpeg;base64,${profesor.foto}` : 'Images html/default-foto.png';
-
-                pais.innerText = profesor.idpais || 'País no disponible';
-            } else {
-                console.error('No se encontraron algunos de los elementos en el DOM');
-            }
-        } else {
-            console.error('No se encontró información del profesor en la respuesta');
+        if (!response.ok) {
+            console.error("Error al obtener el nombre del país:", response.statusText);
+            return "País no encontrado";
         }
+
+        const data = await response.json();
+        return data.pais;
+    } catch (error) {
+        console.error("Error al obtener el nombre del país:", error);
+        return "Error al obtener país";
     }
+};
+
+async function mostrarDatosUsuario(data) {
+    const profesor = data.profesor;
+
+    if (profesor) {
+        const nombreApellido = document.getElementById('nombre-apellido');
+        const fotoPerfil = document.getElementById('foto-perfil');
+        const pais = document.getElementById('pais');
+
+        if (nombreApellido && fotoPerfil && pais) {
+            nombreApellido.innerText = `${profesor.nombre || 'Nombre'} ${profesor.apellido || 'Apellido'}`;
+
+            // Si `profesor.foto` está en base64, la pasamos como una data URL
+            fotoPerfil.src = profesor.foto ? `data:image/jpeg;base64,${profesor.foto}` : 'Images html/default-foto.png';
+
+            const nombrePais = await obtenerNombrePais(profesor.idpais);
+            pais.textContent = nombrePais;
+        } else {
+            console.error('No se encontraron algunos de los elementos en el DOM');
+        }
+    } else {
+        console.error('No se encontró información del profesor en la respuesta');
+    }
+}
+
 
     async function cargarReservaciones(token) {
         try {
@@ -204,6 +229,7 @@
             reservacionesLista.appendChild(reservacionDiv);
         });
     }
+
 </script>
 
 </html>

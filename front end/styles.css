@@ -675,3 +675,10 @@ padding-left: 10px;
 .article-materialesdetrabajo{
         width: 100%;
 }
+.fotoyvaloracion-article-home img{
+    height: 100px;
+    width: auto;
+    color: #1565c0; 
+    font-size: 200px; 
+    margin-left: 15px;
+}
