@@ -122,7 +122,7 @@ async function cargarMateriales(id) {
                         <p class="materialdetrabajo-desc">${material.infoguia}</p>
                         <div class="datacontainer">
                             <p class="bold">Creado por:</p>
-                            <p class="nombreprofe">${material.Obtenernombreyapellidodelprofesor}</p>
+                            <p class="nombreprofe">ProfeById(${material.IDprofesor})</p>
                         </div>
                         <div class="divbtndescargar">
                             <button onclick="window.location.href='profesoreditarmaterial.html'" class="botondescargar">Editar <i class="fas fa-pencil"></i></button>
@@ -154,7 +154,7 @@ async function cargarMateriales(id) {
                         'Content-Type': 'application/json'
                     }
                 });
-
+                //crear función ProfeById
                 if (response.ok) {
                     alert("Material eliminado exitosamente.");
                     location.reload(); // Recargar la página para actualizar la lista
