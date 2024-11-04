@@ -185,3 +185,11 @@ GET http://localhost:3000/Materia HTTP/1.1
 ### //obtener todas las paises
 
 GET http://localhost:3000/paises HTTP/1.1
+
+### //obtener todas las paises X ID
+
+GET http://localhost:3000/paises/3 HTTP/1.1
+
+### //obtener todas las materias X ID
+
+GET http://localhost:3000/Materia/3 HTTP/1.1

@@ -1,7 +1,7 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
-import { Server } from "socket.io";
-import { createServer } from "node:http";
+//import { Server } from "socket.io";
+//import { createServer } from "node:http";
 import auth from './controllers/auth.js'
 import profesores from './controllers/Profesores.js';
 //import clases from './controllers/clases.js';
@@ -30,7 +30,7 @@ app.use(cors({
   origin: "*", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS']
 }));
-
+/*
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
@@ -113,6 +113,8 @@ app.get('/api/chats', async (req, res) => {
       res.status(500).json({ error: "Error al obtener la lista de chats" });
   }
 });
+*/
+
 // Ruta de prueba
 app.get("/", (req, res) => {
   res.send("Proyecto Learnhub está funcionando!");
@@ -180,11 +182,11 @@ app.delete('/Clases/:ID', clases.deleteclase);
 
 //Materia terminado
 app.get('/Materia', materia.getmateria);
-app.get('/Materia/ID', materia.getMateriaById);
+app.get('/Materia/:ID', materia.getMateriaById);
 
 //paises terminado
 app.get('/paises', paises.getpaises);
-app.get('/paises/ID', paises.getpaisesById);
+app.get('/paises/:ID', paises.getpaisesById);
 
 //Material. terminado
 app.get('/Material', material.getmaterial);
