@@ -12,11 +12,12 @@ const getpaises = async (_, res) => {
     }
   }
 
-  const getpaisesById = async (_, res) => {
+  const getpaisesById = async (req, res) => {
+    const ID= req.params.ID; 
     try {
       const query = `SELECT nombre FROM paises WHERE id = $1`;
-      const result = await pool.query(query);
-  
+      const result = await pool.query(query, [ID]); 
+    
       if (result.rows.length > 0) {
         const pais = result.rows[0].nombre;
         res.json({ pais });
@@ -28,6 +29,7 @@ const getpaises = async (_, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   };
+  
 
 
   const paises = {
