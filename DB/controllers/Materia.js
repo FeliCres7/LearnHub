@@ -20,7 +20,7 @@ const getmateria = async (_, res) => {
       const result = await pool.query(query, [ID]); 
     
       if (result.rows.length > 0) {
-        const materia = result.rows[0].nombre;
+        const materia = result.rows[0].nombre_materia;;
         res.json({ materia });
       } else {
         res.status(404).json({ error: 'materia not found' });
