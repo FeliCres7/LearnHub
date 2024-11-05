@@ -88,6 +88,21 @@
     } catch (error) {
         console.error('Error:', error);
     }
+    if (response.ok) {
+                    const resultado = await response.json();
+                    console.log("Datos recibidos del servidor:", resultado);
+        
+                    // Guardar el token en localStorage
+                    localStorage.setItem('token', resultado.token);
+                    console.log("Token guardado en localStorage:", resultado.token);
+
+                    localStorage.setItem('userId', resultado.userId); // Guarda el ID del usuario
+        
+                    // Redirigir según el tipo de usuario
+                    if (resultado.tipoUsuario === 'profesor') {
+                        console.log("Usuario es profesor, redirigiendo a profesorhome.html");
+                        window.location.href = 'profesorhome.html';
+                    }
 }
 
 function displayReservaciones(reservaciones) {
@@ -107,6 +122,7 @@ const tipoUsuario = localStorage.getItem('tipoUsuario');
         const userId = localStorage.getItem('userId');
 // Llamada a la función con un ejemplo de IDalumno
 getReservacionesByAlumno(1); // Reemplaza 1 con el ID del alumno real
+
 </script>
 </html>
 
