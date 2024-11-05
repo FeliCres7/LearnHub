@@ -8,31 +8,34 @@ try {
     res.status(500).json({ error: err.message });
   }
 }
+const createreservarclase = async (req, res) => {
+  const { IDalumno, idprof, dia, hora, fecha } = req.body;
 
-//reservar clase
-const createreservarclase = async (req,res) => {
-const {IDalumno, idprof, dia, hora} = req.body
+  // Validar que todos los campos estén presentes
+  if (!IDalumno || !idprof || !dia || !hora || !fecha) {
+    return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  }
 
-if (!IDalumno || !idprof || !dia || !hora){
-return res.status(400).json ({error:'todos los campos son requeridos'});
-}
-try{
-   const horaNum = parseInt(hora, 10);
+  try {
+  
+    const query = `
+      INSERT INTO public."reservaciones" ("IDalumno", "idprof", "dia", "hora", "fecha") 
+      VALUES ($1, $2, $3, $4, $5) 
+      RETURNING *;
+    `;
 
-const query = `INSERT INTO public."reservaciones" ("IDalumno", "idprof", "dia", "hora") 
-VALUES ($1, $2, $3, $4) RETURNING *;  `
+    const values = [IDalumno, idprof, dia, hora, fecha]; 
 
-const values = [IDalumno, idprof, dia, horaNum]; 
+    const result = await pool.query(query, values);
 
-const result = await pool.query(query, values); 
-
-res.status(201).json({
-message: 'Reserva exitosa', 
-reservaciones: result.rows [0]
-});
-} catch (err){
-  res.status (500).send(err)
-}}
+    res.status(201).json({
+      message: 'Reserva exitosa',
+      reservaciones: result.rows[0]
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
 
 const getreservacionbyalumno = async (req, res) => {
   const { IDalumno } = req.params;

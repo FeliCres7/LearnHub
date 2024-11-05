@@ -354,14 +354,14 @@ const getperfilprof = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   };
-
+  
   const updatereservacion = async () => {
     try {
       const query = `
         UPDATE public."reservaciones"
         SET estado = 'completada'
-        WHERE estado = 'pendiente' 
-        AND (hora::timestamp + INTERVAL '1 hour') <= NOW()
+        WHERE estado = 'pendiente'
+        AND (fecha + hora::time + INTERVAL '1 hour') <= NOW()
         RETURNING *;
       `;
   
@@ -375,8 +375,9 @@ const getperfilprof = async (req, res) => {
     }
   };
   
+  
   setInterval(updatereservacion, 5 * 60 * 1000);
-
+  
 const profesores = {
   getprof, 
   getprofbyID,
