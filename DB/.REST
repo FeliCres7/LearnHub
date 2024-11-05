@@ -110,7 +110,7 @@ Content-Type: application/json
 
 ### //Eliminar un profesor
 
-DELETE http://localhost:3000/profesores/19 HTTP/1.1
+DELETE http://localhost:3000/profesores/42 HTTP/1.1
 
 //Obtener perfil del profesor ### 
 GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1

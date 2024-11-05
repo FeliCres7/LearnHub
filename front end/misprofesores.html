@@ -75,152 +75,187 @@
 
 <script>
     const mainCards = document.getElementById("lista-misprofesores");
+    let profesoresTotales = []; // Lista completa de profesores, cargada al inicio
+    let materiasMap = {}; // Mapeo de id de materia a nombre de materia
 
-function CreateProfCard(prof) {
-    return `
-    <div class="profesor-misprofesores">
-        <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
-        <div class="content-profesor">
-            <img class="fotomisprofesores" src="${prof.foto || 'default_foto.png'}" alt="Foto del profesor">
-            <div class="datos-profesor">
-                <div class="datacontainer">
-                    <p class="bold">Materia:</p>
-                    <p>${prof.idmateria || 'No disponible'}</p>
-                </div>
-                <div class="datacontainer">
-                    <p class="bold">Días:</p>
-                    <p>${prof.dias || 'No disponible'}</p>
-                </div>
-                <div class="datacontainer">
-                    <p class="bold">Horarios:</p>
-                    <p>${prof.disponibilidad_horaria || 'No disponible'}</p>
-                </div>
-            </div>
-            <div class="botones-profesor">
-                <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
-                <button>Ir a perfil</button>
-                <button>Ver datos de contacto</button>
-            </div>
-            <div class="valoracion-profesor">
-                <p class="bold">Valoración</p>
-                <div class="stars" data-valoracion="${prof.valoracion || 0}">
-                    <img src="Images html/estrella vacia.png" alt="">
-                    <img src="Images html/estrella vacia.png" alt="">
-                    <img src="Images html/estrella vacia.png" alt="">
-                    <img src="Images html/estrella vacia.png" alt="">
-                    <img src="Images html/estrella vacia.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>`;
-}
+    function CreateProfCard(prof) {
+        // Verifica si la foto está disponible, si no usa una foto por defecto
+        const fotoSrc = prof.foto ? `data:image/jpeg;base64,${prof.foto}` : 'default_foto.png';
 
-async function fetchProfesores(url) {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Error al obtener los profesores. Código: ' + response.status);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        alert(error.message);
-        return []; // Retorna un array vacío en caso de error
+        // Usa el mapeo de materias para obtener el nombre de la materia
+        const nombreMateria = prof.idmateria && materiasMap[prof.idmateria] ? materiasMap[prof.idmateria] : 'No disponible';
+
+        console.log("Generando tarjeta para profesor:", prof.nombre, prof.apellido);
+        console.log("ID de Materia:", prof.idmateria);
+        console.log("Nombre de Materia encontrado:", nombreMateria);
+
+        return `
+        <div class="profesor-misprofesores">
+            <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
+            <div class="content-profesor">
+                <img class="fotomisprofesores" src="${fotoSrc}" alt="Foto del profesor">
+                <div class="datos-profesor">
+                    <div class="datacontainer">
+                        <p class="bold">Materia:</p>
+                        <p>${nombreMateria}</p> <!-- Muestra el nombre de la materia -->
+                    </div>
+                    <div class="datacontainer">
+                        <p class="bold">Días:</p>
+                        <p>${prof.dias || 'No disponible'}</p>
+                    </div>
+                    <div class="datacontainer">
+                        <p class="bold">Horarios:</p>
+                        <p>${prof.disponibilidad_horaria || 'No disponible'}</p>
+                    </div>
+                </div>
+                <div class="botones-profesor">
+                    <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
+                    <button>Ir a perfil</button>
+                    <button>Ver datos de contacto</button>
+                </div>
+                <div class="valoracion-profesor">
+                    <p class="bold">Valoración</p>
+                    <div class="stars" data-valoracion="${prof.valoracion || 0}">
+                        <img src="Images html/estrella vacia.png" alt="">
+                        <img src="Images html/estrella vacia.png" alt="">
+                        <img src="Images html/estrella vacia.png" alt="">
+                        <img src="Images html/estrella vacia.png" alt="">
+                        <img src="Images html/estrella vacia.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>`;
     }
-}
 
-async function cargarProfesores() {
-    const profesores = await fetchProfesores("https://learn-hub-eta.vercel.app/profesores");
-    renderizarProfesores(profesores);
-}
-
-function renderizarProfesores(data) {
-    mainCards.innerHTML = "";
-    if (data.length === 0) {
-        mainCards.innerHTML = "<p>No se encontraron profesores.</p>";
-        return;
-    }
-    data.forEach((profesor) => {
-        const item = CreateProfCard(profesor);
-        mainCards.innerHTML += item;
-    });
-}
-
-function asignarValoraciones() {
-    const images = [
-        'Images html/estrella vacia.png',   // 0
-        'Images html/Media estrella.png',   // 1
-        'Images html/estrella completa.png' // 2
-    ];
-
-    document.querySelectorAll('.stars').forEach(starContainer => {
-        let valoracion = parseFloat(starContainer.getAttribute('data-valoracion')) || 0;
-        valoracion = Math.round(valoracion / 2);
-        const starImages = starContainer.querySelectorAll('img');
-
-        starImages.forEach((img, index) => {
-            if (valoracion >= index + 1) {
-                img.src = images[2]; // Estrella completa
-            } else if (valoracion >= index + 0.5) {
-                img.src = images[1]; // Media estrella
-            } else {
-                img.src = images[0]; // Estrella vacía
+    async function fetchProfesores(url) {
+        try {
+            console.log("Obteniendo profesores desde URL:", url);
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Error al obtener los profesores. Código: ' + response.status);
             }
+            const data = await response.json();
+            console.log("Profesores obtenidos:", data);
+            return data;
+        } catch (error) {
+            console.error("Error al obtener profesores:", error);
+            alert(error.message);
+            return [];
+        }
+    }
+
+    async function cargarProfesores() {
+        profesoresTotales = await fetchProfesores("https://learn-hub-eta.vercel.app/profesores");
+        console.log("Profesores cargados en la lista total:", profesoresTotales);
+        renderizarProfesores(profesoresTotales);
+    }
+
+    function renderizarProfesores(data) {
+        mainCards.innerHTML = "";
+        if (data.length === 0) {
+            mainCards.innerHTML = "<p>No se encontraron profesores.</p>";
+            return;
+        }
+        data.forEach((profesor) => {
+            const item = CreateProfCard(profesor);
+            mainCards.innerHTML += item;
         });
+        asignarValoraciones();
+    }
+
+    function asignarValoraciones() {
+        const images = [
+            'Images html/estrella vacia.png',   // 0
+            'Images html/Media estrella.png',   // 1
+            'Images html/estrella completa.png' // 2
+        ];
+
+        document.querySelectorAll('.stars').forEach(starContainer => {
+            let valoracion = parseFloat(starContainer.getAttribute('data-valoracion')) || 0;
+            valoracion = Math.round(valoracion / 2);
+            const starImages = starContainer.querySelectorAll('img');
+
+            console.log("Asignando valoración:", valoracion);
+
+            starImages.forEach((img, index) => {
+                if (valoracion >= index + 1) {
+                    img.src = images[2]; // Estrella completa
+                } else if (valoracion >= index + 0.5) {
+                    img.src = images[1]; // Media estrella
+                } else {
+                    img.src = images[0]; // Estrella vacía
+                }
+            });
+        });
+    }
+
+    async function cargarMaterias() {
+        try {
+            console.log("Cargando materias...");
+            const response = await fetch("https://learn-hub-eta.vercel.app/Materia");
+            if (!response.ok) throw new Error("Error al cargar las materias");
+            const materias = await response.json();
+            console.log("Materias obtenidas:", materias);
+
+            // Crear un mapeo de materias para que sea fácil acceder a su nombre por ID
+            materiasMap = materias.reduce((map, materia) => {
+                map[materia.id] = materia.nombre_materia;
+                console.log(`Materias map: ${materia.id} -> ${materia.nombre_materia}`); // Log para verificar el mapeo
+                return map;
+            }, {});
+
+            console.log("Mapa de materias creado:", materiasMap);
+
+            const select = document.getElementById("selectmaterias");
+            select.innerHTML = '<option value="">Todas las materias</option>'; // Opción por defecto
+
+            materias.forEach(materia => {
+                const option = document.createElement("option");
+                option.value = materia.id;
+                option.textContent = materia.nombre_materia;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error al cargar materias:", error);
+            alert(error.message);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("Página cargada, iniciando carga de profesores y materias...");
+        cargarProfesores();
+        cargarMaterias();
     });
-}
 
-async function cargarMaterias() {
-    try {
-        const response = await fetch("https://learn-hub-eta.vercel.app/Materia");
-        if (!response.ok) throw new Error("Error al cargar las materias");
-        const materias = await response.json();
-        const select = document.getElementById("selectmaterias");
-        select.innerHTML = '<option value="">Todas las materias</option>'; // Opción por defecto
+    document.getElementById('filtrar-nombre').addEventListener('click', () => {
+        const nombre = document.getElementById("inputNombre").value.toLowerCase();
+        console.log("Filtrando profesores por nombre:", nombre);
+        const profesoresFiltrados = profesoresTotales.filter(profesor =>
+            `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
+        );
+        console.log("Profesores filtrados:", profesoresFiltrados);
+        renderizarProfesores(profesoresFiltrados);
+    });
 
-        materias.forEach(materia => {
-            const option = document.createElement("option");
-            option.value = materia.id; // Asegúrate de que aquí estás usando el ID correcto
-            option.textContent = materia.nombre_materia; // Nombre de la materia
-            select.appendChild(option);
-        });
-    } catch (error) {
-        console.error(error);
-        alert(error.message);
-    }
-}
+    document.getElementById('filtrar-materia').addEventListener('click', async () => {
+        const materiaSeleccionada = document.getElementById("selectmaterias").value;
+        console.log("Materia seleccionada para filtrar:", materiaSeleccionada);
 
-document.addEventListener('DOMContentLoaded', () => {
-    cargarProfesores();
-    cargarMaterias();
-});
+        const url = materiaSeleccionada ?
+            `https://learn-hub-eta.vercel.app/profesores/materias/${materiaSeleccionada}` :
+            "https://learn-hub-eta.vercel.app/profesores";
 
-document.getElementById('filtrar-nombre').addEventListener('click', () => {
-    const nombre = document.getElementById("inputNombre").value.toLowerCase();
-    const profesoresFiltrados = [...document.querySelectorAll('.profesor-misprofesores')].filter(profesor => 
-        profesor.querySelector('.name-profesor').textContent.toLowerCase().includes(nombre)
-    );
-    mainCards.innerHTML = "";
-    profesoresFiltrados.forEach(profesor => mainCards.appendChild(profesor));
-});
+        const profesoresFiltrados = await fetchProfesores(url);
+        console.log("Profesores filtrados por materia:", profesoresFiltrados);
 
-document.getElementById('filtrar-materia').addEventListener('click', async () => {
-    const materiaSeleccionada = document.getElementById("selectmaterias").value;
-    console.log("Materia seleccionada:", materiaSeleccionada); // Imprimir en consola para depuración
+        if (profesoresFiltrados.length === 0) {
+            console.warn("No se encontraron profesores para la materia seleccionada.");
+        }
 
-    const url = materiaSeleccionada ? 
-        `https://learn-hub-eta.vercel.app/profesores?materia=${materiaSeleccionada}` : 
-        "https://learn-hub-eta.vercel.app/profesores";
-
-    const profesoresFiltrados = await fetchProfesores(url);
-
-    if (profesoresFiltrados.length === 0) {
-        console.warn("No se encontraron profesores para la materia seleccionada."); // Mensaje de advertencia
-    }
-
-    renderizarProfesores(profesoresFiltrados);
-});
-
+        renderizarProfesores(profesoresFiltrados);
+    });
 </script>
+
+
 
 </html>
