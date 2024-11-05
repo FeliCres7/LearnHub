@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
 </head>
 
 <body>
@@ -54,14 +52,12 @@
     </header>
     <script src="script.js"></script>
 
-
     <main class="main-fondo-azul">
         <article class="article-materialesdetrabajo">
         </article>
         <div class="editmateriales">
             <button onclick="window.location.href='profesorcrearmateriales.html'">Crear Material</button>
         </div>
-
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', async function () {
@@ -71,7 +67,7 @@
                 return;
             }
 
-            const userId = obtenerIdUsuarioDelToken(token); // Decodificar token para obtener id
+            const userId = obtenerIdUsuarioDelToken(token);
             if (userId) {
                 await cargarMateriales(userId);
             } else {
@@ -79,108 +75,139 @@
             }
         });
 
-        // Función para decodificar el token y obtener el id de usuario
         function obtenerIdUsuarioDelToken(token) {
             try {
                 const payloadBase64 = token.split('.')[1];
                 const payload = JSON.parse(atob(payloadBase64));
-                return payload.id; // Asegúrate de que esta propiedad exista en el payload
+                return payload.id;
             } catch (error) {
                 console.error('Error al decodificar el token:', error);
                 return null;
             }
         }
 
-// Función asíncrona para obtener y renderizar materiales
-async function cargarMateriales(id) {
-    try {
-        const response = await fetch(`https://learn-hub-eta.vercel.app/Material/idprof/${id}`);
-        
-        if (response.status === 404) {
-            console.warn('No se encontraron materiales para este profesor');
-            mostrarMensajeSinMateriales();
-            return;
-        }
-        
-        
-        const data = await response.json();
+        async function getNombreProfesorById(idProfesor) {
+            try {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${idProfesor}`);
 
-        const container = document.querySelector('.main-fondo-azul article');
-        container.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos elementos
-
-        if (response.ok) {
-            if (data.materiales.length === 0) {
-            mostrarMensajeSinMateriales();
-            } else {
-                // Renderizar materiales si existen
-                data.materiales.forEach(material => {
-                    const materialDiv = document.createElement('div');
-                    materialDiv.classList.add('materialdetrabajo');
-                    materialDiv.innerHTML = `
-                        <h1>${material.nombre}</h1>
-                        <h2>Información de la guía</h2>
-                        <p class="materialdetrabajo-desc">${material.infoguia}</p>
-                        <div class="datacontainer">
-                            <p class="bold">Creado por:</p>
-                            <p class="nombreprofe">ProfeById(${material.IDprofesor})</p>
-                        </div>
-                        <div class="divbtndescargar">
-                            <button onclick="window.location.href='profesoreditarmaterial.html'" class="botondescargar">Editar <i class="fas fa-pencil"></i></button>
-                            <button class="botondescargar" onclick="eliminarMaterial(${material.id})">Eliminar <i class="fas fa-trash"></i></button>
-                            <button class="botondescargar" onclick="descargarArchivo('${material.archivo}', '${material.nombre}')">
-                                <p>Descargar</p><i class="fas fa-download"></i>
-                            </button>
-                        </div>
-                    `;
-                    container.appendChild(materialDiv);
-                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.profesor && data.profesor.nombre && data.profesor.apellido) {
+                        return `${data.profesor.nombre} ${data.profesor.apellido}`;
+                    } else {
+                        console.warn("Propiedades `nombre` o `apellido` no están definidas en data.profesor");
+                        return "Nombre no disponible";
+                    }
+                } else {
+                    console.error("No se pudo obtener el nombre del profesor:", response.statusText);
+                    return "Profesor no encontrado";
+                }
+            } catch (error) {
+                console.error("Error al obtener el nombre del profesor:", error);
+                return "Error al obtener el nombre";
             }
-        } else {
-            console.error(data.error || 'Error al obtener los materiales');
         }
-    } catch (error) {
-        console.error('Error al obtener los materiales:', error);
-    }
-}                // Función para eliminar material
-                async function eliminarMaterial(id) {
+
+        async function cargarMateriales(id) {
+            try {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/Material/idprof/${id}`);
+
+                if (response.status === 404) {
+                    mostrarMensajeSinMateriales();
+                    return;
+                }
+
+                const data = await response.json();
+                const container = document.querySelector('.main-fondo-azul article');
+                container.innerHTML = '';
+
+                if (response.ok) {
+                    if (data.materiales.length === 0) {
+                        mostrarMensajeSinMateriales();
+                    } else {
+                        for (const material of data.materiales) {
+                            const materialDiv = document.createElement('div');
+                            materialDiv.classList.add('materialdetrabajo');
+
+                            const nombreProfesor = await getNombreProfesorById(material.IDprofesor);
+
+                            materialDiv.innerHTML = `
+                                <h1>${material.nombre}</h1>
+                                <h2>Información de la guía</h2>
+                                <p class="materialdetrabajo-desc">${material.infoguia}</p>
+                                <div class="datacontainer">
+                                    <p class="bold">Creado por:</p>
+                                    <p class="nombreprofe">${nombreProfesor}</p>
+                                </div>
+                                <div class="divbtndescargar">
+                                    <button onclick="editarMaterial('${material.ID}')" class="botondescargar">Editar <i class="fas fa-pencil"></i></button>
+                                    <button class="botondescargar" onclick="eliminarMaterial(${material.ID})">Eliminar <i class="fas fa-trash"></i></button>
+                                    <button class="botondescargar" onclick="descargarArchivo('${material.archivo}')">
+                                        <p>Descargar</p><i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            `;
+                            container.appendChild(materialDiv);
+                        }
+                    }
+                } else {
+                    console.error(data.error || 'Error al obtener los materiales');
+                }
+            } catch (error) {
+                console.error('Error al obtener los materiales:', error);
+            }
+        }
+
+        function editarMaterial(id) {
+            // Redirigir a la página de edición con el ID del material en la URL
+            window.location.href = `profesoreditarmaterial.html?id=${id}`;
+        }
+
+        async function eliminarMaterial(ID) {
             const confirmar = confirm("¿Estás seguro de que deseas eliminar este material?");
             if (!confirmar) return;
 
             try {
-                const response = await fetch(`https://learn-hub-eta.vercel.app/Material/${id}`, {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/Material/${ID}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         'Content-Type': 'application/json'
                     }
                 });
-                //crear función ProfeById
+
                 if (response.ok) {
                     alert("Material eliminado exitosamente.");
-                    location.reload(); // Recargar la página para actualizar la lista
+                    location.reload();
                 } else {
-                    console.error("Error al eliminar el material");
+                    const errorData = await response.json();
+                    console.error("Error al eliminar el material:", errorData.message || "Error desconocido");
+                    alert("No se pudo eliminar el material. Verifica tu conexión o vuelve a intentar más tarde.");
                 }
             } catch (error) {
                 console.error("Error al intentar eliminar el material:", error);
+                alert("Ocurrió un error al intentar eliminar el material.");
             }
         }
 
-        // Función para descargar archivo
-        function descargarArchivo(url, nombre) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = nombre; // Nombre del archivo a descargar
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
         function mostrarMensajeSinMateriales() {
-    const container = document.querySelector('.main-fondo-azul article');
-    const mensaje = document.createElement('p');
-    mensaje.classList.add('mensaje-sin-materiales');
-    mensaje.textContent = "No tienes materiales de trabajo";
-    container.appendChild(mensaje);
+            const container = document.querySelector('.main-fondo-azul article');
+            const mensaje = document.createElement('p');
+            mensaje.classList.add('mensaje-sin-materiales');
+            mensaje.textContent = "No tienes materiales de trabajo";
+            container.appendChild(mensaje);
+        }
+
+        function descargarArchivo(base64String) {
+            const nombreArchivo = 'material.pdf'; // Cambia la extensión según el tipo de archivo
+
+            const enlace = document.createElement('a');
+            enlace.href = `data:application/pdf;base64,${base64String}`; // Cambia el tipo MIME si es necesario
+            enlace.download = nombreArchivo; // Establece el nombre del archivo
+
+            document.body.appendChild(enlace);
+            enlace.click(); // Inicia la descarga
+            document.body.removeChild(enlace); // Elimina el enlace temporal
         }
     </script>
 </body>

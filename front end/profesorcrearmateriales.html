@@ -141,6 +141,7 @@
         const data = await response.json();
         console.log("Material creado con éxito:", data);
         alert(data.message || "Material creado con éxito.");
+        window.location.href="profesormaterialesdetrabajo.html"
     }
 } catch (error) {
     console.error("Error en la solicitud de red:", error);

@@ -57,14 +57,14 @@
 
                 <div class="nombre-archivo-material">
                     <p class="bold">Nombre del material</p>
-                    <input type="text" placeholder="Ej: Guía 1">
+                    <input type="text" id="nombreMaterial" placeholder="Ej: Guía 1">
                     <p class="bold">Subir archivo</p>
-                    <input type="file">
+                    <input type="file" id="archivoMaterial">
                 </div>
                 <div class="descripcion-subir-material">
                     <p class="bold">Descripción</p>
-                    <textarea placeholder="Introduzca una breve descripción del material de trabajo"></textarea>
-                    <div class="subirmaterial"><input type="submit" value="Subir"></div>
+                    <textarea id="descripcionMaterial" placeholder="Introduzca una breve descripción del material de trabajo"></textarea>
+                    <div class="subirmaterial"><input type="submit" id="modificarButton" value="Subir"></div>
                 </div>
                 <form action=""></form>
             </div>
@@ -74,6 +74,75 @@
     </article>
 
 </main>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const materialId = params.get('id'); // Suponiendo que el ID del material se pasa en la URL como ?id=...
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (materialId) {
+            await cargarDetallesMaterial(materialId);
+        }
+    });
+
+    async function cargarDetallesMaterial(ID) {
+    try {
+        console.log('Cargando detalles del material con ID:', ID);
+        const response = await fetch(`https://learn-hub-eta.vercel.app/Material/${ID}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}` // Asegúrate de que este token sea válido
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('nombreMaterial').value = data.nombre; // Asegúrate de que estos elementos existan
+            document.getElementById('descripcionMaterial').value = data.infoguia;
+        } else {
+            const errorData = await response.json();
+            console.error('Error al obtener los detalles del material:', response.statusText, errorData);
+            alert(`Error: ${errorData.message || 'No se pudo obtener el material.'}`);
+        }
+    } catch (error) {
+        console.error('Error al cargar los detalles del material:', error);
+    }
+}
+
+    document.getElementById('modificarButton').addEventListener('click', async () => {
+        const nombre = document.getElementById('nombreMaterial').value;
+        const descripcion = document.getElementById('descripcionMaterial').value;
+        const archivoInput = document.getElementById('archivoMaterial').files[0];
+        
+        const formData = new FormData();
+        formData.append('nombre', nombre);
+        formData.append('infoguia', descripcion);
+        if (archivoInput) {
+            formData.append('archivo', archivoInput);
+        }
+
+        try {
+            const response = await fetch(`https://learn-hub-eta.vercel.app/Material/${materialId}`, {
+                method: 'PUT',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (response.ok) {
+                alert('Material actualizado exitosamente.');
+                window.location.href = 'profesormaterialesdetrabajo.html'; // Redirigir de vuelta a la lista de materiales
+            } else {
+                const errorData = await response.json();
+                console.error('Error al actualizar el material:', errorData.message || 'Error desconocido');
+                alert('No se pudo actualizar el material. Verifica tu conexión o vuelve a intentar más tarde.');
+            }
+        } catch (error) {
+            console.error('Error al intentar actualizar el material:', error);
+            alert('Ocurrió un error al intentar actualizar el material.');
+        }
+    });
+</script>
 </body>
 
 </html>
