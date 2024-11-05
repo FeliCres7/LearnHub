@@ -199,8 +199,8 @@
 
             // Crear un mapeo de materias para que sea fácil acceder a su nombre por ID
             materiasMap = materias.reduce((map, materia) => {
-                map[materia.id] = materia.nombre_materia;
-                console.log(`Materias map: ${materia.id} -> ${materia.nombre_materia}`); // Log para verificar el mapeo
+                map[materia.ID] = materia.nombre_materia;
+                console.log(`Materias map: ${materia.ID} -> ${materia.nombre_materia}`); // Log para verificar el mapeo
                 return map;
             }, {});
 
@@ -211,7 +211,7 @@
 
             materias.forEach(materia => {
                 const option = document.createElement("option");
-                option.value = materia.id;
+                option.value = materia.ID;
                 option.textContent = materia.nombre_materia;
                 select.appendChild(option);
             });
@@ -238,22 +238,27 @@
     });
 
     document.getElementById('filtrar-materia').addEventListener('click', async () => {
-        const materiaSeleccionada = document.getElementById("selectmaterias").value;
-        console.log("Materia seleccionada para filtrar:", materiaSeleccionada);
+    const materiaSeleccionada = document.getElementById("selectmaterias").value;
+    console.log("Materia seleccionada para filtrar:", materiaSeleccionada);
 
-        const url = materiaSeleccionada ?
-            `https://learn-hub-eta.vercel.app/profesores/materias/${materiaSeleccionada}` :
-            "https://learn-hub-eta.vercel.app/profesores";
+    // Verifica si hay una materia seleccionada. Si no, muestra todos los profesores.
+    const url = materiaSeleccionada ? 
+        `https://learn-hub-eta.vercel.app/profesores/materias/${materiaSeleccionada}` : 
+        "https://learn-hub-eta.vercel.app/profesores";
 
-        const profesoresFiltrados = await fetchProfesores(url);
-        console.log("Profesores filtrados por materia:", profesoresFiltrados);
+    // Llama a fetchProfesores para obtener los profesores filtrados
+    const profesoresFiltrados = await fetchProfesores(url);
+    console.log("Profesores filtrados por materia:", profesoresFiltrados);
 
-        if (profesoresFiltrados.length === 0) {
-            console.warn("No se encontraron profesores para la materia seleccionada.");
-        }
+    if (profesoresFiltrados.profesores.length === 0) {
+        console.warn("No se encontraron profesores para la materia seleccionada.");
+    }
 
-        renderizarProfesores(profesoresFiltrados);
-    });
+    // Renderiza solo el array de profesores
+    renderizarProfesores(profesoresFiltrados.profesores);
+});
+
+
 </script>
 
 
