@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-"usuario":"ezequiel@gmail.com", 
+"usuario":"melman@mail.com", 
 "contraseña":"1234"
 }
 
@@ -166,8 +166,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsInVzZXJuY
 
 ### //Eliminar un material
 
-DELETE http://localhost:3000/material/13 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsInVzZXJuYW1lIjoiTWFydMOtbiIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTczMDgwNDk5MCwiZXhwIjoxNzMwODA4NTkwfQ.klXzaLMDsRQOEQ3JnUJJzCKglyWx00b_m2db0FTtupE
+DELETE https://learn-hub-eta.vercel.app/Material/12 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsInVzZXJuYW1lIjoiTWFydMOtbiIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTczMDgxNjIxMSwiZXhwIjoxNzMwODE5ODExfQ.-95j4wu2xaHqC1XzdshEAjeaRUlXUoD7sEZY--6gNCM
 ### //obtener una reservacion
 
 GET http://localhost:3000/reservaciones/IDalumno/72 HTTP/1.1
