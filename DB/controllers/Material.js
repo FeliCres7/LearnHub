@@ -31,6 +31,22 @@ if (rows.length > 0){
 }
 };
 
+const getmaterialbyid = async (req,res) => {
+  const {ID} = req.params;
+  
+  try{
+  const {rows} = await pool.query('SELECT * FROM public.material WHERE "ID" = $1', [ID]);
+  if (rows.length > 0){
+    return res.json({materiales:rows, message: 'materiales obtenidos con exito'});
+    } else {
+    return res.status(400).json({error: 'no hay materiales con ese ID'});
+    }
+  } catch (err) {
+    console.error('Error al obtener materiales:', err);
+    return res.status(500).json({ error: 'Error al obtener los materiales' });
+  }
+  };
+  
 const creatematerial = async (req, res) => {     
   const {IDprofesor} = req.params  
   const { nombre, infoguia, archivo } = req.body;
@@ -58,18 +74,18 @@ const creatematerial = async (req, res) => {
 // Actualizar un Material
 
 const updatematerial = async (req, res) => {
-  const { IDprofesor, infoguia, archivo } = req.body;
+  const { IDprofesor, infoguia, archivo, nombre } = req.body;
   const { ID } = req.params;
 
   // Validar los datos aquí si es necesario
-  if (!ID || !IDprofesor || !infoguia || !archivo) {
+  if (!ID || !IDprofesor || !infoguia || !archivo || !nombre) {
     return res.status(400).send('Faltan datos necesarios');
   }
 
   try {
     const result = await pool.query(
-      'UPDATE public."material" SET "IDprofesor" = $1, "infoguia" = $2, "archivo" = $3 WHERE "ID" = $4 RETURNING *',
-      [IDprofesor, infoguia, archivo, ID]
+      'UPDATE public."material" SET "IDprofesor" = $1, "infoguia" = $2, "archivo" = $3, nombre = $4 WHERE "ID" = $5 RETURNING *',
+      [IDprofesor, infoguia, archivo, nombre, ID]
     );
 
     if (result.rows.length > 0) {
@@ -88,7 +104,7 @@ const updatematerial = async (req, res) => {
 // Eliminar material
 
 const deletematerial = async (req,res) => {
-const ID= req.params.ID
+const ID = req.params.ID
 const result = await pool.query
 ('DELETE FROM public."material" WHERE "ID" = $1 RETURNING*',
 [ID])
@@ -124,6 +140,7 @@ const getmaterialbyidprof = async (req, res) => {
 const material = {
   getmaterial,
   getmaterialbynombre,
+  getmaterialbyid,
   getmaterialbyidprof, 
   creatematerial,
   updatematerial,

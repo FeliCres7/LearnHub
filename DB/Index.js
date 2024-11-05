@@ -1,7 +1,7 @@
 import express from "express";
 import alumnos from './controllers/Alumnos.js';
-import { Server } from "socket.io";
-import { createServer } from "node:http";
+//import { Server } from "socket.io";
+//import { createServer } from "node:http";
 import auth from './controllers/auth.js'
 import profesores from './controllers/Profesores.js';
 //import clases from './controllers/clases.js';
@@ -30,7 +30,7 @@ app.use(cors({
   origin: "*", // origen permitido
   methods: ['GET', 'POST', 'OPTIONS']
 }));
-
+/*
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
@@ -116,7 +116,7 @@ app.get('/api/chats', async (req, res) => {
     res.status(500).json({ error: "Error al obtener la lista de chats" });
   }
 });
-
+*/
 
 // Ruta de prueba
 app.get("/", (req, res) => {
@@ -194,9 +194,10 @@ app.get('/paises/:ID', paises.getpaisesById);
 //Material. terminado
 app.get('/Material', material.getmaterial);
 app.get('/Material/:nombre', material.getmaterialbynombre);
+app.get('/Material/ID/:ID', material.getmaterialbyid);
 app.get('/Material/idprof/:IDprofesor', material.getmaterialbyidprof);
 app.post('/Material/:IDprofesor', verifyToken, verifyAdmin, material.creatematerial);
-app.put('/Material/ID', verifyToken, verifyAdmin, material.updatematerial);
+app.put('/Material/ID/:ID', verifyToken, verifyAdmin, material.updatematerial);
 app.delete('/Material/:ID', verifyToken, verifyAdmin, material.deletematerial);
 
 //reservaciones. terminado
