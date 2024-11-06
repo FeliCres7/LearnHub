@@ -1,97 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
 
-    
-    <!DOCTYPE html>
-    <html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Configuración del perfil</title>
+    <link rel="stylesheet" href="../header.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="configuracion.css">
+    <link rel="icon" href="../Images html/logo pestaña.png" type="image/png">
+</head>
 
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset="UTF-8">
-        <title>Configuración del perfil</title>
-        <link rel="stylesheet" href="../header.css">
-        <link rel="stylesheet" href="../styles.css">
-        <link rel="stylesheet" href="configuracion.css">
-        <link rel="icon" href="../Images html/logo pestaña.png" type="image/png">
-
-
-    </head>
-
-    <body>
-        <header class="header">
-            <img class="logoarriba" src="../Images html/LOGOLH.png" alt="LearnHub">
-            <div class="search">
-                <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-                <button class="buttonsearch"><i class="fas fa-search"></i></button>
+<body>
+    <header class="header">
+        <img class="logoarriba" src="../Images html/LOGOLH.png" alt="LearnHub">
+        <div class="search">
+            <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li class="boton-inicio"><button onclick="window.location.href='profesorhome.html'" class="inicio"><img
+                            src="../Images html/logo inicio.png" alt=""></button><a
+                        href="../profesorhome.html">Inicio</a></li>
+                <li class="boton-perfil-profesor"><button onclick="window.location.href='../profesorperfil.html'"><img
+                            src="../Images html/logo perfil alumno.png" alt=""></button><a
+                        href="../profesorperfil.html">Perfil</a></li>
+                <li class="boton-calendario"><button onclick="window.location.href='../profesorcalendario.html'"><img
+                            src="../Images html/logo calendario.png" alt=""></button><a
+                        href="../profesorcalendario.html">Calendario</a></li>
+                <li class="boton-configuracion"><button
+                        onclick="window.location.href='../configuracionprofesor.html'"><img
+                            src="../Images html/logo configuracion.png" alt=""></button><a
+                        href="../configuracionprofesor.html">Configuración</a></li>
+                <li class="boton-materiales-de-trabajo">
+                    <button onclick="window.location.href='../profesormaterialesdetrabajo.html'">
+                        <img src="../Images html/logo materiales.png" alt=""></button>
+                    <a href="../profesormaterialesdetrabajo.html">Materiales de trabajo</a>
+                </li>
+            </ul>
+        </nav>
+        <button id="menubutton"><img src="../Images html/menubutton.png" alt="MENU"></button>
+        <nav class="menu" id="menu">
+            <ul>
+                <li><a href="../profesorhome.html">Inicio</a></li>
+                <li><a href="../profesorperfil.html">Perfil</a></li>
+                <li><a href="../profesorcalendario.html">Calendario</a></li>
+                <li><a href="../configuracionprofesor.html">Configuración</a></li>
+                <li><a href="../profesormaterialesdetrabajo.html">Mis materiales de trabajo</a></li>
+            </ul>
+        </nav>
+    </header>
+    <script src="../script.js"></script>
+    <main>
+        <aside class="PanelIzquierdo">
+            <p class="config">Configuración</p>
+            <div class="ajustes">
+                <img src="../Images html/logo ajustes usuario.png" alt="">
+                <p>Ajustes de usuario</p>
             </div>
-            <nav class="navbar">
-                <ul>
-                    <li class="boton-inicio"><button onclick="window.location.href='profesorhome.html'" class="inicio"><img src="../Images html/logo inicio.png"
-                                alt=""></button><a href="../profesorhome.html">Inicio</a></li>
-                    <li class="boton-perfil-profesor"><button onclick="window.location.href='../profesorperfil.html'"><img src="../Images html/logo perfil alumno.png"
-                                alt=""></button><a href="../profesorperfil.html">Perfil</a></li>
-                    <li class="boton-calendario"><button onclick="window.location.href='../profesorcalendario.html'"><img src="../Images html/logo calendario.png" alt=""></button><a
-                            href="../profesorcalendario.html">Calendario</a></li>
-                    <li class="boton-configuracion"><button onclick="window.location.href='../configuracionprofesor.html'"><img
-                                src="../Images html/logo configuracion.png" alt=""></button><a
-                            href="../configuracionprofesor.html">Configuración</a></li>
-                    <li class="boton-materiales-de-trabajo">
-                        <button onclick="window.location.href='../profesormaterialesdetrabajo.html'">
-                            <img src="../Images html/logo materiales.png" alt=""></button>
-                        <a href="../profesormaterialesdetrabajo.html">Materiales de trabajo</a>
-                    </li>
-                </ul>
-            </nav>
-            <button id="menubutton"><img src="../Images html/menubutton.png" alt="MENU"></button>
-            <nav class="menu" id="menu">
-                <ul>
-                    <li><a href="../profesorhome.html">Inicio</a></li>
-                    <li><a href="../profesorperfil.html">Perfil</a></li>
-                    <li><a href="../profesorcalendario.html">Calendario</a></li>
-                    <li><a href="../configuracionprofesor.html">Configuración</a></li>
-                    <li><a href="../profesormaterialesdetrabajo.html">Mis materiales de trabajo</a></li>
-                </ul>
-            </nav>
-        </header>
-        <script src="../script.js"></script>
-        <main>
-            <aside class="PanelIzquierdo">
-                <p class="config">Configuración</p>
-                <div class="ajustes">
-                    <img src="../Images html/logo ajustes usuario.png" alt="">
-                    <p>Ajustes de usuario</p>
+            <div class="seguridad">
+                <img src="../Images html/logo seguridad cuenta azul.png" alt="">
+                <p>Información personal</p>
+            </div>
+        </aside>
+        <article class="panel-configuracion">
+            <div class="info-perfil-div">
+                <div>
+                    <h1>Información del Perfil</h1>
                 </div>
-                <div class="seguridad">
-                    <img src="../Images html/logo seguridad cuenta azul.png" alt="">
-                    <p>Información personal</p>
+                <div>
+                    <p>Foto de perfil</p>
+                    <div class="foto-perfil">
+                        <img id="fotoPerfil" src="../Images html/fotoprueba.png" alt="Foto de perfil">
+                        <button>Editar</button>
+                    </div>
+                </div>
+                <div>
+                    <p class="bold">Materia</p>
+                    <select id="materias_profesor" required>
+                    </select>
+                </div>
+                <div style="padding-top: 10px;">
+                    <p class="bold">Materiales de trabajo</p>
+                    <button  onclick="window.location.href='../profesormaterialesdetrabajo.html'">Administrar materiales
+                        de trabajo</button>
+                </div>
+                <div class="confirmar">
+                    <button>Confirmar</button>
+                </div>
+            </div>
+        </article>
+    </main>
+    <footer><img src="../Images html/LogoLH.png" alt=""></footer>
 
-                </div>
-            </aside>
-            <article class="panel-configuracion">
-                <div class="info-perfil-div">
-                    <div>
-                        <h1>Información del Perfil</h1>
-                    </div>
-                    <div>
-                        <p>Foto de perfil</p>
-                        <div class="foto-perfil">
-                            <img src="../Images html/fotoprueba.png" alt=" ">
-                            <button>Editar</button>
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="window.location.href='../profesormaterialesdetrabajo.html'">Administrar materiales de trabajo</button>
-                    </div>
-                    <div class="disponibilidad">
-                        <p>Disponibilidad horaria</p>
-                            <button onclick="window.location.href='disponibilidadhoraria.html'">Editar</button>
-                    </div>
-                    <div class="confirmar">
-                        <button>Confirmar</button>
-                    </div>
-                </div>
-            </article>
-        </main>
-        <footer><img src="../Images html/LogoLH.png" alt=""></footer>
-        
-    </body>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Token no encontrado. Redireccionando...");
+                window.location.href = "inicio.html";
+                return;
+            }
 
-    </html>
+            const payloadBase64 = token.split(".")[1];
+            const payloadJson = JSON.parse(atob(payloadBase64));
+            const profesorId = payloadJson.id;
+            console.log("Profesor ID extraído del token:", profesorId);
+
+            // Obtener los datos del profesor usando el ID
+            try {
+                console.log(`Solicitando datos del profesor con ID: ${profesorId}`);
+                const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
+
+                if (!response.ok) {
+                    console.error("Error en la respuesta de la API:", response.status);
+                    return;
+                }
+
+                const profesorData = await response.json();
+                console.log("Datos del profesor recibidos:", profesorData);
+
+                // Mostrar la foto del profesor
+                const fotoPerfil = document.getElementById("fotoPerfil");
+                if (profesorData.profesor.foto) {
+                    console.log("Foto del profesor:", profesorData.profesor.foto);
+                    // Asignar la foto Base64 al src
+                    fotoPerfil.src = `data:image/png;base64,${profesorData.profesor.foto}`;
+                } else {
+                    console.log("Foto no disponible, usando foto por defecto.");
+                    fotoPerfil.src = "../Images html/fotoprueba.png";
+                }
+
+                // Obtener todas las materias
+                const materiasResponse = await fetch('https://learn-hub-eta.vercel.app/Materia');
+                if (!materiasResponse.ok) {
+                    console.error("Error al obtener las materias:", materiasResponse.status);
+                    return;
+                }
+
+                const materiasData = await materiasResponse.json();
+                const selectMaterias = document.getElementById("materias_profesor");
+
+                console.log("Materias obtenidas:", materiasData);
+
+                // Agregar las opciones de materias al select
+                materiasData.forEach(materia => {
+                    const option = document.createElement("option");
+                    option.value = materia.id; // ID de la materia
+                    option.textContent = materia.nombre_materia; // Nombre de la materia
+                    selectMaterias.appendChild(option);
+                    console.log("Materia añadida:", materia.nombre_materia);
+                });
+
+                // Seleccionar la materia que tiene asignada el profesor
+                // Seleccionar la materia que tiene asignada el profesor
+                const materiaIdProfesor = profesorData.profesor.idmateria; // Asumiendo que este campo es el ID de la materia
+                console.log("ID de la materia asignada al profesor:", materiaIdProfesor);
+
+                if (materiaIdProfesor) {
+                    // Asegúrate de convertir ambos valores a string para compararlos correctamente
+                    const materiaSeleccionada = selectMaterias.querySelector(`option[value="${(materiaIdProfesor)}"]`);
+                    if (materiaSeleccionada) {
+                        materiaSeleccionada.selected = true;
+                        console.log("Materia seleccionada por defecto:", materiaSeleccionada.textContent);
+                    } else {
+                        console.warn(`No se encontró la materia con ID ${materiaIdProfesor} en el select.`);
+                    }
+                } else {
+                    console.warn("El profesor no tiene asignada una materia.");
+                }
+
+
+            } catch (error) {
+                console.error('Error al cargar los datos del profesor o materias:', error);
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

@@ -84,8 +84,6 @@
                         <p>Fecha de nacimiento</p>
                         <input type="date" value="">
                         <p>Materias que enseñas:</p>
-                        <select id="materias_profesor" required> 
-                        </select> 
                         <div class="confirmar">
                             <input type="submit" class="confirmar" value="Confirmar"></button>
                         </div>
@@ -93,27 +91,6 @@
                 </div>
             </article>
         </main>
-    <script>
-                // Función para cargar las materias en el select
-                async function cargarMaterias() {
-            try {
-                const response = await fetch('https://learn-hub-eta.vercel.app/Materia');
-                const materias = await response.json();
-                
-                const selectMateriasProfesor = document.getElementById('materias_profesor');
-    
-                // Llenar el select de países para profesores
-                materias.forEach(materias => {
-                    const option = document.createElement('option');
-                    option.value = materias.id; // Asumiendo que el ID es la propiedad que necesitas
-                    option.textContent = materias.nombre_materia; // Cambia 'nombre' por la propiedad correspondiente
-                    selectMateriasProfesor.appendChild(option.cloneNode(true));
-                });
-            } catch (error) {
-                console.error('Error al cargar las materias:', error);
-            }
-        }
-    </script>
         <footer><img src="../Images html/LogoLH.png" alt=""></footer>
 
     </body>
