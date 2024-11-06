@@ -28,7 +28,7 @@ pool.connect();
 app.use(express.json());
 app.use(cors({
   origin: "*", // origen permitido
-  methods: ['GET', 'POST', 'OPTIONS']
+  methods: ['GET', 'POST', 'DELETE', 'PUT' , 'OPTIONS']
 }));
 
 // Ruta de prueba
