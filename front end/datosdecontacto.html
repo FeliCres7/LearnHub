@@ -53,10 +53,64 @@
 
     <main class="main-fondo-azul">
         <div class="centrardiv"><div class="div-datoscontacto">
-            <h1>Datos de contacto</h1>
-            <div class="rounded-text"><p class="bold">Correo Electrónico: </p><p>(correo electronico)</p></div>
-            <div class="rounded-text"><p class="bold">Teléfono: </p><p>(N° de telefono)</p></div>
-        </div></div>
+            <h1 id="datos-profesor">Datos de contacto de</h1>
+            <div class="rounded-text"><p class="bold" >Correo Electrónico: </p><p id="correo"></p></div>
+            <div class="rounded-text"><p class="bold" >Teléfono: </p><p id="telefono"></p></div>
+            <button class="boton-datosdecontacto" onclick="window.location.href='misprofesores.html'">Volver</button>
     </main>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    // Extraer el ID del profesor de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const profesorId = urlParams.get('id');
+    
+    if (!profesorId) {
+        alert('ID del profesor no proporcionado.');
+        return;
+    }
+
+    console.log("Cargando datos de contacto para el profesor con ID:", profesorId);
+
+    // Cargar los datos del profesor
+    const profesor = await fetchProfesor(profesorId);
+    if (profesor) {
+        renderizarDatosContacto(profesor);
+    } else {
+        alert("No se pudo obtener los datos del profesor.");
+    }
+});
+
+async function fetchProfesor(profesorId) {
+    try {
+        const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
+        if (!response.ok) {
+            throw new Error('Error al obtener el profesor. Código: ' + response.status);
+        }
+        const data = await response.json();
+        
+        // Depuración para verificar que recibimos los datos correctamente
+        console.log('Datos del profesor:', data);
+        
+        return data.profesor || null;  // Retornar los datos del profesor si existen
+    } catch (error) {
+        console.error("Error al obtener los datos del profesor:", error);
+        return null;
+    }
+}
+
+function renderizarDatosContacto(profesor) {
+    // Actualizar el título con el nombre y apellido del profesor
+    const datosProfesor = document.getElementById('datos-profesor');
+    datosProfesor.textContent = `Datos de contacto de ${profesor.nombre} ${profesor.apellido}`;
+
+    // Actualizar los campos de correo y teléfono
+    const correoElement = document.getElementById('correo');
+    const telefonoElement = document.getElementById('telefono');
+
+    correoElement.textContent = profesor.email || 'Correo no disponible';
+    telefonoElement.textContent = profesor.telefono || 'Teléfono no disponible';
+}
+
+</script>
 </html>
