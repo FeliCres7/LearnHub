@@ -713,3 +713,22 @@ padding-left: 10px;
     font-weight: 500;
     background-color: #ffffff;
 }
+#inputNombre{
+    width: 90%;
+    font-size: 16px; 
+    border-radius: 5px; 
+    color: #000000; 
+    text-indent: 5px;
+}
+.mensaje-nohaymateriales{
+    background: none;
+    width: 100%;
+    margin-top: 15px;
+    font-size: 18px;
+    text-align: center;
+
+}
+.article-materialdetrabajo
+{
+width: 100%;
+}

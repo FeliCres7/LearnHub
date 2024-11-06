@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 </head>
+
 <body>
     <header class="header">
 
@@ -48,23 +50,125 @@
             </ul>
         </nav>
     </header>
+    <script src="script.js"></script>
     <main class="main-fondo-azul">
-        <article>
+        <article class="article-materialdetrabajo">
             <div class="materialdetrabajo">
-                
+
                 <h1>Guía 1</h1>
                 <h2>Información de la guía</h2>
-                <p class="materialdetrabajo-desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi, tempore blanditiis impedit
+                <p class="materialdetrabajo-desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi,
+                    tempore blanditiis impedit
                     temporibus in necessitatibus fugiat nostrum sit sed cum quod qui quidem explicabo fuga enim,
                     molestias soluta architecto ut.</p>
-                    <div class="datacontainer">
-                        <p class="bold">Creado por:</p>
-                        <p class="nombreprofe">Nombre Apellido</p>
-                    </div>
-                    <div class="divbtndescargar"><button class="botondescargar"><p>Descargar</p><img src="Images html/ícono descargar.png" alt=""></button></div>            </div>
-                </article>
-                
-            </main>
-        </body>
-        <script src="script.js"></script>
+                <div class="datacontainer">
+                    <p class="bold">Creado por:</p>
+                    <p class="nombreprofe">Nombre Apellido</p>
+                </div>
+                <div class="divbtndescargar"><button class="botondescargar">
+                        <p>Descargar</p><img src="Images html/ícono descargar.png" alt="">
+                    </button></div>
+            </div>
+        </article>
+
+    </main>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Extraer el ID del profesor de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const profesorId = urlParams.get('id');
+
+        if (!profesorId) {
+            alert('ID del profesor no proporcionado.');
+            return;
+        }
+
+        console.log("Cargando materiales para el profesor con ID:", profesorId);
+
+        // Cargar los materiales del profesor
+        const materiales = await fetchMateriales(profesorId);
+        renderizarMateriales(materiales);
+    });
+
+    async function fetchMateriales(profesorId) {
+        try {
+            const response = await fetch(`https://learn-hub-eta.vercel.app/Material/idprof/${profesorId}`);
+            if (!response.ok) {
+                throw new Error('Error al obtener los materiales. Código: ' + response.status);
+            }
+            const data = await response.json();
+            console.log("Materiales obtenidos:", data);
+
+            return data.materiales || [];
+        } catch (error) {
+            console.error("Error al obtener los materiales:", error);
+            return [];
+        }
+    }
+
+    async function fetchProfesorNombreApellido(profesorId) {
+    try {
+        const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
+        if (!response.ok) {
+            throw new Error('Error al obtener el profesor. Código: ' + response.status);
+        }
+        const data = await response.json();
+        
+        // Depurar la respuesta para verificar qué datos se reciben
+        console.log('Datos del profesor:', data);
+
+        // Asegurarse de que la respuesta contiene el objeto 'profesor'
+        if (data.profesor && data.profesor.nombre && data.profesor.apellido) {
+            const nombre = data.profesor.nombre || 'Nombre no disponible';
+            const apellido = data.profesor.apellido || 'Apellido no disponible';
+            return `${nombre} ${apellido}`;
+        } else {
+            return "Profesor no disponible";
+        }
+    } catch (error) {
+        console.error("Error al obtener los datos del profesor:", error);
+        return "Profesor no disponible";
+    }
+}
+
+    function renderizarMateriales(materiales) {
+        const container = document.querySelector('.article-materialdetrabajo');
+        container.innerHTML = "";  // Limpiar contenedor antes de agregar los materiales
+
+        if (materiales.length === 0) {
+            container.innerHTML = `<p class="mensaje-nohaymateriales">No hay materiales disponibles para este profesor.</p>`;
+            return;
+        }
+
+        materiales.forEach(async (material) => {
+            const profesorNombre = await fetchProfesorNombreApellido(material.IDprofesor);
+
+            const item = `
+                        <div class="materialdetrabajo">
+                            <h1>${material.nombre}</h1>
+                            <h2>Información de la guía</h2>
+                            <p class="materialdetrabajo-desc">${material.infoguia || 'Descripción no disponible'}</p>
+                            <div class="datacontainer">
+                                <p class="bold">Creado por:</p>
+                                <p class="nombreprofe">${profesorNombre}</p>
+                            </div>
+                            <div class="divbtndescargar">
+                                <button class="botondescargar" onclick="descargarMaterial('${material.archivo}', '${material.nombre}')">
+                                    <p>Descargar</p><img src="Images html/ícono descargar.png" alt="">
+                                </button>
+                            </div>
+                        </div>`;
+            container.innerHTML += item;
+        });
+    }
+
+    function descargarMaterial(base64, nombre) {
+        const link = document.createElement('a');
+        link.href = `data:application/octet-stream;base64,${base64}`;
+        link.download = `${nombre}.pdf`;  // O cualquier extensión del archivo
+        link.click();
+    }
+</script>
+
 </html>

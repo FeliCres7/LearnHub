@@ -52,19 +52,8 @@
                 <input type="search" id="inputNombre" placeholder="Buscar por nombre">
                 <button id="filtrar-nombre" class="filtrar-button">Filtrar</button>
                 <p>Materias</p>
-                <select name="" id="selectmaterias"></select>
+                <select name="" id="selectmaterias" style="width: 90%;"></select>
                 <button id="filtrar-materia" class="filtrar-button">Filtrar</button>
-                <p>Fechas</p>
-                <ul>
-                    <li>Lunes</li>
-                    <li>Martes</li>
-                    <li>Miércoles</li>
-                    <li>Jueves</li>
-                    <li>Viernes</li>
-                    <li>Sábado</li>
-                    <li>Domingo</li>
-                </ul>
-                <button id="filtrar-fechas" class="filtrar-button">Filtrar</button>
             </div>
         </aside>
         <section id="lista-misprofesores" class="lista-misprofesores"></section>
@@ -109,7 +98,7 @@
                     </div>
                 </div>
                 <div class="botones-profesor">
-                    <button onclick="window.location.href='materialesdetrabajo.html'">Materiales de trabajo</button>
+                    <button onclick="window.location.href='materialesdetrabajo.html?id=' + ${prof.ID}">Materiales de trabajo</button>
                     <button>Ir a perfil</button>
                     <button>Ver datos de contacto</button>
                 </div>
@@ -139,7 +128,7 @@
             return data;
         } catch (error) {
             console.error("Error al obtener profesores:", error);
-            alert(error.message);
+            
             return [];
         }
     }
@@ -151,17 +140,21 @@
     }
 
     function renderizarProfesores(data) {
-        mainCards.innerHTML = "";
-        if (data.length === 0) {
-            mainCards.innerHTML = "<p>No se encontraron profesores.</p>";
-            return;
-        }
-        data.forEach((profesor) => {
-            const item = CreateProfCard(profesor);
-            mainCards.innerHTML += item;
-        });
-        asignarValoraciones();
+    mainCards.innerHTML = ""; // Limpia el contenedor
+
+    if (data.length === 0) {
+        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+        return;
     }
+
+    data.forEach((profesor) => {
+        const item = CreateProfCard(profesor);
+        mainCards.innerHTML += item;
+    });
+
+    asignarValoraciones();
+}
+
 
     function asignarValoraciones() {
         const images = [
@@ -228,14 +221,24 @@
     });
 
     document.getElementById('filtrar-nombre').addEventListener('click', () => {
-        const nombre = document.getElementById("inputNombre").value.toLowerCase();
-        console.log("Filtrando profesores por nombre:", nombre);
-        const profesoresFiltrados = profesoresTotales.filter(profesor =>
-            `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
-        );
-        console.log("Profesores filtrados:", profesoresFiltrados);
+    const nombre = document.getElementById("inputNombre").value.toLowerCase();
+    console.log("Filtrando profesores por nombre:", nombre);
+
+    // Filtrar los profesores por el nombre completo (nombre y apellido)
+    const profesoresFiltrados = profesoresTotales.filter(profesor =>
+        `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
+    );
+
+    console.log("Profesores filtrados:", profesoresFiltrados);
+
+    // Si no hay profesores que coincidan, muestra el mensaje de "No hay profesores que coincidan"
+    if (profesoresFiltrados.length === 0) {
+        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+    } else {
         renderizarProfesores(profesoresFiltrados);
-    });
+    }
+});
+
 
 document.getElementById('filtrar-materia').addEventListener('click', async () => {
     const materiaSeleccionada = document.getElementById("selectmaterias").value;
@@ -250,13 +253,14 @@ document.getElementById('filtrar-materia').addEventListener('click', async () =>
     const profesoresFiltrados = await fetchProfesores(url);
     console.log("Profesores filtrados por materia:", profesoresFiltrados);
 
-    if (profesoresFiltrados.profesores.length === 0) {
-        console.warn("No se encontraron profesores para la materia seleccionada.");
+    // Si no hay profesores que coincidan con la materia, muestra el mensaje de "No hay profesores"
+    if (profesoresFiltrados.length === 0) {
+        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+    } else {
+        renderizarProfesores(profesoresFiltrados);
     }
-
-    // Renderiza solo el array de profesores
-    renderizarProfesores(profesoresFiltrados.profesores);
 });
+
 
 
 </script>
