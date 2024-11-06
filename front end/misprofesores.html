@@ -21,11 +21,20 @@
 
         <nav class="navbar">
             <ul>
-                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
-                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a></li>
-                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis profesores</a></li>
-                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img src="Images html/logo calendario.png" alt=""></button><a href="calendario.html">Calendario</a></li>
-                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img src="Images html/logo configuracion.png" alt=""></button><a href="configuracion.html">Configuración</a></li>
+                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img
+                            src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
+                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img
+                            src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a>
+                </li>
+                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img
+                            src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis
+                        profesores</a></li>
+                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img
+                            src="Images html/logo calendario.png" alt=""></button><a
+                        href="calendario.html">Calendario</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
+                            src="Images html/logo configuracion.png" alt=""></button><a
+                        href="configuracion.html">Configuración</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -99,7 +108,7 @@
                 </div>
                 <div class="botones-profesor">
                     <button onclick="window.location.href='materialesdetrabajo.html?id=' + ${prof.ID}">Materiales de trabajo</button>
-                    <button>Ir a perfil</button>
+                    <button onclick="window.location.href='perfilprofesordesdealumno.html?id=' + ${prof.ID}">Ir a perfil</button>
                     <button onclick="window.location.href='datosdecontacto.html?id=' + ${prof.ID}">Ver datos de contacto</button>
                 </div>
                 <div class="valoracion-profesor">
@@ -125,13 +134,17 @@
             }
             const data = await response.json();
             console.log("Profesores obtenidos:", data);
-            return data;
+
+            // Asegúrate de que `data` es un array antes de regresarlo
+            return Array.isArray(data) ? data : [];
         } catch (error) {
             console.error("Error al obtener profesores:", error);
-            
+
             return [];
         }
     }
+
+
 
     async function cargarProfesores() {
         profesoresTotales = await fetchProfesores("https://learn-hub-eta.vercel.app/profesores");
@@ -140,20 +153,20 @@
     }
 
     function renderizarProfesores(data) {
-    mainCards.innerHTML = ""; // Limpia el contenedor
+        mainCards.innerHTML = ""; // Limpia el contenedor
 
-    if (data.length === 0) {
-        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
-        return;
+        if (!Array.isArray(data) || data.length === 0) {
+            mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+            return;
+        }
+
+        data.forEach((profesor) => {
+            const item = CreateProfCard(profesor);
+            mainCards.innerHTML += item;
+        });
+
+        asignarValoraciones();
     }
-
-    data.forEach((profesor) => {
-        const item = CreateProfCard(profesor);
-        mainCards.innerHTML += item;
-    });
-
-    asignarValoraciones();
-}
 
 
     function asignarValoraciones() {
@@ -221,48 +234,35 @@
     });
 
     document.getElementById('filtrar-nombre').addEventListener('click', () => {
-    const nombre = document.getElementById("inputNombre").value.toLowerCase();
-    console.log("Filtrando profesores por nombre:", nombre);
+        const nombre = document.getElementById("inputNombre").value.toLowerCase();
+        console.log("Filtrando profesores por nombre:", nombre);
 
-    // Filtrar los profesores por el nombre completo (nombre y apellido)
-    const profesoresFiltrados = profesoresTotales.filter(profesor =>
-        `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
+        // Filtrar los profesores por el nombre completo (nombre y apellido)
+        const profesoresFiltrados = profesoresTotales.filter(profesor =>
+            `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
+        );
+
+        console.log("Profesores filtrados:", profesoresFiltrados);
+
+        // Si no hay profesores que coincidan, muestra el mensaje de "No hay profesores que coincidan"
+        if (profesoresFiltrados.length === 0) {
+            mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+        } else {
+            renderizarProfesores(profesoresFiltrados);
+        }
+    });
+
+
+    document.getElementById("filtrar-materia").addEventListener("click", () => {
+    const idMateriaSeleccionada = document.getElementById("selectmaterias").value;
+
+    const profesoresFiltrados = profesoresTotales.filter(profesor => 
+        profesor.idmateria == idMateriaSeleccionada // Compara como número o cadena
     );
 
-    console.log("Profesores filtrados:", profesoresFiltrados);
-
-    // Si no hay profesores que coincidan, muestra el mensaje de "No hay profesores que coincidan"
-    if (profesoresFiltrados.length === 0) {
-        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
-    } else {
-        renderizarProfesores(profesoresFiltrados);
-    }
-});
-
-
-document.getElementById('filtrar-materia').addEventListener('click', async () => {
-    const materiaSeleccionada = document.getElementById("selectmaterias").value;
-    console.log("Materia seleccionada para filtrar:", materiaSeleccionada);
-
-    // Verifica si hay una materia seleccionada. Si no, muestra todos los profesores.
-    const url = materiaSeleccionada ? 
-        `https://learn-hub-eta.vercel.app/profesores/materias/${materiaSeleccionada}` : 
-        "https://learn-hub-eta.vercel.app/profesores";
-
-    // Llama a fetchProfesores para obtener los profesores filtrados
-    const profesoresFiltrados = await fetchProfesores(url);
     console.log("Profesores filtrados por materia:", profesoresFiltrados);
-
-    // Si no hay profesores que coincidan con la materia, muestra el mensaje de "No hay profesores"
-    if (profesoresFiltrados.length === 0) {
-        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
-    } else {
-        renderizarProfesores(profesoresFiltrados);
-    }
+    renderizarProfesores(profesoresFiltrados);
 });
-
-
-
 </script>
 
 
