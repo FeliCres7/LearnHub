@@ -112,7 +112,7 @@ const updateperfil = async (req,res) => {
 const {foto, idmaterias, ID} = req.body
 
 try{
-const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmaterias=$2 WHERE "ID"= $3 RETURNING *', [foto, idmaterias, ID]
+const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmateria=$2 WHERE "ID"= $3 RETURNING *', [foto, idmaterias, ID]
 );
 if (result.rows.length > 0) {
   res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
