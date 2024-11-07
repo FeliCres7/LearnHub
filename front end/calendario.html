@@ -1,4 +1,3 @@
-@ -1,110 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -60,52 +59,150 @@
     </div>
 
     <script>
+        // Función para obtener las reservas de un alumno
+        async function getReservasByAlumno(IDalumno) {
+            try {
+                const response = await fetch(`https://tu-api-url.com/reservaciones/alumno/${IDalumno}`);
+
+                if (response.ok) {
+                    const reservas = await response.json();
+                    console.log('Reservas del alumno:', reservas);
+                    return reservas; // Aquí puedes actualizar la interfaz con las reservas obtenidas
+                } else {
+                    console.error('Error al obtener las reservas del alumno:', response.statusText);
+                    alert('Hubo un error al obtener las reservas.');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud fetch:', error);
+                alert('Hubo un error con la conexión.');
+            }
+        }
+
+        // Función para obtener las reservas de un profesor
+        async function getReservasByProfesor(idprof) {
+            try {
+                const response = await fetch(`'https://learn-hub-eta.vercel.app/reservaciones/profesor/${idprof}`);
+
+                if (response.ok) {
+                    const reservas = await response.json();
+                    console.log('Reservas del profesor:', reservas);
+                    return reservas; // Aquí puedes actualizar la interfaz con las reservas obtenidas
+                } else {
+                    console.error('Error al obtener las reservas del profesor:', response.statusText);
+                    alert('Hubo un error al obtener las reservas.');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud fetch:', error);
+                alert('Hubo un error con la conexión.');
+            }
+        }
+
+        // Función para crear una nueva reserva
+        async function createReserva(IDalumno, idprof, dia, hora, fecha) {
+            console.log("Iniciando proceso para crear una nueva reserva...");
+            const data = {
+                IDalumno,
+                idprof,
+                dia,
+                hora,
+                fecha
+            };
+
+            console.log("Datos de la reserva a enviar:", data);
+
+            try {
+                const apiUrl = 'https://tu-api-url.com/reservaciones'; // Asegúrate de que la URL es correcta
+                console.log("URL de la API:", apiUrl);
+                
+                const response = await fetch(apiUrl, {
+                    method: 'POST', // Método POST para crear una nueva reserva
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                console.log("Respuesta recibida del servidor:", response);
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Reserva creada exitosamente:', result);
+
+                    alert('Reserva creada exitosamente!');
+
+                    // Aquí puedes actualizar el calendario con la nueva reserva
+                    if (calendar) {
+                        console.log('Añadiendo el evento al calendario...');
+                        calendar.addEvent({
+                            title: `Clase con ${result.reservaciones.profesor}`,
+                            start: result.reservaciones.fecha,
+                            description: `Clase con ${result.reservaciones.profesor}`,
+                        });
+                        console.log('Evento añadido al calendario.');
+                    } else {
+                        console.error('El calendario no está inicializado.');
+                    }
+
+                } else {
+                    console.error('Error al crear la reserva:', response.statusText);
+                    alert('Hubo un error al crear la reserva.');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud fetch:', error);
+                alert('Hubo un error con la conexión.');
+            }
+        }
+
+        // Función para capturar el evento del calendario y hacer la reserva
+        function handleDateClick(info) {
+            console.log("Fecha seleccionada en el calendario:", info.dateStr);
+            
+            const IDalumno = localStorage.getItem('userId'); // Suponiendo que el ID del alumno está en localStorage
+            console.log("ID del alumno obtenido de localStorage:", IDalumno);
+
+            if (!IDalumno) {
+                console.error('No se encontró el ID del alumno en localStorage');
+                alert('No se encontró el ID del alumno.');
+                return;
+            }
+
+            const dia = info.dateStr; // Fecha seleccionada en el calendario
+            const hora = prompt("Introduce la hora de la clase (formato HH:mm)"); // Pedir la hora de la clase
+            const idprof = prompt("Introduce el ID del profesor"); // Pedir el ID del profesor
+
+            console.log("Datos de la clase: hora:", hora, "profesor:", idprof);
+
+            if (hora && idprof) {
+                const fecha = new Date(dia).toISOString(); // Convertir la fecha a formato ISO
+                console.log("Fecha convertida a formato ISO:", fecha);
+
+                console.log("Creando la reserva...");
+                createReserva(IDalumno, idprof, dia, hora, fecha); // Crear la nueva reserva
+            } else {
+                console.error('Faltan datos para completar la reserva');
+                alert('Por favor, ingresa todos los detalles.');
+            }
+        }
+
+        // Configurar el calendario
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("El documento está listo, configurando el calendario...");
+
             var calendarEl = document.getElementById('calendar');
+            console.log("Elemento del calendario:", calendarEl);
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                dateClick: handleDateClick, // Captura el clic en una fecha
                 events: [
                     { title: 'Evento 1', start: '2024-10-01' },
                     { title: 'Evento 2', start: '2024-10-07', end: '2024-10-10' }
                 ]
             });
+
+            console.log("Renderizando el calendario...");
             calendar.render();
         });
-
-        async function getReservacionesByAlumno(IDalumno) {
-            try {
-                const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/${IDalumno}`);
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                const reservaciones = await response.json();
-                displayReservaciones(reservaciones);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-            console.log(reservaciones);
-        }
-
-        function displayReservaciones(reservaciones) {
-            const clasesContainer = document.querySelector('#Proximas\\ clases');
-            clasesContainer.innerHTML = '<h1>Próximas Clases</h1>';
-
-            reservaciones.forEach(reserva => {
-                const reservaHTML = `
-                    <p>${reserva.dia}</p>
-                    <p>${reserva.hora}</p>
-                    <p>Clase con ${reserva.profesor}</p>
-                `;
-                clasesContainer.innerHTML += reservaHTML;
-            });
-        }
-
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-            getReservacionesByAlumno(userId);
-        } else {
-            console.warn('No se encontró un ID de usuario en localStorage');
-        }
     </script>
 </body>
 </html>
