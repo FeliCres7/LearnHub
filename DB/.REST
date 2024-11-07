@@ -90,9 +90,10 @@ Content-Type: application/json Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI
 
 ### //Actualizar la informacion del perfil de un prof
 
-PUT http://localhost:3000/profesores/updateperfil/ID HTTP/1.1 Content-Type: application/json
+PUT http://localhost:3000/profesores/updateperfil/ID HTTP/1.1 
+Content-Type: application/json
 
-{ "foto":"asfdgfhrfds", "materias":"español y tecnologia", "descripcion_corta":"9/9/1999", "ID": 9 }
+{ "foto":"asfdgfhrfds", "idmateria": 2, "ID": 60 }
 
 ### //Actualizar la seguridad de un prof
 

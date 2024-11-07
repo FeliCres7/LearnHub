@@ -127,7 +127,7 @@
             }
         });
     
-        asynca function obtenerNombrePais(idPais) {
+        async function obtenerNombrePais(idPais) {
             try {
                 const response = await fetch(`https://learn-hub-eta.vercel.app/paises/${idPais}`);
                 if (!response.ok) throw new Error("Error al obtener el país");

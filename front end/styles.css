@@ -747,3 +747,28 @@ width: 100%;
     cursor: pointer;
     filter: brightness(0.9);
 }
+.reservaciones-div{
+    background-color: #ffffff;
+    padding: 10px;
+    height: fit-content;
+    width: 60%;
+    margin:  30px 20%;
+    box-shadow: 0 4px 6px #00000066;
+    border-radius: 20px;
+    flex-direction: column;
+}
+.reservaciones-div *{
+    color: #424242;
+}
+.reservaciones-div div{
+    margin-top: 20px;
+}
+.reservarbutton{
+    font-size: 22px;
+    color: #424242;
+    font-weight: 500;
+    background-color: #ffffff;
+    border: 2px solid #424242;
+    padding: 5px;
+    border-radius: 20px;
+}
