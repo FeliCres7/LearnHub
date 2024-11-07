@@ -109,7 +109,7 @@ const updateinfopersonal = async (req, res) => {
 };
 
 const updateperfil = async (req,res) => {
-const {foto, idmaterias, ID} = req.body
+const {foto, idmateria, ID} = req.body
 
 try{
 const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmateria=$2 WHERE "ID"= $3 RETURNING *', [foto, idmateria, ID]

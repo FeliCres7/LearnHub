@@ -60,7 +60,8 @@ GET http://localhost:3000/siguen/IDalumno/72 HTTP/1.1
 
 //ALUMNO SEGUIR PROFESOR ###
 
-POST http://localhost:3000/siguen HTTP/1.1 Content-Type: application/json
+POST http://localhost:3000/siguen HTTP/1.1 
+Content-Type: application/json
 
 { "IDalumno": 72, "IDprof": 38
 
@@ -84,14 +85,16 @@ GET http://localhost:3000/profesores/nombreapellido/ezequiel/agradnik HTTP/1.1
 ### //Actualizar la informacion personal de un prof
 
 PUT http://localhost:3000/profesores/updateinfopersonal/ID HTTP/1.1 
-Content-Type: application/json Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzIsInVzZXJuYW1lIjoiZXplcXVpZWwiLCJpYXQiOjE3MzAwNjkxNzMsImV4cCI6MTczMDA3Mjc3M30.AYzVBQsRnv-dm-1P7jW2TJKjlC3G0uTPlSprqU6Jt7c
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsInVzZXJuYW1lIjoiTWFydMOtbiIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTczMTAxODkwNSwiZXhwIjoxNzMxMDIyNTA1fQ.d-z5OjGFS76bCcERyl_cF5Uro_c5GKrlxyF8GsZYjdk
 
-{ "nombre":"benjamin", "apellido":"fridman", "fecha_de_nacimiento":"2007/7/19", "ID": 9 }
+{ "nombre":"benjamin", "apellido":"fridman", "fecha_de_nacimiento":"2007/7/19", "ID": 60 }
 
 ### //Actualizar la informacion del perfil de un prof
 
 PUT http://localhost:3000/profesores/updateperfil/ID HTTP/1.1 
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsInVzZXJuYW1lIjoiTWFydMOtbiIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTczMTAxODkwNSwiZXhwIjoxNzMxMDIyNTA1fQ.d-z5OjGFS76bCcERyl_cF5Uro_c5GKrlxyF8GsZYjdk
 
 { "foto":"asfdgfhrfds", "idmateria": 2, "ID": 60 }
 
