@@ -28,7 +28,7 @@ pool.connect();
 app.use(express.json());
 app.use(cors({
   origin: "*", // origen permitido
-  methods: ['GET', 'POST', 'DELETE', 'PUT' , 'OPTIONS']
+  methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS']
 }));
 
 // Ruta de prueba
@@ -53,10 +53,10 @@ app.listen(port, () => {
 //Rutas express!
 
 // LOG IN 
-app.post('/auth/login', auth.login); // terminado
+app.post('/auth/login', auth.login); 
 
 //registrarse
-app.post('/auth/register', auth.register) //falta q funcione
+app.post('/auth/register', auth.register) 
 
 
 // SEGUIR. terminado
