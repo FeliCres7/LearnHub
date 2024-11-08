@@ -84,8 +84,9 @@ const getDisponibilidadHoraria = async (req, res) => {
 
 const updateinfopersonal = async (req, res) => {
   try {
+    const {ID} = req.params
     const {
-      nombre, apellido, fecha_de_nacimiento, ID
+      nombre, apellido, fecha_de_nacimiento
     } = req.body;
     
    
@@ -109,7 +110,8 @@ const updateinfopersonal = async (req, res) => {
 };
 
 const updateperfil = async (req,res) => {
-const {foto, idmateria, ID} = req.body
+const {ID} = req.params
+const {foto, idmateria} = req.body
 
 try{
 const result = await pool.query ( 'UPDATE public."profesores" SET foto=$1, idmateria=$2 WHERE "ID"= $3 RETURNING *', [foto, idmateria, ID]
