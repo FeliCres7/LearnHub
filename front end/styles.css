@@ -713,6 +713,10 @@ padding-left: 10px;
     font-weight: 500;
     background-color: #ffffff;
 }
+.logoutdiv button:hover{
+    cursor: pointer;
+    filter: brightness(0.9);
+}
 #inputNombre{
     width: 90%;
     font-size: 16px; 

@@ -155,6 +155,7 @@ document.getElementById("datosPerfilForm").addEventListener("submit", async (e) 
         const updatedData = await response.json();
         console.log("Información actualizada:", updatedData);
         alert("Información personal actualizada correctamente.");
+        window.location.href="../configuracion.html"
     } catch (error) {
         console.error("Error al actualizar la información:", error);
     }
