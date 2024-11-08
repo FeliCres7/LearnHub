@@ -76,93 +76,78 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                console.error("Token no encontrado. Redireccionando...");
-                window.location.href = "inicio.html";
+    const token = localStorage.getItem("token");
+    if (!token) {
+        console.error("Token no encontrado. Redireccionando...");
+        window.location.href = "inicio.html";
+        return;
+    }
+
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = JSON.parse(atob(payloadBase64));
+    const profesorId = payloadJson.id;
+    console.log("Profesor ID extraído del token:", profesorId);
+
+    try {
+        console.log(`Solicitando datos del profesor con ID: ${profesorId}`);
+        const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
+        if (!response.ok) {
+            console.error("Error en la respuesta de la API al obtener datos del profesor:", response.status, response.statusText);
+            return;
+        }
+
+        const profesorData = await response.json();
+        console.log("Datos del profesor recibidos:", profesorData);
+
+        document.getElementById("nombreProfesor").value = profesorData.profesor.nombre;
+        document.getElementById("apellidoProfesor").value = profesorData.profesor.apellido;
+        document.getElementById("fechaNacimientoProfesor").value = profesorData.profesor.fecha_de_nacimiento.split("T")[0];
+
+    } catch (error) {
+        console.error('Error al cargar los datos del profesor:', error);
+    }
+
+    document.querySelector('.datos-perfil').addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const updatedData = {
+            nombre: document.getElementById("nombreProfesor").value,
+            apellido: document.getElementById("apellidoProfesor").value,
+            fecha_de_nacimiento: document.getElementById("fechaNacimientoProfesor").value
+        };
+
+        try {
+            console.log(`Enviando datos actualizados para el profesor con ID: ${profesorId}`);
+            const updateResponse = await fetch(`https://learn-hub-eta.vercel.app/profesores/updateinfopersonal/${profesorId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            if (!updateResponse.ok) {
+                console.error("Error al actualizar los datos del profesor:", updateResponse.status, updateResponse.statusText);
                 return;
             }
 
-            const payloadBase64 = token.split(".")[1];
-            const payloadJson = JSON.parse(atob(payloadBase64));
-            const profesorId = payloadJson.id;
-            console.log("Profesor ID extraído del token:", profesorId);
-
+            // Intentar procesar la respuesta como JSON; si falla, capturar y mostrar una advertencia sin intentar leer el cuerpo nuevamente
             try {
-                console.log(`Solicitando datos del profesor con ID: ${profesorId}`);
-                const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
-                if (!response.ok) {
-                    console.error("Error en la respuesta de la API al obtener datos del profesor:", response.status, response.statusText);
-                    const errorData = await response.text();  // Obtener el cuerpo de error como texto
-                    console.error("Detalles del error al obtener los datos del profesor:", errorData);
-                    return;
-                }
-
-                const profesorData = await response.json();
-                console.log("Datos del profesor recibidos:", profesorData);
-
-                // Asignar los valores a los inputs
-                const nombreInput = document.getElementById("nombreProfesor");
-                const apellidoInput = document.getElementById("apellidoProfesor");
-                const fechaNacimientoInput = document.getElementById("fechaNacimientoProfesor");
-
-                nombreInput.value = profesorData.profesor.nombre;
-                apellidoInput.value = profesorData.profesor.apellido;
-
-                // Convertir la fecha en formato correcto (yyyy-MM-dd)
-                const fechaNacimiento = profesorData.profesor.fecha_de_nacimiento.split("T")[0];
-                fechaNacimientoInput.value = fechaNacimiento;
-
-            } catch (error) {
-                console.error('Error al cargar los datos del profesor:', error);
+                const updateResult = await updateResponse.json();
+                console.log("Datos del profesor actualizados:", updateResult);
+            } catch (jsonError) {
+                console.warn("La respuesta recibida no es JSON. Los datos podrían haberse actualizado correctamente.");
             }
 
-            // Agregar evento al formulario para enviar los datos actualizados
-            const form = document.querySelector('.datos-perfil');
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
+            alert('Datos actualizados correctamente');
+            window.location.href="../configuracionprofesor.html"
+        } catch (error) {
+            console.error('Error al enviar los datos actualizados:', error);
+        }
+    });
+});
 
-                const nombre = document.getElementById("nombreProfesor").value;
-                const apellido = document.getElementById("apellidoProfesor").value;
-                const fechaNacimiento = document.getElementById("fechaNacimientoProfesor").value;
-
-                const updatedData = {
-                    nombre: nombre,
-                    apellido: apellido,
-                    fecha_de_nacimiento: fechaNacimiento
-                };
-
-                try {
-                    console.log(`Enviando datos actualizados para el profesor con ID: ${profesorId}`);
-                    const updateResponse = await fetch(`https://learn-hub-eta.vercel.app/profesores/updateinfopersonal/${profesorId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}` // Si tu API requiere autenticación
-                        },
-                        body: JSON.stringify(updatedData)
-                    });
-
-                    if (!updateResponse.ok) {
-                        console.error("Error al actualizar los datos del profesor:", updateResponse.status, updateResponse.statusText);
-                        const errorData = await updateResponse.text();
-                        console.error("Detalles del error al actualizar:", errorData);
-                        return;
-                    }
-
-                    const updateResult = await updateResponse.json();
-                    console.log("Datos del profesor actualizados:", updateResult);
-
-                    // Aquí puedes hacer algo después de actualizar (por ejemplo, redirigir o mostrar un mensaje)
-                    alert('Datos actualizados correctamente');
-                    // Redirigir a otra página si es necesario
-                    // window.location.href = "nuevoLugar.html";
-
-                } catch (error) {
-                    console.error('Error al enviar los datos actualizados:', error);
-                }
-            });
-        });
     </script>
 </body>
 

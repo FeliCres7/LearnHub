@@ -71,46 +71,86 @@
                     <input type="email" value="">
                     <p>Número de telefono</p>
                     <input type="tel" value="">
-                    <p>Contraseña</p>
+                    <p>Nueva contraseña</p>
                     <input type="password" value="">
                     <p>Confirmar contraseña</p>
                     <input type="password" value="">
+                    <p>Introduce tu contraseña actual</p>
+                    <input type="password">
                     <div class="confirmar">
                         <button id="btnconfirmar">Confirmar</button>
                     </div>
                 </form>
             </div>
         </article>
-        <div class="password-check" style="display: none;">
-            <h1>Introduce tu contraseña original para guardar los cambios</h1>
-            <form id="passwordForm">
-                <p>Si acabas de cambiar tu contraseña, introduce tu contraseña anterior</p>
-                <input type="password" placeholder="Contraseña">
-                <div class="buttons-passwordcheck"><button id="buttonvolver">Volver</button>
-                <input type="submit" value="Enviar" id="buttonenviar"></div>
-            </form>
-        </div>
+        
     </main>
-    <div class="shadow" style="display: none;"></div>
+    
 </body>
-<script src="../script.js"></script>
 <script>
-document.getElementById("btnconfirmar").addEventListener("click", function(event) {
-    event.preventDefault();
-    document.querySelector(".shadow").style.display = "block";
-    document.querySelector(".password-check").style.display = "block";
-});
-
-document.getElementById("buttonvolver").addEventListener("click", function(event) {
-    event.preventDefault();
-    document.querySelector(".shadow").style.display = "none";
-    document.querySelector(".password-check").style.display = "none";
-});
-
-document.getElementById("passwordForm").addEventListener("submit", function(event) {
-    event.preventDefault(); 
-    window.location.href = '../configuracionprofesor.html';
-});
-
-</script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("Token no encontrado. Redireccionando...");
+            window.location.href = "inicio.html";
+            return;
+        }
+    
+        const payloadBase64 = token.split(".")[1];
+        const payloadJson = JSON.parse(atob(payloadBase64));
+        const profesorId = payloadJson.id;
+    
+        try {
+            const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
+            if (!response.ok) throw new Error("Error al obtener los datos del profesor");
+            
+            const profesorData = await response.json();
+            document.querySelector('input[type="email"]').value = profesorData.profesor.email;
+            document.querySelector('input[type="tel"]').value = profesorData.profesor.telefono;
+    
+        } catch (error) {
+            console.error('Error al cargar los datos del profesor:', error);
+        }
+    
+        document.querySelector('.datos-perfil').addEventListener('submit', async (event) => {
+            event.preventDefault();
+    
+            const email = document.querySelector('input[type="email"]').value;
+            const telefono = document.querySelector('input[type="tel"]').value;
+            const nuevaContrasena = document.querySelector('input[type="password"]').value;
+            const confirmarContrasena = document.querySelectorAll('input[type="password"]')[1].value;
+            const contrasenaActual = document.querySelectorAll('input[type="password"]')[2].value;
+    
+            if (nuevaContrasena && nuevaContrasena !== confirmarContrasena) {
+                alert("La nueva contraseña y su confirmación no coinciden.");
+                return;
+            }
+    
+            const updatedData = {
+                email,
+                telefono,
+                contrasenaActual,
+                ...(nuevaContrasena && { contrasenaNueva: nuevaContrasena })
+            };
+    
+            try {
+                const updateResponse = await fetch(`https://learn-hub-eta.vercel.app/profesores/updateinfopersonal/${profesorId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+    
+                if (!updateResponse.ok) throw new Error("Error al actualizar los datos del profesor");
+    
+                alert('Datos actualizados correctamente');
+            } catch (error) {
+                console.error('Error al enviar los datos actualizados:', error);
+            }
+        });
+    });
+    </script>
+    
 </html>
