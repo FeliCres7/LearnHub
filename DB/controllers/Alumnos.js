@@ -98,6 +98,34 @@ const updateseguridadalumno = async (req, res) => {
   }
 };
 
+const updateinforperfilalumno = async (req, res) => {
+  const { foto, colegio } = req.body;
+  const { ID } = req.params;
+
+
+
+  try {
+    const result = await pool.query(
+      `UPDATE public."alumnos"
+       SET foto = $1, colegio = $2, WHERE "ID" = $3
+       RETURNING *`,
+      [foto, colegio, ID]
+    );
+
+    if (result.rows.length > 0) {
+      return res.status(200).json({
+        message: 'Alumno actualizado con éxito',
+        alumno: result.rows[0],
+      });
+    } else {
+      return res.status(404).json({ error: 'Alumno no encontrado' });
+    }
+  } catch (err) {
+    console.error('Error al actualizar el alumno:', err.message);
+    return res.status(500).json({ error: 'Error al actualizar el alumno', details: err.message });
+  }
+};
+
 //Eliminar alumno 
 const deleteAlumno = async (req, res) => {
   const ID = req.params.ID;
@@ -142,6 +170,7 @@ const getperfilalumno = async (req, res) => {
 const alumnos = {
   getalumnosbyid,
   getalumnosbymail,
+  updateinforperfilalumno,
   updateseguridadalumno,
   updateinfoalumno,
   deleteAlumno,

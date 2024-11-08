@@ -48,7 +48,8 @@ Content-Type: application/json
 PUT http://localhost:3000/Alumnos/info/72 HTTP/1.1 
 Content-Type: application/json
 
-{ "nombre": "felipe", "apellido": "Crespo", "fecha_de_nacimiento": "2000-01-01" } ### //Eliminar un alumno
+{ "nombre": "felipe", "apellido": "Crespo", "fecha_de_nacimiento": "2000-01-01" } ### 
+//Eliminar un alumno
 
 DELETE http://localhost:3000/Alumnos/6 HTTP/1.1 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyODMyMDA3NCwiZXhwIjoxNzI4MzIzNjc0fQ.JftzDnci0rC2lHOy_TDY1IpLabHXfI7zVLI3lLoDvXg
 
