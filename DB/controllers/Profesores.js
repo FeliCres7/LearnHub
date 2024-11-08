@@ -130,17 +130,17 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 
 const updateseguridad = async (req,res) => { 
 const { ID } = req.params; 
-const {email, telefono, contraseña, confirmarContraseña} = req.body  
+const {email, telefono, nuevacontraseña, confirmarContraseña, contraseña} = req.body  
 
   // Validar que las contraseñas coincidan
-  if (contraseña !== confirmarContraseña) {
+  if (nuevacontraseña !== confirmarContraseña) {
     return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
   }
   const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const contraseña = await bcrypt.hash(password, salt);
     
 try {
-const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, hashedPassword, ID]
+const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña, ID]
 );
 if (result.rows.length > 0) {
   res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
