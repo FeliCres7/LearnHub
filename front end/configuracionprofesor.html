@@ -75,11 +75,48 @@
             <div class="seguridad-configuracion">
                 <button class="buttonconfig" onclick="window.location.href='Configuracion/seguridad-cuenta.html'">Dirección de mail, número de teléfono y contraseña</button>
 
+            </div><div class="seguridad-configuracion">
+                <p>Cuenta</p>
+                <button class="top-button-config" onclick="mostrarVentanaEmergente()">Cerrar sesión</button>
+                <button class="bottom-button-config">Eliminar cuenta</button>
             </div>
-        </article>
-    </main>
-    <footer><img src="Images html/LogoLH.png" alt=""></footer>
 
+        </article>
+
+        <div style="display: none;" class="ventana-emergente" id="ventanaEmergente">
+            <div class="logoutdiv">
+                <p>¿Seguro que deseas cerrar sesión?</p>
+
+                <button style="border: 2px solid #1565c0; color: #1565c0;" onclick="cerrarSesion()">Cerrar
+                    sesión</button>
+                <button onclick="ocultarVentanaEmergente()">Cancelar</button></div>
+
+            
+        </div>
+    </main>
+    <div style="display: none;" class="ventana-emergente" id="ventanaEmergente">
+        <div class="logoutdiv"><p>¿Seguro que deseas cerrar sesión?</p>
+        <button style="border: 2px solid #1565c0; color: #1565c0;" onclick="cerrarSesion()">Cerrar sesión</button>
+        <button onclick="ocultarVentanaEmergente()">Cancelar</button></div>
+    </div>
+    <footer><img src="Images html/LogoLH.png" alt=""></footer>
+    <script>
+        // Función para mostrar la ventana emergente
+        function mostrarVentanaEmergente() {
+            document.getElementById("ventanaEmergente").style.display = "flex";
+        }
+
+        // Función para ocultar la ventana emergente
+        function ocultarVentanaEmergente() {
+            document.getElementById("ventanaEmergente").style.display = "none";
+        }
+
+        // Función para cerrar sesión
+        function cerrarSesion() {
+            localStorage.removeItem("token");
+            window.location.href = "inicio.html"; // Redirige a la página de inicio o login
+        }
+    </script>
 </body>
 
 </html>
