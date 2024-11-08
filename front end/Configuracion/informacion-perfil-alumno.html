@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
@@ -10,9 +9,7 @@
     <link rel="stylesheet" href="configuracion.css">
     <link rel="icon" href="../Images html/logo pestaña.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 </head>
-
 <body>
     <header class="header">
 
@@ -51,7 +48,6 @@
             </ul>
         </nav>
     </header>
-    <script src="script.js"></script>
     <main class="main-fondo-azul">
         <aside class="PanelIzquierdo">
             <p class="config">Configuración</p>
@@ -63,7 +59,6 @@
                 <img src="../Images html/logo seguridad cuenta azul.png" alt="">
                 <p>Información personal</p>
             </div>
-            
         </aside>
         <article class="panel-configuracion">
             <div class="info-perfil-div">
@@ -73,21 +68,110 @@
                 <form class="datos-perfil">
                     <p>Foto de perfil</p>
                     <div class="foto-perfil">
-                        <img src="../Images html/fotoprueba.png" alt=" ">
-                        <button>Editar</button>
+                        <img id="fotoPerfil" src="../Images html/fotoprueba.png" alt="Foto de perfil">
+                        <button type="button" id="editarFoto">Editar</button>
+                        <input type="file" id="inputFoto" style="display: none;" accept="image/*">
                     </div>
-                
-                <div class="datos-perfil">
-                    <p class="bold">Estudia en:</p>
-                    <input type="text" placeholder="Colegio-Universidad">
-                </div>
-                <div class="confirmar">
-                    <input type="submit" class="confirmar" value="Confirmar"></button>
-                </div>
+                    <div class="datos-perfil">
+                        <p class="bold">Estudia en:</p>
+                        <input type="text" id="colegioAlumno" placeholder="Colegio-Universidad">
+                    </div>
+                    <div class="confirmar">
+                        <input type="submit" class="confirmar" value="Confirmar">
+                    </div>
                 </form>
+            </div>
         </article>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+        console.error("Token no encontrado. Redireccionando...");
+        window.location.href = "inicio.html";
+        return;
+    }
 
+    const payloadBase64 = token.split(".")[1];
+    const payloadJson = JSON.parse(atob(payloadBase64));
+    const alumnoId = payloadJson.id;
+    console.log("Alumno ID extraído del token:", alumnoId);
+
+    const fotoPerfil = document.getElementById("fotoPerfil");
+    const colegioInput = document.getElementById("colegioAlumno");
+
+    try {
+        console.log(`Solicitando datos del alumno con ID: ${alumnoId}`);
+        const response = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${alumnoId}`);
+        if (!response.ok) {
+            console.error("Error en la respuesta de la API al obtener datos del alumno:", response.status, response.statusText);
+            const errorData = await response.text();
+            console.error("Detalles del error al obtener los datos del alumno:", errorData);
+            return;
+        }
+
+        const alumnoData = await response.json();
+        console.log("Datos del alumno recibidos:", alumnoData);
+
+        if (alumnoData.alumno.foto) {
+            fotoPerfil.src = `data:image/png;base64,${alumnoData.alumno.foto}`;
+        }
+
+        colegioInput.value = alumnoData.alumno.colegio || "";
+
+    } catch (error) {
+        console.error("Error al cargar los datos del alumno:", error);
+    }
+
+    const editarFotoButton = document.getElementById("editarFoto");
+    const inputFoto = document.getElementById("inputFoto");
+    editarFotoButton.addEventListener("click", () => inputFoto.click());
+
+    inputFoto.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                fotoPerfil.src = e.target.result;
+                console.log("Nueva imagen seleccionada para mostrar en pantalla.");
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const base64Foto = fotoPerfil.src.includes("base64,") ? fotoPerfil.src.split("base64,")[1] : null;
+        const colegio = colegioInput.value;
+
+        try {
+            const response = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/infoperfilalumno/${alumnoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    foto: base64Foto || "",
+                    colegio: colegio
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.text();
+                console.error("Error al actualizar el perfil del alumno, detalles de la respuesta:", errorData);
+                throw new Error("Error al actualizar el perfil");
+            }
+
+            const updatedAlumno = await response.json();
+            console.log("Perfil del alumno actualizado:", updatedAlumno);
+            alert("Perfil actualizado correctamente.");
+        } catch (error) {
+            console.error("Error al actualizar el perfil del alumno:", error);
+        }
+    });
+});
+
+    </script>
 </body>
-<script src="../script.js"></script>
 </html>
