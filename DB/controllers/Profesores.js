@@ -127,31 +127,54 @@ res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
 }
 }
 
+const updateseguridad = async (req, res) => {  
+  const { ID } = req.params; 
+  const { email, telefono, nuevacontraseña, confirmarContraseña, contraseña } = req.body;
 
-const updateseguridad = async (req,res) => { 
-const { ID } = req.params; 
-const {email, telefono, nuevacontraseña, confirmarContraseña, contraseña} = req.body  
-
-  // Validar que las contraseñas coincidan
+  // 1. Validar que las contraseñas coincidan
   if (nuevacontraseña !== confirmarContraseña) {
     return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
   }
-  const salt = await bcrypt.genSalt(10);
-    const contraseña = await bcrypt.hash(password, salt);
-    
-try {
-const result =  await pool.query('UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', [email, telefono, contraseña, ID]
-);
-if (result.rows.length > 0) {
-  res.status(200).send(`Profesor actualizado con éxito: ${JSON.stringify(result.rows[0])}`);
-} else {
-  res.status(404).send('Profesor no encontrado');
-}
-} catch (err) {
 
-res.status(500).send(`Error al actualizar el profesor: ${err.message}`);
-}
-}
+  try {
+    // 2. Buscar al usuario por ID en la base de datos para obtener su contraseña actual hasheada
+    const userResult = await pool.query('SELECT * FROM public.profesores WHERE "ID" = $1', [ID]);
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Profesor no encontrado' });
+    }
+
+    const usuario = userResult.rows[0];
+
+    // 3. Comparar la contraseña introducida con la contraseña hasheada en la base de datos
+    const passwordMatch = await bcrypt.compare(contraseña, usuario.contraseña);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: 'La contraseña actual es incorrecta.' });
+    }
+
+    // 4. Hashear la nueva contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(nuevacontraseña, salt);
+
+    // 5. Actualizar el usuario con la nueva contraseña
+    const updateResult = await pool.query(
+      'UPDATE public.profesores SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', 
+      [email, telefono, hashedNewPassword, ID]
+    );
+
+    if (updateResult.rows.length > 0) {
+      res.status(200).json({ message: `Profesor actualizado con éxito`, data: updateResult.rows[0] });
+    } else {
+      res.status(404).json({ error: 'No se pudo actualizar al profesor' });
+    }
+  } catch (err) {
+    console.error('Error al actualizar el profesor:', err.message);
+    res.status(500).json({ error: `Error al actualizar el profesor: ${err.message}` });
+  }
+};
+
+
 
 const updatedisponibilidadhoraria = async (req, res) => {
   const {idprof} = req.params;
