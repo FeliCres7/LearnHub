@@ -701,6 +701,11 @@ padding-left: 10px;
     font-weight: 600;
 
 }
+.logoutdiv{
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
 
 .logoutdiv button{
     margin-top: 15px;
