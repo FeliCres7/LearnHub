@@ -67,42 +67,55 @@ const updateinfoalumno = async (req, res) => {
 
 // Función para actualizar información de seguridad del alumno
 const updateseguridadalumno = async (req, res) => {
-  const { email, telefono, contraseña, confirmarContraseña } = req.body;
+  const { email, telefono, nuevacontraseña, confirmarContraseña, contraseña } = req.body;
   const { ID } = req.params;
 
-  if (contraseña !== confirmarContraseña) {
+  // 1. Validar que las contraseñas coincidan
+  if (nuevacontraseña !== confirmarContraseña) {
     return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
   }
 
-  if (!email || !telefono || !contraseña) {
-    return res.status(400).json({ error: 'Todos los campos son requeridos.' });
-  }
-
   try {
-    const result = await pool.query(
-      'UPDATE public.alumnos SET email = $1, telefono = $2, contraseña = $3 WHERE "ID" = $4 RETURNING *',
-      [email, telefono, contraseña, ID]
+    // 2. Buscar al usuario por ID en la base de datos para obtener su contraseña actual hasheada
+    const userResult = await pool.query('SELECT * FROM public.alumnos WHERE "ID" = $1', [ID]);
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'alumno no encontrado' });
+    }
+
+    const usuario = userResult.rows[0];
+
+    // 3. Comparar la contraseña introducida con la contraseña hasheada en la base de datos
+    const passwordMatch = await bcrypt.compare(contraseña, usuario.contraseña);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: 'La contraseña actual es incorrecta.' });
+    }
+
+    // 4. Hashear la nueva contraseña
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(nuevacontraseña, salt);
+
+    // 5. Actualizar el usuario con la nueva contraseña
+    const updateResult = await pool.query(
+      'UPDATE public.alumnos SET email=$1, telefono=$2, contraseña=$3 WHERE "ID"= $4 RETURNING *', 
+      [email, telefono, hashedNewPassword, ID]
     );
 
-    if (result.rows.length > 0) {
-      return res.status(200).json({
-        message: 'Datos de seguridad actualizados con éxito',
-        alumno: result.rows[0],
-      });
+    if (updateResult.rows.length > 0) {
+      res.status(200).json({ message: `alumno actualizado con éxito`, data: updateResult.rows[0] });
     } else {
-      return res.status(404).json({ error: 'Alumno no encontrado' });
+      res.status(404).json({ error: 'No se pudo actualizar al alumno' });
     }
   } catch (err) {
-    console.error('Error al actualizar los datos de seguridad:', err.message);
-    return res.status(500).json({ error: 'Error al actualizar los datos de seguridad', details: err.message });
+    console.error('Error al actualizar el alumno:', err.message);
+    res.status(500).json({ error: `Error al actualizar el alumno: ${err.message}` });
   }
 };
 
 const updateinforperfilalumno = async (req, res) => {
   const { foto, colegio } = req.body;
   const { ID } = req.params;
-
-
 
   try {
     const result = await pool.query(
