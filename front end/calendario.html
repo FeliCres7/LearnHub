@@ -14,63 +14,23 @@
 
 <body>
     <header class="header">
-        <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
-        <div class="search">
-            <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch"><i class="fas fa-search"></i></button>
-        </div>
-        <nav class="navbar">
-            <ul>
-                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
-                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a></li>
-                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis profesores</a></li>
-                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img src="Images html/logo calendario.png" alt=""></button><a href="calendario.html">Calendario</a></li>
-                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img src="Images html/logo configuracion.png" alt=""></button><a href="configuracion.html">Configuración</a></li>
-            </ul>
-        </nav>
-        <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
-        <nav class="menu" id="menu">
-            <ul>
-                <li><a href="home.html">Inicio</a></li>
-                <li><a href="perfil.html">Perfil</a></li>
-                <li><a href="misprofesores.html">Mis profesores</a></li>
-                <li><a href="calendario.html">Calendario</a></li>
-                <li><a href="configuracion.html">Configuración</a></li>
-            </ul>
-        </nav>
+        <!-- Header content -->
     </header>
+
     <main class="mainfondobasico">
-    <div class="Proximasclases" >
-        <h1>Próximas Clases</h1>
-        <p>Lunes 1/10</p>
-        <p>15:00-16:30</p>
-        <p>Clase con Ezequiel Agradnik</p>
-        <p>18:00-19:00</p>
-        <p>Clase con Sergio Coppa</p>
-        <p>Viernes 4/10</p>
-        <p>16:00-17:00</p>
-        <p>Clase con Martín Melman</p>
-        <p>15:00-16:00</p>
-        <p>Clase con Sergio Coppa</p>
-    </div>
-    <div id="calendar"></div>
-
-    
+        <div class="Proximasclases">
+            <!-- Próximas clases content -->
+        </div>
+        <div id="calendar"></div>
     </main>
-    <!-- Calendario de eventos -->
-
-    <!-- Próximas clases section -->
 
     <script>
         // Función para obtener las reservas de un alumno
         async function getReservasByAlumno(IDalumno) {
             try {
                 const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/alumno/${IDalumno}`);
-
                 if (response.ok) {
-                    const reservas = await response.json();
-                    console.log('Reservas del alumno:', reservas);
-                    return reservas;
+                    return await response.json();
                 } else {
                     console.error('Error al obtener las reservas del alumno:', response.statusText);
                     alert('Hubo un error al obtener las reservas.');
@@ -85,11 +45,8 @@
         async function getReservasByProfesor(idprof) {
             try {
                 const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/profesor/${idprof}`);
-
                 if (response.ok) {
-                    const reservas = await response.json();
-                    console.log('Reservas del profesor:', reservas);
-                    return reservas;
+                    return await response.json();
                 } else {
                     console.error('Error al obtener las reservas del profesor:', response.statusText);
                     alert('Hubo un error al obtener las reservas.');
@@ -101,25 +58,31 @@
         }
 
         // Configurar el calendario
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("El documento está listo, configurando el calendario...");
-
-            var calendarEl = document.getElementById('calendar');
-            console.log("Elemento del calendario:", calendarEl);
+        document.addEventListener('DOMContentLoaded', async function() {
+            const calendarEl = document.getElementById('calendar');
+            const idprof = '456';  // Reemplazar con el ID del profesor
+            const IDalumno = '789'; // Reemplazar con el ID del alumno, si se requiere
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: [
-                    { title: 'Evento 1', start: '2024-10-01' },
-                    { title: 'Evento 2', start: '2024-10-07', end: '2024-10-10' }
-                ]
+                events: async function(fetchInfo, successCallback, failureCallback) {
+                    try {
+                        const reservas = await getReservasByProfesor(idprof); // Si quieres usar alumno, cambia por getReservasByAlumno(IDalumno)
+                        const eventos = reservas.map(reserva => ({
+                            title: `Clase con ${reserva.alumnoNombre}`,
+                            start: reserva.fechaInicio,
+                            end: reserva.fechaFin
+                        }));
+                        successCallback(eventos);
+                    } catch (error) {
+                        console.error('Error al cargar los eventos:', error);
+                        failureCallback(error);
+                    }
+                }
             });
 
-            console.log("Renderizando el calendario...");
             calendar.render();
         });
-
-        
     </script>
 </body>
 </html>
