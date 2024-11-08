@@ -107,7 +107,7 @@ const updateinforperfilalumno = async (req, res) => {
   try {
     const result = await pool.query(
       `UPDATE public."alumnos"
-       SET foto = $1, colegio = $2, WHERE "ID" = $3
+       SET foto = $1, colegio = $2 WHERE "ID" = $3
        RETURNING *`,
       [foto, colegio, ID]
     );
