@@ -21,7 +21,7 @@ const {nombre} = req.params;
 try{
 const {rows} = await pool.query('SELECT * FROM public.material WHERE nombre = $1', [nombre]);
 if (rows.length > 0){
-  return res.json({materiales:rows, message: 'materiales obtenidos con exito'});
+  return res.json({message: 'materiales obtenidos con exito', materiales:rows});
   } else {
   return res.status(400).json({error: 'no hay materiales con ese nombre'});
   }
