@@ -221,10 +221,10 @@ async function mostrarDatosUsuario(data) {
             reservacionDiv.classList.add('reservacion-item'); // Agregar clase para estilo
 
             reservacionDiv.innerHTML = `
+            <p><strong>${reservacion.dia} ${reservacion.fecha}</strong> </p>
+            <p><strong>Hora:</strong> ${reservacion.hora}</p>
             <p><strong>Alumno:</strong> ${reservacion.alumno}</p>
             <p><strong>Profesor:</strong> ${reservacion.profesor}</p>
-            <p><strong>Día:</strong> ${reservacion.dia}</p>
-            <p><strong>Hora:</strong> ${reservacion.hora}</p>
         `;
 
             reservacionesLista.appendChild(reservacionDiv);
