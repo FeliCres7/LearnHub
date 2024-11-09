@@ -74,7 +74,7 @@
     <script>
         async function getReservasByProfesor(idprof) {
             try {
-                const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/profesor/${idprof}`);
+                const response = await fetch(`hhttps://learn-hub-eta.vercel.app/reservaciones/IDalumno/${idalumno}`);
                 if (response.ok) {
                     return await response.json();
                 } else {
@@ -135,16 +135,5 @@
             calendar.render();
         });
     </script>
-
-    <style>
-        /* Custom style for reservation events */
-        .reserva-evento {
-            background-color: #f0f0f0;
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 0.9em;
-            color: #333;
-        }
-    </style>
 </body>
 </html>
