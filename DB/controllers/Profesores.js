@@ -215,8 +215,6 @@ const updatedisponibilidadhoraria = async (req, res) => {
 
 
 
-const bcrypt = require('bcrypt');  // Asegúrate de tener bcrypt instalado: npm install bcrypt
-
 const deleteprof = async (req, res) => {
   const { ID } = req.params;
   const { password } = req.body;  // La contraseña que el usuario quiere usar para la validación
