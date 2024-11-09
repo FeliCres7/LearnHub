@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
 "usuario":"melman@mail.com", 
-"contraseña":"1234"
+"contraseña":"4321"
 }
 
 ### Obtener mensajes entre un profesor y un alumno
@@ -50,8 +50,8 @@ Content-Type: application/json
 
 { "nombre": "felipe", "apellido": "Crespo", "fecha_de_nacimiento": "2000-01-01" } ### 
 //Eliminar un alumno
-
-DELETE http://localhost:3000/Alumnos/6 HTTP/1.1 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksInVzZXJuYW1lIjoibmljb2xhcyIsImlhdCI6MTcyODMyMDA3NCwiZXhwIjoxNzI4MzIzNjc0fQ.JftzDnci0rC2lHOy_TDY1IpLabHXfI7zVLI3lLoDvXg
+###
+DELETE http://localhost:3000/Alumnos/90 HTTP/1.1
 
 //Obtener perfil del alumno ### 
 GET http://localhost:3000/Alumnos/7/perfilalumno HTTP/1.1
@@ -115,7 +115,11 @@ Content-Type: application/json
 
 ### //Eliminar un profesor
 
-DELETE http://localhost:3000/profesores/42 HTTP/1.1
+DELETE http://localhost:3000/profesores/59 HTTP/1.1
+Content-Type: application/json
+Authorization: bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjAsInVzZXJuYW1lIjoiTWFydMOtbiIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTczMTExOTg0OSwiZXhwIjoxNzMxMTIzNDQ5fQ.yKea4tix1FQ95D1OG07pdPbZsFivgBrfDpnZbKE4U1U
+
+{ "password": "hola"}
 
 //Obtener perfil del profesor ### 
 GET http://localhost:3000/profesores/3/perfilprof HTTP/1.1

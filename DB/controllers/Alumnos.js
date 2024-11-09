@@ -140,46 +140,17 @@ const updateinforperfilalumno = async (req, res) => {
 };
 
 const deleteAlumno = async (req, res) => {
-  const { ID } = req.params;
-  const { password } = req.body;  // La contraseña que el usuario quiere usar para la validación
+  const ID = req.params.ID;
+  const result = await pool.query
+    ('DELETE from public."alumnos" WHERE "ID" = $1 RETURNING*',
+      [ID])
+  if (result.rows.length > 0) {
+    res.status(200).send(`Alumno eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
+  } else {
+    res.status(404).send('Alumno no encontrado');
 
-  try {
-    // Primero, obtenemos el alumno con el ID dado para verificar la contraseña hasheada
-    const resultAlumno = await pool.query('SELECT * FROM public."alumnos" WHERE "ID" = $1', [ID]);
-
-    if (resultAlumno.rows.length === 0) {
-      return res.status(404).send('Alumno no encontrado');
-    }
-
-    const alumno = resultAlumno.rows[0];
-    const storedHashedPassword = alumno.password;  // La contraseña hasheada almacenada en la base de datos
-
-    // Comparamos la contraseña proporcionada con la contraseña hasheada
-    const match = await bcrypt.compare(password, storedHashedPassword);
-
-    if (!match) {
-      return res.status(403).send('Contraseña incorrecta');
-    }
-
-    // Si las contraseñas coinciden, eliminamos al alumno
-    const result = await pool.query(
-      'DELETE from public."alumnos" WHERE "ID" = $1 RETURNING *',
-      [ID]
-    );
-
-    if (result.rows.length > 0) {
-      return res.status(200).send(`Alumno eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
-    } else {
-      return res.status(404).send('Alumno no encontrado');
-    }
-    
-  } catch (error) {
-    console.error('Error al eliminar alumno:', error);
-    return res.status(500).send('Error en el servidor');
   }
-};
-
-
+}
 const getperfilalumno = async (req, res) => {
   try {
     const ID = req.params.ID;

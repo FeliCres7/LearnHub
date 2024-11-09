@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -18,15 +18,18 @@
             <input type="number" id="otherUserIdInput" placeholder="ID del otro usuario" required>
             <button id="loginButton">Iniciar sesión</button>
         </div>
-        
+
+        <!-- Sección de usuario conectado -->
+        <div id="userInfo" style="display: none;">
+            <p><strong>Tipo de Usuario:</strong> <span id="loggedInUserType"></span></p>
+            <p><strong>ID de Usuario:</strong> <span id="loggedInUserId"></span></p>
+        </div>
+
         <!-- Lista de chats con el botón para eliminar -->
         <div class="chat-list" id="chatList">
             <h3>Chats</h3>
             <div id="errorMessage" style="color: red;"></div>
-            <div class="chat-item">
-                <span>Chat con: <span id="chatWith">Nombre del usuario</span></span>
-                <button onclick="deleteChat(localStorage.getItem('userId'), localStorage.getItem('otherUserId'))">Eliminar Chat</button>
-            </div>
+            <!-- Chats dinámicos aquí -->
         </div>
 
         <!-- Caja de chat y formulario de mensaje -->
@@ -46,11 +49,15 @@
             autoConnect: false,
             reconnection: true
         });
+
         const chatList = document.getElementById('chatList');
         const messageList = document.getElementById('messageList');
         const messageForm = document.getElementById('messageForm');
         const messageInput = document.getElementById('messageInput');
         const errorMessage = document.getElementById('errorMessage');
+        const userInfo = document.getElementById('userInfo');
+        const loggedInUserType = document.getElementById('loggedInUserType');
+        const loggedInUserId = document.getElementById('loggedInUserId');
     
         const loginButton = document.getElementById('loginButton');
         const tipoUsuarioSelect = document.getElementById('tipoUsuario');
@@ -65,167 +72,78 @@
             const userId = userIdInput.value;
             const otherUserId = otherUserIdInput.value;
     
-            if (!userId || !otherUserId) {
-                errorMessage.textContent = "Por favor, ingresa tu ID y el ID del otro usuario.";
-                return;
-            }
-    
             localStorage.setItem('tipoUsuario', tipoUsuario);
             localStorage.setItem('userId', userId);
             localStorage.setItem('otherUserId', otherUserId);
     
-            const room = `${Math.min(userId, otherUserId)}-${Math.max(userId, otherUserId)}`;
-            socket.emit('joinRoom', room);
-            
             loadChatsForUser(tipoUsuario, userId);
+            loadChat(userId, otherUserId);
+    
             socket.connect();
-        });
     
-        window.addEventListener('load', () => {
-            const tipoUsuario = localStorage.getItem('tipoUsuario');
-            const userId = localStorage.getItem('userId');
-            const otherUserId = localStorage.getItem('otherUserId');
-    
-            if (tipoUsuario && userId && otherUserId) {
-                const room = `${Math.min(userId, otherUserId)}-${Math.max(userId, otherUserId)}`;
-                socket.emit('joinRoom', room);
-                loadChatsForUser(tipoUsuario, userId);
-                loadChat(userId, otherUserId);
-                socket.connect();
-            } else {
-                errorMessage.textContent = "No se encontraron datos de usuario. Por favor inicia sesión.";
-            }
-        });
-    
-        socket.on('connect', () => {
-            console.log("Conectado al servidor de chat.");
+            loggedInUserType.textContent = tipoUsuario;
+            loggedInUserId.textContent = userId;
+            userInfo.style.display = 'block';
         });
     
         socket.on("previousMessages", (messages) => {
-            messages.forEach(message => {
-                displayMessage(message);
+            messageList.innerHTML = '';
+            messages.forEach(msg => {
+                addMessage(msg);
             });
         });
+    
+        socket.on("chat message", (message) => {
+            addMessage(message);
+        });
+
+        messageForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const message = {
+                content: messageInput.value,
+                timestamp: new Date().toISOString(),
+                idprof: localStorage.getItem('userId'),
+                idalumno: localStorage.getItem('otherUserId'),
+                room: `${Math.min(localStorage.getItem('userId'), localStorage.getItem('otherUserId'))}-${Math.max(localStorage.getItem('userId'), localStorage.getItem('otherUserId'))}`,
+                senderId: localStorage.getItem('userId')
+            };
+            socket.emit("chat message", message);
+            addMessage(message);
+            messageInput.value = ''; // Limpiar el campo
+        });
+
+        function addMessage(message) {
+            const msgElement = document.createElement('div');
+            msgElement.classList.add('message');
+            msgElement.innerHTML = `<strong>${message.sender}</strong>: ${message.content}`;
+            messageList.appendChild(msgElement);
+        }
     
         function loadChatsForUser(tipoUsuario, userId) {
             fetch(`http://localhost:3001/api/chats?tipoUsuario=${tipoUsuario}&userId=${userId}`)
                 .then(response => response.json())
                 .then(chats => {
                     chatList.innerHTML = '<h3>Chats</h3>';
-                    chats.forEach(chat => addChatBox(chat));
+                    if (chats.length === 0) {
+                        chatList.innerHTML += '<p>No tienes chats disponibles.</p>';
+                    } else {
+                        chats.forEach(chat => {
+                            const chatBox = document.createElement('div');
+                            chatBox.classList.add('chat-box');
+                            chatBox.innerHTML = `
+                                <p><strong>${chat.otherUserName}</strong></p>
+                                <p>Último mensaje: ${chat.lastMessage}</p>
+                                <button class="delete-chat" onclick="deleteChat(${chat.idprof}, ${chat.idalumno})">Eliminar</button>
+                            `;
+                            chatList.appendChild(chatBox);
+                        });
+                    }
                 })
                 .catch(error => {
                     console.error("Error al cargar chats:", error);
                     errorMessage.textContent = "Error al cargar la lista de chats.";
                 });
         }
-    
-        function addChatBox(chat) {
-            const chatItem = document.createElement('div');
-            chatItem.textContent = `Chat con: ${chat.otherUserName}`;
-            chatItem.classList.add('chat-item');
-            chatItem.addEventListener('click', () => {
-                currentChat = chat;
-                loadChat(localStorage.getItem('userId'), chat.idprof, chat.idalumno);
-            });
-            chatList.appendChild(chatItem);
-        }
-    
-        function loadChat(idprof, idalumno) {
-            fetch(`http://localhost:3001/api/messages?idprof=${idprof}&idalumno=${idalumno}`)
-                .then(response => response.json())
-                .then(messages => {
-                    messageList.innerHTML = '';
-                    loadedMessages.clear();
-                    messages.forEach(message => displayMessage(message));
-                    messageList.scrollTop = messageList.scrollHeight;
-                    socket.emit('requestPreviousMessages', { idprof, idalumno });
-                })
-                .catch(error => {
-                    console.error("Error al cargar mensajes:", error);
-                    errorMessage.textContent = "Error al cargar mensajes.";
-                });
-        }
-    
-        function displayMessage(message) {
-            if (loadedMessages.has(message.id)) return;
-            loadedMessages.add(message.id);
-    
-            const messageItem = document.createElement('div');
-            const isSentByCurrentUser = message.sender === localStorage.getItem('tipoUsuario');
-            const senderClass = isSentByCurrentUser ? 'sent' : 'received';
-            messageItem.textContent = `${message.content} - ${new Date(message.timestamp).toLocaleString()}`;
-            messageItem.classList.add('message-item', senderClass);
-            messageItem.dataset.messageId = message.id;
-
-            // Añadir evento para clic derecho
-            messageItem.addEventListener('contextmenu', async (event) => {
-                event.preventDefault();
-                const confirmDelete = confirm("¿Deseas eliminar este mensaje?");
-                if (confirmDelete) {
-                    await deleteMessage(message.id);
-                    messageItem.remove(); // Remover el mensaje del frontend
-                }
-            });
-
-            messageList.appendChild(messageItem);
-            messageList.scrollTop = messageList.scrollHeight;
-        }
-    
-        async function deleteMessage(messageId) {
-            try {
-                const response = await fetch(`http://localhost:3001/api/messages/${messageId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    console.error("Error al eliminar el mensaje");
-                    alert("Error al eliminar el mensaje.");
-                }
-            } catch (error) {
-                console.error("Error de red al eliminar el mensaje:", error);
-                alert("Error de red al intentar eliminar el mensaje.");
-            }
-        }
-    
-        messageForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const tipoUsuario = localStorage.getItem('tipoUsuario');
-            const userId = localStorage.getItem('userId');
-            const otherUserId = localStorage.getItem('otherUserId');
-            const room = `${Math.min(userId, otherUserId)}-${Math.max(userId, otherUserId)}`;
-    
-            if (messageInput.value) {
-                const message = {
-                    idprof: tipoUsuario === 'profesor' ? userId : otherUserId,
-                    idalumno: tipoUsuario === 'alumno' ? userId : otherUserId,
-                    content: messageInput.value,
-                    room: room
-                };
-    
-                socket.emit('chat message', message);
-    
-                const messageItem = document.createElement('div');
-                messageItem.textContent = `${message.content} - ${new Date().toLocaleString()}`;
-                messageItem.classList.add('message-item', 'sent');
-                messageList.appendChild(messageItem);
-                messageList.scrollTop = messageList.scrollHeight;
-    
-                messageInput.value = '';
-            } else {
-                console.log("No hay mensaje para enviar.");
-            }
-        });
-    
-        socket.on('chat message', (message) => {
-            const room = `${Math.min(message.idprof, message.idalumno)}-${Math.max(message.idprof, message.idalumno)}`;
-            if (currentChat && message.room === room) {
-                displayMessage(message);
-            }
-        });
 
         async function deleteChat(idprof, idalumno) {
             try {
@@ -250,6 +168,7 @@
                 alert("Error de red al intentar eliminar el chat.");
             }
         }
+
     </script>
 </body>
 </html>

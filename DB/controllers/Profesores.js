@@ -214,46 +214,19 @@ const updatedisponibilidadhoraria = async (req, res) => {
 };
 
 
-
-const deleteprof = async (req, res) => {
-  const { ID } = req.params;
-  const { password } = req.body;  // La contraseña que el usuario quiere usar para la validación
-
-  try {
-    // Primero, obtenemos el profesor con el ID dado para verificar la contraseña hasheada
-    const resultProfesor = await pool.query('SELECT * FROM public."profesores" WHERE "ID" = $1', [ID]);
-
-    if (resultProfesor.rows.length === 0) {
-      return res.status(404).send('Profesor no encontrado');
-    }
-
-    const profesor = resultProfesor.rows[0];
-    const storedHashedPassword = profesor.password;  // La contraseña hasheada almacenada en la base de datos
-
-    // Comparamos la contraseña proporcionada con la contraseña hasheada
-    const match = await bcrypt.compare(password, storedHashedPassword);
-
-    if (!match) {
-      return res.status(403).send('Contraseña incorrecta');
-    }
-
-    // Si las contraseñas coinciden, eliminamos al profesor
-    const result = await pool.query(
-      'DELETE from public."profesores" WHERE "ID" = $1 RETURNING *',
-      [ID]
-    );
-
-    if (result.rows.length > 0) {
-      return res.status(200).send(`Profesor eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
-    } else {
-      return res.status(404).send('Profesor no encontrado');
-    }
-
-  } catch (error) {
-    console.error('Error al eliminar profesor:', error);
-    return res.status(500).send('Error en el servidor');
+// eliminar profesor
+const deleteprof = async (req,res) => {
+  const  ID  = req.params.ID;
+  const result = await pool.query
+  ('DELETE from public."profesores" WHERE "ID" = $1 RETURNING*',
+  [ID])
+  if (result.rows.length > 0) {
+    res.status(200).send(`profesor eliminado con éxito: ${JSON.stringify(result.rows[0])}`);
+  } else {
+    res.status(404).send('profesor no encontrado');
   }
-};
+}
+
 
 
 const getperfilprof = async (req, res) => {
