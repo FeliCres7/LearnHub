@@ -61,7 +61,7 @@ const getreservacionbyprof = async (req, res) => {
 
 
   try {
-    const query = ` SELECT a."nombre" AS alumno, p."nombre" AS profesor, r."dia", r."hora"
+    const query = ` SELECT a."nombre" AS alumno, p."nombre" AS profesor, r."dia", r."hora", r."fecha"
       FROM public."reservaciones" r
       JOIN public."alumnos" a ON r."IDalumno" = a."ID"
       JOIN public."profesores" p ON r."idprof" = p."ID"
