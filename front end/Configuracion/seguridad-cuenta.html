@@ -103,12 +103,9 @@
 
         try {
             const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorId}`);
-            console.log("Solicitud para obtener datos del profesor enviada:", response);
             if (!response.ok) throw new Error("Error al obtener los datos del profesor");
             
             const profesorData = await response.json();
-            console.log("Datos del profesor obtenidos:", profesorData);
-            
             document.querySelector('input[type="email"]').value = profesorData.profesor.email;
             document.querySelector('input[type="tel"]').value = profesorData.profesor.telefono;
         } catch (error) {
@@ -124,23 +121,17 @@
             const confirmarContrasena = document.querySelectorAll('input[type="password"]')[1].value;
             const contrasenaActual = document.querySelectorAll('input[type="password"]')[2].value;
 
-            // Verificar que las contraseñas coincidan
-            console.log('Contraseña nueva:', nuevaContrasena);
-            console.log('Confirmar contraseña:', confirmarContrasena);
-
             if (nuevaContrasena && nuevaContrasena !== confirmarContrasena) {
                 alert("La nueva contraseña y su confirmación no coinciden.");
-                console.log("Las contraseñas no coinciden, no se enviará la solicitud.");
                 return;
             }
 
             const updatedData = {
                 email,
                 telefono,
-                ...(nuevaContrasena && { password: nuevaContrasena, confirmarContraseña: confirmarContrasena }) // Solo enviamos nueva contraseña si está presente
+                ...(nuevaContrasena && confirmarContrasena && { nuevacontraseña: nuevaContrasena, confirmarContraseña: confirmarContrasena }),
+                contraseña: contrasenaActual
             };
-
-            console.log("Datos a enviar en la actualización:", updatedData);  // Log del cuerpo de la solicitud
 
             try {
                 const updateResponse = await fetch(`https://learn-hub-eta.vercel.app/profesores/updateseguridad/${profesorId}`, {
@@ -152,21 +143,21 @@
                     body: JSON.stringify(updatedData)
                 });
 
-                console.log("Respuesta de la solicitud de actualización:", updateResponse);  // Log de la respuesta de la solicitud
-
                 if (!updateResponse.ok) {
                     const errorText = await updateResponse.text();
-                    console.error("Detalles del error:", errorText);  // Log de error detallado
+                    console.error("Detalles del error:", errorText);
                     throw new Error("Error al actualizar los datos del profesor");
                 }
 
                 alert('Datos actualizados correctamente');
+                window.location.href="../configuracionprofesor.html"
             } catch (error) {
                 console.error('Error al enviar los datos actualizados:', error);
             }
         });
     });
 </script>
+
 
 
     

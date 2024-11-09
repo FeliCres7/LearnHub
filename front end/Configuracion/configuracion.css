@@ -227,3 +227,7 @@ input[type="checkbox"]:checked {
     display: flex;
     justify-content: right;
 }
+.eliminarcuentaform{
+    margin-top: 25px;
+    
+}

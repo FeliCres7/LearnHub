@@ -51,7 +51,7 @@
             </ul>
         </nav>
     </header>
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
 
     <main class="main-fondo-azul">
         <aside class="PanelIzquierdo">
@@ -71,48 +71,113 @@
                 <h1>Seguridad de la cuenta</h1>
                 <form class="datos-perfil">
                     <p>Correo electrónico</p>
-                    <input type="email" value="">
+                    <input type="email" id="email" value="">
                     <p>Número de telefono</p>
-                    <input type="tel" value="">
+                    <input type="tel" id="telefono" value="">
                     <p>Contraseña</p>
-                    <input type="password" value="">
+                    <input type="password" id="nuevaContraseña" value="">
                     <p>Confirmar contraseña</p>
-                    <input type="password" value="">
+                    <input type="password" id="confirmarContraseña" value="">
+                    <p>Introduce tu contraseña actual</p>
+                    <input type="password" id="contraseñaActual">
                     <div class="confirmar">
                         <button id="btnconfirmar">Confirmar</button>
                     </div>
                 </form>
             </div>
         </article>
-        <div class="password-check" style="display: none;">
-            <h1>Introduce tu contraseña original para guardar los cambios</h1>
-            <form id="passwordForm">
-                <p>Si acabas de cambiar tu contraseña, introduce tu contraseña anterior</p>
-                <input type="password" placeholder="Contraseña">
-                <div class="buttons-passwordcheck"><button id="buttonvolver">Volver</button>
-                <input type="submit" value="Enviar" id="buttonenviar"></div>
-            </form>
-        </div>
     </main>
-    <div class="shadow" style="display: none;"></div>
 </body>
-<script src="../script.js"></script>
 <script>
-document.getElementById("btnconfirmar").addEventListener("click", function(event) {
-    event.preventDefault();
-    document.querySelector(".shadow").style.display = "block";
-    document.querySelector(".password-check").style.display = "block";
-});
+    document.addEventListener("DOMContentLoaded", async () => {
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-document.getElementById("buttonvolver").addEventListener("click", function(event) {
-    event.preventDefault();
-    document.querySelector(".shadow").style.display = "none";
-    document.querySelector(".password-check").style.display = "none";
-});
+    console.log("Token obtenido:", token);
 
-document.getElementById("passwordForm").addEventListener("submit", function(event) {
-    event.preventDefault(); 
-    window.location.href = '../configuracion.html';
+    if (!token) {
+        alert("No se encontró el token de autenticación. Redirigiendo al inicio de sesión.");
+        window.location.href = "../login.html";
+        return;
+    }
+
+    let alumnoID;
+    try {
+        const payloadBase64 = token.split('.')[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        alumnoID = decodedPayload.id;
+        console.log("ID de alumno obtenido del token:", alumnoID);
+    } catch (error) {
+        console.error("Error al decodificar el token:", error);
+        alert("Token inválido. Redirigiendo al inicio de sesión.");
+        window.location.href = "../login.html";
+        return;
+    }
+
+    const urlGet = `https://learn-hub-eta.vercel.app/Alumnos/${alumnoID}`;
+    const urlUpdate = `https://learn-hub-eta.vercel.app/Alumnos/seguridad/${alumnoID}`;
+
+    try {
+        const response = await fetch(urlGet, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await response.json();
+
+        console.log("Respuesta de datos del alumno:", data);
+
+        if (response.ok) {
+            document.getElementById("email").value = data.alumno.email;
+            document.getElementById("telefono").value = data.alumno.telefono;
+        } else {
+            console.error("Error al obtener datos:", data.error);
+        }
+    } catch (error) {
+        console.error("Error de red al obtener datos:", error);
+    }
+
+    document.getElementById("btnconfirmar").addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const telefono = document.getElementById("telefono").value;
+        const nuevaContraseña = document.getElementById("nuevaContraseña").value;
+        const confirmarContraseña = document.getElementById("confirmarContraseña").value;
+        const contraseñaActual = document.getElementById("contraseñaActual").value;
+
+        console.log("Datos introducidos para actualizar:", { email, telefono, nuevaContraseña, confirmarContraseña, contraseñaActual });
+
+        if (nuevaContraseña && nuevaContraseña !== confirmarContraseña) {
+            alert("Las contraseñas no coinciden.");
+            return;
+        }
+
+        const datosActualizados = { email, telefono, contraseña: contraseñaActual, nuevacontraseña: nuevaContraseña, confirmarContraseña };
+
+        console.log("Datos enviados en la solicitud PUT:", datosActualizados); // Log para verificar datos enviados
+
+        try {
+            const response = await fetch(urlUpdate, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(datosActualizados)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Datos actualizados correctamente.");
+                console.log("Respuesta de actualización:", data);
+            } else {
+                console.error("Error al actualizar datos:", data.error);
+                alert("Error al actualizar los datos. Verifique la contraseña actual y vuelva a intentarlo.");
+            }
+        } catch (error) {
+            console.error("Error de red al actualizar datos:", error);
+            alert("Error de red al actualizar los datos.");
+        }
+    });
 });
 
 </script>
