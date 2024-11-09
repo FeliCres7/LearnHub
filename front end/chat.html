@@ -1,4 +1,4 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -42,9 +42,9 @@
         </div>
     </div>
 
-    <script type="module"> 
+    <script type="module">
         import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
-    
+
         const socket = io("http://localhost:3001", {
             autoConnect: false,
             reconnection: true
@@ -58,41 +58,41 @@
         const userInfo = document.getElementById('userInfo');
         const loggedInUserType = document.getElementById('loggedInUserType');
         const loggedInUserId = document.getElementById('loggedInUserId');
-    
+
         const loginButton = document.getElementById('loginButton');
         const tipoUsuarioSelect = document.getElementById('tipoUsuario');
         const userIdInput = document.getElementById('userIdInput');
         const otherUserIdInput = document.getElementById('otherUserIdInput');
-    
+
         let currentChat = null;
         let loadedMessages = new Set();
-    
+
         loginButton.addEventListener('click', () => {
             const tipoUsuario = tipoUsuarioSelect.value;
             const userId = userIdInput.value;
             const otherUserId = otherUserIdInput.value;
-    
+
             localStorage.setItem('tipoUsuario', tipoUsuario);
             localStorage.setItem('userId', userId);
             localStorage.setItem('otherUserId', otherUserId);
-    
+
             loadChatsForUser(tipoUsuario, userId);
             loadChat(userId, otherUserId);
-    
+
             socket.connect();
-    
+
             loggedInUserType.textContent = tipoUsuario;
             loggedInUserId.textContent = userId;
             userInfo.style.display = 'block';
         });
-    
+
         socket.on("previousMessages", (messages) => {
             messageList.innerHTML = '';
             messages.forEach(msg => {
                 addMessage(msg);
             });
         });
-    
+
         socket.on("chat message", (message) => {
             addMessage(message);
         });
@@ -118,7 +118,7 @@
             msgElement.innerHTML = `<strong>${message.sender}</strong>: ${message.content}`;
             messageList.appendChild(msgElement);
         }
-    
+
         function loadChatsForUser(tipoUsuario, userId) {
             fetch(`http://localhost:3001/api/chats?tipoUsuario=${tipoUsuario}&userId=${userId}`)
                 .then(response => response.json())
@@ -168,7 +168,6 @@
                 alert("Error de red al intentar eliminar el chat.");
             }
         }
-
     </script>
 </body>
 </html>
