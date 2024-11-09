@@ -230,15 +230,9 @@ async function mostrarDatosUsuario(data) {
 
         const fechaFormateada = `${dia}/${mes}/${anio}`;
 
-        // Obtener la hora en formato hh:mm
-        const hora = String(fechaOriginal.getUTCHours()).padStart(2, '0'); // Usar getUTCHours() para obtener la hora
-        const minutos = String(fechaOriginal.getUTCMinutes()).padStart(2, '0'); // Usar getUTCMinutes() para obtener los minutos
-
-        const horaFormateada = `${hora}:${minutos}`; // Formato hh:mm
-
         reservacionDiv.innerHTML = `
             <p><strong>${reservacion.dia} ${fechaFormateada}</strong> </p>
-            <p><strong>Hora:</strong> ${horaFormateada}</p>
+            <p><strong>Hora:</strong> ${reservacion.hora}</p>
             <p><strong>Alumno:</strong> ${reservacion.alumno}</p>
             <p><strong>Profesor:</strong> ${reservacion.profesor}</p>
         `;
