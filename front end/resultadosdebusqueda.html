@@ -15,7 +15,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch" onclick="buscar()"> <i class="fas fa-search"></i></button>
+            <button class="buttonsearch" onclick="buscaralumno()"> <i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
@@ -44,14 +44,6 @@
         <article class="article-resultados-busqueda"></article>
     </main>
 
-    <script>
-        function buscar() {
-            const query = document.getElementById('búsqueda').value;
-            if (query) {
-                window.location.href = `resultados.html?search=${query}`;
-            }
-        }
-    </script>
     <script src="script.js"></script>
 </body>
 </html>
