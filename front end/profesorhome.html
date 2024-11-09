@@ -210,28 +210,42 @@ async function mostrarDatosUsuario(data) {
     }
 
     function mostrarReservaciones(reservaciones) {
-        const reservacionesLista = document.getElementById('reservaciones-lista');
-        reservacionesLista.innerHTML = ""; // Limpiar la lista antes de agregar nuevas reservaciones
+    const reservacionesLista = document.getElementById('reservaciones-lista');
+    reservacionesLista.innerHTML = ""; // Limpiar la lista antes de agregar nuevas reservaciones
 
-        if (reservaciones.length === 0) {
-            reservacionesLista.innerHTML = '<p>No hay reservaciones para mostrar.</p>';
-            return;
-        }
+    if (reservaciones.length === 0) {
+        reservacionesLista.innerHTML = '<p>No hay reservaciones para mostrar.</p>';
+        return;
+    }
 
-        reservaciones.forEach(reservacion => {
-            const reservacionDiv = document.createElement('div');
-            reservacionDiv.classList.add('reservacion-item'); // Agregar clase para estilo
+    reservaciones.forEach(reservacion => {
+        const reservacionDiv = document.createElement('div');
+        reservacionDiv.classList.add('reservacion-item'); // Agregar clase para estilo
 
-            reservacionDiv.innerHTML = `
-            <p><strong>${reservacion.dia} ${reservacion.fecha}</strong> </p>
-            <p><strong>Hora:</strong> ${reservacion.hora}</p>
+        // Convertir la fecha de formato ISO a dd/mm/yyyy (usando UTC para evitar desfase)
+        const fechaOriginal = new Date(reservacion.fecha);
+        const dia = String(fechaOriginal.getUTCDate()).padStart(2, '0'); // Usar getUTCDate() en lugar de getDate()
+        const mes = String(fechaOriginal.getUTCMonth() + 1).padStart(2, '0'); // Usar getUTCMonth() en lugar de getMonth()
+        const anio = fechaOriginal.getUTCFullYear(); // Usar getUTCFullYear() en lugar de getFullYear()
+
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+        // Obtener la hora en formato hh:mm
+        const hora = String(fechaOriginal.getUTCHours()).padStart(2, '0'); // Usar getUTCHours() para obtener la hora
+        const minutos = String(fechaOriginal.getUTCMinutes()).padStart(2, '0'); // Usar getUTCMinutes() para obtener los minutos
+
+        const horaFormateada = `${hora}:${minutos}`; // Formato hh:mm
+
+        reservacionDiv.innerHTML = `
+            <p><strong>${reservacion.dia} ${fechaFormateada}</strong> </p>
+            <p><strong>Hora:</strong> ${horaFormateada}</p>
             <p><strong>Alumno:</strong> ${reservacion.alumno}</p>
             <p><strong>Profesor:</strong> ${reservacion.profesor}</p>
         `;
 
-            reservacionesLista.appendChild(reservacionDiv);
-        });
-    }
+        reservacionesLista.appendChild(reservacionDiv);
+    });
+}
 
 </script>
 
