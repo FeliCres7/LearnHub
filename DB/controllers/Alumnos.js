@@ -1,5 +1,5 @@
 import { pool } from '../dbconfig.js'
-
+import bcrypt from 'bcryptjs'
 
 const secret = process.env.JWT_SECRET
 
