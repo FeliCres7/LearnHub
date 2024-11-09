@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +25,7 @@
             <div id="errorMessage" style="color: red;"></div>
             <div class="chat-item">
                 <span>Chat con: <span id="chatWith">Nombre del usuario</span></span>
-                <button onclick="deleteChat(idprof, idalumno)">Eliminar Chat</button>
+                <button onclick="deleteChat(localStorage.getItem('userId'), localStorage.getItem('otherUserId'))">Eliminar Chat</button>
             </div>
         </div>
 
@@ -92,6 +92,8 @@
                 loadChatsForUser(tipoUsuario, userId);
                 loadChat(userId, otherUserId);
                 socket.connect();
+            } else {
+                errorMessage.textContent = "No se encontraron datos de usuario. Por favor inicia sesión.";
             }
         });
     
@@ -154,8 +156,39 @@
             const senderClass = isSentByCurrentUser ? 'sent' : 'received';
             messageItem.textContent = `${message.content} - ${new Date(message.timestamp).toLocaleString()}`;
             messageItem.classList.add('message-item', senderClass);
+            messageItem.dataset.messageId = message.id;
+
+            // Añadir evento para clic derecho
+            messageItem.addEventListener('contextmenu', async (event) => {
+                event.preventDefault();
+                const confirmDelete = confirm("¿Deseas eliminar este mensaje?");
+                if (confirmDelete) {
+                    await deleteMessage(message.id);
+                    messageItem.remove(); // Remover el mensaje del frontend
+                }
+            });
+
             messageList.appendChild(messageItem);
             messageList.scrollTop = messageList.scrollHeight;
+        }
+    
+        async function deleteMessage(messageId) {
+            try {
+                const response = await fetch(`http://localhost:3001/api/messages/${messageId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    console.error("Error al eliminar el mensaje");
+                    alert("Error al eliminar el mensaje.");
+                }
+            } catch (error) {
+                console.error("Error de red al eliminar el mensaje:", error);
+                alert("Error de red al intentar eliminar el mensaje.");
+            }
         }
     
         messageForm.addEventListener('submit', (event) => {
@@ -195,28 +228,28 @@
         });
 
         async function deleteChat(idprof, idalumno) {
-  try {
-    const response = await fetch("http://localhost:3001/api/chats", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ idprof, idalumno })
-    });
+            try {
+                const response = await fetch("http://localhost:3001/api/chats", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ idprof, idalumno })
+                });
 
-    if (response.ok) {
-      alert("Chat eliminado correctamente.");
-    } else {
-      const errorData = await response.json();
-      console.error("Error al eliminar el chat:", errorData.error);
-      alert("Error al eliminar el chat.");
-    }
-  } catch (error) {
-    console.error("Error de red al eliminar el chat:", error);
-    alert("Error de red al intentar eliminar el chat.");
-  }
-}
+                if (response.ok) {
+                    alert("Chat eliminado correctamente.");
+                    loadChatsForUser(localStorage.getItem('tipoUsuario'), localStorage.getItem('userId'));
+                } else {
+                    const errorData = await response.json();
+                    console.error("Error al eliminar el chat:", errorData.error);
+                    alert("Error al eliminar el chat.");
+                }
+            } catch (error) {
+                console.error("Error de red al eliminar el chat:", error);
+                alert("Error de red al intentar eliminar el chat.");
+            }
+        }
     </script>
 </body>
 </html>
-        
