@@ -37,8 +37,8 @@ main {
     height: 280px;
 }
 .fotoperfil img{
-    height: 400px;
-    width: 400px;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -109,4 +109,5 @@ main {
     display: flex;
     background-color: #ffffff;
     border-radius: 32px;
+    padding: 10px;
 }
