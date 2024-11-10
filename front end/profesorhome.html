@@ -232,9 +232,8 @@ async function mostrarDatosUsuario(data) {
 
         reservacionDiv.innerHTML = `
             <p><strong>${reservacion.dia} ${fechaFormateada}</strong> </p>
+            <p><strong>Clase con:</strong> ${reservacion.alumno}</p>
             <p><strong>Hora:</strong> ${reservacion.hora}</p>
-            <p><strong>Alumno:</strong> ${reservacion.alumno}</p>
-            <p><strong>Profesor:</strong> ${reservacion.profesor}</p>
         `;
 
         reservacionesLista.appendChild(reservacionDiv);

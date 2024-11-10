@@ -131,7 +131,7 @@
             const claseElement = document.createElement('div');
             claseElement.classList.add('reservacion-item');
             claseElement.innerHTML = `
-                <p><strong>Fecha:</strong> ${fechaFormateada}</p>
+                <p><strong>${fechaFormateada}</strong> </p>
                 <p><strong>Clase con:</strong> ${reserva.profesor}</p>
                 <p><strong>Hora:</strong> ${reserva.hora}</p>
             `;
@@ -161,12 +161,14 @@
             }
         },
         eventContent: function (arg) {
-            const profesorNombre = arg.event.extendedProps.profesorNombre;
-            const hora = arg.event.extendedProps.hora;
-            return {
-                html: `<b>${profesorNombre}</b><br>Hora: ${hora}`
-            };
-        }
+    const profesorNombre = arg.event.extendedProps.profesorNombre;
+    const hora = arg.event.extendedProps.hora;
+    return {
+        html: `<div style="background-color: yellow; padding: 5px; border-radius: 5px;">
+                   <b style="font-size: 7px; font-weight 500";>Clase con ${profesorNombre}</b><br>${hora}
+               </div>`
+    };
+}
     });
 
     calendar.render();
