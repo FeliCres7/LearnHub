@@ -17,7 +17,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="LearnHub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscarprof()"><i class="fas fa-search"></i></button>
         </div>
         <nav class="navbar">
             <ul>
@@ -38,7 +38,7 @@
                         <img src="Images html/logo materiales.png" alt=""></button>
                     <a href="profesormaterialesdetrabajo.html">Materiales de trabajo</a>
                 </li>
-                <li><button onclick="window.location.href='chat.html'"><img src="Images html/logo materiales de trabajo.png" alt=""></button><a href="chat.html">Chat</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='chat.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="chat.html">Mensajes</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -49,10 +49,12 @@
                 <li><a href="profesorcalendario.html">Calendario</a></li>
                 <li><a href="configuracionprofesor.html">Configuración</a></li>
                 <li><a href="profesormaterialesdetrabajo.html">Mis materiales de trabajo</a></li>
+                <li><a href="chat.html">Mensajes</a></li>
             </ul>
         </nav>
     </header>
     <script src="script.js"></script>
+
     <main class="main-home" style="padding-bottom: 20px;">
         <aside class="aside-izq-home">
             <img class="foto-perfil" id="foto-perfil" src="Images html/icon perfil.png" alt="">
@@ -208,28 +210,36 @@ async function mostrarDatosUsuario(data) {
     }
 
     function mostrarReservaciones(reservaciones) {
-        const reservacionesLista = document.getElementById('reservaciones-lista');
-        reservacionesLista.innerHTML = ""; // Limpiar la lista antes de agregar nuevas reservaciones
+    const reservacionesLista = document.getElementById('reservaciones-lista');
+    reservacionesLista.innerHTML = ""; // Limpiar la lista antes de agregar nuevas reservaciones
 
-        if (reservaciones.length === 0) {
-            reservacionesLista.innerHTML = '<p>No hay reservaciones para mostrar.</p>';
-            return;
-        }
+    if (reservaciones.length === 0) {
+        reservacionesLista.innerHTML = '<p>No hay reservaciones para mostrar.</p>';
+        return;
+    }
 
-        reservaciones.forEach(reservacion => {
-            const reservacionDiv = document.createElement('div');
-            reservacionDiv.classList.add('reservacion-item'); // Agregar clase para estilo
+    reservaciones.forEach(reservacion => {
+        const reservacionDiv = document.createElement('div');
+        reservacionDiv.classList.add('reservacion-item'); // Agregar clase para estilo
 
-            reservacionDiv.innerHTML = `
+        // Convertir la fecha de formato ISO a dd/mm/yyyy (usando UTC para evitar desfase)
+        const fechaOriginal = new Date(reservacion.fecha);
+        const dia = String(fechaOriginal.getUTCDate()).padStart(2, '0'); // Usar getUTCDate() en lugar de getDate()
+        const mes = String(fechaOriginal.getUTCMonth() + 1).padStart(2, '0'); // Usar getUTCMonth() en lugar de getMonth()
+        const anio = fechaOriginal.getUTCFullYear(); // Usar getUTCFullYear() en lugar de getFullYear()
+
+        const fechaFormateada = `${dia}/${mes}/${anio}`;
+
+        reservacionDiv.innerHTML = `
+            <p><strong>${reservacion.dia} ${fechaFormateada}</strong> </p>
+            <p><strong>Hora:</strong> ${reservacion.hora}</p>
             <p><strong>Alumno:</strong> ${reservacion.alumno}</p>
             <p><strong>Profesor:</strong> ${reservacion.profesor}</p>
-            <p><strong>Día:</strong> ${reservacion.dia}</p>
-            <p><strong>Hora:</strong> ${reservacion.hora}</p>
         `;
 
-            reservacionesLista.appendChild(reservacionDiv);
-        });
-    }
+        reservacionesLista.appendChild(reservacionDiv);
+    });
+}
 
 </script>
 

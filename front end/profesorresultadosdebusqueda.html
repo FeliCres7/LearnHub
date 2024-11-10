@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header profesores</title>
+    <meta charset="UTF-8">
+    <title>Resultados de búsqueda</title>
     <link rel="stylesheet" href="header.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="Images html/logo pestaña.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="shortcut icon" href="Images html/logo pestaña.png">
-
 </head>
 
 <body>
@@ -17,7 +15,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="LearnHub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button id="header-search" class="buttonsearch"><i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscarprof()"><i class="fas fa-search"></i></button>
         </div>
         <nav class="navbar">
             <ul>
@@ -53,9 +51,13 @@
             </ul>
         </nav>
     </header>
+
+    <main class="main-fondo-azul-busqueda">
+        <h1 class="h1-busqueda">Mostrando resultados para: </h1>
+        <article class="article-resultados-busqueda"></article>
+    </main>
+
+
     <script src="script.js"></script>
-
-
 </body>
-
 </html>

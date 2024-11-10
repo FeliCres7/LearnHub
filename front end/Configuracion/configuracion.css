@@ -228,6 +228,19 @@ input[type="checkbox"]:checked {
     justify-content: right;
 }
 .eliminarcuentaform{
+    display: flex;
     margin-top: 25px;
-    
+    font-weight: 500;
+    flex-direction: column;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+.eliminarcuentaform *{
+    width: fit-content;
+    margin: 5px 0;
+}
+.eliminarcuentaform button{
+    font-size: 22px;
 }

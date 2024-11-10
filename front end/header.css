@@ -24,7 +24,7 @@ header {
 
 .search{
     margin-left: 10px; 
-    margin-right: 20px;
+    margin-right: 10px;
     flex-grow: 1;
     max-width: 30%;
     height: 25px;
@@ -95,14 +95,14 @@ header ul{
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: auto;
+    margin-left: 0;
 
 }
 header ul li {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin: 0 30px;
+    margin: 0 20px;
     flex-grow: 1; /* Cada li ocupará un espacio proporcional */
     text-align: center; /* Centra el contenido de cada li */
 }

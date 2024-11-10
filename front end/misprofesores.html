@@ -13,10 +13,11 @@
 
 <body>
     <header class="header">
+
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
-            <input type="search" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+            <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
+            <button id="header-search" class="buttonsearch" onclick="buscaralumno()"><i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
@@ -35,6 +36,8 @@
                 <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
                             src="Images html/logo configuracion.png" alt=""></button><a
                         href="configuracion.html">Configuración</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='chat.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="chat.html">Mensajes</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='reservaciones.html'"><img src="Images html/logo reservaciones.png" alt=""></button><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -45,6 +48,8 @@
                 <li><a href="misprofesores.html">Mis profesores</a></li>
                 <li><a href="calendario.html">Calendario</a></li>
                 <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="chat.html">Mensajes</a></li>
+                <li><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
     </header>
@@ -73,187 +78,199 @@
 
 <script>
     const mainCards = document.getElementById("lista-misprofesores");
-    let profesoresTotales = []; // Lista completa de profesores, cargada al inicio
-    let materiasMap = {}; // Mapeo de id de materia a nombre de materia
+let profesoresTotales = []; // Lista completa de profesores, cargada al inicio
+let materiasMap = {}; // Mapeo de id de materia a nombre de materia
 
-    function CreateProfCard(prof) {
-        // Verifica si la foto está disponible, si no usa una foto por defecto
-        const fotoSrc = prof.foto ? `data:image/jpeg;base64,${prof.foto}` : 'default_foto.png';
+function CreateProfCard(prof) {
+    // Verifica si la foto está disponible, si no usa una foto por defecto
+    const fotoSrc = prof.foto ? `data:image/jpeg;base64,${prof.foto}` : 'default_foto.png';
 
-        // Usa el mapeo de materias para obtener el nombre de la materia
-        const nombreMateria = prof.idmateria && materiasMap[prof.idmateria] ? materiasMap[prof.idmateria] : 'No disponible';
+    // Usa el mapeo de materias para obtener el nombre de la materia
+    const nombreMateria = prof.idmateria && materiasMap[prof.idmateria] ? materiasMap[prof.idmateria] : 'No disponible';
 
-        console.log("Generando tarjeta para profesor:", prof.nombre, prof.apellido);
-        console.log("ID de Materia:", prof.idmateria);
-        console.log("Nombre de Materia encontrado:", nombreMateria);
+    console.log("Generando tarjeta para profesor:", prof.nombre, prof.apellido);
+    console.log("ID de Materia:", prof.idmateria);
+    console.log("Nombre de Materia encontrado:", nombreMateria);
 
-        return `
-        <div class="profesor-misprofesores">
-            <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
-            <div class="content-profesor">
-                <img class="fotomisprofesores" src="${fotoSrc}" alt="Foto del profesor">
-                <div class="datos-profesor">
-                    <div class="datacontainer">
-                        <p class="bold">Materia:</p>
-                        <p>${nombreMateria}</p> <!-- Muestra el nombre de la materia -->
-                    </div>
-                    <div class="datacontainer">
-                        <p class="bold">Días:</p>
-                        <p>${prof.dias || 'No disponible'}</p>
-                    </div>
-                    <div class="datacontainer">
-                        <p class="bold">Horarios:</p>
-                        <p>${prof.disponibilidad_horaria || 'No disponible'}</p>
-                    </div>
-                </div>
-                <div class="botones-profesor">
-                    <button onclick="window.location.href='materialesdetrabajo.html?id=' + ${prof.ID}">Materiales de trabajo</button>
-                    <button onclick="window.location.href='perfilprofesordesdealumno.html?id=' + ${prof.ID}">Ir a perfil</button>
-                    <button onclick="window.location.href='datosdecontacto.html?id=' + ${prof.ID}">Ver datos de contacto</button>
-                </div>
-                <div class="valoracion-profesor">
-                    <p class="bold">Valoración</p>
-                    <div class="stars" data-valoracion="${prof.valoracion || 0}">
-                        <img src="Images html/estrella vacia.png" alt="">
-                        <img src="Images html/estrella vacia.png" alt="">
-                        <img src="Images html/estrella vacia.png" alt="">
-                        <img src="Images html/estrella vacia.png" alt="">
-                        <img src="Images html/estrella vacia.png" alt="">
-                    </div>
+    return `
+    <div class="profesor-misprofesores">
+        <p class="name-profesor">${prof.nombre} ${prof.apellido}</p>
+        <div class="content-profesor">
+            <img class="fotomisprofesores" src="${fotoSrc}" alt="Foto del profesor">
+            <div class="datos-profesor">
+                <div class="datacontainer">
+                    <p class="bold">Materia:</p>
+                    <p>${nombreMateria}</p> <!-- Muestra el nombre de la materia -->
                 </div>
             </div>
-        </div>`;
-    }
+            <div class="botones-profesor">
+                <button onclick="window.location.href='materialesdetrabajo.html?id=' + ${prof.ID}">Materiales de trabajo</button>
+                <button onclick="window.location.href='perfilprofesordesdealumno.html?id=' + ${prof.ID}">Ir a perfil</button>
+                <button onclick="window.location.href='datosdecontacto.html?id=' + ${prof.ID}">Ver datos de contacto</button>
+            </div>
+            <div class="valoracion-profesor">
+                <p class="bold">Valoración</p>
+                <div class="stars" data-valoracion="${prof.valoracion || 0}">
+                    <img src="Images html/estrella vacia.png" alt="">
+                    <img src="Images html/estrella vacia.png" alt="">
+                    <img src="Images html/estrella vacia.png" alt="">
+                    <img src="Images html/estrella vacia.png" alt="">
+                    <img src="Images html/estrella vacia.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
 
-    async function fetchProfesores(url) {
-        try {
-            console.log("Obteniendo profesores desde URL:", url);
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Error al obtener los profesores. Código: ' + response.status);
-            }
-            const data = await response.json();
-            console.log("Profesores obtenidos:", data);
-
-            // Asegúrate de que `data` es un array antes de regresarlo
-            return Array.isArray(data) ? data : [];
-        } catch (error) {
-            console.error("Error al obtener profesores:", error);
-
-            return [];
+async function fetchProfesores(url) {
+    try {
+        console.log("Obteniendo profesores desde URL:", url);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Error al obtener los profesores. Código: ' + response.status);
         }
+        const data = await response.json();
+        console.log("Profesores obtenidos:", data);
+
+        // Asegúrate de que `data` es un array antes de regresarlo
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error("Error al obtener profesores:", error);
+
+        return [];
+    }
+}
+
+async function cargarProfesores() {
+    profesoresTotales = await fetchProfesores("https://learn-hub-eta.vercel.app/profesores");
+    console.log("Profesores cargados en la lista total:", profesoresTotales);
+    renderizarProfesores(profesoresTotales);
+}
+
+function renderizarProfesores(data) {
+    mainCards.innerHTML = ""; // Limpia el contenedor
+
+    if (!Array.isArray(data) || data.length === 0) {
+        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+        return;
     }
 
+    data.forEach((profesor) => {
+        const item = CreateProfCard(profesor);
+        mainCards.innerHTML += item;
+    });
 
+    asignarValoraciones();
+}
 
-    async function cargarProfesores() {
-        profesoresTotales = await fetchProfesores("https://learn-hub-eta.vercel.app/profesores");
-        console.log("Profesores cargados en la lista total:", profesoresTotales);
-        renderizarProfesores(profesoresTotales);
-    }
+function asignarValoraciones() {
+    const images = [
+        'Images html/estrella vacia.png',   // 0
+        'Images html/Media estrella.png',   // 1
+        'Images html/estrella completa.png' // 2
+    ];
 
-    function renderizarProfesores(data) {
-        mainCards.innerHTML = ""; // Limpia el contenedor
+    document.querySelectorAll('.stars').forEach(starContainer => {
+        let valoracion = parseFloat(starContainer.getAttribute('data-valoracion')) || 0;
 
-        if (!Array.isArray(data) || data.length === 0) {
-            mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
-            return;
+        // Calcula la valoración ajustada
+        let estrellasCompletas = Math.floor(valoracion / 2);  // Estrellas completas
+        let mediaEstrella = valoracion % 2 !== 0 ? 1 : 0; // Media estrella si es impar
+        let vacias = 5 - estrellasCompletas - mediaEstrella; // Estrellas vacías
+
+        const starImages = starContainer.querySelectorAll('img');
+
+        console.log("Asignando valoración:", valoracion);
+
+        // Asigna las estrellas completas
+        for (let i = 0; i < estrellasCompletas; i++) {
+            starImages[i].src = images[2]; // Estrella completa
         }
 
-        data.forEach((profesor) => {
-            const item = CreateProfCard(profesor);
-            mainCards.innerHTML += item;
-        });
+        // Asigna la media estrella
+        if (mediaEstrella) {
+            starImages[estrellasCompletas].src = images[1]; // Media estrella
+        }
 
-        asignarValoraciones();
-    }
+        // Asigna las estrellas vacías
+        for (let i = estrellasCompletas + mediaEstrella; i < 5; i++) {
+            starImages[i].src = images[0]; // Estrella vacía
+        }
+    });
+}
 
+async function cargarMaterias() {
+    try {
+        console.log("Cargando materias...");
+        const response = await fetch("https://learn-hub-eta.vercel.app/Materia");
+        if (!response.ok) throw new Error("Error al cargar las materias");
+        const materias = await response.json();
+        console.log("Materias obtenidas:", materias);
 
-    function asignarValoraciones() {
-        const images = [
-            'Images html/estrella vacia.png',   // 0
-            'Images html/Media estrella.png',   // 1
-            'Images html/estrella completa.png' // 2
-        ];
+        // Crear un mapeo de materias para que sea fácil acceder a su nombre por ID
+        materiasMap = materias.reduce((map, materia) => {
+            map[materia.ID] = materia.nombre_materia;
+            console.log(`Materias map: ${materia.ID} -> ${materia.nombre_materia}`); // Log para verificar el mapeo
+            return map;
+        }, {});
 
-        document.querySelectorAll('.stars').forEach(starContainer => {
-            let valoracion = parseFloat(starContainer.getAttribute('data-valoracion')) || 0;
-            valoracion = Math.round(valoracion / 2);
-            const starImages = starContainer.querySelectorAll('img');
+        console.log("Mapa de materias creado:", materiasMap);
 
-            console.log("Asignando valoración:", valoracion);
+        const select = document.getElementById("selectmaterias");
+        select.innerHTML = '<option value="">Todas las materias</option>'; // Opción por defecto
 
-            starImages.forEach((img, index) => {
-                if (valoracion >= index + 1) {
-                    img.src = images[2]; // Estrella completa
-                } else if (valoracion >= index + 0.5) {
-                    img.src = images[1]; // Media estrella
-                } else {
-                    img.src = images[0]; // Estrella vacía
-                }
-            });
-        });
-    }
-
-    async function cargarMaterias() {
-        try {
-            console.log("Cargando materias...");
-            const response = await fetch("https://learn-hub-eta.vercel.app/Materia");
-            if (!response.ok) throw new Error("Error al cargar las materias");
-            const materias = await response.json();
-            console.log("Materias obtenidas:", materias);
-
-            // Crear un mapeo de materias para que sea fácil acceder a su nombre por ID
-            materiasMap = materias.reduce((map, materia) => {
-                map[materia.ID] = materia.nombre_materia;
-                console.log(`Materias map: ${materia.ID} -> ${materia.nombre_materia}`); // Log para verificar el mapeo
-                return map;
-            }, {});
-
-            console.log("Mapa de materias creado:", materiasMap);
-
-            const select = document.getElementById("selectmaterias");
-            select.innerHTML = '<option value="">Todas las materias</option>'; // Opción por defecto
-
+        // Agregar opciones al select solo si hay materias
+        if (materias.length > 0) {
             materias.forEach(materia => {
                 const option = document.createElement("option");
                 option.value = materia.ID;
                 option.textContent = materia.nombre_materia;
                 select.appendChild(option);
             });
-        } catch (error) {
-            console.error("Error al cargar materias:", error);
-            alert(error.message);
+        } else {
+            // Si no se encuentran materias, muestra un mensaje
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = "No hay materias disponibles";
+            select.appendChild(option);
         }
+    } catch (error) {
+        console.error("Error al cargar materias:", error);
+        alert("Error al cargar las materias: " + error.message);
     }
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log("Página cargada, iniciando carga de profesores y materias...");
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Página cargada, esperando 3 segundos para iniciar la carga de profesores y materias...");
+
+    // Retrasar la ejecución de las funciones 3 segundos (3000 milisegundos)
+    setTimeout(() => {
         cargarProfesores();
         cargarMaterias();
-    });
-
-    document.getElementById('filtrar-nombre').addEventListener('click', () => {
-        const nombre = document.getElementById("inputNombre").value.toLowerCase();
-        console.log("Filtrando profesores por nombre:", nombre);
-
-        // Filtrar los profesores por el nombre completo (nombre y apellido)
-        const profesoresFiltrados = profesoresTotales.filter(profesor =>
-            `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
-        );
-
-        console.log("Profesores filtrados:", profesoresFiltrados);
-
-        // Si no hay profesores que coincidan, muestra el mensaje de "No hay profesores que coincidan"
-        if (profesoresFiltrados.length === 0) {
-            mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
-        } else {
-            renderizarProfesores(profesoresFiltrados);
-        }
-    });
+    }, 500); // Retraso de 3 segundos
+});
 
 
-    document.getElementById("filtrar-materia").addEventListener("click", () => {
+document.getElementById('filtrar-nombre').addEventListener('click', () => {
+    const nombre = document.getElementById("inputNombre").value.toLowerCase();
+    console.log("Filtrando profesores por nombre:", nombre);
+
+    // Filtrar los profesores por el nombre completo (nombre y apellido)
+    const profesoresFiltrados = profesoresTotales.filter(profesor =>
+        `${profesor.nombre} ${profesor.apellido}`.toLowerCase().includes(nombre)
+    );
+
+    console.log("Profesores filtrados:", profesoresFiltrados);
+
+    // Si no hay profesores que coincidan, muestra el mensaje de "No hay profesores que coincidan"
+    if (profesoresFiltrados.length === 0) {
+        mainCards.innerHTML = "<p>No hay profesores que coincidan con los criterios de búsqueda.</p>";
+    } else {
+        renderizarProfesores(profesoresFiltrados);
+    }
+});
+
+document.getElementById("filtrar-materia").addEventListener("click", () => {
     const idMateriaSeleccionada = document.getElementById("selectmaterias").value;
 
     const profesoresFiltrados = profesoresTotales.filter(profesor => 
@@ -263,7 +280,9 @@
     console.log("Profesores filtrados por materia:", profesoresFiltrados);
     renderizarProfesores(profesoresFiltrados);
 });
+
 </script>
+
 
 
 

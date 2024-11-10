@@ -19,7 +19,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscaralumno()"><i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
@@ -38,6 +38,8 @@
                 <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
                             src="Images html/logo configuracion.png" alt=""></button><a
                         href="configuracion.html">Configuración</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='chat.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="chat.html">Mensajes</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='reservaciones.html'"><img src="Images html/logo reservaciones.png" alt=""></button><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -48,10 +50,11 @@
                 <li><a href="misprofesores.html">Mis profesores</a></li>
                 <li><a href="calendario.html">Calendario</a></li>
                 <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="chat.html">Mensajes</a></li>
+                <li><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
     </header>
-
     <script src="script.js"></script>
 
     <main class="main-fondo-azul">
@@ -72,96 +75,78 @@
 
     <script>
         async function reservarClase() {
-            const nombre = document.getElementById("nombreProfesor").value;
-            const apellido = document.getElementById("apellidoProfesor").value;
-        
-            if (!nombre || !apellido) {
-                alert("Por favor ingresa el nombre y apellido del profesor");
-                return;
-            }
-        
-            try {
-                // Obtener el token de autenticación
-                const token = localStorage.getItem("token"); // o sessionStorage.getItem("token") según corresponda
-                if (!token) {
-                    alert("Token no encontrado. Por favor, inicia sesión.");
-                    return;
-                }
-    
-                // Decodificar el token para obtener el ID del alumno
-                const payloadBase64 = token.split('.')[1];
-                const payload = JSON.parse(atob(payloadBase64));
-                const IDalumno = payload.IDalumno;
-                console.log("ID del alumno extraído del token:", IDalumno);
-    
-                // Realiza la solicitud al backend con el nombre y apellido del profesor
-                console.log("Buscando profesor con nombre:", nombre, "y apellido:", apellido);
-                const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/nombreapellido/${nombre}/${apellido}`, {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    }
-                });
-        
-                if (!response.ok) {
-                    throw new Error('Profesor no encontrado');
-                }
-        
-                const data = await response.json();
-                console.log("Profesor encontrado:", data);
-                const profesor = data.profesores[0];
-                console.log("ID del Profesor:", profesor.ID);
-    
-                // Obtener datos de la reservación
-                const fecha = document.getElementById("fechaReserva").value;
-                const hora = document.getElementById("horaReserva").value;
-    
-                console.log("Fecha seleccionada:", fecha);
-                console.log("Hora seleccionada:", hora);
-    
-                if (!fecha || !hora) {
-                    alert("Por favor, selecciona una fecha y hora.");
-                    return;
-                }
-    
-                const date = new Date(fecha);
-                const daysOfWeek = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-                const dia = daysOfWeek[date.getDay()];
-                console.log("Día de la semana:", dia);
-    
-                // Preparar el cuerpo de la solicitud de reservación
-                const reservacionRequestBody = {
-                    IDalumno,
-                    idprof: profesor.ID,
-                    dia,
-                    hora,
-                    fecha
-                };
-    
-                console.log("Datos enviados para la reservación:", reservacionRequestBody);
-    
-                // Realizar la solicitud POST para la reservación
-                const reservacionResponse = await fetch("https://learn-hub-eta.vercel.app/reservaciones", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}` // Enviamos el token en el encabezado de autorización
-                    },
-                    body: JSON.stringify(reservacionRequestBody),
-                });
-    
-                if (!reservacionResponse.ok) {
-                    throw new Error("Error al hacer la reservación");
-                }
-    
-                const reservacionData = await reservacionResponse.json();
-                console.log("Reserva exitosa:", reservacionData);
-                alert(`Reserva exitosa con el profesor: ${profesor.nombre} ${profesor.apellido}`);
-    
-            } catch (error) {
-                console.error("Error al realizar la reservación:", error);
-                alert("Hubo un problema al realizar la reservación");
-            }
+    const nombre = document.getElementById("nombreProfesor").value;
+    const apellido = document.getElementById("apellidoProfesor").value;
+
+    if (!nombre || !apellido) {
+        alert("Por favor ingresa el nombre y apellido del profesor");
+        return;
+    }
+
+    try {
+        // Obtener el token de autenticación
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Token no encontrado. Por favor, inicia sesión.");
+            return;
         }
+
+        // Decodificar el token para obtener el ID del alumno
+        const payloadBase64 = token.split('.')[1];
+        const payloadJson = atob(payloadBase64);
+        const payload = JSON.parse(payloadJson);
+        console.log(payload)
+
+        // Extraer el ID del alumno
+        const IDalumno = payload.id;
+        if (!IDalumno) {
+            alert("ID del alumno no encontrado en el token.");
+            return;
+        }
+        console.log("ID del alumno extraído del token:", IDalumno);
+
+        // Resto del código para realizar la reserva
+        const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/nombreapellido/${nombre}/${apellido}`, {
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Profesor no encontrado');
+        
+        const data = await response.json();
+        const profesor = data.profesores[0];
+        const fecha = document.getElementById("fechaReserva").value;
+        const hora = document.getElementById("horaReserva").value;
+
+        if (!fecha || !hora) {
+            alert("Por favor, selecciona una fecha y hora.");
+            return;
+        }
+
+        const date = new Date(fecha);
+        const daysOfWeek = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const dia = daysOfWeek[date.getDay()];
+
+        const reservacionRequestBody = { IDalumno, idprof: profesor.ID, dia, hora, fecha };
+
+        const reservacionResponse = await fetch("https://learn-hub-eta.vercel.app/reservaciones", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(reservacionRequestBody),
+        });
+
+        if (!reservacionResponse.ok) throw new Error("Error al hacer la reservación");
+
+        const reservacionData = await reservacionResponse.json();
+        alert(`Reserva exitosa con el profesor: ${profesor.nombre} ${profesor.apellido}`);
+    } catch (error) {
+        console.error("Error al realizar la reservación:", error);
+        alert("Hubo un problema al realizar la reservación");
+    }
+}
+
     </script>
     
     

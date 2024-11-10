@@ -19,7 +19,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button id="header-search" class="buttonsearch"><i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscaralumno()"><i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
@@ -38,6 +38,8 @@
                 <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
                             src="Images html/logo configuracion.png" alt=""></button><a
                         href="configuracion.html">Configuración</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='chat.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="chat.html">Mensajes</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='reservaciones.html'"><img src="Images html/logo reservaciones.png" alt=""></button><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -48,6 +50,8 @@
                 <li><a href="misprofesores.html">Mis profesores</a></li>
                 <li><a href="calendario.html">Calendario</a></li>
                 <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="chat.html">Mensajes</a></li>
+                <li><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
     </header>
@@ -87,7 +91,7 @@
             <div class="seguridad-configuracion">
                 <p>Cuenta</p>
                 <button class="top-button-config" onclick="mostrarVentanaEmergente()">Cerrar sesión</button>
-                <button class="bottom-button-config">Eliminar cuenta</button>
+                <button class="bottom-button-config" onclick="window.location.href='Configuracion/borrar-cuenta-alumno.html'">Eliminar cuenta</button>
             </div>
 
         </article>

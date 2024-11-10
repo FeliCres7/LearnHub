@@ -12,19 +12,31 @@
 
 <body>
     <header class="header">
+
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch" onclick="buscar()"> <i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscaralumno()"><i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
             <ul>
-                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
-                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a></li>
-                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis profesores</a></li>
-                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img src="Images html/logo calendario.png" alt=""></button><a href="calendario.html">Calendario</a></li>
-                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img src="Images html/logo configuracion.png" alt=""></button><a href="configuracion.html">Configuración</a></li>
+                <li class="boton-inicio"><button class="inicio" onclick="window.location.href='home.html'"><img
+                            src="Images html/logo inicio.png" alt=""></button><a href="home.html">Inicio</a></li>
+                <li class="boton-perfil-alumno"><button onclick="window.location.href='perfil.html'"><img
+                            src="Images html/logo perfil alumno.png" alt=""></button><a href="perfil.html">Perfil</a>
+                </li>
+                <li class="boton-mis-profesores"><button onclick="window.location.href='misprofesores.html'"><img
+                            src="Images html/logo mis profesores.png" alt=""></button><a href="misprofesores.html">Mis
+                        profesores</a></li>
+                <li class="boton-calendario"><button onclick="window.location.href='calendario.html'"><img
+                            src="Images html/logo calendario.png" alt=""></button><a
+                        href="calendario.html">Calendario</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
+                            src="Images html/logo configuracion.png" alt=""></button><a
+                        href="configuracion.html">Configuración</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='chat.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="chat.html">Mensajes</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='reservaciones.html'"><img src="Images html/logo reservaciones.png" alt=""></button><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -35,23 +47,18 @@
                 <li><a href="misprofesores.html">Mis profesores</a></li>
                 <li><a href="calendario.html">Calendario</a></li>
                 <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="chat.html">Mensajes</a></li>
+                <li><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
     </header>
+    <script src="script.js"></script>
 
     <main class="main-fondo-azul-busqueda">
         <h1 class="h1-busqueda">Mostrando resultados para: </h1>
         <article class="article-resultados-busqueda"></article>
     </main>
 
-    <script>
-        function buscar() {
-            const query = document.getElementById('búsqueda').value;
-            if (query) {
-                window.location.href = `resultados.html?search=${query}`;
-            }
-        }
-    </script>
     <script src="script.js"></script>
 </body>
 </html>

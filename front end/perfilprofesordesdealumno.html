@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="stylish.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="shortcut icon" href="Images html/logo pestaña.png">
-
 </head>
 
 <body>
@@ -19,7 +18,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button class="buttonsearch"><i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscaralumno()"><i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
@@ -38,6 +37,8 @@
                 <li class="boton-configuracion"><button onclick="window.location.href='configuracion.html'"><img
                             src="Images html/logo configuracion.png" alt=""></button><a
                         href="configuracion.html">Configuración</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='chat.html'"><img src="Images html/logo mensajes.png" alt=""></button><a href="chat.html">Mensajes</a></li>
+                <li class="boton-configuracion"><button onclick="window.location.href='reservaciones.html'"><img src="Images html/logo reservaciones.png" alt=""></button><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
         <button id="menubutton"><img src="Images html/menubutton.png" alt="MENU"></button>
@@ -48,6 +49,8 @@
                 <li><a href="misprofesores.html">Mis profesores</a></li>
                 <li><a href="calendario.html">Calendario</a></li>
                 <li><a href="configuracion.html">Configuración</a></li>
+                <li><a href="chat.html">Mensajes</a></li>
+                <li><a href="reservaciones.html">Reservaciones</a></li>
             </ul>
         </nav>
     </header>
@@ -71,7 +74,7 @@
                         <p id="materias">Materia</p>
                     </div>
                     <p class="bold">Valoración</p>
-                    <div class="stars" style="width: fit-content;" data-valoracion="${prof.valoracion || 0}">
+                    <div class="stars" id="valoracion" style="width: fit-content;">
                         <img src="Images html/estrella vacia.png" alt="">
                         <img src="Images html/estrella vacia.png" alt="">
                         <img src="Images html/estrella vacia.png" alt="">
@@ -83,6 +86,122 @@
         </div>
     </main>
 
+    <script>
+        async function cargarPerfilProfesor() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const profesorID = urlParams.get('id');
+            console.log("ID del profesor:", profesorID);
+    
+            if (!profesorID) {
+                alert("ID del profesor no encontrado en la URL.");
+                return;
+            }
+    
+            try {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/profesores/${profesorID}`);
+                console.log("Response status:", response.status);
+                if (!response.ok) throw new Error(`Error al obtener los datos del profesor: ${response.status} ${response.statusText}`);
+    
+                const prof = await response.json();
+                console.log("Datos del profesor recibidos:", prof);
+    
+                document.getElementById('nombre-apellido').textContent = `${prof.profesor.nombre} ${prof.profesor.apellido}`;
+                document.getElementById('fecha-nacimiento').textContent = new Date(prof.profesor.fecha_de_nacimiento).toLocaleDateString();
+    
+                // Obtener el nombre de la materia y país
+                const nombreMateria = await obtenerNombreMateria(prof.profesor.idmateria);
+                document.getElementById("materias").textContent = nombreMateria;
+    
+                const nombrePais = await obtenerNombrePais(prof.profesor.idpais);
+                document.getElementById("pais").textContent = nombrePais;
+    
+                // Manejo de la foto de perfil
+                const fotoPerfil = document.getElementById('foto-perfil');
+                if (prof.profesor.foto) {
+                    if (prof.profesor.foto.startsWith("https")) {
+                        fotoPerfil.src = prof.profesor.foto;  // URL
+                    } else {
+                        fotoPerfil.src = `data:image/jpeg;base64,${prof.profesor.foto}`;  // Base64
+                    }
+                } else {
+                    console.log("No se encontró foto en los datos del profesor.");
+                }
+    
+                // Asignar la valoración (estrellas)
+                asignarValoracion(prof.profesor.valoracion);
+    
+            } catch (error) {
+                console.error("Error al cargar el perfil del profesor:", error);
+                alert("No se pudo cargar el perfil del profesor.");
+            }
+        }
+    
+        // Función para asignar las estrellas según la valoración
+        const asignarValoracion = (valoracion) => {
+            const images = [
+                'Images html/estrella vacia.png',   // 0
+                'Images html/Media estrella.png',   // 1
+                'Images html/estrella completa.png' // 2
+            ];
+    
+            // Dividir la valoración por 2, ya que cada estrella es de 2 puntos.
+            const valoracionRedondeada = valoracion / 2;  // Redondeamos a mitad de estrella
+    
+            const starImages = document.querySelectorAll('#valoracion img');
+            
+            // Para cada estrella, asignamos la imagen correspondiente
+            starImages.forEach((img, index) => {
+                if (valoracionRedondeada >= index + 1) {
+                    img.src = images[2]; // Estrella completa
+                } else if (valoracionRedondeada > index && valoracionRedondeada < index + 1) {
+                    img.src = images[1]; // Media estrella
+                } else {
+                    img.src = images[0]; // Estrella vacía
+                }
+            });
+        };
+    
+        // Función para obtener el nombre de la materia
+        const obtenerNombreMateria = async (idMateria) => {
+            try {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/Materia/${idMateria}`);
+    
+                if (!response.ok) {
+                    console.error("Error al obtener el nombre de la materia:", response.statusText);
+                    return "Materia no encontrada";
+                }
+    
+                const data = await response.json();
+                return data.materia;
+            } catch (error) {
+                console.error("Error al obtener el nombre de la materia:", error);
+                return "Error al obtener materia";
+            }
+        };
+    
+        // Función para obtener el nombre del país
+        const obtenerNombrePais = async (idPais) => {
+            try {
+                const response = await fetch(`https://learn-hub-eta.vercel.app/paises/${idPais}`);
+    
+                if (!response.ok) {
+                    console.error("Error al obtener el nombre del país:", response.statusText);
+                    return "País no encontrado";
+                }
+    
+                const data = await response.json();
+                return data.pais;
+            } catch (error) {
+                console.error("Error al obtener el nombre del país:", error);
+                return "Error al obtener país";
+            }
+        };
+    
+        // Cargar los datos del profesor al cargar la página
+        window.onload = cargarPerfilProfesor;
+    </script>
+    
+    
 </body>
 
 </html>
