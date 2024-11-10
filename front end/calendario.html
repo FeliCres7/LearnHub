@@ -48,28 +48,43 @@
     <main class="mainfondobasico">
         <div class="Proximasclases">
             <h1>Próximas Clases</h1>
-            <p>Lunes 1/10</p>
-            <p>15:00-16:30</p>
-            <p>Clase con Ezequiel Agradnik</p>
-            <p>18:00-19:00</p>
-            <p>Clase con Sergio Coppa</p>
-            <p>Viernes 4/10</p>
-            <p>16:00-17:00</p>
-            <p>Clase con Martín Melman</p>
-            <p>15:00-16:00</p>
-            <p>Clase con Sergio Coppa</p>
+            <!-- Las reservas se agregarán aquí dinámicamente -->
         </div>
         <div id="calendar"></div>
     </main>
 
-    <script>
-        async function getReservasByProfesor(idprof, idalumno) {
+    <script>// Función para obtener el ID del alumno desde el token
+        function getAlumnoIdFromToken() {
+            const token = localStorage.getItem('token'); // Obtén el token desde el localStorage
+            if (!token) {
+                console.error('Token no encontrado');
+                return null;
+            }
+        
+            const tokenParts = token.split('.');
+            if (tokenParts.length !== 3) {
+                console.error('Token no tiene el formato adecuado');
+                return null;
+            }
+        
+            try {
+                const decodedToken = JSON.parse(atob(tokenParts[1])); // Decodifica el token
+                return decodedToken.id; // Asegúrate de que el campo correcto esté aquí
+            } catch (error) {
+                console.error('Error al decodificar el token:', error);
+                return null;
+            }
+        }
+        
+        // Función para obtener reservas por ID del alumno
+        async function getReservasByAlumno(idalumno) {
             try {
                 const response = await fetch(`https://learn-hub-eta.vercel.app/reservaciones/IDalumno/${idalumno}`);
                 if (response.ok) {
-                    return await response.json();
+                    const data = await response.json();
+                    return data || [];
                 } else {
-                    console.error('Error al obtener las reservas del profesor:', response.statusText);
+                    console.error('Error al obtener las reservas del alumno:', response.statusText);
                     alert('Hubo un error al obtener las reservas.');
                     return [];
                 }
@@ -79,64 +94,79 @@
                 return [];
             }
         }
-
-        document.addEventListener('DOMContentLoaded', async function() {
-            const calendarEl = document.getElementById('calendar');
-            const idprof = '60';
-            const idalumno = '123'; // Definir el ID del alumno aquí
-
+        
+        document.addEventListener('DOMContentLoaded', async function () {
+            const idalumno = getAlumnoIdFromToken(); // Obtener el ID del alumno desde el token
+        
+            if (!idalumno) {
+                alert('No se pudo obtener el ID del alumno.');
+                return;
+            }
+        
+            const reservas = await getReservasByAlumno(idalumno);
+            const proximasClasesDiv = document.querySelector('.Proximasclases');
+        
+            // Mostrar las reservas en "Próximas Clases"
+            if (reservas && reservas.length > 0) {
+                reservas.forEach(reserva => {
+                    const fecha = reserva.fecha ? new Date(reserva.fecha) : null;
+                    if (fecha) {
+                        const dia = fecha.toLocaleString('es-ES', { weekday: 'long' });
+                        const fechaFormateada = fecha.toLocaleDateString('es-ES');
+                        const hora = fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        
+                        const claseElement = document.createElement('div');
+                        claseElement.classList.add('reservacion-item');
+                        claseElement.innerHTML = `
+                            <p><strong>${dia} ${fechaFormateada}</strong></p>
+                            <p><strong>Clase con:</strong> ${reserva.profesor}</p>
+                            <p><strong>Hora:</strong> ${hora}</p>
+                        `;
+                        proximasClasesDiv.appendChild(claseElement);
+                    }
+                });
+            } else {
+                console.log('No hay reservas para mostrar');
+            }
+        
+            var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: async function(fetchInfo, successCallback, failureCallback) {
+                events: async function (fetchInfo, successCallback, failureCallback) {
                     try {
-                        const reservas = await getReservasByProfesor(idprof, idalumno);
-                        if (!reservas || !Array.isArray(reservas)) {
-                            console.error('Reservas no válidas:', reservas);
-                            failureCallback(new Error('Reservas no válidas'));
-                            return;
-                        }
-
-                        const eventos = reservas.map(reserva => ({
-                            title: `Clase con ${reserva.profesorNombre}`,
-                            start: reserva.fechaInicio,
-                            end: reserva.fechaFin,
-                            extendedProps: {
-                                profesorNombre: reserva.profesorNombre,
-                                hora: reserva.hora,
-                                descripcion: reserva.descripcion
+                        const eventos = reservas.map(reserva => {
+                            const fecha = reserva.fecha ? new Date(reserva.fecha) : null;
+                            if (fecha) {
+                                return {
+                                    title: `Clase con: ${reserva.profesor}`,
+                                    start: fecha,
+                                    extendedProps: {
+                                        profesorNombre: reserva.profesor,
+                                        hora: reserva.hora
+                                    }
+                                };
                             }
-                        }));
+                            return null;
+                        }).filter(event => event !== null);
                         successCallback(eventos);
                     } catch (error) {
                         console.error('Error al cargar los eventos:', error);
                         failureCallback(error);
                     }
                 },
-                eventContent: function(arg) {
+                eventContent: function (arg) {
                     const profesorNombre = arg.event.extendedProps.profesorNombre;
                     const hora = arg.event.extendedProps.hora;
-                    const descripcion = arg.event.extendedProps.descripcion;
-
-                    const divEl = document.createElement('div');
-                    divEl.classList.add('reserva-evento');
-                    divEl.innerHTML = `
-                        <strong>Clase con: ${profesorNombre}</strong><br>
-                        <span>${hora}</span>
-                    `;
-
-                    const detalleDiv = document.createElement('div');
-                    detalleDiv.classList.add('reserva-detalle');
-                    detalleDiv.innerHTML = `
-                        <p>Descripción: ${descripcion}</p>
-                    `;
-                    divEl.appendChild(detalleDiv);
-
-                    return { domNodes: [divEl] };
+                    return {
+                        html: `<b>${profesorNombre}</b><br>Hora: ${hora}`
+                    };
                 }
             });
-
+        
             calendar.render();
         });
-    </script>
+        </script>
+    
 </body>
+
 </html>
