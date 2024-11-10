@@ -250,9 +250,7 @@ const enviarValoracion = async (valoracion, profesorID) => {
             alert("No se pudo enviar la valoración.");
         } else {
             const data = await response.json();
-            alert(`Valoración enviada exitosamente. Promedio actualizado: ${data.valoracion_promedio}`);
-            // Opcionalmente, ocultar el div de valoración después de enviarla
-            document.getElementById('valoracion').style.display = 'none';
+            location.reload();
         }
     } catch (error) {
         console.error("Error al enviar la valoración:", error);

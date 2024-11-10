@@ -173,6 +173,7 @@
             if (response.ok) {
                 alert("Datos actualizados correctamente.");
                 console.log("Respuesta de actualización:", data);
+                window.location.href="../configuracion.html"
             } else {
                 console.error("Error al actualizar datos:", data.error);
                 alert("Error al actualizar los datos. Verifique la contraseña actual y vuelva a intentarlo.");
