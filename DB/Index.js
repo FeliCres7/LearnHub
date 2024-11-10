@@ -85,9 +85,8 @@ app.put('/profesores/updateperfil/:ID', verifyToken, verifyAdmin, profesores.upd
 app.put('/profesores/updateseguridad/:ID', profesores.updateseguridad);
 app.put('/profesores/updatedisponibilidadhoraria/:idprof', profesores.updatedisponibilidadhoraria);
 app.delete('/profesores/:ID',profesores.deleteprof);
-app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
 app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
-app.post('/profesores/valoraciones', profesores.createvaloracionbyclases);
+app.post('/profesores/valoraciones/:idprof', profesores.createValoracion);
 
 /* //Clases
 app.get('/clases', clases.getClases);

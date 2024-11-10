@@ -229,47 +229,6 @@ const deleteprof = async (req,res) => {
 
 
 
-const getperfilprof = async (req, res) => {
-    try {
-      const ID = req.params.ID;
-  
-      if (!ID) {
-        return res.status(400).json({ error: 'ID es requerido' });
-      }
-  
-      // Consulta para obtener los datos del profesor
-      const queryProfesor = `
-        SELECT nombre, apellido, foto, fecha_de_nacimiento, pais
-        FROM public.profesores 
-        WHERE "ID" = $1
-      `;
-      const { rows: profesorRows } = await pool.query(queryProfesor, [ID]);
-  
-      if (profesorRows.length === 1) {
-        // Consulta para obtener el promedio de valoraciones del profesor
-        const queryValoracion = `
-          SELECT AVG(valoracion) AS valoracion
-          FROM public.valoraciones
-          WHERE idprof = $1
-        `;
-        const { rows: valoracionRows } = await pool.query(queryValoracion, [ID]);
-  
-        // Valoración promedio
-        const valoracion_promedio = valoracionRows[0]?.valoracion_promedio || 0; // Si no tiene valoraciones, se pone en 0
-  
-        return res.json({
-          message: 'Perfil de profesor obtenido con éxito',
-          perfil: profesorRows[0],
-          valoracion_promedio  // Incluimos la valoración promedio
-        });
-      } else {
-        return res.status(404).json({ error: 'Profesor no encontrado' });
-      }
-    } catch (err) {
-      console.error('Error al obtener el perfil del profesor:', err);
-      return res.status(500).json({ error: 'Error al obtener el perfil' });
-    }
-  }
   
 
   const getprofbymaterias = async (req,res) => {
@@ -313,36 +272,40 @@ const getperfilprof = async (req, res) => {
       return res.status(500).json({ error: 'Error al obtener el profesor' });
     }
   }
-  
-  const createvaloracionbyclases = async (req, res) => {
-    const { valoracion, IDalumnos, idprof } = req.body;
-  
+  const createValoracion = async (req, res) => { 
+    const { valoracion, IDalumnos } = req.body;
+    const { idprof } = req.params;  
+
     // Validar los datos recibidos
-    if ( !valoracion || !IDalumnos || !idprof) {
-      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    if (!valoracion || !IDalumnos || !idprof) {
+        return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
-  
+
+    // Verificar que los IDs sean números
+    if (isNaN(IDalumnos) || isNaN(idprof)) {
+        return res.status(400).json({ error: 'IDalumnos e idprof deben ser números válidos' });
+    }
+
     try {
+        const query = `
+            INSERT INTO public."valoraciones" ("valoracion", "IDalumnos", "idprof")
+            VALUES ($1, $2, $3)
+            RETURNING *
+        `;
+        const values = [valoracion, IDalumnos, idprof];
   
-      const query = `
-        INSERT INTO public."valoraciones" ("valoracion", "IDalumnos", "idprof")
-        VALUES ($1, $2, $3)
-        RETURNING *
-      `;
-      const values = [valoracion, IDalumnos, idprof];
-  
-      const result = await pool.query(query, values);
+        const result = await pool.query(query, values);
 
-
-
-      res.status(201).json({
-        message: 'Valoración creada con éxito',
-        valoracion: result.rows[0]
-      });
+        res.status(201).json({
+            message: 'Valoración creada con éxito',
+            valoracion: result.rows[0]
+        });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        console.error('Error al crear valoración:', err);
+        res.status(500).json({ error: 'Error al crear valoración' });
     }
-  };
+};     
+
   
   
 
@@ -356,10 +319,9 @@ const profesores = {
   updateseguridad,
   updatedisponibilidadhoraria,
   deleteprof,
- getperfilprof,
  getprofbynombreyapellido,
  getprofbymaterias,
- createvaloracionbyclases
+ createValoracion
 };
 
 export default profesores;

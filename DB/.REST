@@ -136,10 +136,10 @@ GET http://localhost:3000/profesores/materias/español HTTP/1.1
 
 ### //Crear una valoracion
 
-POST http://localhost:3000/profesores/valoraciones HTTP/1.1 
+POST http://localhost:3000/profesores/valoraciones/60 HTTP/1.1 
 Content-Type: application/json
 
-{ "valoracion": 9, "IDalumnos": 73, "idprof": 60 }
+{ "valoracion": 9, "IDalumnos": 73 }
 
 //MATERIAL
 ### //Obtener material
