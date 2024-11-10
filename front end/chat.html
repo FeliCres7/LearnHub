@@ -1,4 +1,4 @@
-<!DOCTYPE html>   
+<!DOCTYPE html>    
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -83,7 +83,7 @@
             msgElement.classList.add('message');
             msgElement.innerHTML = `
                 <strong>${message.sender}</strong>: ${message.content}
-                <button onclick="deleteMessage(${message.idprof}, ${message.idalumno}, '${message.timestamp}')">Eliminar</button>
+                <button onclick="deleteMessage('${message.id}')">Eliminar</button>
             `;
             messageList.appendChild(msgElement);
         }
@@ -102,7 +102,7 @@
                             chatBox.innerHTML = `
                                 <p><strong>${chat.otherUserName}</strong></p>
                                 <p>Último mensaje: ${chat.lastMessage}</p>
-                                <button class="delete-chat" onclick="deleteChat(${chat.idprof}, ${chat.idalumno})">Eliminar</button>
+                                <button class="delete-chat" onclick="deleteChat(${chat.otherUserId})">Eliminar</button>
                             `;
                             chatList.appendChild(chatBox);
                         });
@@ -131,14 +131,10 @@
                 });
         }
 
-        async function deleteMessage(idprof, idalumno, timestamp) {
+        async function deleteMessage(id) {
             try {
-                const response = await fetch("http://localhost:3001/api/messages", {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ idprof, idalumno, timestamp })
+                const response = await fetch(`http://localhost:3001/api/messages/${id}`, {
+                    method: "DELETE"
                 });
                 
                 if (response.ok) {
@@ -153,14 +149,10 @@
             }
         }
 
-        async function deleteChat(idprof, idalumno) {
+        async function deleteChat(otherUserId) {
             try {
-                const response = await fetch("http://localhost:3001/api/chats", {
-                    method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ idprof, idalumno })
+                const response = await fetch(`http://localhost:3001/api/chats?idprof=${userId}&idalumno=${otherUserId}`, {
+                    method: "DELETE"
                 });
 
                 if (response.ok) {
