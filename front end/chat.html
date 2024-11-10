@@ -83,7 +83,6 @@
             msgElement.classList.add('message');
             msgElement.innerHTML = `
                 <strong>${message.sender}</strong>: ${message.content}
-                <button onclick="deleteMessage('${message.id}')">Eliminar</button>
             `;
             messageList.appendChild(msgElement);
         }
@@ -103,7 +102,6 @@
                                 chatBox.innerHTML = `
                                     <p><strong>${chat.otherUserName}</strong></p>
                                     <p>Último mensaje: ${chat.lastMessage}</p>
-                                    <button class="delete-chat" onclick="deleteChat(${chat.otherUserId})">Eliminar</button>
                                 `;
                                 chatList.appendChild(chatBox);
                             });
@@ -133,41 +131,6 @@
                     console.error("Error al cargar los mensajes:", error);
                     alert("Error al cargar los mensajes.");
                 });
-        }
-
-        async function deleteMessage(id) {
-            try {
-                const response = await fetch(`http://localhost:3001/api/messages/${id}`, {
-                    method: "DELETE"
-                });
-                
-                if (response.ok) {
-                    alert("Mensaje eliminado.");
-                    loadMessagesForChat(userId, idprof);
-                } else {
-                    alert("Error al eliminar el mensaje.");
-                }
-            } catch (error) {
-                console.error("Error al eliminar mensaje:", error);
-                alert("Error de red al eliminar el mensaje.");
-            }
-        }
-
-        async function deleteChat(otherUserId) {
-            try {
-                const response = await fetch(`http://localhost:3001/api/chats?idprof=${userId}&idalumno=${otherUserId}`, {
-                    method: "DELETE"
-                });
-
-                if (response.ok) {
-                    alert("Chat eliminado correctamente.");
-                    loadChatsForUser(tipoUsuario, userId);
-                } else {
-                    alert("Error al eliminar el chat.");
-                }
-            } catch (error) {
-                console.error("Error de red al intentar eliminar el chat:", error);
-            }
         }
 
         // Función para notificar al profesor de un nuevo chat
