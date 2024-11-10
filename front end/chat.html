@@ -134,7 +134,8 @@
         }
 
         // Función para notificar al profesor de un nuevo chat
-        socket.on("newChat", (chatInfo) => {
+        socket.on("newChat", (chatInfo) => {    
+             console.log("Notificación de nuevo chat recibida en el frontend:", chatInfo);
             if (tipoUsuario === 'profesor' && chatInfo.idprof === parseInt(userId)) {
                 loadChatsForUser(tipoUsuario, userId);
             }
