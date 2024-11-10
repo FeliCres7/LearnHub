@@ -1,4 +1,4 @@
-<!DOCTYPE html>    
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -93,19 +93,23 @@
                 .then(response => response.json())
                 .then(chats => {
                     chatList.innerHTML = '<h3>Chats</h3>';
-                    if (chats.length === 0) {
-                        chatList.innerHTML += '<p>No tienes chats disponibles.</p>';
+                    if (Array.isArray(chats)) {
+                        if (chats.length === 0) {
+                            chatList.innerHTML += '<p>No tienes chats disponibles.</p>';
+                        } else {
+                            chats.forEach(chat => {
+                                const chatBox = document.createElement('div');
+                                chatBox.classList.add('chat-item');
+                                chatBox.innerHTML = `
+                                    <p><strong>${chat.otherUserName}</strong></p>
+                                    <p>Último mensaje: ${chat.lastMessage}</p>
+                                    <button class="delete-chat" onclick="deleteChat(${chat.otherUserId})">Eliminar</button>
+                                `;
+                                chatList.appendChild(chatBox);
+                            });
+                        }
                     } else {
-                        chats.forEach(chat => {
-                            const chatBox = document.createElement('div');
-                            chatBox.classList.add('chat-item');
-                            chatBox.innerHTML = `
-                                <p><strong>${chat.otherUserName}</strong></p>
-                                <p>Último mensaje: ${chat.lastMessage}</p>
-                                <button class="delete-chat" onclick="deleteChat(${chat.otherUserId})">Eliminar</button>
-                            `;
-                            chatList.appendChild(chatBox);
-                        });
+                        errorMessage.textContent = "Error: La respuesta del servidor no es un arreglo.";
                     }
                 })
                 .catch(error => {
