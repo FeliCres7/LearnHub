@@ -349,17 +349,6 @@ const getperfilprof = async (req, res) => {
     }
   
     try {
-      // Verificar si la reserva está completada
-      const checkReservaQuery = `
-        SELECT estado 
-        FROM public."reservaciones" 
-        WHERE "ID" = $1
-      `;
-      const reservaResult = await pool.query(checkReservaQuery, [idreserva]);
-  
-      if (reservaResult.rows.length === 0 || reservaResult.rows[0].estado !== 'completada') {
-        return res.status(400).json({ error: 'La clase no ha sido completada, no se puede valorar.' });
-      }
   
       const query = `
         INSERT INTO public."valoraciones" ("idreserva", "valoracion", "IDalumnos", "idprof")
@@ -382,28 +371,8 @@ const getperfilprof = async (req, res) => {
     }
   };
   
-  const updatereservacion = async () => {
-    try {
-      const query = `
-        UPDATE public."reservaciones"
-        SET estado = 'completada'
-        WHERE estado = 'pendiente'
-        AND (fecha + hora::time + INTERVAL '1 hour') <= NOW()
-        RETURNING *;
-      `;
   
-      const result = await pool.query(query);
-  
-      if (result.rows.length > 0) {
-        console.log(`Reservas actualizadas a 'completada': ${result.rows.length}`);
-      }
-    } catch (error) {
-      console.error('Error al actualizar el estado de las reservas:', error.message);
-    }
-  };
-  
-  
-  setInterval(updatereservacion, 5 * 60 * 1000);
+
   
 const profesores = {
   getprof, 
@@ -419,8 +388,7 @@ const profesores = {
  getprofbynombreyapellido,
  getprofbymaterias,
  getprofbydisponibilidadhoraria,
- createvaloracionbyclases,
- updatereservacion
+ createvaloracionbyclases
 };
 
 export default profesores;

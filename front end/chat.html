@@ -45,10 +45,7 @@
     <script type="module">
         import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
 
-        const socket = io("http://localhost:3001", {
-            autoConnect: false,
-            reconnection: true
-        });
+        const socket = io("http://localhost:3001", { autoConnect: false, reconnection: true });
 
         const chatList = document.getElementById('chatList');
         const messageList = document.getElementById('messageList');
@@ -65,7 +62,6 @@
         const otherUserIdInput = document.getElementById('otherUserIdInput');
 
         let currentChat = null;
-        let loadedMessages = new Set();
 
         loginButton.addEventListener('click', () => {
             const tipoUsuario = tipoUsuarioSelect.value;
@@ -77,7 +73,7 @@
             localStorage.setItem('otherUserId', otherUserId);
 
             loadChatsForUser(tipoUsuario, userId);
-            loadChat(userId, otherUserId);
+            loadMessagesForChat(userId, otherUserId);
 
             socket.connect();
 
@@ -115,7 +111,10 @@
         function addMessage(message) {
             const msgElement = document.createElement('div');
             msgElement.classList.add('message');
-            msgElement.innerHTML = `<strong>${message.sender}</strong>: ${message.content}`;
+            msgElement.innerHTML = `
+                <strong>${message.sender}</strong>: ${message.content}
+                <button onclick="deleteMessage(${message.idprof}, ${message.idalumno}, '${message.timestamp}')">Eliminar</button>
+            `;
             messageList.appendChild(msgElement);
         }
 
@@ -143,6 +142,29 @@
                     console.error("Error al cargar chats:", error);
                     errorMessage.textContent = "Error al cargar la lista de chats.";
                 });
+        }
+
+        function deleteMessage(idprof, idalumno, timestamp) {
+            fetch("http://localhost:3001/api/messages", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ idprof, idalumno, timestamp })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === "Mensaje eliminado correctamente.") {
+                    alert("Mensaje eliminado.");
+                    loadMessagesForChat(localStorage.getItem('userId'), localStorage.getItem('otherUserId'));
+                } else {
+                    alert("Error al eliminar el mensaje.");
+                }
+            })
+            .catch(error => {
+                console.error("Error al eliminar mensaje:", error);
+                alert("Error de red al eliminar el mensaje.");
+            });
         }
 
         async function deleteChat(idprof, idalumno) {
