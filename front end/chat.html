@@ -70,9 +70,7 @@
         function addMessage(message) {
             const msgElement = document.createElement('div');
             msgElement.classList.add('message');
-            msgElement.innerHTML = `
-                <strong>${message.sender}</strong>: ${message.content}
-            `;
+            msgElement.innerHTML = `<strong>${message.sender}</strong>: ${message.content}`;
             messageList.appendChild(msgElement);
             messageList.scrollTop = messageList.scrollHeight; // Auto-scroll al final
         }
@@ -91,8 +89,8 @@
                                 chatBox.classList.add('chat-item');
                                 chatBox.innerHTML = `
                                     <img src="path/to/icon.png" alt="User Icon">
-                                    <p><strong>${chat.otherUserName}</strong></p>
-                                    <p>Último mensaje: ${chat.lastMessage}</p>
+                                    <p><strong>${chat.otherUserName || "Usuario Desconocido"}</strong></p>
+                                    <p>Último mensaje: ${chat.lastMessage || "Sin mensajes"}</p>
                                 `;
                                 chatBox.addEventListener('click', () => {
                                     currentRoom = `${Math.min(chat.userId, chat.otherUserId)}-${Math.max(chat.userId, chat.otherUserId)}`;
@@ -112,15 +110,23 @@
         }
 
         function loadMessagesForChat(room) {
-            const [idprof, idalumno] = room.split('-').map(Number);
+            const roomParts = room.split('-').map(Number);
+            if (isNaN(roomParts[0]) || isNaN(roomParts[1])) {
+                console.error("Invalid room ID:", room);
+                return;  // Stop if room ID is invalid
+            }
 
             fetch(`http://localhost:3001/api/messages?room=${room}`)
                 .then(response => response.json())
                 .then(messages => {
                     messageList.innerHTML = '';
-                    messages.forEach(msg => {
-                        addMessage(msg);
-                    });
+                    if (Array.isArray(messages)) {
+                        messages.forEach(msg => {
+                            addMessage(msg);
+                        });
+                    } else {
+                        console.error("Error: messages is not an array.");
+                    }
                 })
                 .catch(error => {
                     console.error("Error al cargar los mensajes:", error);
