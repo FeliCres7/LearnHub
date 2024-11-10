@@ -31,54 +31,41 @@ const getprofbymail = async (req,res) => {
   }
   
 
-//Obtener un profesor por ID
-const getprofbyID = async (req, res) => {
-  try {
-    const ID = req.params.ID;
-    const query = 'SELECT * FROM public."profesores" WHERE "ID" = $1';
-    const { rows } = await pool.query(query, [ID]);
-
-    if (rows.length === 1) {
-      return res.json({ message: 'profesor obtenido con éxito', profesor: rows[0] });
-    } else {
-      return res.status(404).json({ error: 'profesor no encontrado' });
+  const getprofbyID = async (req, res) => {
+    try {
+      const ID = req.params.ID;
+  
+      // Consulta para obtener los detalles del profesor
+      const query = 'SELECT * FROM public."profesores" WHERE "ID" = $1';
+      const { rows } = await pool.query(query, [ID]);
+  
+      if (rows.length === 1) {
+        // Consulta para obtener el promedio de valoraciones del profesor
+        const avgQuery = `
+          SELECT AVG(valoracion) AS valoracion_promedio
+          FROM public."valoraciones"
+          WHERE idprof = $1
+        `;
+        const avgResult = await pool.query(avgQuery, [ID]);
+        const valoracionPromedio = avgResult.rows[0].valoracion_promedio || 0;
+  
+        // Respuesta con la información del profesor y el promedio de valoraciones
+        return res.json({
+          message: 'profesor obtenido con éxito',
+          profesor: rows[0],
+          valoracion_promedio: valoracionPromedio
+        });
+      } else {
+        return res.status(404).json({ error: 'profesor no encontrado' });
+      }
+    } catch (err) {
+      console.error('Error al obtener el profesor:', err);
+      return res.status(500).json({ error: 'Error al obtener el profesor' });
     }
-  } catch (err) {
-    console.error('Error al obtener el profesor:', err);
-    return res.status(500).json({ error: 'Error al obtener el profesor' });
-  }
-};
+  };
+  
 
-const getDisponibilidadHoraria = async (req, res) => {
-  const { idprof } = req.params;
 
-  if (!idprof) {
-    return res.status(400).send("El idprof es requerido");
-  }
-
-  try {
-    const query = `
-      SELECT dh.iddias, dh.rango, d.nombre AS dia
-      FROM public."disponibilidadHoraria" dh
-      JOIN public."dias" d ON dh.iddias = d.ID
-      WHERE dh.idprof = $1
-      ORDER BY dh.iddias;
-    `;
-    
-    const result = await pool.query(query, [idprof]);
-
-    const disponibilidad = result.rows.map(row => ({
-      dia: row.dia,
-      iddias: row.iddias,
-      rango: row.rango,
-    }));
-
-    return res.status(200).json(disponibilidad);
-  } catch (err) {
-    console.error('Error al obtener la disponibilidad horaria:', err);
-    return res.status(500).send(`Error al obtener la disponibilidad: ${err.message}`);
-  }
-};
 
 //Actualizar un profesor 
 
@@ -272,9 +259,10 @@ const deleteprof = async (req,res) => {
       return res.status(500).json({ error: 'Error al obtener el profesor' });
     }
   }
+
   const createValoracion = async (req, res) => {  
     const { valoracion, IDalumnos } = req.body;
-    const { idprof } = req.params;  // Obtener `idprof` desde `req.params`
+    const { idprof } = req.params;  
 
     // Validar los datos recibidos
     if (!valoracion || !IDalumnos || !idprof) {
@@ -307,11 +295,10 @@ const deleteprof = async (req,res) => {
 
         const valoracionPromedio = avgResult.rows[0].valoracion_promedio || 0;
 
-        // Responder con la nueva valoración y el promedio actualizado
         res.status(201).json({
             message: 'Valoración creada con éxito',
             valoracion: insertResult.rows[0],
-            valoracion_promedio: valoracionPromedio  // Promedio actualizado
+            valoracion_promedio: valoracionPromedio  
         });
     } catch (err) {
         console.error('Error al crear valoración:', err);
