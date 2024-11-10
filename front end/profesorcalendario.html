@@ -204,12 +204,15 @@
             }
         },
         eventContent: function (arg) {
-            const alumnoNombre = arg.event.extendedProps.alumnoNombre;
-            const hora = arg.event.extendedProps.hora;
-            return {
-                html: `<b>${alumnoNombre}</b><br>Hora: ${hora}`
-            };
-        }
+    const alumnoNombre = arg.event.extendedProps.alumnoNombre;
+    const hora = arg.event.extendedProps.hora;
+    return {
+        html: `<div style="background-color: yellow; padding: 5px; border-radius: 5px;">
+                   <b style="font-size: 7px; font-weight 500";>Clase con ${alumnoNombre}</b><br>${hora}
+               </div>`
+    };
+}
+
     });
 
     calendar.render();
