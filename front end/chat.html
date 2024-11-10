@@ -32,10 +32,10 @@
         const messageInput = document.getElementById('messageInput');
         const errorMessage = document.getElementById('errorMessage');
 
-        const tipoUsuario = localStorage.getItem('tipoUsuario');
-        const userId = localStorage.getItem('userId');
+        const tipoUsuario = localStorage.getItem('tipoUsuario'); // 'alumno' o 'profesor'
+        const userId = localStorage.getItem('userId');           // ID del usuario actual
         const urlParams = new URLSearchParams(window.location.search);
-        const idprof = urlParams.get('id');
+        const idprof = urlParams.get('id');                      // ID del profesor (si el usuario es alumno)
 
         let currentRoom = null;
 
@@ -43,49 +43,41 @@
         console.log("userId:", userId);
         console.log("idprof:", idprof);
 
-        if (tipoUsuario && userId && idprof) {
+        if (tipoUsuario && userId && (tipoUsuario === 'profesor' || idprof)) {
             loadChatsForUser(tipoUsuario, userId);
             socket.connect();
         } else {
             alert("No se encontraron datos de usuario o profesor. Por favor, inicia sesión.");
         }
 
-        socket.on("chat message", (message) => {
-            if (message.room === currentRoom) {
-                addMessage(message);
-            }
-        });
-
-        socket.on("newChat", (chatInfo) => {    
-            if ((tipoUsuario === 'profesor' && chatInfo.idprof === parseInt(userId)) ||
-                (tipoUsuario === 'alumno' && chatInfo.idalumno === parseInt(userId))) {
-                loadChatsForUser(tipoUsuario, userId);
-            }
-        });
-
+        // Enviar mensaje y crear grupo de chat si es el primer mensaje
         messageForm.addEventListener('submit', (event) => {
             event.preventDefault();
+            
             const message = {
                 content: messageInput.value,
                 timestamp: new Date().toISOString(),
-                idprof: idprof,
-                idalumno: userId,
+                idprof: tipoUsuario === 'alumno' ? idprof : userId,
+                idalumno: tipoUsuario === 'alumno' ? userId : idprof,
                 room: currentRoom,
                 sender: tipoUsuario
             };
-            socket.emit("chat message", message);
-            addMessage(message);
-            messageInput.value = '';
+
+            socket.emit("chat message", message); // Enviar el mensaje al servidor
+            addMessage(message); // Mostrar el mensaje en la interfaz
+            messageInput.value = ''; // Limpiar el campo de entrada
         });
 
+        // Agregar mensaje a la lista de mensajes en la interfaz
         function addMessage(message) {
             const msgElement = document.createElement('div');
             msgElement.classList.add('message');
             msgElement.innerHTML = `<strong>${message.sender}</strong>: ${message.content}`;
             messageList.appendChild(msgElement);
-            messageList.scrollTop = messageList.scrollHeight;
+            messageList.scrollTop = messageList.scrollHeight; // Auto-scroll al final
         }
 
+        // Cargar lista de chats del usuario
         function loadChatsForUser(tipoUsuario, userId) {
             fetch(`http://localhost:3001/api/chats?tipoUsuario=${tipoUsuario}&userId=${userId}`)
                 .then(response => response.json())
@@ -116,6 +108,7 @@
                 });
         }
 
+        // Cargar mensajes de una sala específica
         function loadMessagesForChat(room) {
             fetch(`http://localhost:3001/api/messages?room=${room}`)
                 .then(response => response.json())
@@ -134,6 +127,21 @@
                     alert("Error al cargar los mensajes.");
                 });
         }
+
+        // Escuchar el evento de nuevo chat y actualizar la lista
+        socket.on("newChat", (chatInfo) => {
+            if ((tipoUsuario === 'profesor' && chatInfo.idprof === parseInt(userId)) ||
+                (tipoUsuario === 'alumno' && chatInfo.idalumno === parseInt(userId))) {
+                loadChatsForUser(tipoUsuario, userId); // Recargar la lista de chats
+            }
+        });
+
+        // Escuchar los mensajes del servidor
+        socket.on("chat message", (message) => {
+            if (message.room === currentRoom) {
+                addMessage(message);
+            }
+        });
     </script>
 </body>
 </html>
