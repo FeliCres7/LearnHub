@@ -1,4 +1,4 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>   
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -39,19 +39,14 @@
         const loggedInUserType = document.getElementById('loggedInUserType');
         const loggedInUserId = document.getElementById('loggedInUserId');
 
-        // Obtener tipo de usuario y ID del usuario desde localStorage
         const tipoUsuario = localStorage.getItem('tipoUsuario');
         const userId = localStorage.getItem('userId');
-        
-        // Obtener el ID del profesor (idprof) desde la URL
         const urlParams = new URLSearchParams(window.location.search);
         const idprof = urlParams.get('id');
 
         if (tipoUsuario && userId && idprof) {
             loadChatsForUser(tipoUsuario, userId);
             loadMessagesForChat(userId, idprof);
-
-            // Conectar el socket una vez que tenemos toda la información necesaria
             socket.connect();
         } else {
             alert("No se encontraron datos de usuario o profesor. Por favor, inicia sesión.");
@@ -76,11 +71,11 @@
                 idprof: idprof,
                 idalumno: userId,
                 room: `${Math.min(userId, idprof)}-${Math.max(userId, idprof)}`,
-                senderId: userId
+                sender: tipoUsuario
             };
             socket.emit("chat message", message);
             addMessage(message);
-            messageInput.value = ''; // Limpiar el campo
+            messageInput.value = '';
         });
 
         function addMessage(message) {
@@ -103,7 +98,7 @@
                     } else {
                         chats.forEach(chat => {
                             const chatBox = document.createElement('div');
-                            chatBox.classList.add('chat-box');
+                            chatBox.classList.add('chat-item');
                             chatBox.innerHTML = `
                                 <p><strong>${chat.otherUserName}</strong></p>
                                 <p>Último mensaje: ${chat.lastMessage}</p>
@@ -125,9 +120,9 @@
             fetch(`http://localhost:3001/api/messages?room=${room}`)
                 .then(response => response.json())
                 .then(messages => {
-                    messageList.innerHTML = ''; // Limpia la lista de mensajes
+                    messageList.innerHTML = '';
                     messages.forEach(msg => {
-                        addMessage(msg); // Agrega cada mensaje a la lista
+                        addMessage(msg);
                     });
                 })
                 .catch(error => {
@@ -178,6 +173,13 @@
                 console.error("Error de red al intentar eliminar el chat:", error);
             }
         }
+
+        // Función para notificar al profesor de un nuevo chat
+        socket.on("newChat", (chatInfo) => {
+            if (tipoUsuario === 'profesor' && chatInfo.idprof === parseInt(userId)) {
+                loadChatsForUser(tipoUsuario, userId);
+            }
+        });
     </script>
 </body>
 </html>
