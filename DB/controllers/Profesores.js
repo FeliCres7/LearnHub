@@ -359,7 +359,9 @@ const getperfilprof = async (req, res) => {
   
       const result = await pool.query(query, values);
 
-  
+            // Recalcular el promedio del profesor
+            await updateProfessorRating(idprof);
+
       res.status(201).json({
         message: 'Valoración creada con éxito',
         valoracion: result.rows[0]
