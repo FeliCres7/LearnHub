@@ -292,14 +292,6 @@ const getperfilprof = async (req, res) => {
   }
   }
 
-
-  const getprofbydisponibilidadhoraria = async (req, res) => {
-    const { disponibilidad_horaria } = req.params; 
-    if (!disponibilidad_horaria) {
-        return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
-    }
-  
-    try {
   const getprofbynombreyapellido = async (req,res) => {
     try {
       const { nombre, apellido } = req.params;
@@ -320,26 +312,8 @@ const getperfilprof = async (req, res) => {
       console.error('Error al obtener el profesor por nombre:', err);
       return res.status(500).json({ error: 'Error al obtener el profesor' });
     }
-  };
-        const query = `
-          SELECT p.*
-          FROM public."profesores" p
-          JOIN public."DisponibilidadHoraria" dh ON p.idprof = dh.idprof
-          WHERE dh.rango = $1
-        `;
-        const { rows } = await pool.query(query, [disponibilidad_horaria]);
-        if (rows.length > 0) {
-            return res.json({ message: 'Profesores obtenidos con éxito', profesores: rows });
-        } else {
-            return res.status(404).json({ error: 'No se encontraron profesores con esa disponibilidad horaria' });
-        }
-    } catch (err) {
-        console.error('Error al obtener profesores por disponibilidad horaria:', err);
-        return res.status(500).json({ error: 'Error al obtener los profesores' });
-    }
-  }  
-
-
+  }
+  
   const createvaloracionbyclases = async (req, res) => {
     const { valoracion, IDalumnos, idprof } = req.body;
   
@@ -378,7 +352,6 @@ const profesores = {
   getprof, 
   getprofbyID,
   getprofbymail,
-  getDisponibilidadHoraria,
   updateinfopersonal,
   updateperfil,
   updateseguridad,
@@ -387,7 +360,6 @@ const profesores = {
  getperfilprof,
  getprofbynombreyapellido,
  getprofbymaterias,
- getprofbydisponibilidadhoraria,
  createvaloracionbyclases
 };
 

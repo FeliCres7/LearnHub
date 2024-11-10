@@ -80,14 +80,12 @@ app.get('/profesores', profesores.getprof);
 app.get('/profesores/:ID',profesores.getprofbyID);
 app.get('/profesores/email/:email', profesores.getprofbymail);
 app.get('/profesores/nombreapellido/:nombre/:apellido', profesores.getprofbynombreyapellido);
-app.get('/profesores/getdisponibilidadhoraria/:idprof', profesores.getDisponibilidadHoraria)
 app.put('/profesores/updateinfopersonal/:ID', verifyToken, verifyAdmin, profesores.updateinfopersonal);
 app.put('/profesores/updateperfil/:ID', verifyToken, verifyAdmin, profesores.updateperfil);
 app.put('/profesores/updateseguridad/:ID', profesores.updateseguridad);
 app.put('/profesores/updatedisponibilidadhoraria/:idprof', profesores.updatedisponibilidadhoraria);
 app.delete('/profesores/:ID',profesores.deleteprof);
 app.get('/profesores/:ID/perfilprof', profesores.getperfilprof)
-app.get('/profesores/Disponibilidad_horaria/:disponibilidad_horaria', profesores.getprofbydisponibilidadhoraria); 
 app.get('/profesores/materias/:materias', profesores.getprofbymaterias);
 app.post('/profesores/valoraciones', profesores.createvaloracionbyclases);
 
