@@ -113,6 +113,29 @@ const updateseguridadalumno = async (req, res) => {
   }
 };
 
+
+const getalumnobynombreyapellido = async (req,res) => {
+  try {
+    const { nombre, apellido } = req.params;
+
+    if (!nombre || !apellido) {
+      return res.status(400).json({ error: 'El nombre es requerido' });
+    }
+
+    const query = 'SELECT * FROM public."alumnos" WHERE nombre=$1 AND apellido = $2'
+    const { rows } = await pool.query(query, [nombre, apellido]);
+
+    if (rows.length > 0) {
+      return res.json({ message: 'alumno obtenido(s) con éxito', alumno: rows });
+    } else {
+      return res.status(404).json({ error: 'alumno no encontrado' });
+    }
+  } catch (err) {
+    console.error('Error al obtener el alumno por nombre:', err);
+    return res.status(500).json({ error: 'Error al obtener el alumno' });
+  }
+};
+
 const updateinforperfilalumno = async (req, res) => {
   const { foto, colegio } = req.body;
   const { ID } = req.params;
@@ -181,6 +204,7 @@ const getperfilalumno = async (req, res) => {
 const alumnos = {
   getalumnosbyid,
   getalumnosbymail,
+  getalumnobynombreyapellido,
   updateinforperfilalumno,
   updateseguridadalumno,
   updateinfoalumno,

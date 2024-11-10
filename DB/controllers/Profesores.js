@@ -292,6 +292,14 @@ const getperfilprof = async (req, res) => {
   }
   }
 
+
+  const getprofbydisponibilidadhoraria = async (req, res) => {
+    const { disponibilidad_horaria } = req.params; 
+    if (!disponibilidad_horaria) {
+        return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
+    }
+  
+    try {
   const getprofbynombreyapellido = async (req,res) => {
     try {
       const { nombre, apellido } = req.params;
@@ -313,14 +321,6 @@ const getperfilprof = async (req, res) => {
       return res.status(500).json({ error: 'Error al obtener el profesor' });
     }
   };
-
-  const getprofbydisponibilidadhoraria = async (req, res) => {
-    const { disponibilidad_horaria } = req.params; 
-    if (!disponibilidad_horaria) {
-        return res.status(400).json({ error: 'La disponibilidad horaria es requerida' });
-    }
-  
-    try {
         const query = `
           SELECT p.*
           FROM public."profesores" p

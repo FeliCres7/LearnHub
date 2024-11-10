@@ -67,7 +67,9 @@ app.delete('/siguen/:ID', seguir.dejardeseguir);
 //Alumnos. terminado
 app.get('/Alumnos/:ID', alumnos.getalumnosbyid)
 app.get('/Alumnos/:email', alumnos.getalumnosbymail)
+app.get('/Alumnos/nombreapellido/:nombre/:apellido', alumnos.getalumnobynombreyapellido)
 app.put('/Alumnos/seguridad/:ID', verifyToken, alumnos.updateseguridadalumno);
+
 app.put('/Alumnos/infoperfilalumno/:ID', verifyToken, alumnos.updateinforperfilalumno);
 app.put('/Alumnos/info/:ID', verifyToken, alumnos.updateinfoalumno);
 app.delete('/Alumnos/:ID', verifyToken, alumnos.deleteAlumno);
