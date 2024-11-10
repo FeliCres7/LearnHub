@@ -17,7 +17,7 @@
         <img class="logoarriba" src="Images html/LOGOLH.png" alt="Learn Hub">
         <div class="search">
             <input type="search" name="Buscar" id="búsqueda" placeholder="Buscar">
-            <button id="header-search" class="buttonsearch" ><i class="fas fa-search"></i></button>
+            <button id="header-search" class="buttonsearch" onclick="buscaralumno()"><i class="fas fa-search"></i></button>
         </div>
 
         <nav class="navbar">
@@ -61,16 +61,9 @@
             <p id="pais" class="small">País</p>
         </aside>
         <article class="article-home">
-            <div class="top-article-home">
-                <p>Valora tu clase con </p>
-                <p class="bold" id="nombre-alumno"> Nombre y apellido</p>
-            </div>
-            <div class="fotoyvaloracion-article-home">
-                <img src="Images html/icon perfil.png" alt="">
-                <div>
-                    <p>Coso para valorar</p>
-                    <button class="enviar-valoracion">Enviar valoración</button>
-                </div>
+            <div>
+                <h1>Comience a buscar profesores desde la pestaña "Mis profesores"</h1>
+                <button>Ir a Mis Profesores</button>
             </div>
         </article>
         <aside class="aside-der-home">
@@ -110,7 +103,6 @@
                     throw new Error("ID de usuario no encontrado en el payload del token.");
                 }
         
-                // Obtener datos del alumno
                 const alumnoResponse = await fetch(`https://learn-hub-eta.vercel.app/Alumnos/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -124,7 +116,6 @@
                 const alumnoData = await alumnoResponse.json();
                 const alumno = alumnoData.alumno;
         
-                // Obtener y mostrar país
                 const nombrePais = await obtenerNombrePais(alumno.idpais);
                 document.getElementById("pais").textContent = nombrePais;
         
@@ -175,7 +166,6 @@
                         reservacionesLista.appendChild(reservaItem);
                     });
                 }
-        
             } catch (error) {
                 console.error("Error en el flujo del script:", error);
             }
@@ -195,42 +185,36 @@
         }
         
         function formatFecha(fecha) {
-    const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-    
-    // Asegurarse de que la fecha está en un formato válido
-    const fechaObj = new Date(fecha);
-    
-    // Verificar si la fecha es válida
-    if (isNaN(fechaObj.getTime())) {
-        console.error("Fecha inválida:", fecha);
-        return "Fecha no válida";
-    }
-
-    // Obtener la fecha en UTC
-    const diaSemana = diasSemana[fechaObj.getUTCDay()];
-    const dia = String(fechaObj.getUTCDate()).padStart(2, '0');
-    const mes = String(fechaObj.getUTCMonth() + 1).padStart(2, '0');
-    const anio = fechaObj.getUTCFullYear();
-
-    return `${diaSemana} ${dia}/${mes}/${anio}`;
-}
-
+            const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+            
+            const fechaObj = new Date(fecha);
+            
+            if (isNaN(fechaObj.getTime())) {
+                console.error("Fecha inválida:", fecha);
+                return "Fecha no válida";
+            }
+        
+            const diaSemana = diasSemana[fechaObj.getUTCDay()];
+            const dia = String(fechaObj.getUTCDate()).padStart(2, '0');
+            const mes = String(fechaObj.getUTCMonth() + 1).padStart(2, '0');
+            const anio = fechaObj.getUTCFullYear();
+        
+            return `${diaSemana} ${dia}/${mes}/${anio}`;
+        }
+        
         function formatHora(hora) {
-    const horaObj = new Date(hora);
-    
-    // Verificar si la fecha es válida
-    if (isNaN(horaObj.getTime())) {
-        console.error("Hora inválida:", hora);
-        return "Hora no válida";
-    }
-
-    const horas = String(horaObj.getHours()).padStart(2, '0');
-    const minutos = String(horaObj.getMinutes()).padStart(2, '0');
-    return `${horas}:${minutos}`;
-}
-
-        </script>
-    
+            const horaObj = new Date(hora);
+            
+            if (isNaN(horaObj.getTime())) {
+                console.error("Hora inválida:", hora);
+                return "Hora no válida";
+            }
+        
+            const horas = String(horaObj.getUTCHours()).padStart(2, '0');
+            const minutos = String(horaObj.getUTCMinutes()).padStart(2, '0');
+        
+            return `${horas}:${minutos}`;
+        }
+    </script>
 </body>
-
 </html>

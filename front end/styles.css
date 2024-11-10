@@ -787,3 +787,16 @@ width: 100%;
 .reserva-item{
     margin-bottom: 15px;
 }
+.valorarbutton{
+    background-color: #ffffff;
+    padding: 5px;
+    border: 2px solid #424242;
+    color: #424242;
+    border-radius: 20px;
+    font-weight: 500;
+}
+.valorarinput{
+    border-radius: 20px;
+    border: 2px solid #424242;
+    text-indent: 5px;
+}
