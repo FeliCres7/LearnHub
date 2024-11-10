@@ -114,83 +114,106 @@
                 return [];
             }
         }
+        function formatFechaUTC(fecha) {
+    const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     
+    const fechaObj = new Date(fecha);
+    
+    if (isNaN(fechaObj.getTime())) {
+        console.error("Fecha inválida:", fecha);
+        return "Fecha no válida";
+    }
+
+    const diaSemana = diasSemana[fechaObj.getUTCDay()];
+    const dia = String(fechaObj.getUTCDate()).padStart(2, '0');
+    const mes = String(fechaObj.getUTCMonth() + 1).padStart(2, '0');
+    const anio = fechaObj.getUTCFullYear();
+
+    return `${diaSemana} ${dia}/${mes}/${anio}`;
+}
+
         document.addEventListener('DOMContentLoaded', async function () {
-            const idprof = getProfesorIdFromToken(); // Obtener el ID del profesor desde el token
-    
-            if (!idprof) {
-                alert('No se pudo obtener el ID del profesor.');
-                return;
+    const idprof = getProfesorIdFromToken(); // Obtener el ID del profesor desde el token
+
+    if (!idprof) {
+        alert('No se pudo obtener el ID del profesor.');
+        return;
+    }
+
+    const reservas = await getReservasByProfesor(idprof);
+    console.log('Reservas obtenidas:', reservas); // Log para verificar las reservas obtenidas
+
+    const proximasClasesDiv = document.querySelector('.Proximasclases');
+
+    // Mostrar las reservas en "Próximas Clases"
+    if (reservas && reservas.length > 0) {
+        reservas.forEach(reserva => {
+            console.log('Procesando reserva:', reserva); // Log para ver cada reserva procesada
+            
+            // Verificar si la fecha es válida
+            const fecha = reserva.fecha ? new Date(reserva.fecha) : null;
+            if (fecha) {
+                const dia = fecha.toLocaleString('es-ES', { weekday: 'long' });
+                
+                // Convertir fecha al formato DD/MM/AAAA
+                const diaNum = String(fecha.getDate()).padStart(2, '0');
+                const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+                const año = fecha.getFullYear();
+                const fechaFormateada = formatFechaUTC(reserva.fecha);
+
+                const hora = fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+                const claseElement = document.createElement('div');
+                claseElement.classList.add('reservacion-item'); // Añadir clase para estilo
+                claseElement.innerHTML = `
+                    <p><strong>${fechaFormateada}</strong></p>
+                    <p><strong>Clase con:</strong> ${reserva.alumno}</p>
+                    <p><strong>Hora:</strong> ${reserva.hora}</p>
+                `;
+                proximasClasesDiv.appendChild(claseElement);
             }
-    
-            const reservas = await getReservasByProfesor(idprof);
-            console.log('Reservas obtenidas:', reservas); // Log para verificar las reservas obtenidas
-    
-            const proximasClasesDiv = document.querySelector('.Proximasclases');
-    
-            // Mostrar las reservas en "Próximas Clases"
-            if (reservas && reservas.length > 0) {
-                reservas.forEach(reserva => {
-                    console.log('Procesando reserva:', reserva); // Log para ver cada reserva procesada
-                    
+        });
+    } else {
+        console.log('No hay reservas para mostrar');
+    }
+
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: async function (fetchInfo, successCallback, failureCallback) {
+            try {
+                const eventos = reservas.map(reserva => {
                     // Verificar si la fecha es válida
                     const fecha = reserva.fecha ? new Date(reserva.fecha) : null;
                     if (fecha) {
-                        const dia = fecha.toLocaleString('es-ES', { weekday: 'long' });
-                        const fechaFormateada = fecha.toLocaleDateString('es-ES');
-                        const hora = fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
-    
-                        const claseElement = document.createElement('div');
-                        claseElement.classList.add('reservacion-item'); // Añadir clase para estilo
-                        claseElement.innerHTML = `
-                            <p><strong>${dia} ${fechaFormateada}</strong></p>
-                            <p><strong>Clase con:</strong> ${reserva.alumno}</p>
-                            <p><strong>Hora:</strong> ${hora}</p>
-                        `;
-                        proximasClasesDiv.appendChild(claseElement);
-                    }
-                });
-            } else {
-                console.log('No hay reservas para mostrar');
-            }
-    
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: async function (fetchInfo, successCallback, failureCallback) {
-                    try {
-                        const eventos = reservas.map(reserva => {
-                            // Verificar si la fecha es válida
-                            const fecha = reserva.fecha ? new Date(reserva.fecha) : null;
-                            if (fecha) {
-                                return {
-                                    title: `Clase con: ${reserva.alumno}`,  // Muestra el nombre del alumno
-                                    start: fecha,
-                                    extendedProps: {
-                                        alumnoNombre: reserva.alumno,  // Nombre del alumno
-                                        hora: reserva.hora  // Hora de la clase
-                                    }
-                                };
+                        return {
+                            title: `Clase con: ${reserva.alumno}`,  // Muestra el nombre del alumno
+                            start: fecha,
+                            extendedProps: {
+                                alumnoNombre: reserva.alumno,  // Nombre del alumno
+                                hora: reserva.hora  // Hora de la clase
                             }
-                            return null;
-                        }).filter(event => event !== null); // Filtrar eventos nulos
-                        successCallback(eventos);
-                    } catch (error) {
-                        console.error('Error al cargar los eventos:', error);
-                        failureCallback(error);
+                        };
                     }
-                },
-                eventContent: function (arg) {
-                    const alumnoNombre = arg.event.extendedProps.alumnoNombre;
-                    const hora = arg.event.extendedProps.hora;
-                    return {
-                        html: `<b>${alumnoNombre}</b><br>Hora: ${hora}`
-                    };
-                }
-            });
-    
-            calendar.render();
-        });
+                    return null;
+                }).filter(event => event !== null); // Filtrar eventos nulos
+                successCallback(eventos);
+            } catch (error) {
+                console.error('Error al cargar los eventos:', error);
+                failureCallback(error);
+            }
+        },
+        eventContent: function (arg) {
+            const alumnoNombre = arg.event.extendedProps.alumnoNombre;
+            const hora = arg.event.extendedProps.hora;
+            return {
+                html: `<b>${alumnoNombre}</b><br>Hora: ${hora}`
+            };
+        }
+    });
+
+    calendar.render();
+});
     </script>
     
 </body>
