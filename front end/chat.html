@@ -32,26 +32,14 @@
         const messageInput = document.getElementById('messageInput');
         const errorMessage = document.getElementById('errorMessage');
 
-        // Función para obtener el ID del profesor desde el localStorage
-        function getIdProf() {
-            const tipoUsuario = localStorage.getItem('tipoUsuario');
-            const userId = localStorage.getItem('userId');
-            
-            if (tipoUsuario === 'profesor') {
-                // Si el usuario es un profesor, usamos el userId como idprof
-                return userId;
-            }
-            return null;
-        }
-
-        // Obtener valores de tipo de usuario e ID desde el localStorage
         const tipoUsuario = localStorage.getItem('tipoUsuario');
         const userId = localStorage.getItem('userId');
-        const idprof = getIdProf(); // Usamos la función para obtener idprof cuando sea necesario
+        const urlParams = new URLSearchParams(window.location.search);
+        const idprof = urlParams.get('id');
 
         let currentRoom = null;
 
-        // Debug: Mostrar valores en consola para verificación
+        // Debug: Mostrar valores en consola
         console.log("tipoUsuario:", tipoUsuario);
         console.log("userId:", userId);
         console.log("idprof:", idprof);
@@ -74,8 +62,8 @@
             const message = {
                 content: messageInput.value,
                 timestamp: new Date().toISOString(),
-                idprof: tipoUsuario === 'profesor' ? userId : idprof, // Asegura que el profesor envíe con su propio ID
-                idalumno: tipoUsuario === 'alumno' ? userId : null, // Solo si el usuario es alumno
+                idprof: idprof,
+                idalumno: userId,
                 room: currentRoom,
                 sender: tipoUsuario
             };
