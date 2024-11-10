@@ -114,13 +114,6 @@
         function loadMessagesForChat(room) {
             const [idprof, idalumno] = room.split('-').map(Number);
 
-            // Verificar si los IDs son números válidos
-            if (isNaN(idprof) || isNaN(idalumno)) {
-                console.error("ID inválido para la sala:", idprof, idalumno);
-                alert("Error: ID inválido para la sala.");
-                return;
-            }
-
             fetch(`http://localhost:3001/api/messages?room=${room}`)
                 .then(response => response.json())
                 .then(messages => {
