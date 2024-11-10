@@ -272,9 +272,9 @@ const deleteprof = async (req,res) => {
       return res.status(500).json({ error: 'Error al obtener el profesor' });
     }
   }
-  const createValoracion = async (req, res) => { 
+  const createValoracion = async (req, res) => {  
     const { valoracion, IDalumnos } = req.body;
-    const { idprof } = req.params;  
+    const { idprof } = req.params;  // Obtener `idprof` desde `req.params`
 
     // Validar los datos recibidos
     if (!valoracion || !IDalumnos || !idprof) {
@@ -287,24 +287,37 @@ const deleteprof = async (req,res) => {
     }
 
     try {
-        const query = `
+        // Insertar la nueva valoración
+        const insertQuery = `
             INSERT INTO public."valoraciones" ("valoracion", "IDalumnos", "idprof")
             VALUES ($1, $2, $3)
             RETURNING *
         `;
-        const values = [valoracion, IDalumnos, idprof];
+        const insertValues = [valoracion, IDalumnos, idprof];
   
-        const result = await pool.query(query, values);
+        const insertResult = await pool.query(insertQuery, insertValues);
 
+        // Calcular el promedio de las valoraciones del profesor
+        const avgQuery = `
+            SELECT AVG(valoracion) AS valoracion_promedio
+            FROM public."valoraciones"
+            WHERE idprof = $1
+        `;
+        const avgResult = await pool.query(avgQuery, [idprof]);
+
+        const valoracionPromedio = avgResult.rows[0].valoracion_promedio || 0;
+
+        // Responder con la nueva valoración y el promedio actualizado
         res.status(201).json({
             message: 'Valoración creada con éxito',
-            valoracion: result.rows[0]
+            valoracion: insertResult.rows[0],
+            valoracion_promedio: valoracionPromedio  // Promedio actualizado
         });
     } catch (err) {
         console.error('Error al crear valoración:', err);
         res.status(500).json({ error: 'Error al crear valoración' });
     }
-};     
+};
 
   
   
