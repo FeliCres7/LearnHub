@@ -8,10 +8,6 @@
 </head>
 <body>
     <div class="chat-container">
-        <div id="userInfo" style="display: none;">
-            <p><strong>Tipo de Usuario:</strong> <span id="loggedInUserType"></span></p>
-            <p><strong>ID de Usuario:</strong> <span id="loggedInUserId"></span></p>
-        </div>
         <div class="chat-list" id="chatList">
             <h3>Chats</h3>
             <div id="errorMessage" style="color: red;"></div>
@@ -35,32 +31,25 @@
         const messageForm = document.getElementById('messageForm');
         const messageInput = document.getElementById('messageInput');
         const errorMessage = document.getElementById('errorMessage');
-        const userInfo = document.getElementById('userInfo');
-        const loggedInUserType = document.getElementById('loggedInUserType');
-        const loggedInUserId = document.getElementById('loggedInUserId');
 
         const tipoUsuario = localStorage.getItem('tipoUsuario');
         const userId = localStorage.getItem('userId');
         const urlParams = new URLSearchParams(window.location.search);
         const idprof = urlParams.get('id');
 
+        let currentRoom = null;
+
         if (tipoUsuario && userId && idprof) {
             loadChatsForUser(tipoUsuario, userId);
-            loadMessagesForChat(userId, idprof);
             socket.connect();
         } else {
             alert("No se encontraron datos de usuario o profesor. Por favor, inicia sesión.");
         }
 
-        socket.on("previousMessages", (messages) => {
-            messageList.innerHTML = '';
-            messages.forEach(msg => {
-                addMessage(msg);
-            });
-        });
-
         socket.on("chat message", (message) => {
-            addMessage(message);
+            if (message.room === currentRoom) {
+                addMessage(message);
+            }
         });
 
         messageForm.addEventListener('submit', (event) => {
@@ -70,7 +59,7 @@
                 timestamp: new Date().toISOString(),
                 idprof: idprof,
                 idalumno: userId,
-                room: `${Math.min(userId, idprof)}-${Math.max(userId, idprof)}`,
+                room: currentRoom,
                 sender: tipoUsuario
             };
             socket.emit("chat message", message);
@@ -85,6 +74,7 @@
                 <strong>${message.sender}</strong>: ${message.content}
             `;
             messageList.appendChild(msgElement);
+            messageList.scrollTop = messageList.scrollHeight; // Auto-scroll al final
         }
 
         function loadChatsForUser(tipoUsuario, userId) {
@@ -100,9 +90,14 @@
                                 const chatBox = document.createElement('div');
                                 chatBox.classList.add('chat-item');
                                 chatBox.innerHTML = `
+                                    <img src="path/to/icon.png" alt="User Icon">
                                     <p><strong>${chat.otherUserName}</strong></p>
                                     <p>Último mensaje: ${chat.lastMessage}</p>
                                 `;
+                                chatBox.addEventListener('click', () => {
+                                    currentRoom = `${Math.min(chat.userId, chat.otherUserId)}-${Math.max(chat.userId, chat.otherUserId)}`;
+                                    loadMessagesForChat(currentRoom);
+                                });
                                 chatList.appendChild(chatBox);
                             });
                         }
@@ -116,8 +111,15 @@
                 });
         }
 
-        function loadMessagesForChat(userId, idprof) {
-            const room = `${Math.min(userId, idprof)}-${Math.max(userId, idprof)}`;
+        function loadMessagesForChat(room) {
+            const [idprof, idalumno] = room.split('-').map(Number);
+
+            // Verificar si los IDs son números válidos
+            if (isNaN(idprof) || isNaN(idalumno)) {
+                console.error("ID inválido para la sala:", idprof, idalumno);
+                alert("Error: ID inválido para la sala.");
+                return;
+            }
 
             fetch(`http://localhost:3001/api/messages?room=${room}`)
                 .then(response => response.json())
@@ -133,9 +135,7 @@
                 });
         }
 
-        // Función para notificar al profesor de un nuevo chat
         socket.on("newChat", (chatInfo) => {    
-             console.log("Notificación de nuevo chat recibida en el frontend:", chatInfo);
             if (tipoUsuario === 'profesor' && chatInfo.idprof === parseInt(userId)) {
                 loadChatsForUser(tipoUsuario, userId);
             }
