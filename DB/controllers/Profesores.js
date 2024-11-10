@@ -341,26 +341,24 @@ const getperfilprof = async (req, res) => {
 
 
   const createvaloracionbyclases = async (req, res) => {
-    const { idreserva, valoracion, IDalumnos, idprof } = req.body;
+    const { valoracion, IDalumnos, idprof } = req.body;
   
     // Validar los datos recibidos
-    if (!idreserva || !valoracion || !IDalumnos || !idprof) {
+    if ( !valoracion || !IDalumnos || !idprof) {
       return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
   
     try {
   
       const query = `
-        INSERT INTO public."valoraciones" ("idreserva", "valoracion", "IDalumnos", "idprof")
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO public."valoraciones" ("valoracion", "IDalumnos", "idprof")
+        VALUES ($1, $2, $3)
         RETURNING *
       `;
-      const values = [idreserva, valoracion, IDalumnos, idprof];
+      const values = [valoracion, IDalumnos, idprof];
   
       const result = await pool.query(query, values);
-  
-      // Recalcular el promedio del profesor
-      await updateProfessorRating(idprof);
+
   
       res.status(201).json({
         message: 'Valoración creada con éxito',
