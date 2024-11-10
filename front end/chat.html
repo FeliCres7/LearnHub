@@ -32,12 +32,29 @@
         const messageInput = document.getElementById('messageInput');
         const errorMessage = document.getElementById('errorMessage');
 
+        // Función para obtener el ID del profesor desde el localStorage
+        function getIdProf() {
+            const tipoUsuario = localStorage.getItem('tipoUsuario');
+            const userId = localStorage.getItem('userId');
+            
+            if (tipoUsuario === 'profesor') {
+                // Si el usuario es un profesor, usamos el userId como idprof
+                return userId;
+            }
+            return null;
+        }
+
+        // Obtener valores de tipo de usuario e ID desde el localStorage
         const tipoUsuario = localStorage.getItem('tipoUsuario');
         const userId = localStorage.getItem('userId');
-        const urlParams = new URLSearchParams(window.location.search);
-        const idprof = urlParams.get('id');
+        const idprof = getIdProf(); // Usamos la función para obtener idprof cuando sea necesario
 
         let currentRoom = null;
+
+        // Debug: Mostrar valores en consola para verificación
+        console.log("tipoUsuario:", tipoUsuario);
+        console.log("userId:", userId);
+        console.log("idprof:", idprof);
 
         if (tipoUsuario && userId && idprof) {
             loadChatsForUser(tipoUsuario, userId);
@@ -57,8 +74,8 @@
             const message = {
                 content: messageInput.value,
                 timestamp: new Date().toISOString(),
-                idprof: idprof,
-                idalumno: userId,
+                idprof: tipoUsuario === 'profesor' ? userId : idprof, // Asegura que el profesor envíe con su propio ID
+                idalumno: tipoUsuario === 'alumno' ? userId : null, // Solo si el usuario es alumno
                 room: currentRoom,
                 sender: tipoUsuario
             };
@@ -87,11 +104,7 @@
                             chats.forEach(chat => {
                                 const chatBox = document.createElement('div');
                                 chatBox.classList.add('chat-item');
-                                chatBox.innerHTML = `
-                                    <img src="path/to/icon.png" alt="User Icon">
-                                    <p><strong>${chat.otherUserName || "Usuario Desconocido"}</strong></p>
-                                    <p>Último mensaje: ${chat.lastMessage || "Sin mensajes"}</p>
-                                `;
+                                chatBox.innerHTML = `<p><strong>${chat.otherUserName || "Usuario Desconocido"}</strong></p>`;
                                 chatBox.addEventListener('click', () => {
                                     currentRoom = `${Math.min(chat.userId, chat.otherUserId)}-${Math.max(chat.userId, chat.otherUserId)}`;
                                     loadMessagesForChat(currentRoom);
