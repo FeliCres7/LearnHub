@@ -74,7 +74,7 @@ DELETE http://localhost:3000/siguen/26 HTTP/1.1
 //PROFESORES
 ### //Obtener profesores
 
-GET http://localhost:3000/profesores HTTP/1.1
+GET http://localhost:3000/profesores/60 HTTP/1.1
 
 ### // OBTENER TODOS LOS profesores x mail 
 GET http://localhost:3000/profesores/email/ezequielagradnik@gmail.com HTTP/1.1

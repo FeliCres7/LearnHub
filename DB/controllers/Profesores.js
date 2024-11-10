@@ -6,17 +6,34 @@ const secret = process.env.JWT_SECRET
 
 
 
-// Obtener todos los profesores
 const getprof = async (_, res) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM profesores');
-    res.json(rows);
-    
+    // Consulta para obtener todos los profesores
+    const { rows: profesores } = await pool.query('SELECT * FROM public."profesores"');
+
+    // Iterar sobre cada profesor para agregar su valoracion_promedio
+    const profesoresConValoracion = await Promise.all(
+      profesores.map(async (profesor) => {
+        const avgQuery = `
+          SELECT AVG(valoracion) AS valoracion_promedio
+          FROM public."valoraciones"
+          WHERE idprof = $1
+        `;
+        const avgResult = await pool.query(avgQuery, [profesor.ID]);
+        const valoracionPromedio = avgResult.rows[0].valoracion_promedio || 0;
+
+        // Devolver el profesor con su valoracion_promedio incluida
+        return { ...profesor, valoracion_promedio: valoracionPromedio };
+      })
+    );
+
+    res.json(profesoresConValoracion);
   } catch (err) {
-    res.send("profesores obtenidos con exito")
-    res.status(500).json({ error: err.message });
+    console.error('Error al obtener profesores:', err);
+    res.status(500).json({ error: 'Error al obtener profesores' });
   }
-}
+};
+
 
 const getprofbymail = async (req,res) => {
   const {email} = req.params
