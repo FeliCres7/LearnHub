@@ -756,37 +756,84 @@ width: 100%;
     cursor: pointer;
     filter: brightness(0.9);
 }
-.reservaciones-div{
-    background-color: #ffffff;
-    padding: 10px;
-    height: fit-content;
-    width: 60%;
-    margin:  30px 20%;
-    box-shadow: 0 4px 6px #00000066;
-    border-radius: 20px;
+
+.reservaciones-div {
+    background-color: #f8f9fa;
+    padding: 20px;
+    width: 50%;
+    margin: 30px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
 }
-.reservaciones-div *{
-    color: #424242;
+
+.reservaciones-div h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
 }
-.reservaciones-div div{
-    margin-top: 20px;
+
+.reservaciones-div label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
 }
-.reservarbutton{
-    font-size: 22px;
-    color: #424242;
-    font-weight: 500;
-    background-color: #ffffff;
-    border: 2px solid #424242;
-    padding: 5px;
-    border-radius: 20px;
+
+.reservaciones-div input[type="text"],
+.reservaciones-div input[type="date"],
+.reservaciones-div input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
 }
-.reservacion-item{
-    margin-bottom: 30px;
+
+.reservaciones-div input[type="text"]:focus,
+.reservaciones-div input[type="date"]:focus,
+.reservaciones-div input[type="time"]:focus {
+    border-color: #007bff;
+    outline: none;
 }
-.reserva-item{
+
+.reservarbutton {
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reservarbutton:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.reservacion-item {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.reserva-item {
     margin-bottom: 15px;
 }
+
+.reservaciones-div * {
+    color: #424242;
+}
+
 .valorarbutton{
     background-color: #ffffff;
     padding: 5px;
